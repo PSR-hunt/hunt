@@ -50,8 +50,9 @@ __RCSID("$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $");
 # include	<unistd.h>
 # include	"talk_ctl.h"
 
-# define	TRUE		1
-# define	FALSE		0
+// Deprecated due to stdbool.h standard library.
+//# define	TRUE		1
+//# define	FALSE		0
 
 /* defines for fake talk message to announce start of game */
 # ifdef TALK_43

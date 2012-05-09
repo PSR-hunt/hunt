@@ -55,6 +55,7 @@ static struct termios saved_tty;
 
 # include	"hunt.h"
 
+
 /*
  * Some old versions of curses don't have these defined
  */
@@ -79,68 +80,68 @@ static struct termios saved_tty;
 #define MAXHOSTNAMELEN 256
 #endif
 
-FLAG	Last_player = FALSE;
+bool Last_player = false;
 # ifdef MONITOR
-FLAG	Am_monitor = FALSE;
+bool Am_monitor = false;
 # endif
 
-char	Buf[BUFSIZ];
+char Buf[BUFSIZ];
 
-int	Socket;
+int Socket;
 # ifdef INTERNET
-char	*Sock_host;
-char	*use_port;
-FLAG	Query_driver = FALSE;
-char	*Send_message = NULL;
-FLAG	Show_scores = FALSE;
+char *Sock_host;
+char *use_port;
+bool Query_driver = false;
+char *Send_message = NULL;
+bool Show_scores = false;
 # endif
 
-SOCKET	Daemon;
+SOCKET Daemon;
 # ifdef	INTERNET
 # define	DAEMON_SIZE	(sizeof Daemon)
 # else
 # define	DAEMON_SIZE	(sizeof Daemon - 1)
 # endif
 
-char	map_key[256];			/* what to map keys to */
-FLAG	no_beep;
+char map_key[256]; /* what to map keys to */
+bool no_beep;
 
-static char	name[NAMELEN];
-static char	team = ' ';
+static char name[NAMELEN];
+static char team = ' ';
 
-static int	in_visual;
+static int in_visual;
 
-extern int	cur_row, cur_col;
+extern int cur_row, cur_col;
 
-void	dump_scores(SOCKET);
-long	env_init(long);
-void	fill_in_blanks(void);
-void	leave(int, const char *) __attribute__((__noreturn__));
-void	leavex(int, const char *) __attribute__((__noreturn__));
-void	fincurs(void);
-int	main(int, char *[]);
+void dump_scores(SOCKET);
+long env_init(long);
+void fill_in_blanks(void);
+void leave(int, const char *) __attribute__((__noreturn__));
+void leavex(int, const char *) __attribute__((__noreturn__));
+void fincurs(void);
+int main(int, char *[]);
 # ifdef INTERNET
 SOCKET *list_drivers(void);
 # endif
 
-extern int	Otto_mode;
+extern int Otto_mode;
 /*
  * main:
  *	Main program for local process
  */
-int
-main(int ac, char** av){
-	char		*term;
-	int		c;
-	long		enter_status;
+int main(int argc, char* argv[]) {
+
+	char *term;
+	int c; //TODO x64 compliant
+	long enter_status; //TODO x64 compliant
 
 	/* Revoke setgid privileges */
-	setregid(getgid(), getgid());
+	setregid(getgid(), getgid()); //TODO verificare sicurezza
 
 	enter_status = env_init((long) Q_CLOAK);
-	while ((c = getopt(ac, av, "Sbcfh:l:mn:op:qst:w:")) != -1) {
+	while ((c = getopt(argc, argv, "Sbcfh:l:mn:op:qst:w:")) != -1) {
 		switch (c) {
-		case 'l':	/* rsh compatibility */
+		case 'l': /* rsh compatibility */
 		case 'n':
 			(void) strncpy(name, optarg, NAMELEN);
 			break;
@@ -156,30 +157,30 @@ main(int ac, char** av){
 			warnx("The -o flag is reserved for future use.");
 			goto usage;
 # else
-			Otto_mode = TRUE;
+			Otto_mode = true;
 			break;
 # endif
 		case 'm':
 # ifdef MONITOR
-			Am_monitor = TRUE;
+			Am_monitor = true;
 # else
 			warnx("The monitor was not compiled in.");
 # endif
 			break;
 # ifdef INTERNET
-		case 'S':
-			Show_scores = TRUE;
+			case 'S':
+			Show_scores = true;
 			break;
-		case 'q':	/* query whether hunt is running */
-			Query_driver = TRUE;
+			case 'q': /* query whether hunt is running */
+			Query_driver = true;
 			break;
-		case 'w':
+			case 'w':
 			Send_message = optarg;
 			break;
-		case 'h':
+			case 'h':
 			Sock_host = optarg;
 			break;
-		case 'p':
+			case 'p':
 			use_port = optarg;
 			Test_port = atoi(use_port);
 			break;
@@ -209,52 +210,51 @@ main(int ac, char** av){
 			no_beep = !no_beep;
 			break;
 		default:
-		usage:
-			fputs(
-"usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host]\n",
-			stderr);
+			usage: fputs(
+					"usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host]\n",
+					stderr);
 			exit(1);
 		}
 	}
 # ifdef INTERNET
-	if (optind + 1 < ac)
-		goto usage;
-	else if (optind + 1 == ac)
-		Sock_host = av[ac - 1];
+	if (optind + 1 < argc)
+	goto usage;
+	else if (optind + 1 == argc)
+	Sock_host = argv[argc - 1];
 # else
-	if (optind > ac)
+	if (optind > argc)
 		goto usage;
 # endif
 
 # ifdef INTERNET
 	if (Show_scores) {
-		SOCKET	*hosts;
+		SOCKET *hosts;
 
 		for (hosts = list_drivers(); hosts->sin_port != 0; hosts += 1)
-			dump_scores(*hosts);
+		dump_scores(*hosts);
 		exit(0);
 	}
 	if (Query_driver) {
-		SOCKET	*hosts;
+		SOCKET *hosts;
 
 		for (hosts = list_drivers(); hosts->sin_port != 0; hosts += 1) {
-			struct	hostent	*hp;
-			int	num_players;
+			struct hostent *hp;
+			int num_players;
 
 			hp = gethostbyaddr((char *) &hosts->sin_addr,
 					sizeof hosts->sin_addr, AF_INET);
 			num_players = ntohs(hosts->sin_port);
 			printf("%d player%s hunting on %s!\n",
-				num_players, (num_players == 1) ? "" : "s",
-				hp != NULL ? hp->h_name :
-				inet_ntoa(hosts->sin_addr));
+					num_players, (num_players == 1) ? "" : "s",
+					hp != NULL ? hp->h_name :
+					inet_ntoa(hosts->sin_addr));
 		}
 		exit(0);
 	}
 # endif
 # ifdef OTTO
 	if (Otto_mode)
-		(void) strncpy(name, "otto", NAMELEN);
+	(void) strncpy(name, "otto", NAMELEN);
 	else
 # endif
 	fill_in_blanks();
@@ -280,7 +280,7 @@ main(int ac, char** av){
 	_puts(TI);
 	_puts(VS);
 # endif /* !USE_CURSES */
-	in_visual = TRUE;
+	in_visual = true;
 	if (LINES < SCREEN_HEIGHT || COLS < SCREEN_WIDTH)
 		leavex(1, "Need a larger window");
 	clear_the_screen();
@@ -294,35 +294,35 @@ main(int ac, char** av){
 
 	for (;;) {
 # ifdef	INTERNET
-		find_driver(TRUE);
+		find_driver(true);
 
 		if (Daemon.sin_port == 0)
-			leavex(1, "Game not found, try again");
+		leavex(1, "Game not found, try again");
 
-	jump_in:
+		jump_in:
 		do {
-			int	option;
+			int option;
 
 			Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
 			if (Socket < 0)
-				err(1, "socket");
+			err(1, "socket");
 			option = 1;
 #ifdef SO_USELOOPBACK
 			if (setsockopt(Socket, SOL_SOCKET, SO_USELOOPBACK,
-			    &option, sizeof option) < 0)
-				warn("setsockopt loopback");
+							&option, sizeof option) < 0)
+			warn("setsockopt loopback");
 #endif
 			errno = 0;
 			if (connect(Socket, (struct sockaddr *) &Daemon,
-			    DAEMON_SIZE) < 0) {
+							DAEMON_SIZE) < 0) {
 				if (errno != ECONNREFUSED) {
 					leave(1, "connect");
 				}
 			}
 			else
-				break;
+			break;
 			sleep(1);
-		} while (close(Socket) == 0);
+		}while (close(Socket) == 0);
 # else /* !INTERNET */
 		/*
 		 * set up a socket
@@ -347,8 +347,7 @@ main(int ac, char** av){
 
 			do {
 				(void) close(Socket);
-				if ((Socket = socket(SOCK_FAMILY, SOCK_STREAM,
-				    0)) < 0)
+				if ((Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0)) < 0)
 					err(1, "socket");
 				sleep(2);
 			} while (connect(Socket, &Daemon, DAEMON_SIZE) < 0);
@@ -360,7 +359,7 @@ main(int ac, char** av){
 		if (Send_message != NULL) {
 			do_message();
 			if (enter_status == Q_MESSAGE)
-				break;
+			break;
 			Send_message = NULL;
 			/* don't continue as that will call find_driver */
 			goto jump_in;
@@ -372,70 +371,70 @@ main(int ac, char** av){
 	}
 	leavex(0, (char *) NULL);
 	/* NOTREACHED */
-	return(0);
+	return (0);
 }
 
 # ifdef INTERNET
 # ifdef BROADCAST
 int
-broadcast_vec(int s, struct sockaddr **vector){
+broadcast_vec(int s, struct sockaddr **vector) {
 	/*int			s;		 socket */
-	int			vec_cnt;
-	struct ifaddrs		*ifp, *ip;
+	int vec_cnt;
+	struct ifaddrs *ifp, *ip;
 
 	*vector = NULL;
 	if (getifaddrs(&ifp) < 0)
-		return 0;
+	return 0;
 
 	vec_cnt = 0;
 	for (ip = ifp; ip; ip = ip->ifa_next)
-		if ((ip->ifa_addr->sa_family == AF_INET) &&
-		    (ip->ifa_flags & IFF_BROADCAST))
-			vec_cnt++;
+	if ((ip->ifa_addr->sa_family == AF_INET) &&
+			(ip->ifa_flags & IFF_BROADCAST))
+	vec_cnt++;
 
 	*vector = (struct sockaddr *)
-		malloc(vec_cnt * sizeof(struct sockaddr_in));
+	malloc(vec_cnt * sizeof(struct sockaddr_in));
 	if (*vector == NULL)
-		leave(1, "Out of memory!");
+	leave(1, "Out of memory!");
 
 	vec_cnt = 0;
 	for (ip = ifp; ip; ip = ip->ifa_next)
-		if ((ip->ifa_addr->sa_family == AF_INET) &&
-		    (ip->ifa_flags & IFF_BROADCAST))
-			memcpy(&(*vector)[vec_cnt++], ip->ifa_broadaddr,
-			       sizeof(struct sockaddr_in));
+	if ((ip->ifa_addr->sa_family == AF_INET) &&
+			(ip->ifa_flags & IFF_BROADCAST))
+	memcpy(&(*vector)[vec_cnt++], ip->ifa_broadaddr,
+			sizeof(struct sockaddr_in));
 
 	freeifaddrs(ifp);
 	return vec_cnt;
 }
 # endif
 
-SOCKET	* list_drivers(){
-	int			option;
-	u_short			msg;
-	u_short			port_num;
-	static SOCKET		test;
-	int			test_socket;
-	int			namelen;
-	char			local_name[MAXHOSTNAMELEN + 1];
-	static int		initial = TRUE;
-	static struct in_addr	local_address;
-	struct hostent		*hp;
+SOCKET * list_drivers() {
+	int option;
+	u_short msg;
+	u_short port_num;
+	static SOCKET test;
+	int test_socket;
+	int namelen;
+	char local_name[MAXHOSTNAMELEN + 1];
+	static int initial = true;
+	static struct in_addr local_address;
+	struct hostent *hp;
 # ifdef BROADCAST
-	static	int		brdc;
-	static	SOCKET		*brdv;
+	static int brdc;
+	static SOCKET *brdv;
 # else
-	u_long			local_net;
+	u_long local_net;
 # endif
-	int			i;
-	static	SOCKET		*listv;
-	static	unsigned int	listmax;
-	unsigned int		listc;
-	struct pollfd		set[1];
+	int i;
+	static SOCKET *listv;
+	static unsigned int listmax;
+	unsigned int listc;
+	struct pollfd set[1];
 
-	if (initial) {			/* do one time initialization */
+	if (initial) { /* do one time initialization */
 # ifndef BROADCAST
-		sethostent(1);		/* don't bother to close host file */
+		sethostent(1); /* don't bother to close host file */
 # endif
 		if (gethostname(local_name, sizeof local_name) < 0) {
 			leavex(1, "Sorry, I have no name.");
@@ -451,9 +450,9 @@ SOCKET	* list_drivers(){
 		listmax = 20;
 		listv = (SOCKET *) malloc(listmax * sizeof (SOCKET));
 		if (listv == NULL)
-			leave(1, "Out of memory!");
+		leave(1, "Out of memory!");
 	} else if (Sock_host != NULL)
-		return listv;		/* address already valid */
+	return listv; /* address already valid */
 
 	test_socket = socket(SOCK_FAMILY, SOCK_DGRAM, 0);
 	if (test_socket < 0) {
@@ -464,7 +463,7 @@ SOCKET	* list_drivers(){
 	test.sin_port = htons(Test_port);
 	listc = 0;
 
-	if (Sock_host != NULL) {	/* explicit host given */
+	if (Sock_host != NULL) { /* explicit host given */
 		if ((hp = gethostbyname(Sock_host)) == NULL) {
 			leavex(1, "Unknown host");
 			/* NOTREACHED */
@@ -476,20 +475,20 @@ SOCKET	* list_drivers(){
 	if (!initial) {
 		/* favor host of previous session by broadcasting to it first */
 		test.sin_addr = Daemon.sin_addr;
-		msg = htons(C_PLAYER);		/* Must be playing! */
+		msg = htons(C_PLAYER); /* Must be playing! */
 		(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
-		    (struct sockaddr *) &test, DAEMON_SIZE);
+				(struct sockaddr *) &test, DAEMON_SIZE);
 	}
 
 # ifdef BROADCAST
 	if (initial)
-		brdc = broadcast_vec(test_socket, (void *) &brdv);
+	brdc = broadcast_vec(test_socket, (void *) &brdv);
 
 # ifdef SO_BROADCAST
 	/* Sun's will broadcast even though this option can't be set */
 	option = 1;
 	if (setsockopt(test_socket, SOL_SOCKET, SO_BROADCAST,
-	    &option, sizeof option) < 0) {
+					&option, sizeof option) < 0) {
 		leave(1, "setsockopt broadcast");
 		/* NOTREACHED */
 	}
@@ -500,14 +499,14 @@ SOCKET	* list_drivers(){
 	for (i = 0; i < brdc; i++) {
 		test.sin_addr = brdv[i].sin_addr;
 		if (sendto(test_socket, (char *) &msg, sizeof msg, 0,
-		    (struct sockaddr *) &test, DAEMON_SIZE) < 0) {
+						(struct sockaddr *) &test, DAEMON_SIZE) < 0) {
 			leave(1, "sendto");
 			/* NOTREACHED */
 		}
 	}
 	test.sin_addr = local_address;
 	if (sendto(test_socket, (char *) &msg, sizeof msg, 0,
-	    (struct sockaddr *) &test, DAEMON_SIZE) < 0) {
+					(struct sockaddr *) &test, DAEMON_SIZE) < 0) {
 		leave(1, "sendto");
 		/* NOTREACHED */
 	}
@@ -515,17 +514,17 @@ SOCKET	* list_drivers(){
 	/* loop thru all hosts on local net and send msg to them. */
 	msg = htons(C_TESTMSG());
 	local_net = inet_netof(local_address);
-	sethostent(0);		/* rewind host file */
+	sethostent(0); /* rewind host file */
 	while (hp = gethostent()) {
-		if (local_net == inet_netof(* ((struct in_addr *) hp->h_addr))){
+		if (local_net == inet_netof(* ((struct in_addr *) hp->h_addr))) {
 			test.sin_addr = * ((struct in_addr *) hp->h_addr);
 			(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
-			    (struct sockaddr *) &test, DAEMON_SIZE);
+					(struct sockaddr *) &test, DAEMON_SIZE);
 		}
 	}
 # endif
 
-get_response:
+	get_response:
 	namelen = DAEMON_SIZE;
 	errno = 0;
 	set[0].fd = test_socket;
@@ -534,25 +533,25 @@ get_response:
 		if (listc + 1 >= listmax) {
 			listmax += 20;
 			listv = (SOCKET *) realloc((char *) listv,
-						listmax * sizeof(SOCKET));
+					listmax * sizeof(SOCKET));
 			if (listv == NULL)
-				leave(1, "Out of memory!");
+			leave(1, "Out of memory!");
 		}
 
 		if (poll(set, 1, 1000) == 1 &&
-		    recvfrom(test_socket, (char *) &port_num, sizeof(port_num),
-		    0, (struct sockaddr *) &listv[listc], &namelen) > 0) {
+				recvfrom(test_socket, (char *) &port_num, sizeof(port_num),
+						0, (struct sockaddr *) &listv[listc], &namelen) > 0) {
 			/*
 			 * Note that we do *not* convert from network to host
 			 * order since the port number *should* be in network
 			 * order:
 			 */
 			for (i = 0; (unsigned)i < listc; i += 1)
-				if (listv[listc].sin_addr.s_addr
-				== listv[i].sin_addr.s_addr)
-					break;
+			if (listv[listc].sin_addr.s_addr
+					== listv[i].sin_addr.s_addr)
+			break;
 			if ((unsigned)i == listc)
-				listv[listc++].sin_port = port_num;
+			listv[listc++].sin_port = port_num;
 			continue;
 		}
 
@@ -567,23 +566,23 @@ get_response:
 		listv[listc].sin_port = htons(0);
 
 		(void) close(test_socket);
-		initial = FALSE;
+		initial = false;
 		return listv;
 	}
 
-test_one_host:
+	test_one_host:
 	msg = htons(C_TESTMSG());
 	(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
-	    (struct sockaddr *) &test, DAEMON_SIZE);
+			(struct sockaddr *) &test, DAEMON_SIZE);
 	goto get_response;
 }
 
-void find_driver(FLAG do_startup){
-	SOCKET	*hosts;
+void find_driver(bool do_startup) {
+	SOCKET *hosts;
 
 	hosts = list_drivers();
 	if (hosts[0].sin_port != htons(0)) {
-		int	i, c;
+		int i, c;
 
 		if (hosts[1].sin_port == htons(0)) {
 			Daemon = hosts[0];
@@ -600,9 +599,9 @@ void find_driver(FLAG do_startup){
 # endif
 		put_str("Pick one:");
 		for (i = 0; i < HEIGHT - 4 && hosts[i].sin_port != htons(0);
-								i += 1) {
-			struct	hostent	*hp;
-			char	buf[80];
+				i += 1) {
+			struct hostent *hp;
+			char buf[80];
 
 # ifdef USE_CURSES
 			move(3 + i, 0);
@@ -614,8 +613,8 @@ void find_driver(FLAG do_startup){
 			hp = gethostbyaddr((char *) &hosts[i].sin_addr,
 					sizeof hosts[i].sin_addr, AF_INET);
 			(void) sprintf(buf, "%8c    %.64s", 'a' + i,
-				hp != NULL ? hp->h_name
-				: inet_ntoa(hosts->sin_addr));
+					hp != NULL ? hp->h_name
+					: inet_ntoa(hosts->sin_addr));
 			put_str(buf);
 		}
 # ifdef USE_CURSES
@@ -636,38 +635,38 @@ void find_driver(FLAG do_startup){
 		return;
 	}
 	if (!do_startup)
-		return;
+	return;
 
 	start_driver();
 	sleep(2);
-	find_driver(FALSE);
+	find_driver(false);
 }
 
-void dump_scores(SOCKET host){
-	struct	hostent	*hp;
-	int	s;
-	char	buf[BUFSIZ];
-	int	cnt;
+void dump_scores(SOCKET host) {
+	struct hostent *hp;
+	int s;
+	char buf[BUFSIZ];
+	int cnt;
 
 	hp = gethostbyaddr((char *) &host.sin_addr, sizeof host.sin_addr,
-								AF_INET);
+			AF_INET);
 	printf("\n%s:\n", hp != NULL ? hp->h_name : inet_ntoa(host.sin_addr));
 	fflush(stdout);
 
 	s = socket(SOCK_FAMILY, SOCK_STREAM, 0);
 	if (s < 0)
-		err(1, "socket");
+	err(1, "socket");
 	if (connect(s, (struct sockaddr *) &host, sizeof host) < 0)
-		err(1, "connect");
+	err(1, "connect");
 	while ((cnt = read(s, buf, BUFSIZ)) > 0)
-		write(fileno(stdout), buf, cnt);
+	write(fileno(stdout), buf, cnt);
 	(void) close(s);
 }
 
 # endif
 
-void start_driver(){
-	int	procid;
+void start_driver() {
+	int procid;
 
 # ifdef MONITOR
 	if (Am_monitor) {
@@ -703,13 +702,13 @@ void start_driver(){
 # else
 		if (use_port == NULL)
 # endif
-			execl(Driver, "HUNT", (char *) NULL);
+		execl(Driver, "HUNT", (char *) NULL);
 # ifdef INTERNET
-		else 
-			execl(Driver, "HUNT", "-p", use_port, (char *) NULL);
+		else
+		execl(Driver, "HUNT", "-p", use_port, (char *) NULL);
 # endif
 		/* only get here if exec failed */
-		(void) kill(getppid(), SIGUSR1);	/* tell mom */
+		(void) kill(getppid(), SIGUSR1); /* tell mom */
 		_exit(1);
 	}
 # ifdef USE_CURSES
@@ -728,7 +727,7 @@ void start_driver(){
  *	We had a bad connection.  For the moment we assume that this
  *	means the game is full.
  */
-void bad_con(){
+void bad_con() {
 	leavex(1, "The game is full.  Sorry.");
 	/* NOTREACHED */
 }
@@ -737,7 +736,7 @@ void bad_con(){
  * bad_ver:
  *	version number mismatch.
  */
-void bad_ver(){
+void bad_ver() {
 	leavex(1, "Version number mismatch. No go.");
 	/* NOTREACHED */
 }
@@ -746,17 +745,16 @@ void bad_ver(){
  * sigterm:
  *	Handle a terminate signal
  */
-SIGNAL_TYPE sigterm(int dummy __attribute__((__unused__))){
+SIGNAL_TYPE sigterm(int dummy __attribute__((__unused__))) {
 	leavex(0, (char *) NULL);
 	/* NOTREACHED */
 }
-
 
 /*
  * sigusr1:
  *	Handle a usr1 signal
  */
-SIGNAL_TYPE sigusr1(int dummy __attribute__((__unused__))){
+SIGNAL_TYPE sigusr1(int dummy __attribute__((__unused__))) {
 	leavex(1, "Unable to start driver.  Try again.");
 	/* NOTREACHED */
 }
@@ -766,7 +764,7 @@ SIGNAL_TYPE sigusr1(int dummy __attribute__((__unused__))){
  * sigalrm:
  *	Handle an alarm signal
  */
-SIGNAL_TYPE sigalrm(int dummy __attribute__((__unused__))){
+SIGNAL_TYPE sigalrm(int dummy __attribute__((__unused__))) {
 	return;
 }
 # endif
@@ -775,8 +773,8 @@ SIGNAL_TYPE sigalrm(int dummy __attribute__((__unused__))){
  * rmnl:
  *	Remove a '\n' at the end of a string if there is one
  */
-void rmnl(charr *s){
-	char	*cp;
+void rmnl(charr *s) {
+	char *cp;
 
 	cp = strrchr(s, '\n');
 	if (cp != NULL)
@@ -787,10 +785,10 @@ void rmnl(charr *s){
  * intr:
  *	Handle a interrupt signal
  */
-SIGNAL_TYPE intr(int dummy __attribute__((__unused__))){
-	int	ch;
-	int	explained;
-	int	y, x;
+SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
+	int ch;
+	int explained;
+	int y, x;
 
 	(void) signal(SIGINT, SIG_IGN);
 # ifdef USE_CURSES
@@ -806,7 +804,7 @@ SIGNAL_TYPE intr(int dummy __attribute__((__unused__))){
 	put_str("Really quit? ");
 	clear_eol();
 	refresh();
-	explained = FALSE;
+	explained = false;
 	for (;;) {
 		ch = getchar();
 		if (isupper(ch))
@@ -817,8 +815,7 @@ SIGNAL_TYPE intr(int dummy __attribute__((__unused__))){
 				(void) close(Socket);
 			}
 			leavex(0, (char *) NULL);
-		}
-		else if (ch == 'n') {
+		} else if (ch == 'n') {
 			(void) signal(SIGINT, intr);
 # ifdef USE_CURSES
 			move(y, x);
@@ -833,14 +830,14 @@ SIGNAL_TYPE intr(int dummy __attribute__((__unused__))){
 		if (!explained) {
 			put_str("(Yes or No) ");
 			refresh();
-			explained = TRUE;
+			explained = true;
 		}
 		beep();
 		refresh();
 	}
 }
 
-void fincurs(){
+void fincurs() {
 	if (in_visual) {
 # ifdef USE_CURSES
 		move(HEIGHT, 0);
@@ -848,7 +845,7 @@ void fincurs(){
 		endwin();
 # else /* !USE_CURSES */
 		mvcur(cur_row, cur_col, HEIGHT, 0);
-		(void) fflush(stdout);	/* flush in case VE changes pages */
+		(void) fflush(stdout); /* flush in case VE changes pages */
 # if defined(BSD_RELEASE) && BSD_RELEASE >= 44
 		tcsetattr(0, TCSADRAIN, &__orig_termios);
 # else
@@ -865,7 +862,7 @@ void fincurs(){
  *	Leave the game somewhat gracefully, restoring all current
  *	tty stats.
  */
-void leave(int eval, const char *mesg){
+void leave(int eval, const char *mesg) {
 	int serrno = errno;
 	fincurs();
 	errno = serrno;
@@ -877,7 +874,7 @@ void leave(int eval, const char *mesg){
  *	Leave the game somewhat gracefully, restoring all current
  *	tty stats.
  */
-void leavex(int eval,const char *mesg){
+void leavex(int eval, const char *mesg) {
 	fincurs();
 	errx(eval, mesg ? mesg : "");
 }
@@ -887,11 +884,11 @@ void leavex(int eval,const char *mesg){
  * tstp:
  *	Handle stop and start signals
  */
-SIGNAL_TYPE tstp(int dummy){
+SIGNAL_TYPE tstp(int dummy) {
 # if BSD_RELEASE < 44
-	static struct sgttyb	tty;
+	static struct sgttyb tty;
 # endif
-	int	y, x;
+	int y, x;
 
 	y = cur_row;
 	x = cur_col;
@@ -928,47 +925,59 @@ SIGNAL_TYPE tstp(int dummy){
 #endif /* !defined(USE_CURSES) && defined(SIGTSTP) */
 
 # if defined(BSD_RELEASE) && BSD_RELEASE < 43
-char * strpbrk(char *s,char *brk){
+char * strpbrk(char *s,char *brk) {
 	char *p;
 	c;
 
 	while (c = *s) {
 		for (p = brk; *p; p++)
-			if (c == *p)
-				return (s);
+		if (c == *p)
+		return (s);
 		s++;
 	}
 	return (0);
 }
 # endif
+/** Imports game settings from environment.
+ * @param[in] enter_status //TODO
+ * \return //TODO
+ *
+ */
+long env_init(long enter_status_in) {
 
-long env_init(long enter_status){
-	int	i;
-	char	*envp, *envname, *s;
+	long enter_status = enter_status_in; /**< Hosts the value to return. */
 
+	int i;
+
+	char *envp; /**< This string contains setting options. */
+	char *envname; //TODO
+	char *s;
+
+
+	/**
+	 * Generates a map for extended ASCII conversion.
+	 * //TODO verificare sostituibilita' con libreria standard
+	 */
 	for (i = 0; i < 256; i++)
 		map_key[i] = (char) i;
 
-	envname = NULL;
+	envname = NULL; //TODO verificare sicurezza (puntatore a null)
+
 	if ((envp = getenv("HUNT")) != NULL) {
 		while ((s = strpbrk(envp, "=,")) != NULL) {
-			if (strncmp(envp, "cloak,", s - envp + 1) == 0) {
+			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { //compara i caratteri dall'inizio della stringa di configurazione non ancora analizzata sino al primo =
 				enter_status = Q_CLOAK;
-				envp = s + 1;
-			}
-			else if (strncmp(envp, "scan,", s - envp + 1) == 0) {
+				envp = s + 1; //elimina i caratteri già considerati da envp
+			} else if (strncmp(envp, "scan,", s - envp + 1) == 0) {
 				enter_status = Q_SCAN;
 				envp = s + 1;
-			}
-			else if (strncmp(envp, "fly,", s - envp + 1) == 0) {
+			} else if (strncmp(envp, "fly,", s - envp + 1) == 0) {
 				enter_status = Q_FLY;
 				envp = s + 1;
-			}
-			else if (strncmp(envp, "nobeep,", s - envp + 1) == 0) {
-				no_beep = TRUE;
+			} else if (strncmp(envp, "nobeep,", s - envp + 1) == 0) {
+				no_beep = true;
 				envp = s + 1;
-			}
-			else if (strncmp(envp, "name=", s - envp + 1) == 0) {
+			} else if (strncmp(envp, "name=", s - envp + 1) == 0) {
 				envname = s + 1;
 				if ((s = strchr(envp, ',')) == NULL) {
 					*envp = '\0';
@@ -1019,7 +1028,7 @@ long env_init(long enter_status){
 				}
 				*s = '\0';
 				envp = s + 1;
-			}			/* must be last option */
+			} /* must be last option */
 			else if (strncmp(envp, "mapkey=", s - envp + 1) == 0) {
 				for (s = s + 1; *s != '\0'; s += 2) {
 					map_key[(unsigned int) *s] = *(s + 1);
@@ -1049,12 +1058,11 @@ long env_init(long enter_status){
 	return enter_status;
 }
 
-void fill_in_blanks(){
-	int	i;
-	char	*cp;
+void fill_in_blanks() {
+	int i;
+	char *cp;
 
-again:
-	if (name[0] != '\0') {
+	again: if (name[0] != '\0') {
 		printf("Entering as '%s'", name);
 		if (team != ' ')
 			printf(" on team %c.\n", team);

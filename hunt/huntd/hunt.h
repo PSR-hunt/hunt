@@ -58,6 +58,11 @@
 # include	<sys/un.h>
 # endif
 
+/**
+ * Added boolean type support.
+ */
+# include <stdbool.h>
+
 # ifdef	INTERNET
 # define	SOCK_FAMILY	AF_INET
 # else
@@ -195,10 +200,12 @@
 # define	EAST	010
 # define	WEST	020
 
-# ifndef TRUE
-# define	TRUE	1
-# define	FALSE	0
-# endif
+// Deprecated due to stdbool.h library support.
+//# ifndef TRUE
+//# define	TRUE	1
+//# define	FALSE	0
+//# endif
+
 # undef CTRL
 # define	CTRL(x)	((x) & 037)
 
@@ -276,7 +283,9 @@ extern int	slime_req[];
 # define	stat_char(pp)	(((pp)->p_cloak < 0) ? _scan_char(pp) : '+')
 # endif
 
-typedef int			FLAG;
+//Deprecated due to stdbool.h standard library.
+//typedef int			FLAG;
+
 typedef struct bullet_def	BULLET;
 typedef struct expl_def		EXPL;
 typedef struct player_def	PLAYER;
@@ -348,7 +357,7 @@ struct bullet_def {
 	char	b_over;
 	PLAYER	*b_owner;
 	IDENT	*b_score;
-	FLAG	b_expl;
+	bool	b_expl;
 	BULLET	*b_next;
 };
 
@@ -367,7 +376,7 @@ struct regen_def {
  * external variables
  */
 
-extern FLAG	Last_player;
+extern bool	Last_player;
 
 extern char	Buf[BUFSIZ], Maze[HEIGHT][WIDTH2], Orig_maze[HEIGHT][WIDTH2];
 
@@ -401,7 +410,7 @@ extern PLAYER	Boot[NBOOTS];
 # endif
 
 # ifdef MONITOR
-extern FLAG	Am_monitor;
+extern bool	Am_monitor;
 extern PLAYER	Monitor[MAXMON], *End_monitor;
 # endif
 
@@ -410,7 +419,7 @@ extern char	*Send_message;
 # endif
 
 extern char	map_key[256];
-extern FLAG	no_beep;
+extern bool	no_beep;
 
 /*
  * function types
@@ -434,11 +443,11 @@ BULLET	       *create_shot(int, int, int, char, int, int, PLAYER *,
 void		do_connect(const char *, char, long);
 void		do_message(void);
 void		drawmaze(PLAYER *);
-void		drawplayer(PLAYER *, FLAG);
+void		drawplayer(PLAYER *, bool);
 void		drawstatus(PLAYER *);
 void		execute(PLAYER *);
 void		faketalk(void);
-void		find_driver(FLAG);
+void		find_driver(bool);
 void		fixshots(int, int, char);
 IDENT	       *get_ident(u_long, u_long, const char *, char);
 void		get_local_name(const char *);

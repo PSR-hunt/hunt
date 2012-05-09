@@ -73,7 +73,7 @@ int answer(){
 	if (newsock < 0)
 	{
 		if (errno == EINTR)
-			return FALSE;
+			return false;
 # ifdef LOG
 		syslog(LOG_ERR, "accept: %m");
 # else
@@ -142,7 +142,7 @@ int answer(){
 			(void) fflush(pp->p_output);
 		}
 		(void) close(newsock);
-		return FALSE;
+		return false;
 	}
 	else
 # endif
@@ -156,7 +156,7 @@ int answer(){
 			(void) write(newsock, (char *) &socklen,
 				sizeof socklen);
 			(void) close(newsock);
-			return FALSE;
+			return false;
 		}
 	else
 # endif
@@ -168,7 +168,7 @@ int answer(){
 			(void) write(newsock, (char *) &socklen,
 				sizeof socklen);
 			(void) close(newsock);
-			return FALSE;
+			return false;
 		}
 
 #ifdef MONITOR
@@ -191,7 +191,7 @@ int answer(){
 	else
 # endif
 		stplayer(pp, enter_status);
-	return TRUE;
+	return true;
 }
 
 # ifdef MONITOR
@@ -249,7 +249,7 @@ void stplayer(PLAYER *newpp,int enter_status){
 	newpp->p_over = SPACE;
 	newpp->p_x = x;
 	newpp->p_y = y;
-	newpp->p_undershot = FALSE;
+	newpp->p_undershot = false;
 
 # ifdef FLY
 	if (enter_status == Q_FLY) {
@@ -328,7 +328,7 @@ void stplayer(PLAYER *newpp,int enter_status){
 # endif
 
 	drawmaze(newpp);
-	drawplayer(newpp, TRUE);
+	drawplayer(newpp, true);
 	look(newpp);
 # ifdef	FLY
 	if (enter_status == Q_FLY)

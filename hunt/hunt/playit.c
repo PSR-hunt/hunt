@@ -174,7 +174,7 @@ void playit(){
 		  case ENDWIN:
 			refresh();
 			if ((ch = GETCHR()) == LAST_PLAYER)
-				Last_player = TRUE;
+				Last_player = true;
 			ch = EOF;
 			goto out;
 		  case BELL:
@@ -333,7 +333,7 @@ int quit(int old_status){
 # endif
 	put_str("Re-enter game [ynwo]? ");
 	clear_eol();
-	explain = FALSE;
+	explain = false;
 	for (;;) {
 		refresh();
 		if (isupper(ch = getchar()))
@@ -444,7 +444,7 @@ get_message:
 		beep();
 		if (!explain) {
 			put_str("(Yes, No, Write message, or Options) ");
-			explain = TRUE;
+			explain = true;
 		}
 	}
 
@@ -462,7 +462,7 @@ get_message:
 # endif
 	clear_eol();
 	refresh();
-	explain = FALSE;
+	explain = false;
 	for (;;) {
 		if (isupper(ch = getchar()))
 			ch = tolower(ch);
@@ -483,7 +483,7 @@ get_message:
 # else
 			put_str("[SCQ] ");
 # endif
-			explain = TRUE;
+			explain = true;
 		}
 		refresh();
 	}
@@ -568,7 +568,7 @@ void clear_eol(){
 
 void redraw_screen(){
 # ifdef USE_CURSES
-	clearok(stdscr, TRUE);
+	clearok(stdscr, true);
 	touchwin(stdscr);
 # else
 	int		i;
@@ -598,7 +598,7 @@ void redraw_screen(){
 	curscr->_cury = cur_row;
 	curscr->_curx = cur_col;
 # endif
-	clearok(curscr, TRUE);
+	clearok(curscr, true);
 	touchwin(curscr);
 	wrefresh(curscr);
 #else

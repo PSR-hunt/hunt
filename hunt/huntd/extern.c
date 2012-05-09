@@ -38,7 +38,7 @@ __RCSID("$NetBSD: extern.c,v 1.4 2003/06/11 12:00:22 wiz Exp $");
 # include	"hunt.h"
 
 # ifdef MONITOR
-FLAG	Am_monitor = FALSE;		/* current process is a monitor */
+bool	Am_monitor = false;		/* current process is a monitor */
 # endif
 
 char	Buf[BUFSIZ];			/* general scribbling buffer */

@@ -292,7 +292,7 @@ void showstat(PLAYER *pp){
  *	Draw the player on the screen and show him to everyone who's scanning
  *	unless he is cloaked.
  */
-void drawplayer(PLAYER *pp,FLAG draw){
+void drawplayer(PLAYER *pp,bool draw){
 	PLAYER	*newp;
 	int	x, y;
 

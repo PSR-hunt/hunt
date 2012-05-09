@@ -525,7 +525,7 @@ STATIC int go_for_ammo(char mine){
 		}
 	}
 	if (rel_dir == -1)
-		return FALSE;
+		return false;
 
 	if (!(flbr[rel_dir].flags & ON_SIDE)
 	|| flbr[rel_dir].distance > 1) {
@@ -533,8 +533,8 @@ STATIC int go_for_ammo(char mine){
 			dist = 4;
 		face_and_move_direction(rel_dir, dist);
 	} else
-		return FALSE;		/* until it's done right */
-	return TRUE;
+		return false;		/* until it's done right */
+	return true;
 }
 
 STATIC void wander(){

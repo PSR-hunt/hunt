@@ -188,7 +188,7 @@ void execute(PLAYER *pp){
 static void move_player(PLAYER *pp,int dir){
 	PLAYER	*newp;
 	int	x, y;
-	FLAG	moved;
+	bool	moved;
 	BULLET	*bp;
 
 	y = pp->p_y;
@@ -209,13 +209,13 @@ static void move_player(PLAYER *pp,int dir){
 		break;
 	}
 
-	moved = FALSE;
+	moved = false;
 	switch (Maze[y][x]) {
 	  case SPACE:
 # ifdef RANDOM
 	  case DOOR:
 # endif
-		moved = TRUE;
+		moved = true;
 		break;
 	  case WALL1:
 	  case WALL2:
@@ -234,7 +234,7 @@ static void move_player(PLAYER *pp,int dir){
 		else
 			pickup(pp, y, x, 50, Maze[y][x]);
 		Maze[y][x] = SPACE;
-		moved = TRUE;
+		moved = true;
 		break;
 	  case SHOT:
 	  case GRENADE:
@@ -248,9 +248,9 @@ static void move_player(PLAYER *pp,int dir){
 # endif
 		bp = is_bullet(y, x);
 		if (bp != NULL)
-			bp->b_expl = TRUE;
+			bp->b_expl = true;
 		Maze[y][x] = SPACE;
-		moved = TRUE;
+		moved = true;
 		break;
 	  case LEFTS:
 	  case RIGHT:
@@ -291,7 +291,7 @@ static void move_player(PLAYER *pp,int dir){
 		else
 			message(pp, "You can hobble around on one boot.");
 		Maze[y][x] = SPACE;
-		moved = TRUE;
+		moved = true;
 		break;
 # endif
 	}
@@ -303,13 +303,13 @@ static void move_player(PLAYER *pp,int dir){
 			}
 		if (pp->p_undershot) {
 			fixshots(pp->p_y, pp->p_x, pp->p_over);
-			pp->p_undershot = FALSE;
+			pp->p_undershot = false;
 		}
-		drawplayer(pp, FALSE);
+		drawplayer(pp, false);
 		pp->p_over = Maze[y][x];
 		pp->p_y = y;
 		pp->p_x = x;
-		drawplayer(pp, TRUE);
+		drawplayer(pp, true);
 	}
 }
 
@@ -320,7 +320,7 @@ static void move_player(PLAYER *pp,int dir){
 static void face(PLAYER *pp,int dir){
 	if (pp->p_face != dir) {
 		pp->p_face = dir;
-		drawplayer(pp, TRUE);
+		drawplayer(pp, true);
 	}
 }
 
@@ -353,8 +353,8 @@ static void fire(PLAYER *pp,int req_index){
 	outstr(pp, Buf, 3);
 
 	add_shot(shot_type[req_index], pp->p_y, pp->p_x, pp->p_face,
-		shot_req[req_index], pp, FALSE, pp->p_face);
-	pp->p_undershot = TRUE;
+		shot_req[req_index], pp, false, pp->p_face);
+	pp->p_undershot = true;
 
 	/*
 	 * Show the object to everyone
@@ -398,8 +398,8 @@ static void fire_slime(PLAYER *pp,int req_index){
 	outstr(pp, Buf, 3);
 
 	add_shot(SLIME, pp->p_y, pp->p_x, pp->p_face,
-		slime_req[req_index] * SLIME_FACTOR, pp, FALSE, pp->p_face);
-	pp->p_undershot = TRUE;
+		slime_req[req_index] * SLIME_FACTOR, pp, false, pp->p_face);
+	pp->p_undershot = true;
 
 	/*
 	 * Show the object to everyone
@@ -543,7 +543,7 @@ void pickup(PLAYER *pp,int y,int x,int prob,int obj){
 	}
 	if (rand_num(100) < prob)
 		add_shot(obj, y, x, LEFTS, req, (PLAYER *) NULL,
-			TRUE, pp->p_face);
+			true, pp->p_face);
 	else {
 		pp->p_ammo += req;
 		(void) sprintf(Buf, "%3d", pp->p_ammo);

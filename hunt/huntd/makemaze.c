@@ -104,28 +104,28 @@ static int candig(int y,int x){
 	int	i;
 
 	if (ODD(x) && ODD(y))
-		return FALSE;		/* can't touch ODD spots */
+		return false;		/* can't touch ODD spots */
 
 	if (y < UBOUND || y >= DBOUND)
-		return FALSE;		/* Beyond vertical bounds, NO */
+		return false;		/* Beyond vertical bounds, NO */
 	if (x < LBOUND || x >= RBOUND)
-		return FALSE;		/* Beyond horizontal bounds, NO */
+		return false;		/* Beyond horizontal bounds, NO */
 
 	if (ISCLEAR(y, x))
-		return FALSE;		/* Already clear, NO */
+		return false;		/* Already clear, NO */
 
 	i = ISCLEAR(y, x + 1);
 	i += ISCLEAR(y, x - 1);
 	if (i > 1)
-		return FALSE;		/* Introduces cycle, NO */
+		return false;		/* Introduces cycle, NO */
 	i += ISCLEAR(y + 1, x);
 	if (i > 1)
-		return FALSE;		/* Introduces cycle, NO */
+		return false;		/* Introduces cycle, NO */
 	i += ISCLEAR(y - 1, x);
 	if (i > 1)
-		return FALSE;		/* Introduces cycle, NO */
+		return false;		/* Introduces cycle, NO */
 
-	return TRUE;			/* OK */
+	return true;			/* OK */
 }
 
 void dig_maze(int x,int y){
