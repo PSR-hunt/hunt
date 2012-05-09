@@ -72,10 +72,7 @@ SIGNAL_TYPE	exorcise(int);
  *	exorcise - disspell zombies
  */
 
-SIGNAL_TYPE
-exorcise(dummy)
-	int dummy __attribute__((__unused__));
-{
+SIGNAL_TYPE exorcise(int dummy __attribute__((__unused__))){
 	(void) wait(0);
 }
 
@@ -84,9 +81,7 @@ exorcise(dummy)
  *	and fake a talk request to each address thus found.
  */
 
-void
-faketalk()
-{
+void faketalk(){
 	struct	servent		*sp;
 	char			buf[BUFSIZ];
 	FILE			*f;
@@ -205,10 +200,7 @@ faketalk()
  * These are used to delete the invitations.
  */
 
-static void
-do_announce(s)
-	char	*s;
-{
+static void do_announce(char *s){
 	CTL_RESPONSE			response;
 
 	get_remote_name(s);	/* setup his_machine_addr, msg.r_name */
@@ -244,9 +236,7 @@ do_announce(s)
 		p_error("send delete remote");
 }
 #else
-void
-faketalk()
-{
+void faketalk(){
 	return;
 }
 #endif

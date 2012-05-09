@@ -129,10 +129,7 @@ extern int	Otto_mode;
  *	Main program for local process
  */
 int
-main(ac, av)
-	int	ac;
-	char	**av;
-{
+main(int ac, char** av){
 	char		*term;
 	int		c;
 	long		enter_status;
@@ -381,10 +378,8 @@ main(ac, av)
 # ifdef INTERNET
 # ifdef BROADCAST
 int
-broadcast_vec(s, vector)
-	int			s;		/* socket */
-	struct	sockaddr	**vector;
-{
+broadcast_vec(int s, struct sockaddr **vector){
+	/*int			s;		 socket */
 	int			vec_cnt;
 	struct ifaddrs		*ifp, *ip;
 
@@ -415,9 +410,7 @@ broadcast_vec(s, vector)
 }
 # endif
 
-SOCKET	*
-list_drivers()
-{
+SOCKET	* list_drivers(){
 	int			option;
 	u_short			msg;
 	u_short			port_num;
@@ -585,10 +578,7 @@ test_one_host:
 	goto get_response;
 }
 
-void
-find_driver(do_startup)
-	FLAG	do_startup;
-{
+void find_driver(FLAG do_startup){
 	SOCKET	*hosts;
 
 	hosts = list_drivers();
@@ -653,10 +643,7 @@ find_driver(do_startup)
 	find_driver(FALSE);
 }
 
-void
-dump_scores(host)
-	SOCKET	host;
-{
+void dump_scores(SOCKET host){
 	struct	hostent	*hp;
 	int	s;
 	char	buf[BUFSIZ];
@@ -679,9 +666,7 @@ dump_scores(host)
 
 # endif
 
-void
-start_driver()
-{
+void start_driver(){
 	int	procid;
 
 # ifdef MONITOR
@@ -743,9 +728,7 @@ start_driver()
  *	We had a bad connection.  For the moment we assume that this
  *	means the game is full.
  */
-void
-bad_con()
-{
+void bad_con(){
 	leavex(1, "The game is full.  Sorry.");
 	/* NOTREACHED */
 }
@@ -754,9 +737,7 @@ bad_con()
  * bad_ver:
  *	version number mismatch.
  */
-void
-bad_ver()
-{
+void bad_ver(){
 	leavex(1, "Version number mismatch. No go.");
 	/* NOTREACHED */
 }
@@ -765,10 +746,7 @@ bad_ver()
  * sigterm:
  *	Handle a terminate signal
  */
-SIGNAL_TYPE
-sigterm(dummy)
-	int dummy __attribute__((__unused__));
-{
+SIGNAL_TYPE sigterm(int dummy __attribute__((__unused__))){
 	leavex(0, (char *) NULL);
 	/* NOTREACHED */
 }
@@ -778,10 +756,7 @@ sigterm(dummy)
  * sigusr1:
  *	Handle a usr1 signal
  */
-SIGNAL_TYPE
-sigusr1(dummy)
-	int dummy __attribute__((__unused__));
-{
+SIGNAL_TYPE sigusr1(int dummy __attribute__((__unused__))){
 	leavex(1, "Unable to start driver.  Try again.");
 	/* NOTREACHED */
 }
@@ -791,10 +766,7 @@ sigusr1(dummy)
  * sigalrm:
  *	Handle an alarm signal
  */
-SIGNAL_TYPE
-sigalrm(dummy)
-	int dummy __attribute__((__unused__));
-{
+SIGNAL_TYPE sigalrm(int dummy __attribute__((__unused__))){
 	return;
 }
 # endif
@@ -803,10 +775,7 @@ sigalrm(dummy)
  * rmnl:
  *	Remove a '\n' at the end of a string if there is one
  */
-void
-rmnl(s)
-	char	*s;
-{
+void rmnl(charr *s){
 	char	*cp;
 
 	cp = strrchr(s, '\n');
@@ -818,10 +787,7 @@ rmnl(s)
  * intr:
  *	Handle a interrupt signal
  */
-SIGNAL_TYPE
-intr(dummy)
-	int dummy __attribute__((__unused__));
-{
+SIGNAL_TYPE intr(int dummy __attribute__((__unused__))){
 	int	ch;
 	int	explained;
 	int	y, x;
@@ -874,8 +840,7 @@ intr(dummy)
 	}
 }
 
-void fincurs()
-{
+void fincurs(){
 	if (in_visual) {
 # ifdef USE_CURSES
 		move(HEIGHT, 0);
@@ -900,11 +865,7 @@ void fincurs()
  *	Leave the game somewhat gracefully, restoring all current
  *	tty stats.
  */
-void
-leave(eval, mesg)
-	int	eval;
-	const char	*mesg;
-{
+void leave(int eval, const char *mesg){
 	int serrno = errno;
 	fincurs();
 	errno = serrno;
@@ -916,11 +877,7 @@ leave(eval, mesg)
  *	Leave the game somewhat gracefully, restoring all current
  *	tty stats.
  */
-void
-leavex(eval, mesg)
-	int	eval;
-	const char	*mesg;
-{
+void leavex(int eval,const char *mesg){
 	fincurs();
 	errx(eval, mesg ? mesg : "");
 }
@@ -930,10 +887,7 @@ leavex(eval, mesg)
  * tstp:
  *	Handle stop and start signals
  */
-SIGNAL_TYPE
-tstp(dummy)
-	int dummy;
-{
+SIGNAL_TYPE tstp(int dummy){
 # if BSD_RELEASE < 44
 	static struct sgttyb	tty;
 # endif
@@ -974,10 +928,7 @@ tstp(dummy)
 #endif /* !defined(USE_CURSES) && defined(SIGTSTP) */
 
 # if defined(BSD_RELEASE) && BSD_RELEASE < 43
-char *
-strpbrk(s, brk)
-	char *s, *brk;
-{
+char * strpbrk(char *s,char *brk){
 	char *p;
 	c;
 
@@ -991,10 +942,7 @@ strpbrk(s, brk)
 }
 # endif
 
-long
-env_init(enter_status)
-	long	enter_status;
-{
+long env_init(long enter_status){
 	int	i;
 	char	*envp, *envname, *s;
 
@@ -1101,9 +1049,7 @@ env_init(enter_status)
 	return enter_status;
 }
 
-void
-fill_in_blanks()
-{
+void fill_in_blanks(){
 	int	i;
 	char	*cp;
 

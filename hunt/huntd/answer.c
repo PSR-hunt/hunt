@@ -47,9 +47,7 @@ __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 
 static char	Ttyname[NAMELEN];
 
-int
-answer()
-{
+int answer(){
 	PLAYER			*pp;
 	int			newsock;
 	static u_long		mode;
@@ -197,10 +195,7 @@ answer()
 }
 
 # ifdef MONITOR
-void
-stmonitor(pp)
-	PLAYER	*pp;
-{
+void stmonitor(PLAYER *pp){
 	int	line;
 	PLAYER	*npp;
 
@@ -226,11 +221,7 @@ stmonitor(pp)
 }
 # endif
 
-void
-stplayer(newpp, enter_status)
-	PLAYER	*newpp;
-	int	enter_status;
-{
+void stplayer(PLAYER *newpp,int enter_status){
 	int	x, y;
 	PLAYER	*pp;
 
@@ -353,9 +344,7 @@ stplayer(newpp, enter_status)
  * rand_dir:
  *	Return a random direction
  */
-int
-rand_dir()
-{
+int rand_dir(){
 	switch (rand_num(4)) {
 	  case 0:
 		return LEFTS;
@@ -374,13 +363,7 @@ rand_dir()
  * get_ident:
  *	Get the score structure of a player
  */
-IDENT *
-get_ident(machine, uid, name, team)
-	u_long	machine;
-	u_long	uid;
-	const char	*name;
-	char	team;
-{
+IDENT * get_ident(u_long machine,u_long uid,const char *name,char team){
 	IDENT		*ip;
 	static IDENT	punt;
 

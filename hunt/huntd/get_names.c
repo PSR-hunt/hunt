@@ -58,10 +58,7 @@ char		*my_machine_name;
 /*
  * Determine the local user and machine
  */
-void
-get_local_name(my_name)
-	const char	*my_name;
-{
+void get_local_name(const char *my_name){
 	struct	hostent	*hp;
 	struct	servent	*sp;
 
@@ -115,10 +112,7 @@ get_local_name(my_name)
 /*
  * Determine the remote user and machine
  */
-int
-get_remote_name(his_address)
-	char	*his_address;
-{
+int get_remote_name(char *his_address){
 	char		*his_name;
 	char		*his_machine_name;
 	char		*ptr;

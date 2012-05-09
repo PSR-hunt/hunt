@@ -160,11 +160,7 @@ nothing(dummy)
 {
 }
 
-void
-otto(y, x, face)
-	int	y, x;
-	char	face;
-{
+void otto(int y,int x,char face){
 	int		i;
 	int		old_mask;
 
@@ -231,13 +227,7 @@ done:
 
 # define	direction(abs,rel)	(((abs) + (rel)) % NUMDIRECTIONS)
 
-STATIC int
-stop_look(itemp, c, dist, side)
-	struct	item	*itemp;
-	char	c;
-	int	dist;
-	int	side;
-{
+STATIC int stop_look(struct item *itemp,char c,int dist,int side){
 	switch (c) {
 
 	case SPACE:
@@ -306,11 +296,7 @@ stop_look(itemp, c, dist, side)
 	}
 }
 
-STATIC void
-ottolook(rel_dir, itemp)
-	int		rel_dir;
-	struct	item	*itemp;
-{
+STATIC void ottolook(int rel_dir,struct item *itemp){
 	int		r, c;
 	char		ch;
 
@@ -406,9 +392,7 @@ ottolook(rel_dir, itemp)
 	}
 }
 
-STATIC void
-look_around()
-{
+STATIC void look_around(){
 	int	i;
 
 	for (i = 0; i < NUMDIRECTIONS; i++) {
@@ -424,10 +408,7 @@ look_around()
  *	as a side effect modifies facing and location (row, col)
  */
 
-STATIC void
-face_and_move_direction(rel_dir, distance)
-	int	rel_dir, distance;
-{
+STATIC void face_and_move_direction(int rel_dir,int distance){
 	int	old_facing;
 	char	cmd;
 
@@ -461,11 +442,7 @@ face_and_move_direction(rel_dir, distance)
 	}
 }
 
-STATIC void
-attack(rel_dir, itemp)
-	int		rel_dir;
-	struct	item	*itemp;
-{
+STATIC void attack(int rel_dir,struct item *itemp){
 	if (!(itemp->flags & ON_SIDE)) {
 		face_and_move_direction(rel_dir, 0);
 		command[comlen++] = 'o';
@@ -489,10 +466,7 @@ attack(rel_dir, itemp)
 	}
 }
 
-STATIC void
-duck(rel_dir)
-	int	rel_dir;
-{
+STATIC void duck(int rel_dir){
 	int	dir;
 
 	switch (dir = direction(facing, rel_dir)) {
@@ -539,10 +513,7 @@ duck(rel_dir)
  *	go for the closest mine if possible
  */
 
-STATIC int
-go_for_ammo(mine)
-	char	mine;
-{
+STATIC int go_for_ammo(char mine){
 	int	i, rel_dir, dist;
 
 	rel_dir = -1;
@@ -566,9 +537,7 @@ go_for_ammo(mine)
 	return TRUE;
 }
 
-STATIC void
-wander()
-{
+STATIC void wander(){
 	int	i, j, rel_dir, dir_mask, dir_count;
 
 	for (i = 0; i < NUMDIRECTIONS; i++)

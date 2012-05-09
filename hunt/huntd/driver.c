@@ -82,11 +82,7 @@ static	void	zap(PLAYER *, FLAG, int);
  * main:
  *	The main program.
  */
-int
-main(ac, av, ep)
-	int	ac;
-	char	**av, **ep;
-{
+int main(int ac, char **av,char **ep){
 	PLAYER	*pp;
 # ifdef INTERNET
 	u_short	msg;
@@ -255,9 +251,7 @@ again:
  * init:
  *	Initialize the global parameters.
  */
-static void
-init()
-{
+static void init(){
 	int	i;
 # ifdef	INTERNET
 	SOCKET	test_port;
@@ -451,9 +445,7 @@ init()
  * makeboots:
  *	Put the boots in the maze
  */
-static void
-makeboots()
-{
+static void makeboots(){
 	int	x, y;
 	PLAYER	*pp;
 
@@ -472,13 +464,7 @@ makeboots()
  * checkdam:
  *	Check the damage to the given player, and see if s/he is killed
  */
-void
-checkdam(ouch, gotcha, credit, amt, shot_type)
-	PLAYER	*ouch, *gotcha;
-	IDENT	*credit;
-	int	amt;
-	char	shot_type;
-{
+void checkdam(PLAYER *ouch,PLAYER *gotcha,IDENT *credit,int amt,char shot_type){
 	const char	*cp;
 
 	if (ouch->p_death[0] != '\0')
@@ -606,12 +592,7 @@ checkdam(ouch, gotcha, credit, amt, shot_type)
  * zap:
  *	Kill off a player and take him out of the game.
  */
-static void
-zap(pp, was_player, i)
-	PLAYER	*pp;
-	FLAG	was_player;
-	int	i;
-{
+static void zap(PLAYER *pp,FLAG was_player,int i){
 	int	n, len;
 	BULLET	*bp;
 	PLAYER	*np;
@@ -827,10 +808,7 @@ zap(pp, was_player, i)
  * rand_num:
  *	Return a random number in a given range.
  */
-int
-rand_num(range)
-	int	range;
-{
+int rand_num(int range){
 	return (range == 0 ? 0 : RN % range);
 }
 
@@ -840,11 +818,7 @@ rand_num(range)
  *	we do, read them, stash them away, and return TRUE; else return
  *	FALSE.
  */
-static int
-havechar(pp, i)
-	PLAYER	*pp;
-	int	i;
-{
+static int havechar(PLAYER *pp,int i){
 
 	if (pp->p_ncount < pp->p_nchar)
 		return TRUE;
@@ -866,10 +840,7 @@ check_again:
  * cleanup:
  *	Exit with the given value, cleaning up any droppings lying around
  */
-SIGNAL_TYPE
-cleanup(eval)
-	int	eval;
-{
+SIGNAL_TYPE cleanup(int eval){
 	PLAYER	*pp;
 
 	for (pp = Player; pp < End_player; pp++) {
@@ -898,9 +869,7 @@ cleanup(eval)
  * send_stats:
  *	Print stats to requestor
  */
-static void
-send_stats()
-{
+static void send_stats(){
 	IDENT	*ip;
 	FILE	*fp;
 	int	s;
@@ -974,9 +943,7 @@ send_stats()
  * clear_scores:
  *	Clear out the scores so the next session start clean
  */
-static void
-clear_scores()
-{
+static void clear_scores(){
 	IDENT	*ip, *nextip;
 
 	for (ip = Scores; ip != NULL; ip = nextip) {

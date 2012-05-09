@@ -37,10 +37,7 @@ __RCSID("$NetBSD: draw.c,v 1.3 2003/06/11 12:00:22 wiz Exp $");
 
 # include	"hunt.h"
 
-void
-drawmaze(pp)
-	PLAYER	*pp;
-{
+void drawmaze(PLAYER *pp){
 	int	x;
 	char	*sp;
 	int	y;
@@ -70,10 +67,7 @@ drawmaze(pp)
  * drawstatus - put up the status lines (this assumes the screen
  *		size is 80x24 with the maze being 64x24)
  */
-void
-drawstatus(pp)
-	PLAYER	*pp;
-{
+void drawstatus(PLAYER *pp){
 	int	i;
 	PLAYER	*np;
 
@@ -122,10 +116,7 @@ drawstatus(pp)
 # endif
 }
 
-void
-look(pp)
-	PLAYER	*pp;
-{
+void look(PLAYER *pp){
 	int	x, y;
 
 	x = pp->p_x;
@@ -170,11 +161,7 @@ look(pp)
 	cgoto(pp, y, x);
 }
 
-void
-see(pp, face)
-	PLAYER	*pp;
-	int	face;
-{
+void see(PLAYER *pp,int face){
 	char	*sp;
 	int	y, x, i, cnt;
 
@@ -257,11 +244,7 @@ see(pp, face)
 	}
 }
 
-void
-check(pp, y, x)
-	PLAYER	*pp;
-	int	y, x;
-{
+void check(PLAYER *pp,int y,int x){
 	int	index;
 	int	ch;
 	PLAYER	*rpp;
@@ -285,10 +268,7 @@ check(pp, y, x)
  * showstat
  *	Update the status of players
  */
-void
-showstat(pp)
-	PLAYER	*pp;
-{
+void showstat(PLAYER *pp){
 	PLAYER	*np;
 	int	y;
 	char	c;
@@ -312,11 +292,7 @@ showstat(pp)
  *	Draw the player on the screen and show him to everyone who's scanning
  *	unless he is cloaked.
  */
-void
-drawplayer(pp, draw)
-	PLAYER	*pp;
-	FLAG	draw;
-{
+void drawplayer(PLAYER *pp,FLAG draw){
 	PLAYER	*newp;
 	int	x, y;
 
@@ -350,11 +326,7 @@ drawplayer(pp, draw)
 		showstat(pp);
 }
 
-void
-message(pp, s)
-	PLAYER	*pp;
-	const char	*s;
-{
+void message(PLAYER *pp,const char *s){
 	cgoto(pp, HEIGHT, 0);
 	outstr(pp, s, strlen(s));
 	ce(pp);
@@ -365,10 +337,7 @@ message(pp, s)
  *	Turn a character into the right direction character if we are
  *	looking at the current player.
  */
-char
-translate(ch)
-	char	ch;
-{
+char translate(char ch){
 	switch (ch) {
 	  case LEFTS:
 		return '<';
@@ -386,11 +355,7 @@ translate(ch)
  * player_sym:
  *	Return the player symbol
  */
-int
-player_sym(pp, y, x)
-	const PLAYER	*pp;
-	int	y, x;
-{
+int player_sym(const PLAYER *pp,int y,int x){
 	PLAYER	*npp;
 
 	npp = play_at(y, x);

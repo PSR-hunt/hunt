@@ -44,11 +44,7 @@ __RCSID("$NetBSD: terminal.c,v 1.4 2003/06/11 12:00:23 wiz Exp $");
  *	Move the cursor to the given position on the given player's
  *	terminal.
  */
-void
-cgoto(pp, y, x)
-	PLAYER	*pp;
-	int	y, x;
-{
+void cgoto(PLAYER *pp,int y,int x){
 	if (x == pp->p_curx && y == pp->p_cury)
 		return;
 	sendcom(pp, MOVE, y, x);
@@ -60,11 +56,7 @@ cgoto(pp, y, x)
  * outch:
  *	Put out a single character.
  */
-void
-outch(pp, ch)
-	PLAYER	*pp;
-	char	ch;
-{
+void outch(PLAYER *pp,char ch){
 	if (++pp->p_curx >= TERM_WIDTH) {
 		pp->p_curx = 0;
 		pp->p_cury++;
@@ -76,12 +68,7 @@ outch(pp, ch)
  * outstr:
  *	Put out a string of the given length.
  */
-void
-outstr(pp, str, len)
-	PLAYER	*pp;
-	const char	*str;
-	int	len;
-{
+void outstr(PLAYER *pp,const char *str,int len){
 	pp->p_curx += len;
 	pp->p_cury += (pp->p_curx / TERM_WIDTH);
 	pp->p_curx %= TERM_WIDTH;
@@ -93,10 +80,7 @@ outstr(pp, str, len)
  * clrscr:
  *	Clear the screen, and reset the current position on the screen.
  */
-void
-clrscr(pp)
-	PLAYER	*pp;
-{
+void clrscr(PLAYER *pp){
 	sendcom(pp, CLEAR);
 	pp->p_cury = 0;
 	pp->p_curx = 0;
@@ -106,10 +90,7 @@ clrscr(pp)
  * ce:
  *	Clear to the end of the line
  */
-void
-ce(pp)
-	PLAYER	*pp;
-{
+void ce(PLAYER *pp){
 	sendcom(pp, CLRTOEOL);
 }
 
@@ -130,8 +111,7 @@ ref(pp)
  * sendcom:
  *	Send a command to the given user
  */
-void
-sendcom(PLAYER *pp, int command, ...)
+void sendcom(PLAYER *pp, int command, ...)
 {
 	va_list	ap;
 	int	arg1, arg2;

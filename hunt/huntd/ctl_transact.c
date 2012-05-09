@@ -56,13 +56,7 @@ __RCSID("$NetBSD: ctl_transact.c,v 1.6 2003/06/11 12:00:22 wiz Exp $");
  * not received an acknowledgement within a reasonable amount
  * of time
  */
-void
-ctl_transact(target, msg, type, rp)
-	struct in_addr target;
-	CTL_MSG msg;
-	int type;
-	CTL_RESPONSE *rp;
-{
+void ctl_transact(struct in_addr target,CTL_MSG msg,int type,CTL_RESPONSE *rp){
 	struct pollfd set[1];
 	int nready, cc, retries;
 

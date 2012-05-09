@@ -32,9 +32,7 @@
 #include <string.h>
 
 #ifndef HAVE_fgetln
-char *
-fgetln(FILE *stream, size_t *len)
-{
+char * fgetln(FILE *stream, size_t *len){
   static char *buf = NULL;
   static size_t buflen = 0;
   char *res;

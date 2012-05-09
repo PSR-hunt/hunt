@@ -45,11 +45,7 @@ static	void	remove_wall(int, int);
  * showexpl:
  *	Show the explosions as they currently are
  */
-void
-showexpl(y, x, type)
-	int	y, x;
-	char	type;
-{
+void showexpl(int y,int x,char type){
 	PLAYER	*pp;
 	EXPL	*ep;
 
@@ -113,9 +109,7 @@ showexpl(y, x, type)
  *	Roll the explosions over, so the next one in the list is at the
  *	top
  */
-void
-rollexpl()
-{
+void rollexpl(){
 	EXPL	*ep;
 	PLAYER	*pp;
 	int	y, x;
@@ -159,10 +153,7 @@ static	REGEN	*rem_index = removed;
  *		 if there is no space left over, put the a wall at
  *		 the location currently pointed at.
  */
-static void
-remove_wall(y, x)
-	int	y, x;
-{
+static void remove_wall(int y,int x){
 	REGEN	*r;
 # if defined(MONITOR) || defined(FLY)
 	PLAYER	*pp;
@@ -247,9 +238,7 @@ found:
  * clearwalls:
  *	Clear out the walls array
  */
-void
-clearwalls()
-{
+void clearwalls(){
 	REGEN	*rp;
 
 	for (rp = removed; rp < &removed[MAXREMOVE]; rp++)

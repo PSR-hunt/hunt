@@ -45,9 +45,7 @@ static	void	dig(int, int);
 static	void	dig_maze(int, int);
 static	void	remap(void);
 
-void
-makemaze()
-{
+void makemaze(){
 	char	*sp;
 	int	y, x;
 
@@ -80,10 +78,7 @@ int	incr[NDIR][2] = {
 		{0, 1}, {1, 0}, {0, -1}, {-1, 0}
 	};
 
-static void
-dig(y, x)
-	int	y, x;
-{
+static void dig(int y,int x){
 	int	*dp;
 	int	*ip;
 	int	ny, nx;
@@ -105,10 +100,7 @@ dig(y, x)
  * candig:
  *	Is it legal to clear this spot?
  */
-static int
-candig(y, x)
-	int	y, x;
-{
+static int candig(int y,int x){
 	int	i;
 
 	if (ODD(x) && ODD(y))
@@ -136,10 +128,7 @@ candig(y, x)
 	return TRUE;			/* OK */
 }
 
-void
-dig_maze(x, y)
-	int	x, y;
-{
+void dig_maze(int x,int y){
 	int	tx, ty;
 	int	i, j;
 	int	order[4];
@@ -184,9 +173,7 @@ dig_maze(x, y)
 	}
 }
 
-void
-remap()
-{
+void remap(){
 	int	y, x;
 	char	*sp;
 	int	stat;

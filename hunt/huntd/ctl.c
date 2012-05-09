@@ -66,9 +66,7 @@ int	ctl_sockt;
 CTL_MSG msg;
 
 /* open the ctl socket */
-void
-open_ctl() 
-{
+void open_ctl() {
 	int length;
 
 	ctl_addr.sin_port = 0;

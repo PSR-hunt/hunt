@@ -39,12 +39,8 @@ __RCSID("$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $");
 # include	<signal.h>
 # include	<unistd.h>
 
-void
-do_connect(name, team, enter_status)
-	const char	*name;
-	char	team;
-	long	enter_status;
-{
+void do_connect(const char	*name, char team, long enter_status){
+
 	static int32_t	uid;
 	static int32_t	mode;
 

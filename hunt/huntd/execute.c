@@ -52,10 +52,7 @@ static	void	scan(PLAYER *);
  * mon_execute:
  *	Execute a single monitor command
  */
-void
-mon_execute(pp)
-	PLAYER	*pp;
-{
+void mon_execute(PLAYER *pp){
 	char	ch;
 
 	ch = pp->p_cbuf[pp->p_ncount++];
@@ -74,10 +71,7 @@ mon_execute(pp)
  * execute:
  *	Execute a single command
  */
-void
-execute(pp)
-	PLAYER	*pp;
-{
+void execute(PLAYER *pp){
 	char	ch;
 
 	ch = pp->p_cbuf[pp->p_ncount++];
@@ -191,11 +185,7 @@ execute(pp)
  * move_player:
  *	Execute a move in the given direction
  */
-static void
-move_player(pp, dir)
-	PLAYER	*pp;
-	int	dir;
-{
+static void move_player(PLAYER *pp,int dir){
 	PLAYER	*newp;
 	int	x, y;
 	FLAG	moved;
@@ -327,11 +317,7 @@ move_player(pp, dir)
  * face:
  *	Change the direction the player is facing
  */
-static void
-face(pp, dir)
-	PLAYER	*pp;
-	int	dir;
-{
+static void face(PLAYER *pp,int dir){
 	if (pp->p_face != dir) {
 		pp->p_face = dir;
 		drawplayer(pp, TRUE);
@@ -342,11 +328,7 @@ face(pp, dir)
  * fire:
  *	Fire a shot of the given type in the given direction
  */
-static void
-fire(pp, req_index)
-	PLAYER	*pp;
-	int	req_index;
-{
+static void fire(PLAYER *pp,int req_index){
 	if (pp == NULL)
 		return;
 # ifdef DEBUG
@@ -391,11 +373,7 @@ fire(pp, req_index)
  * fire_slime:
  *	Fire a slime shot in the given direction
  */
-static void
-fire_slime(pp, req_index)
-	PLAYER	*pp;
-	int	req_index;
-{
+static void fire_slime(PLAYER *pp,int req_index){
 	if (pp == NULL)
 		return;
 # ifdef DEBUG
@@ -440,16 +418,7 @@ fire_slime(pp, req_index)
  * add_shot:
  *	Create a shot with the given properties
  */
-void
-add_shot(type, y, x, face, charge, owner, expl, over)
-int	type;
-int	y, x;
-char	face;
-int	charge;
-PLAYER	*owner;
-int	expl;
-char	over;
-{
+void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,char over){
 	BULLET	*bp;
 	int	size;
 
@@ -482,18 +451,7 @@ char	over;
 	Bullets = bp;
 }
 
-BULLET *
-create_shot(type, y, x, face, charge, size, owner, score, expl, over)
-	int	type;
-	int	y, x;
-	char	face;
-	int	charge;
-	int	size;
-	PLAYER	*owner;
-	IDENT	*score;
-	int	expl;
-	char	over;
-{
+BULLET * create_shot(int type,int y,int x,char face,int charge,int size,PLAYER *owner,IDENT *score,int expl,char over){
 	BULLET	*bp;
 
 	bp = (BULLET *) malloc(sizeof (BULLET));	/* NOSTRICT */
@@ -522,10 +480,7 @@ create_shot(type, y, x, face, charge, size, owner, score, expl, over)
  * cloak:
  *	Turn on or increase length of a cloak
  */
-static void
-cloak(pp)
-	PLAYER	*pp;
-{
+static void cloak(PLAYER *pp){
 	if (pp->p_ammo <= 0) {
 		message(pp, "No more charges");
 		return;
@@ -552,10 +507,7 @@ cloak(pp)
  * scan:
  *	Turn on or increase length of a scan
  */
-static void
-scan(pp)
-	PLAYER	*pp;
-{
+static void scan(PLAYER *pp){
 	if (pp->p_ammo <= 0) {
 		message(pp, "No more charges");
 		return;
@@ -576,13 +528,7 @@ scan(pp)
  * pickup:
  *	check whether the object blew up or whether he picked it up
  */
-void
-pickup(pp, y, x, prob, obj)
-	PLAYER	*pp;
-	int	y, x;
-	int	prob;
-	int	obj;
-{
+void pickup(PLAYER *pp,int y,int x,int prob,int obj){
 	int	req;
 
 	switch (obj) {

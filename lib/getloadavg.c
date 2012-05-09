@@ -32,8 +32,7 @@
 
 #ifndef HAVE_getloadavg
 int
-getloadavg(double loadavg[], int nelem)
-{
+getloadavg(double loadavg[], int nelem) {
   double load_averages[3];
   FILE *fp;
   int count;

@@ -63,9 +63,7 @@ static	void	zapshot(BULLET *, BULLET *);
  * moveshots:
  *	Move the shots already in the air, taking explosions into account
  */
-void
-moveshots()
-{
+void moveshots(){
 	BULLET	*bp, *next;
 	PLAYER	*pp;
 	int	x, y;
@@ -182,10 +180,7 @@ ret:
  * move_normal_shot:
  *	Move a normal shot along its trajectory
  */
-static int
-move_normal_shot(bp)
-	BULLET	*bp;
-{
+static int move_normal_shot(BULLET *bp){
 	int	i, x, y;
 	PLAYER	*pp;
 
@@ -369,10 +364,7 @@ move_normal_shot(bp)
  * move_drone:
  *	Move the drone to the next square
  */
-static void
-move_drone(bp)
-	BULLET	*bp;
-{
+static void move_drone(BULLET *bp){
 	int	mask, count;
 	int	n, dir;
 	PLAYER	*pp;
@@ -513,10 +505,7 @@ drone_move:
  * save_bullet:
  *	Put this bullet back onto the bullet list
  */
-static void
-save_bullet(bp)
-	BULLET	*bp;
-{
+static void save_bullet(BULLET *bp){
 	bp->b_over = Maze[bp->b_y][bp->b_x];
 	switch (bp->b_over) {
 	  case SHOT:
@@ -565,10 +554,7 @@ save_bullet(bp)
  * move_flyer:
  *	Update the position of a player in flight
  */
-static void
-move_flyer(pp)
-	PLAYER	*pp;
-{
+static void move_flyer(PLAYER *pp){
 	int	x, y;
 
 	if (pp->p_undershot) {
@@ -656,11 +642,7 @@ again:
  * chkshot
  *	Handle explosions
  */
-static void
-chkshot(bp, next)
-	BULLET	*bp;
-	BULLET	*next;
-{
+static void chkshot(BULLET *bp,BULLET* next){
 	int	y, x;
 	int	dy, dx, absdy;
 	int	delta, damage;
@@ -750,11 +732,7 @@ chkshot(bp, next)
  * chkslime:
  *	handle slime shot exploding
  */
-static void
-chkslime(bp, next)
-	BULLET	*bp;
-	BULLET	*next;
-{
+static void chkslime(BULLET *bp,BULLET *next){
 	BULLET	*nbp;
 
 	switch (Maze[bp->b_y][bp->b_x]) {
@@ -806,12 +784,7 @@ chkslime(bp, next)
  *	move the given slime shot speed times and add it back if
  *	it hasn't fizzled yet
  */
-void
-move_slime(bp, speed, next)
-	BULLET	*bp;
-	int	speed;
-	BULLET	*next;
-{
+void move_slime(BULLET *bp,int speed,BULLET *next){
 	int	i, j, dirmask, count;
 	PLAYER	*pp;
 	BULLET	*nbp;
@@ -966,10 +939,7 @@ move_slime(bp, speed, next)
  * iswall:
  *	returns whether the given location is a wall
  */
-static int
-iswall(y, x)
-	int	y, x;
-{
+static int iswall(int y,int x){
 	if (y < 0 || x < 0 || y >= HEIGHT || x >= WIDTH)
 		return TRUE;
 	switch (Maze[y][x]) {
@@ -999,10 +969,7 @@ iswall(y, x)
  * zapshot:
  *	Take a shot out of the air.
  */
-static void
-zapshot(blist, obp)
-	BULLET	*blist, *obp;
-{
+static void zapshot(BULLET *blist,BULLET *obp){
 	BULLET	*bp;
 	FLAG	explode;
 
@@ -1024,11 +991,7 @@ zapshot(blist, obp)
  * explshot -
  *	Make all shots at this location blow up
  */
-void
-explshot(blist, y, x)
-	BULLET	*blist;
-	int	y, x;
-{
+void explshot(BULLET *blist,int y,int x){
 	BULLET	*bp;
 
 	for (bp = blist; bp != NULL; bp = bp->b_next)
@@ -1043,10 +1006,7 @@ explshot(blist, y, x)
  * play_at:
  *	Return a pointer to the player at the given location
  */
-PLAYER *
-play_at(y, x)
-	int	y, x;
-{
+PLAYER * play_at(int y,int x){
 	PLAYER	*pp;
 
 	for (pp = Player; pp < End_player; pp++)
@@ -1061,11 +1021,7 @@ play_at(y, x)
  *	Return TRUE if the bullet direction faces the opposite direction
  *	of the player in the maze
  */
-int
-opposite(face, dir)
-	int	face;
-	char	dir;
-{
+int opposite(int face,char dir){
 	switch (face) {
 	  case LEFTS:
 		return (dir == RIGHT);
@@ -1085,10 +1041,7 @@ opposite(face, dir)
  *	Is there a bullet at the given coordinates?  If so, return
  *	a pointer to the bullet, otherwise return NULL
  */
-BULLET *
-is_bullet(y, x)
-	int	y, x;
-{
+BULLET * is_bullet(int y,int x){
 	BULLET	*bp;
 
 	for (bp = Bullets; bp != NULL; bp = bp->b_next)
@@ -1102,11 +1055,7 @@ is_bullet(y, x)
  *	change the underlying character of the shots at a location
  *	to the given character.
  */
-void
-fixshots(y, x, over)
-	int	y, x;
-	char	over;
-{
+void fixshots(int y,int x,char over){
 	BULLET	*bp;
 
 	for (bp = Bullets; bp != NULL; bp = bp->b_next)
@@ -1119,10 +1068,7 @@ fixshots(y, x, over)
  *	find the underlying character for a bullet when it lands
  *	on another bullet.
  */
-static void
-find_under(blist, bp)
-	BULLET	*blist, *bp;
-{
+static void find_under(BULLET *blist,BULLET *bp){
 	BULLET	*nbp;
 
 	for (nbp = blist; nbp != NULL; nbp = nbp->b_next)
@@ -1136,10 +1082,7 @@ find_under(blist, bp)
  * mark_player:
  *	mark a player as under a shot
  */
-static void
-mark_player(bp)
-	BULLET	*bp;
-{
+static void mark_player(BULLET *bp){
 	PLAYER	*pp;
 
 	for (pp = Player; pp < End_player; pp++)
@@ -1154,10 +1097,7 @@ mark_player(bp)
  * mark_boot:
  *	mark a boot as under a shot
  */
-static void
-mark_boot(bp)
-	BULLET	*bp;
-{
+static void mark_boot(BULLET *bp){
 	PLAYER	*pp;
 
 	for (pp = Boot; pp < &Boot[NBOOTS]; pp++)

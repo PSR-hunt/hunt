@@ -103,9 +103,7 @@ static	void		send_stuff(void);
  *	Play a given game, handling all the curses commands from
  *	the driver.
  */
-void
-playit()
-{
+void playit(){
 	int		ch;
 	int		y, x;
 	u_int32_t	version;
@@ -241,9 +239,7 @@ out:
  *	When this routine is called by GETCHR, we already know there are
  *	no characters in the input buffer.
  */
-static unsigned char
-getchr()
-{
+static unsigned char getchr(){
 	struct	pollfd set[2];
 	int	nfds;
 
@@ -278,9 +274,7 @@ one_more_time:
  * send_stuff:
  *	Send standard input characters to the driver
  */
-static void
-send_stuff()
-{
+static void send_stuff(){
 	int		count;
 	char		*sp, *nsp;
 	static char	inp[sizeof Buf];
@@ -321,10 +315,7 @@ send_stuff()
  * quit:
  *	Handle the end of the game when the player dies
  */
-int
-quit(old_status)
-	int	old_status;
-{
+int quit(int old_status){
 	int	explain, ch;
 
 	if (Last_player)
@@ -499,10 +490,7 @@ get_message:
 }
 
 # ifndef USE_CURSES
-void
-put_ch(ch)
-	char	ch;
-{
+void put_ch(char ch){
 	if (!isprint(ch)) {
 		fprintf(stderr, "r,c,ch: %d,%d,%d", cur_row, cur_col, ch);
 		return;
@@ -518,18 +506,13 @@ put_ch(ch)
 	}
 }
 
-void
-put_str(s)
-	const char	*s;
-{
+void put_str(const char *s){
 	while (*s)
 		put_ch(*s++);
 }
 # endif
 
-void
-clear_the_screen()
-{
+void clear_the_screen(){
 # ifdef USE_CURSES
 	clear();
 	move(0, 0);
@@ -563,9 +546,7 @@ clear_the_screen()
 }
 
 #ifndef USE_CURSES
-void
-clear_eol()
-{
+void clear_eol(){
 	if (CE != NULL)
 #if !defined(BSD_RELEASE) || BSD_RELEASE < 44
 		tputs(CE, 1, _putchar);
@@ -585,9 +566,7 @@ clear_eol()
 }
 # endif
 
-void
-redraw_screen()
-{
+void redraw_screen(){
 # ifdef USE_CURSES
 	clearok(stdscr, TRUE);
 	touchwin(stdscr);
@@ -640,9 +619,7 @@ redraw_screen()
  * do_message:
  *	Send a message to the driver and return
  */
-void
-do_message()
-{
+void do_message(){
 	u_int32_t	version;
 
 	if (read(Socket, (char *) &version, LONGLEN) != LONGLEN) {
