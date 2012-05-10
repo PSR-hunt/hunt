@@ -63,6 +63,11 @@
  */
 # include <stdbool.h>
 
+/**
+ * Added from file configuration support.
+ */
+# define CONFIGURATION_FILE "hunt.cfg"
+
 # ifdef	INTERNET
 # define	SOCK_FAMILY	AF_INET
 # else

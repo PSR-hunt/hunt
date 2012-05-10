@@ -55,6 +55,11 @@ static struct termios saved_tty;
 
 # include	"hunt.h"
 
+/**
+ * It defines the overextimated length of a line in configuration file.
+ * It is used only if the program is not able to compute the real input line length.
+ */
+# define EMERGENCY_BUFFER_LENGTH 1024
 
 /*
  * Some old versions of curses don't have these defined
@@ -115,6 +120,7 @@ extern int cur_row, cur_col;
 
 void dump_scores(SOCKET);
 long env_init(long);
+long var_env_init(long);
 void fill_in_blanks(void);
 void leave(int, const char *) __attribute__((__noreturn__));
 void leavex(int, const char *) __attribute__((__noreturn__));
@@ -938,21 +944,127 @@ char * strpbrk(char *s,char *brk) {
 	return (0);
 }
 # endif
-/** Imports game settings from environment.
- * @param[in] enter_status //TODO
- * \return //TODO
- *
+/**
+ * Parses configuration file and initializes game environment.
+ * This function retrives the configuration file and parses it to initialize the game environment.
+ * In case of file unavailability tries to retrive configuration options from HUNT environment
+ * variable using var_env_init() function.
+ * @param[in] enter_status_in Status used if no status modifier is set in configuration file.
+ * \return Configured enter status.
  */
 long env_init(long enter_status_in) {
+
+	long enter_status = enter_status_in;
+
+	/**
+	 * Variables supporting configuration file parsing.
+	 */
+	FILE* config; /**< Points to configuration file.*/
+	FILE* c; /**< Points to configuration file. Used for char counting.*/
+	bool opened_c;
+	long input_len; /**< Input row length.*/
+	char* input_row; /**< A row from configuration file.*/
+	char* equal; /**< Points to the position of '=' into input_row.*/
+	char* input_value; /**< Value associated to a configuration tag.*/
+	long tag_len; /**< Tag field length.*/
+
+	int i;
+
+	/**
+	 * Generates a map for extended ASCII conversion.
+	 * //TODO verificare sostituibilita' con libreria standard
+	 */
+	for (i = 0; i < 256; i++)
+			map_key[i] = (char) i;
+
+	if (!(config = fopen(CONFIGURATION_FILE, "r"))) {
+		return var_env_init(enter_status);
+	} else {
+		if ((c = fopen(CONFIGURATION_FILE, "r"))) {
+			opened_c = false;
+			input_len = EMERGENCY_BUFFER_LENGTH;
+		} else {
+			input_len = fchars_in_line(c);
+			opened_c = true;
+		}
+		input_row = malloc(sizeof(char) * (input_len + 1));
+		fgets(input_row, input_len + 1, config);
+		while (!feof(config)) {
+			equal = strpbrk(input_row, "=");
+			input_value = (equal != NULL) ? equal + 1 : input_row + input_len;
+			tag_len = input_value - input_row;
+			if (strncmp(input_row, "cloak", tag_len) == 0) {
+				enter_status = Q_CLOAK;
+			} else if (strncmp(input_row, "scan", tag_len) == 0) {
+				enter_status = Q_SCAN;
+			} else if (strncmp(input_row, "fly", tag_len) == 0) {
+				enter_status = Q_FLY;
+			} else if (strncmp(input_row, "nobeep", tag_len) == 0) {
+				no_beep = true;
+			} else if (strncmp(input_row, "name=", tag_len) == 0) {
+				strncpy(name, input_value, NAMELEN);
+			}
+# ifdef INTERNET
+			else if (strncmp(input_row, "port=", tag_len) == 0) {
+				use_port = input_value;
+				Test_port = atoi(use_port);
+			}
+			else if (strncmp(input_row, "host=", tag_len) == 0) {
+				Sock_host = input_value;
+			}
+			else if (strncmp(input_row, "message=", tag_len) == 0) {
+				Send_message = input_value;
+			}
+# endif
+			else if (strncmp(input_row, "team=", tag_len) == 0) {
+				team = *(input_value);
+				if (!isdigit((unsigned char)team))
+					team = ' ';
+			} /* must be last option */
+			else if (strncmp(input_row, "mapkey=", tag_len) == 0) {
+				for (i = 0; input_value[i] != '\0'; i += 2) {
+					map_key[(unsigned int) input_value[i]] = input_value[i + 1];
+					if (input_value[i + 1] == '\0') {
+						break;
+					}
+				}
+				break;
+			} else {
+				printf("unknown option %s\n", input_row);
+			}
+			input_row = free(input_row);
+			if (opened_c) {
+				input_len = fchars_in_line(c);
+			} else {
+				input_len = EMERGENCY_BUFFER_LENGTH;
+			}
+			input_row = malloc(sizeof(char) * (input_len + 1));
+			fgets(input_row, input_len + 1, config);
+		}
+		input_row = free(input_row);
+		if (opened_c) {
+			c = fclose(c);
+		}
+		config = fclose(config);
+	}
+	return enter_status;
+}
+
+/**
+ * Imports game settings from environment.
+ * It is invoked only in case of configuration file unavailability.
+ * @param[in] enter_status_in Status used if no status modifier is set in configuration environment variable..
+ * \return Configured enter status.
+ */
+long var_env_init(long enter_status_in) {
 
 	long enter_status = enter_status_in; /**< Hosts the value to return. */
 
 	int i;
 
 	char *envp; /**< This string contains setting options. */
-	char *envname; //TODO
+	char *envname; /**< Temporarely stores configured player name.*/
 	char *s;
-
 
 	/**
 	 * Generates a map for extended ASCII conversion.
@@ -961,7 +1073,7 @@ long env_init(long enter_status_in) {
 	for (i = 0; i < 256; i++)
 		map_key[i] = (char) i;
 
-	envname = NULL; //TODO verificare sicurezza (puntatore a null)
+	envname = NULL; //Verified null pointer safety
 
 	if ((envp = getenv("HUNT")) != NULL) {
 		while ((s = strpbrk(envp, "=,")) != NULL) {
@@ -1056,6 +1168,21 @@ long env_init(long enter_status_in) {
 		}
 	}
 	return enter_status;
+}
+
+long fchars_in_line(FILE* f) {
+	long counter = 0;
+	char in;
+	fscanf("%c", &in);
+	while (!feof(f)) {
+		if (in == '\n')
+			break;
+		else {
+			counter++;
+			fscanf("%c", &in);
+		}
+	}
+	return counter;
 }
 
 void fill_in_blanks() {
