@@ -42,7 +42,7 @@ __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
 # include	<ctype.h>
 # include	<err.h>
 # include	<errno.h>
-# include	<curses.h>
+# include	<ncurses.h> //Edited from curses.h
 # include	<signal.h>
 # include	<stdlib.h>
 # include	<string.h>

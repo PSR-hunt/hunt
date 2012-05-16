@@ -49,7 +49,7 @@ __RCSID("$NetBSD: otto.c,v 1.8 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
 
 # include	<sys/time.h>
-# include	<curses.h>
+# include	<ncurses.h> //Edited from curses.h
 # include	<ctype.h>
 # include	<signal.h>
 # include	<stdlib.h>
