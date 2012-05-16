@@ -1,0 +1,14 @@
+/answer.d
+/ctl_transact.d
+/ctl.d
+/draw.d
+/driver.d
+/execute.d
+/expl.d
+/extern.d
+/faketalk.d
+/get_names.d
+/makemaze.d
+/pathname.d
+/shots.d
+/terminal.d
