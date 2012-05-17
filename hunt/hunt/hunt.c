@@ -42,7 +42,10 @@ __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
 # include	<ctype.h>
 # include	<err.h>
 # include	<errno.h>
-# include	<ncurses.h> //Edited from curses.h
+/**
+ * Edited from curses.h
+ */
+# include	<ncurses.h>
 # include	<signal.h>
 # include	<stdlib.h>
 # include	<string.h>
@@ -52,7 +55,10 @@ static struct termios saved_tty;
 # endif
 # include	<unistd.h>
 # include	<ifaddrs.h>
-
+/**
+ *  Explicit declaration of getopt family functions
+ */
+# include 	<getopt.h>
 # include	"hunt.h"
 
 /**
@@ -417,8 +423,8 @@ broadcast_vec(int s, struct sockaddr **vector) {
 
 SOCKET * list_drivers() {
 	int option;
-	u_short msg;
-	u_short port_num;
+	unsigned short msg;
+	unsigned short port_num;
 	static SOCKET test;
 	int test_socket;
 	int namelen;
@@ -430,7 +436,7 @@ SOCKET * list_drivers() {
 	static int brdc;
 	static SOCKET *brdv;
 # else
-	u_long local_net;
+	unsigned long local_net;
 # endif
 	int i;
 	static SOCKET *listv;

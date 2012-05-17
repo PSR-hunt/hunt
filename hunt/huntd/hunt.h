@@ -391,7 +391,7 @@ extern int	Nplayer, Socket, Status;
 extern struct	pollfd fdset[];
 
 # ifdef INTERNET
-extern u_short	Test_port;
+extern unsigned short Test_port;
 # else
 extern char	*Sock_name, *Stat_name;
 # endif
@@ -454,7 +454,7 @@ void		execute(PLAYER *);
 void		faketalk(void);
 void		find_driver(bool);
 void		fixshots(int, int, char);
-IDENT	       *get_ident(u_long, u_long, const char *, char);
+IDENT	       *get_ident(unsigned long, unsigned long, const char *, char);
 void		get_local_name(const char *);
 int		get_remote_name(char *);
 BULLET	       *is_bullet(int, int);
@@ -466,7 +466,7 @@ void		moveshots(void);
 void		open_ctl(void);
 int		opposite(int, char);
 void		otto(int, int, char);
-void		outch(PLAYER *, int);
+void		outch(PLAYER *, int); //TODO overloading metodo per char, char*, int
 void		outstr(PLAYER *, const char *, int);
 int		player_sym(const PLAYER *, int, int);
 PLAYER	       *play_at(int, int);

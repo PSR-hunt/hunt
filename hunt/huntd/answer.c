@@ -50,12 +50,12 @@ static char	Ttyname[NAMELEN];
 int answer(){
 	PLAYER			*pp;
 	int			newsock;
-	static u_long		mode;
+	static unsigned long		mode;
 	static char		name[NAMELEN];
 	static char		team;
 	static int		enter_status;
 	static int		socklen;
-	static u_long		machine;
+	static unsigned long		machine;
 	static u_int32_t	uid;
 	static SOCKET		sockstruct;
 	char			*cp1, *cp2;
@@ -363,7 +363,7 @@ int rand_dir(){
  * get_ident:
  *	Get the score structure of a player
  */
-IDENT * get_ident(u_long machine,u_long uid,const char *name,char team){
+IDENT * get_ident(unsigned long machine,unsigned long uid,const char *name,char team){
 	IDENT		*ip;
 	static IDENT	punt;
 
