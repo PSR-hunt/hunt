@@ -56,12 +56,15 @@ void cgoto(PLAYER *pp,int y,int x){
  * outch:
  *	Put out a single character.
  */
-void outch(PLAYER *pp,char ch){
+/**
+ * Uniformed to prototype in hunt.h.
+ */
+void outch(PLAYER *pp,int ch){
 	if (++pp->p_curx >= TERM_WIDTH) {
 		pp->p_curx = 0;
 		pp->p_cury++;
 	}
-	(void) putc(ch, pp->p_output);
+	(void) putc((char) ch, pp->p_output);
 }
 
 /*

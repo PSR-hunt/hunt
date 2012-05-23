@@ -50,9 +50,11 @@ __RCSID("$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $");
 # include	<unistd.h>
 # include	"talk_ctl.h"
 
-// Deprecated due to stdbool.h standard library.
-//# define	TRUE		1
-//# define	FALSE		0
+/*
+ *Deprecated due to stdbool.h standard library.
+ *# define	TRUE		1
+ *# define	FALSE		0
+ */
 
 /* defines for fake talk message to announce start of game */
 # ifdef TALK_43
@@ -63,17 +65,17 @@ __RCSID("$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $");
 # define	RENDEZVOUS	"hunt-players"
 # define	ARGV0		"HUNT-ANNOUNCE"
 
-extern	char		*my_machine_name;
-extern	char		*First_arg, *Last_arg;
-extern	char		**environ;
+extern char *my_machine_name;
+extern char *First_arg, *Last_arg;
+extern char **environ;
 
-static	void	do_announce(char *);
-SIGNAL_TYPE	exorcise(int);
+static void do_announce(char *);
+SIGNAL_TYPE exorcise(int);
 /*
  *	exorcise - disspell zombies
  */
 
-SIGNAL_TYPE exorcise(int dummy __attribute__((__unused__))){
+SIGNAL_TYPE exorcise(int dummy __attribute__((__unused__))) {
 	(void) wait(0);
 }
 
@@ -82,19 +84,19 @@ SIGNAL_TYPE exorcise(int dummy __attribute__((__unused__))){
  *	and fake a talk request to each address thus found.
  */
 
-void faketalk(){
-	struct	servent		*sp;
-	char			buf[BUFSIZ];
-	FILE			*f;
-	int			service;	/* socket of service */
-	struct	sockaddr_in	des;		/* address of destination */
-	char			*a;
-	const char		*b;
+void faketalk() {
+	struct servent *sp;
+	char buf[BUFSIZ];
+	FILE *f;
+	int service; /* socket of service */
+	struct sockaddr_in des; /* address of destination */
+	char *a;
+	const char *b;
 
 	(void) signal(SIGCHLD, exorcise);
 
 	if (fork() != 0)
-		return;
+	return;
 
 	(void) signal(SIGINT, SIG_IGN);
 	(void) signal(SIGPIPE, SIG_IGN);
@@ -105,9 +107,9 @@ void faketalk(){
 	*environ = NULL;
 	for (a = First_arg, b = ARGV0; a < Last_arg; a++) {
 		if (*b)
-			*a = *b++;
+		*a = *b++;
 		else
-			*a = ' ';
+		*a = ' ';
 	}
 
 	/*
@@ -167,29 +169,29 @@ void faketalk(){
 	(void) sprintf(buf, "EXPN %s@%s\r\n", RENDEZVOUS, my_machine_name);
 	(void) write(service, buf, strlen(buf));
 	while (fgets(buf, BUFSIZ, f) != NULL) {
-		char	*s, *t;
+		char *s, *t;
 
 		if (buf[0] != '2' || buf[1] != '5' || buf[2] != '0')
-			break;
+		break;
 		if ((s = strchr(buf + 4, '<')) == NULL)
-			s = buf + 4, t = buf + strlen(buf) - 1;
+		s = buf + 4, t = buf + strlen(buf) - 1;
 		else {
 			s += 1;
 			if ((t = strrchr(s, '>')) == NULL)
-				t = s + strlen(s) - 1;
+			t = s + strlen(s) - 1;
 			else
-				t -= 1;
+			t -= 1;
 		}
 		while (isspace(*s))
-			s += 1;
+		s += 1;
 		if (*s == '\\')
-			s += 1;
+		s += 1;
 		while (isspace(*t))
-			t -= 1;
+		t -= 1;
 		*(t + 1) = '\0';
-		do_announce(s);		/* construct and send talk request */
+		do_announce(s); /* construct and send talk request */
 		if (buf[3] == ' ')
-			break;
+		break;
 	}
 	(void) shutdown(service, 2);
 	(void) close(service);
@@ -201,10 +203,10 @@ void faketalk(){
  * These are used to delete the invitations.
  */
 
-static void do_announce(char *s){
-	CTL_RESPONSE			response;
+static void do_announce(char *s) {
+	CTL_RESPONSE response;
 
-	get_remote_name(s);	/* setup his_machine_addr, msg.r_name */
+	get_remote_name(s); /* setup his_machine_addr, msg.r_name */
 
 # ifdef TALK_43
 # if BSD_RELEASE >= 44
@@ -217,10 +219,10 @@ static void do_announce(char *s){
 	msg.ctl_addr = ctl_addr;
 	msg.ctl_addr.sin_family = htons(msg.ctl_addr.sin_family);
 # endif
-	msg.id_num = (int) htonl((u_int32_t) -1);	/* an impossible id_num */
+	msg.id_num = (int) htonl((u_int32_t) -1); /* an impossible id_num */
 	ctl_transact(his_machine_addr, msg, ANNOUNCE, &response);
 	if (response.answer != SUCCESS)
-		return;
+	return;
 
 	/*
 	 * Have the daemons delete the invitations now that we
@@ -232,12 +234,12 @@ static void do_announce(char *s){
 	msg.id_num = (int) htonl(response.id_num);
 	daemon_addr.sin_addr = his_machine_addr;
 	if (sendto(ctl_sockt, (char *) &msg, sizeof (msg), 0,
-			(struct sockaddr *) &daemon_addr, sizeof(daemon_addr))
+					(struct sockaddr *) &daemon_addr, sizeof(daemon_addr))
 			!= sizeof(msg))
-		p_error("send delete remote");
+	p_error("send delete remote");
 }
 #else
-void faketalk(){
+void faketalk() {
 	return;
 }
 #endif

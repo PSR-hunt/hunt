@@ -56,9 +56,16 @@ static struct termios saved_tty;
 # include	<unistd.h>
 # include	<ifaddrs.h>
 /**
- *  Explicit declaration of getopt family functions
+ *  Explicit declaration of getopt family functions.
  */
 # include 	<getopt.h>
+/**
+ * Added library to support net interface socket communication.
+ * TODO Verificare correttezza workaround
+ */
+# define	__USE_MISC 1 /*workaround: forza attivazione funzionalità deprecate.*/
+# include	<net/if.h>
+
 # include	"hunt.h"
 
 /**
@@ -144,11 +151,11 @@ extern int Otto_mode;
 int main(int argc, char* argv[]) {
 
 	char *term;
-	int c; //TODO x64 compliant
-	long enter_status; //TODO x64 compliant
+	int c; /*TODO x64 compliant*/
+	long enter_status; /*TODO x64 compliant*/
 
 	/* Revoke setgid privileges */
-	setregid(getgid(), getgid()); //TODO verificare sicurezza
+	setregid(getgid(), getgid()); /*TODO verificare sicurezza*/
 
 	enter_status = env_init((long) Q_CLOAK);
 	while ((c = getopt(argc, argv, "Sbcfh:l:mn:op:qst:w:")) != -1) {
@@ -394,12 +401,12 @@ broadcast_vec(int s, struct sockaddr **vector) {
 	int vec_cnt;
 	struct ifaddrs *ifp, *ip;
 
-	*vector = NULL;
-	if (getifaddrs(&ifp) < 0)
-	return 0;
+	*vector = NULL; /*Inizializza il vettore di sockaddr a NULL*/
+	if (getifaddrs(&ifp) < 0)/*Acquisisce le interfacce di rete*/
+	return 0;/*Esce ad acquisizione fallita*/
 
 	vec_cnt = 0;
-	for (ip = ifp; ip; ip = ip->ifa_next)
+	for (ip = ifp; ip; ip = ip->ifa_next)/*Posiziona ip sull'ultima interfaccia della lista*/
 	if ((ip->ifa_addr->sa_family == AF_INET) &&
 			(ip->ifa_flags & IFF_BROADCAST))
 	vec_cnt++;
@@ -785,7 +792,7 @@ SIGNAL_TYPE sigalrm(int dummy __attribute__((__unused__))) {
  * rmnl:
  *	Remove a '\n' at the end of a string if there is one
  */
-void rmnl(charr *s) {
+void rmnl(char *s) {
 	char *cp;
 
 	cp = strrchr(s, '\n');
@@ -978,10 +985,10 @@ long env_init(long enter_status_in) {
 
 	/**
 	 * Generates a map for extended ASCII conversion.
-	 * //TODO verificare sostituibilita' con libreria standard
+	 * TODO verificare sostituibilita' con libreria standard
 	 */
 	for (i = 0; i < 256; i++)
-			map_key[i] = (char) i;
+		map_key[i] = (char) i;
 
 	if (!(config = fopen(CONFIGURATION_FILE, "r"))) {
 		return var_env_init(enter_status);
@@ -1079,13 +1086,13 @@ long var_env_init(long enter_status_in) {
 	for (i = 0; i < 256; i++)
 		map_key[i] = (char) i;
 
-	envname = NULL; //Verified null pointer safety
+	envname = NULL; /*Verified null pointer safety*/
 
 	if ((envp = getenv("HUNT")) != NULL) {
 		while ((s = strpbrk(envp, "=,")) != NULL) {
-			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { //compara i caratteri dall'inizio della stringa di configurazione non ancora analizzata sino al primo =
+			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { /*compara i caratteri dall'inizio della stringa di configurazione non ancora analizzata sino al primo =*/
 				enter_status = Q_CLOAK;
-				envp = s + 1; //elimina i caratteri già considerati da envp
+				envp = s + 1; /*elimina i caratteri già considerati da envp*/
 			} else if (strncmp(envp, "scan,", s - envp + 1) == 0) {
 				enter_status = Q_SCAN;
 				envp = s + 1;

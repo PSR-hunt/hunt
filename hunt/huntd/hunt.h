@@ -205,11 +205,12 @@
 # define	EAST	010
 # define	WEST	020
 
-// Deprecated due to stdbool.h library support.
-//# ifndef TRUE
-//# define	TRUE	1
-//# define	FALSE	0
-//# endif
+/*Deprecated due to stdbool.h library support.
+ *# ifndef TRUE
+ *# define	TRUE	1
+ *# define	FALSE	0
+ *# endif
+ */
 
 # undef CTRL
 # define	CTRL(x)	((x) & 037)
@@ -237,8 +238,8 @@
 # ifdef DRONE
 # define	MINDSHOT	2	/* At least a satchel bomb */
 # endif
-extern int	shot_req[];
-extern int	shot_type[];
+extern int shot_req[];
+extern int shot_type[];
 # ifdef	OOZE
 # define	SLIME_FACTOR	3
 # define	SLIMEREQ	5
@@ -247,7 +248,7 @@ extern int	shot_type[];
 # define	SLIME3REQ	20
 # define	MAXSLIME	4
 # define	SLIMESPEED	5
-extern int	slime_req[];
+extern int slime_req[];
 # endif
 # ifdef	VOLCANO
 # define	LAVASPEED	1
@@ -288,211 +289,210 @@ extern int	slime_req[];
 # define	stat_char(pp)	(((pp)->p_cloak < 0) ? _scan_char(pp) : '+')
 # endif
 
-//Deprecated due to stdbool.h standard library.
-//typedef int			FLAG;
-
-typedef struct bullet_def	BULLET;
-typedef struct expl_def		EXPL;
-typedef struct player_def	PLAYER;
-typedef struct ident_def	IDENT;
-typedef struct regen_def	REGEN;
+/*Deprecated due to stdbool.h standard library.
+ *typedef int			FLAG;
+ */
+typedef struct bullet_def BULLET;
+typedef struct expl_def EXPL;
+typedef struct player_def PLAYER;
+typedef struct ident_def IDENT;
+typedef struct regen_def REGEN;
 # ifdef	INTERNET
-typedef struct sockaddr_in	SOCKET;
+typedef struct sockaddr_in SOCKET;
 # else
-typedef struct sockaddr_un	SOCKET;
+typedef struct sockaddr_un SOCKET;
 # endif
 
 struct ident_def {
-	char	i_name[NAMELEN];
-	char	i_team;
-	long	i_machine;
-	long	i_uid;
-	float	i_kills;
-	int	i_entries;
-	float	i_score;
-	int	i_absorbed;
-	int	i_faced;
-	int	i_shot;
-	int	i_robbed;
-	int	i_slime;
-	int	i_missed;
-	int	i_ducked;
-	int	i_gkills, i_bkills, i_deaths, i_stillb, i_saved;
-	IDENT	*i_next;
+	char i_name[NAMELEN];
+	char i_team;
+	long i_machine;
+	long i_uid;
+	float i_kills;
+	int i_entries;
+	float i_score;
+	int i_absorbed;
+	int i_faced;
+	int i_shot;
+	int i_robbed;
+	int i_slime;
+	int i_missed;
+	int i_ducked;
+	int i_gkills, i_bkills, i_deaths, i_stillb, i_saved;
+	IDENT *i_next;
 };
 
 struct player_def {
-	IDENT	*p_ident;
-	char	p_over;
-	int	p_face;
-	int	p_undershot;
+	IDENT *p_ident;
+	char p_over;
+	int p_face;
+	int p_undershot;
 # ifdef	FLY
-	int	p_flying;
-	int	p_flyx, p_flyy;
+	int p_flying;
+	int p_flyx, p_flyy;
 # endif
 # ifdef	BOOTS
-	int	p_nboots;
+	int p_nboots;
 # endif
-	FILE	*p_output;
-	int	p_fd;
-	int	p_mask;
-	int	p_damage;
-	int	p_damcap;
-	int	p_ammo;
-	int	p_ncshot;
-	int	p_scan;
-	int	p_cloak;
-	int	p_x, p_y;
-	int	p_ncount;
-	int	p_nexec;
-	long	p_nchar;
-	char	p_death[MSGLEN];
-	char	p_maze[HEIGHT][WIDTH2];
-	int	p_curx, p_cury;
-	int	p_lastx, p_lasty;
-	char	p_cbuf[BUFSIZ];
+	FILE *p_output;
+	int p_fd;
+	int p_mask;
+	int p_damage;
+	int p_damcap;
+	int p_ammo;
+	int p_ncshot;
+	int p_scan;
+	int p_cloak;
+	int p_x, p_y;
+	int p_ncount;
+	int p_nexec;
+	long p_nchar;
+	char p_death[MSGLEN];
+	char p_maze[HEIGHT][WIDTH2];
+	int p_curx, p_cury;
+	int p_lastx, p_lasty;
+	char p_cbuf[BUFSIZ];
 };
 
 struct bullet_def {
-	int	b_x, b_y;
-	int	b_face;
-	int	b_charge;
-	char	b_type;
-	char	b_size;
-	char	b_over;
-	PLAYER	*b_owner;
-	IDENT	*b_score;
-	bool	b_expl;
-	BULLET	*b_next;
+	int b_x, b_y;
+	int b_face;
+	int b_charge;
+	char b_type;
+	char b_size;
+	char b_over;
+	PLAYER *b_owner;
+	IDENT *b_score;
+	bool b_expl;
+	BULLET *b_next;
 };
 
 struct expl_def {
-	int	e_x, e_y;
-	char	e_char;
-	EXPL	*e_next;
+	int e_x, e_y;
+	char e_char;
+	EXPL *e_next;
 };
 
 struct regen_def {
-	int	r_x, r_y;
-	REGEN	*r_next;
+	int r_x, r_y;
+	REGEN *r_next;
 };
 
 /*
  * external variables
  */
 
-extern bool	Last_player;
+extern bool Last_player;
 
-extern char	Buf[BUFSIZ], Maze[HEIGHT][WIDTH2], Orig_maze[HEIGHT][WIDTH2];
+extern char Buf[BUFSIZ], Maze[HEIGHT][WIDTH2], Orig_maze[HEIGHT][WIDTH2];
 
-extern const char	*Driver;
+extern const char *Driver;
 
-extern int	Nplayer, Socket, Status;
-extern struct	pollfd fdset[];
+extern int Nplayer, Socket, Status;
+extern struct pollfd fdset[];
 
 # ifdef INTERNET
 extern unsigned short Test_port;
 # else
-extern char	*Sock_name, *Stat_name;
+extern char *Sock_name, *Stat_name;
 # endif
 
 # ifdef VOLCANO
-extern int	volcano;
+extern int volcano;
 # endif
 
-extern int	See_over[NASCII];
+extern int See_over[NASCII];
 
-extern BULLET	*Bullets;
+extern BULLET *Bullets;
 
-extern EXPL	*Expl[EXPLEN];
-extern EXPL	*Last_expl;
+extern EXPL *Expl[EXPLEN];
+extern EXPL *Last_expl;
 
-extern IDENT	*Scores;
+extern IDENT *Scores;
 
-extern PLAYER	Player[MAXPL], *End_player;
+extern PLAYER Player[MAXPL], *End_player;
 # ifdef BOOTS
-extern PLAYER	Boot[NBOOTS];
+extern PLAYER Boot[NBOOTS];
 # endif
 
 # ifdef MONITOR
-extern bool	Am_monitor;
-extern PLAYER	Monitor[MAXMON], *End_monitor;
+extern bool Am_monitor;
+extern PLAYER Monitor[MAXMON], *End_monitor;
 # endif
 
 # ifdef INTERNET
-extern char	*Send_message;
+extern char *Send_message;
 # endif
 
-extern char	map_key[256];
-extern bool	no_beep;
+extern char map_key[256];
+extern bool no_beep;
 
 /*
  * function types
  */
 
-void		add_shot(int, int, int, char, int, PLAYER *, int, char);
-int		answer(void);
-void		bad_con(void) __attribute__((__noreturn__));
-void		bad_ver(void) __attribute__((__noreturn__));
-int		broadcast_vec(int, struct	sockaddr **);
-void		ce(PLAYER *);
-void		cgoto(PLAYER *, int, int);
-void		check(PLAYER *, int, int);
-void		checkdam(PLAYER *, PLAYER *, IDENT *, int, char);
-void		clearwalls(void);
-void		clear_eol(void);
-void		clear_the_screen(void);
-void		clrscr(PLAYER *);
-BULLET	       *create_shot(int, int, int, char, int, int, PLAYER *,
-		    IDENT *, int, char);
-void		do_connect(const char *, char, long);
-void		do_message(void);
-void		drawmaze(PLAYER *);
-void		drawplayer(PLAYER *, bool);
-void		drawstatus(PLAYER *);
-void		execute(PLAYER *);
-void		faketalk(void);
-void		find_driver(bool);
-void		fixshots(int, int, char);
-IDENT	       *get_ident(unsigned long, unsigned long, const char *, char);
-void		get_local_name(const char *);
-int		get_remote_name(char *);
-BULLET	       *is_bullet(int, int);
-void		look(PLAYER *);
-void		makemaze(void);
-void		message(PLAYER *, const char *);
-void		mon_execute(PLAYER *);
-void		moveshots(void);
-void		open_ctl(void);
-int		opposite(int, char);
-void		otto(int, int, char);
-void		outch(PLAYER *, int); //TODO overloading metodo per char, char*, int
-void		outstr(PLAYER *, const char *, int);
-int		player_sym(const PLAYER *, int, int);
-PLAYER	       *play_at(int, int);
-void		playit(void);
-void		put_ch(char);
+void add_shot(int, int, int, char, int, PLAYER *, int, char);
+int answer(void);
+void bad_con(void) __attribute__((__noreturn__));
+void bad_ver(void) __attribute__((__noreturn__));
+int broadcast_vec(int, struct sockaddr **);
+void ce(PLAYER *);
+void cgoto(PLAYER *, int, int);
+void check(PLAYER *, int, int);
+void checkdam(PLAYER *, PLAYER *, IDENT *, int, char);
+void clearwalls(void);
+void clear_eol(void);
+void clear_the_screen(void);
+void clrscr(PLAYER *);
+BULLET *create_shot(int, int, int, char, int, int, PLAYER *, IDENT *, int, char);
+void do_connect(const char *, char, long);
+void do_message(void);
+void drawmaze(PLAYER *);
+void drawplayer(PLAYER *, bool);
+void drawstatus(PLAYER *);
+void execute(PLAYER *);
+void faketalk(void);
+void find_driver(bool);
+void fixshots(int, int, char);
+IDENT *get_ident(unsigned long, unsigned long, const char *, char);
+void get_local_name(const char *);
+int get_remote_name(char *);
+BULLET *is_bullet(int, int);
+void look(PLAYER *);
+void makemaze(void);
+void message(PLAYER *, const char *);
+void mon_execute(PLAYER *);
+void moveshots(void);
+void open_ctl(void);
+int opposite(int, char);
+void otto(int, int, char);
+void outch(PLAYER *, int);
+void outstr(PLAYER *, const char *, int);
+int player_sym(const PLAYER *, int, int);
+PLAYER *play_at(int, int);
+void playit(void);
+void put_ch(char);
 # ifndef USE_CURSES
-void		put_str(const char *);
+void put_str(const char *);
 # endif
-int		quit(int);
-int		rand_dir(void);
-int		rand_num(int);
-void		redraw_screen(void);
-void		rmnl(char *);
-void		rollexpl(void);
-void		see(PLAYER *, int);
-void		sendcom(PLAYER *, int, ...);
-void		showexpl(int, int, char);
-void		showstat(PLAYER *);
-void		start_driver(void);
-void		stmonitor(PLAYER *);
-void		stplayer(PLAYER *, int);
-char		translate(char);
-SIGNAL_TYPE	cleanup(int) __attribute__((__noreturn__));
-SIGNAL_TYPE	intr(int);
-SIGNAL_TYPE	sigalrm(int);
-SIGNAL_TYPE	sigemt(int) __attribute__((__noreturn__));
-SIGNAL_TYPE	sigterm(int) __attribute__((__noreturn__));
-SIGNAL_TYPE	sigusr1(int) __attribute__((__noreturn__));
-SIGNAL_TYPE	tstp(int);
+int quit(int);
+int rand_dir(void);
+int rand_num(int);
+void redraw_screen(void);
+void rmnl(char *);
+void rollexpl(void);
+void see(PLAYER *, int);
+void sendcom(PLAYER *, int, ...);
+void showexpl(int, int, char);
+void showstat(PLAYER *);
+void start_driver(void);
+void stmonitor(PLAYER *);
+void stplayer(PLAYER *, int);
+char translate(char);
+SIGNAL_TYPE cleanup(int) __attribute__((__noreturn__));
+SIGNAL_TYPE intr(int);
+SIGNAL_TYPE sigalrm(int);
+SIGNAL_TYPE sigemt(int) __attribute__((__noreturn__));
+SIGNAL_TYPE sigterm(int) __attribute__((__noreturn__));
+SIGNAL_TYPE sigusr1(int) __attribute__((__noreturn__));
+SIGNAL_TYPE tstp(int);
