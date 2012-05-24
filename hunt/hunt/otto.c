@@ -51,6 +51,12 @@ __RCSID("$NetBSD: otto.c,v 1.8 2004/11/05 21:30:32 dsl Exp $");
 # include	<sys/time.h>
 # include	<ncurses.h> /*Edited from curses.h*/
 # include	<ctype.h>
+
+/**
+ * Forces compiler to use BSD library functions.
+ */
+# define	__USE_BSD 1
+
 # include	<signal.h>
 # include	<stdlib.h>
 # include	<unistd.h>

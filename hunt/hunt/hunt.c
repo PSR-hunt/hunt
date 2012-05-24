@@ -59,11 +59,16 @@ static struct termios saved_tty;
  *  Explicit declaration of getopt family functions.
  */
 # include 	<getopt.h>
+
+/**
+ * Enables BSD library functions.
+ */
+# include	<features.h>
+
 /**
  * Added library to support net interface socket communication.
- * TODO Verificare correttezza workaround
  */
-# define	__USE_MISC 1 /*workaround: forza attivazione funzionalità deprecate.*/
+# define	__USE_MISC 1
 # include	<net/if.h>
 
 # include	"hunt.h"
@@ -142,6 +147,10 @@ int main(int, char *[]);
 # ifdef INTERNET
 SOCKET *list_drivers(void);
 # endif
+/**
+ * Added explicit declaration to avoid implicit.
+ */
+long fchars_in_line(FILE*);
 
 extern int Otto_mode;
 /*
@@ -1045,7 +1054,8 @@ long env_init(long enter_status_in) {
 			} else {
 				printf("unknown option %s\n", input_row);
 			}
-			input_row = free(input_row);
+			free(input_row);
+			input_row = NULL;
 			if (opened_c) {
 				input_len = fchars_in_line(c);
 			} else {
@@ -1054,7 +1064,8 @@ long env_init(long enter_status_in) {
 			input_row = malloc(sizeof(char) * (input_len + 1));
 			fgets(input_row, input_len + 1, config);
 		}
-		input_row = free(input_row);
+		free(input_row);
+		input_row = NULL;
 		if (opened_c) {
 			c = fclose(c);
 		}
