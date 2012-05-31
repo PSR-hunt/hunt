@@ -112,7 +112,7 @@ void playit(){
 		bad_con();
 		/* NOTREACHED */
 	}
-	if (ntohl(version) != (unsigned long)HUNT_VERSION) {
+	if (ntohl(version) != HUNT_VERSION) {
 		bad_ver();
 		/* NOTREACHED */
 	}
@@ -626,7 +626,7 @@ void do_message(){
 		bad_con();
 		/* NOTREACHED */
 	}
-	if (ntohl(version) != (unsigned long)HUNT_VERSION) {
+	if (ntohl(version) != HUNT_VERSION) {
 		bad_ver();
 		/* NOTREACHED */
 	}

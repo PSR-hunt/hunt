@@ -94,7 +94,7 @@
 # endif
 
 /* decrement version number for each change in startup protocol */
-# define	HUNT_VERSION		-1
+# define	HUNT_VERSION		(u_int32_t) -1
 
 # define	ADDCH		('a' | 0200)
 # define	MOVE		('m' | 0200)
