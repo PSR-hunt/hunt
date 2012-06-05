@@ -148,6 +148,8 @@ check_func () {
     fi
 }
 
+ask_yn "default installation? (y or n)" bsd_games_cfg_non_interactive y
+
 echo "For normal usage the installation prefix will be empty.  If you wish"
 echo "to install everything in another directory to that in which it will"
 echo "finally be located (so that your packaging system can then move it"
@@ -155,11 +157,13 @@ echo "there) you should name that directory here.  This is most likely to"
 echo "be the case if you are packaging bsd-games for a Linux distribution."
 ask "Installation prefix" install_prefix ''
 
-echo "There may be some programs here you have from another package and so"
-echo "do not want to build and install.  The most likely ones are banner,"
-echo "factor and fortune."
-
-ask "Games not to build" no_build_dirs ''
+#ask "Games not to build" no_build_dirs ''
+ntb_query_var="no_build_dirs"
+ntb_dflt_var="bsd_games_cfg_$ntb_query_var"
+eval ntb_default=\"\$\{${ntb_dflt_var}-\}\"
+ntb_input="$ntb_default"
+eval $ntb_query_var=\"\$ntb_input\"
+subst_vars="$subst_vars $ntb_query_var"
 
 # Normalise white space in no_build_dirs
 no_build_dirs="`echo $no_build_dirs`"
@@ -192,62 +196,21 @@ ask "Games directory" gamesdir /usr/games
 # We put huntd in /usr/games by default (instead of /usr/sbin as earlier,
 # or /usr/lib) since it can reasonably be called by users and counts
 # properly more as a game than an ordinary user binary.
-if building_in hunt; then
-    echo
-    echo "Hunt includes a daemon for coordinating games with multiple players"
-    ask "Daemon directory" sbindir /usr/games
-else
-    sbindir=
-    subst_vars="$subst_vars sbindir"
-fi
-if building_in fortune; then
-    echo
-    echo "Fortune includes a non-game utility strfile"
-    ask "Non-game binary directory" usrbindir /usr/bin
-else
-    usrbindir=
-    subst_vars="$subst_vars usrbindir"
-fi
-
+echo
+echo "Hunt includes a daemon for coordinating games with multiple players"
+ask "Daemon directory" sbindir /usr/games
+usrbindir=
+subst_vars="$subst_vars usrbindir"
 hidegame=:
 subst_vars="$subst_vars hidegame"
-if building_in dm; then
-    echo
-    echo "You may wish to restrict the use of games by user, terminal, load,"
-    echo "etc..  This can be done by the use of dm.  If you use this"
-    echo "configuration, then games will be kept in a non-world-searchable"
-    echo "directory such as /usr/lib/games/dm and replaced by symlinks to dm."
-    echo "Even if you don't choose this option, you will still be asked"
-    echo "for the directory name, since you are building dm, and can change"
-    echo "manually later.  It is strongly recommended that you keep the"
-    echo "default answer of 'n'."
-    ask_yn "Use dm and hide games" use_dm n
-    # The default location is now /usr/lib/games/dm to conform to FHS 2.0.
-    ask "Directory for hidden games" libexecdir /usr/lib/games/dm
-    if [ "$use_dm" = y ]; then
-	hidegame=$srcdir/hide-game
-    fi
-fi
-ask "Section 6 manpage directory" man6dir /usr/share/man/man6
-if building_in dm || building_in fortune; then
-    ask "Section 8 manpage directory" man8dir /usr/share/man/man8
-else
-    man8dir=
-    subst_vars="$subst_vars man8dir"
-fi
-if building_in dm; then
-    ask "Section 5 manpage directory" man5dir /usr/share/man/man5
-else
-    man5dir=
-    subst_vars="$subst_vars man5dir"
-fi
 
-if building_in trek || building_in rogue; then
-    ask "Directory for miscellaneous documentation" docdir /usr/share/doc/bsd-games
-else
-    docdir=
-    subst_vars="$subst_vars docdir"
-fi
+ask "Section 6 manpage directory" man6dir /usr/share/man/man6
+man8dir=
+subst_vars="$subst_vars man8dir"
+man5dir=
+subst_vars="$subst_vars man5dir"
+docdir=
+subst_vars="$subst_vars docdir"
 
 # The paths for data are as per the FHS.  If a future version removes the
 # games ghettoes of /usr/games, /var/games, etc., then a subdirectory for
@@ -278,14 +241,7 @@ echo "to their scorefiles."
 
 askperms "Binary" binary root root 0755
 askperms "Game with scorefile" score_game root root 0755 # or root games 2755?
-if building_in hunt; then
-    askperms "Daemon" daemon root root 0755
-fi
-if building_in dm; then
-    askperms "Directory for hidden games" dmdir root games 0750
-    install_dmdir=`echo "$install_dmdir"| sed 's/install -c/install -d/'`
-    askperms "dm" dm root games 2755
-fi
+askperms "Daemon" daemon root root 0755
 askperms "Manpage" manpage root root 0644
 askperms "Constant data" constdata root root 0644
 askperms "Variable data" vardata root root 0644 # or 0666?
@@ -325,18 +281,14 @@ echo
 echo "It is presumed in some places by the Makefiles that the compiler"
 echo "will be some form of gcc."
 ask "C compiler" cc gcc
-if building_in dab; then
-    ask "C++ compiler" cxx g++
-fi
+#TODO 
 ask "Optimize flags" optimize_flags "-g -O2"
 echo
 echo "The default warning flags should give a compile with few warnings."
 # -Wbad-function-cast and -Wshadow give lots of warnings that are basically
 # harmless.
 ask "C compiler warning flags" warning_flags "-Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings"
-if building_in dab; then
-    ask "C++ compiler warning flags" cxx_warning_flags "-Wall -W -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings"
-fi
+
 echo
 echo "You probably want the default here, or could use -lncurses_g for"
 echo "debugging ncurses.  Use -lcurses -ltermcap if you want to try that,"
@@ -353,24 +305,6 @@ ask "Ncurses includes" ncurses_includes ''
 
 openssl_lib=
 openssl_includes=
-if building_in factor; then
-    echo
-    echo "factor can use libcrypto from OpenSSL to handle large numbers."
-    ask_yn "Use libcrypto" use_libcrypto y
-    if [ $use_libcrypto = y ]; then
-	echo "If the OpenSSL includes (with files such as bn.h) are not in"
-	echo "/usr/include/openssl, then you will need to specify a -I option"
-	echo "here, naming a directory containing an \"openssl\" subdirectory"
-	echo "with the OpenSSL headers."
-	ask "OpenSSL includes" openssl_includes ''
-	echo "If the OpenSSL libcrypto library is not in a location searched"
-	echo "by the compiler by default, or has a strange name, you will"
-	echo "need to specify the appropriate options to find it here"
-	echo "(for example, -L/usr/ssl/lib -lcrypto); otherwise, leave the"
-	echo "default, which is probably correct."
-	ask "OpenSSL libcrypto library" openssl_lib -lcrypto
-    fi
-fi
 subst_vars="$subst_vars openssl_lib openssl_includes"
 
 ask "Other CFLAGS" other_cflags ''
@@ -454,14 +388,6 @@ echo "particular library, in addition to those they would normally be linked"
 echo "with.  Unless you know you want this, you can leave it empty."
 ask "Base libraries" base_libs ''
 
-if building_in atc; then
-    ask "Yacc program" yacc "bison -y"
-fi
-if building_in atc; then
-    ask "Lex program" lex flex
-    ask "Lex library" lex_lib -lfl
-fi
-
 echo
 echo "You can choose the default pager for those games that use one (for"
 echo "example, for viewing instructions).  This can be an absolute path,"
@@ -469,32 +395,6 @@ echo "or the name of the pager to be searched for via the PATH at runtime."
 echo "All these games will also honour the PAGER environment variable if set,"
 echo "in the correct (POSIX.2) way."
 ask "Pager" pager /usr/bin/less
-
-if building_in fortune; then
-    echo
-    echo "Fortune comes with some potentially offensive fortunes.  You should"
-    echo "only install these if you are sure that your users want them."
-    ask_yn "Install offensive fortunes" offensive_fortunes n
-    if [ $offensive_fortunes = y ]; then
-	fortune_type=real
-    else
-	fortune_type=fake
-    fi
-    subst_vars="$subst_vars fortune_type"
-fi
-
-if building_in sail; then
-    echo
-    echo "Sail needs its own directory it can write to for temporary files"
-    echo "to synchronise among multiple players.  Note that with the"
-    echo "default permissions given here this will not work: you may want"
-    echo "to choose permissions appropriate to the security policy you are"
-    echo "using.  It may be more secure if this directory is not world"
-    echo "accessible (e.g. mode 2770)."
-    ask "Directory for sail temporary files" sail_dir "$varlibdir/sail"
-    askperms "Sail directory" sail_dir root root 0750
-    install_sail_dir=`echo "$install_sail_dir" |sed 's/install -c/install -d/'`
-fi
 
 echo
 echo "You can configure the exact names used for data files by various"
@@ -508,46 +408,6 @@ echo "generate boggle's own data.  In both cases they should probably be"
 echo "English dictionaries; all words which do not consist entirely of"
 echo "lower-case ASCII letters will be silently ignored."
 echo
-game_ask atc "Directory for atc static data" atc_dir "$sharedir/atc"
-game_ask atc "Score file for atc" atc_scorefile "$varlibdir/atc_score"
-game_ask battlestar "Score file for battlestar" battlestar_scorefile "$varlibdir/battlestar.log"
-# Bog has some other configuration
-game_ask boggle "Dictionary for boggle (CHECK ANSWER)" dictionary_src /usr/share/dict/words
-game_ask boggle "Directory for boggle static data" boggle_dir "$sharedir/boggle"
-game_ask canfield "Score file for canfield" canfield_scorefile "$varlibdir/cfscores"
-game_ask cribbage "File for cribbage instructions" cribbage_instrfile "$sharedir/cribbage.instr"
-game_ask cribbage "Score file for cribbage" cribbage_scorefile "$varlibdir/criblog"
-game_ask dm "Configuration file for dm" dm_configfile /etc/dm.conf
-game_ask dm "File to disable games playing" dm_nogamesfile /etc/nogames
-game_ask dm "Log file for dm" dm_logfile "$varlibdir/games.log"
-game_ask fish "File for fish instructions" fish_instrfile "$sharedir/fish.instr"
-game_ask fortune "Directory for fortune files" fortune_dir "$sharedir/fortune"
-game_ask hack "Directory for hack variable data" hack_dir "$varlibdir/hack"
-
-if building_in hack; then
-    echo
-    echo "This directory will need to be writable by hack at runtime."
-    echo "Note that with the default permissions given here this will"
-    echo "not work: you may want to choose permissions appropriate to the"
-    echo "security policy you are using (e.g. 2775 root.games for setgid"
-    echo "games)."
-    askperms "Hack directory" hack_dir root root 0755
-    install_hack_dir=`echo "$install_hack_dir" |sed 's/install -c/install -d/'`
-fi
-
-game_ask hangman "Words file for hangman (CHECK ANSWER)" hangman_wordsfile /usr/share/dict/words
-# Hunt has some other configuration
-game_ask monop "File for monop cards" monop_cardsfile "$sharedir/monop-cards.pck"
-game_ask phantasia "Directory for phantasia variable data" phantasia_dir "$varlibdir/phantasia"
-game_ask quiz "Directory for quiz static data" quiz_dir "$sharedir/quiz"
-game_ask robots "Score file for robots" robots_scorefile "$varlibdir/robots_roll"
-game_ask rogue "Score file for rogue" rogue_scorefile "$varlibdir/rogue.scores"
-game_ask sail "Score file for sail" sail_scorefile "$varlibdir/saillog"
-game_ask snake "Score file for snake" snake_scorefile "$varlibdir/snake.log"
-game_ask snake "Raw score file for snake" snake_rawscorefile "$varlibdir/snakerawscores"
-game_ask tetris "Score file for tetris" tetris_scorefile "$varlibdir/tetris-bsd.scores"
-game_ask wtf "Acronym database for wtf" wtf_acronymfile "/usr/share/misc/acronyms"
-game_ask wump "File for wump info" wump_infofile "$sharedir/wump.info"
 
 # Generate simplistic substitution script.
 # This does not allow escaped @s in the substituted file, will fail on
