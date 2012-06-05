@@ -63,12 +63,12 @@ static struct termios saved_tty;
 /**
  * Enables BSD library functions.
  */
+# define 	_BSD_GAMES 1
 # include	<features.h>
 
 /**
  * Added library to support net interface socket communication.
  */
-# define	__USE_MISC 1
 # include	<net/if.h>
 
 # include	"hunt.h"
