@@ -404,8 +404,7 @@ int main(int argc, char* argv[]) {
 
 # ifdef INTERNET
 # ifdef BROADCAST
-int
-broadcast_vec(int s, struct sockaddr **vector) {
+int broadcast_vec(struct sockaddr **vector) {
 	/*int			s;		 socket */
 	int vec_cnt;
 	struct ifaddrs *ifp, *ip;
@@ -510,7 +509,7 @@ SOCKET * list_drivers() {
 
 # ifdef BROADCAST
 	if (initial)
-	brdc = broadcast_vec(test_socket, (void *) &brdv);
+	brdc = broadcast_vec((void *) &brdv);
 
 # ifdef SO_BROADCAST
 	/* Sun's will broadcast even though this option can't be set */

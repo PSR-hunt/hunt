@@ -435,7 +435,7 @@ void add_shot(int, int, int, char, int, PLAYER *, int, char);
 int answer(void);
 void bad_con(void) __attribute__((__noreturn__));
 void bad_ver(void) __attribute__((__noreturn__));
-int broadcast_vec(int, struct sockaddr **);
+int broadcast_vec(struct sockaddr **);
 void ce(PLAYER *);
 void cgoto(PLAYER *, int, int);
 void check(PLAYER *, int, int);
@@ -496,3 +496,7 @@ SIGNAL_TYPE sigemt(int) __attribute__((__noreturn__));
 SIGNAL_TYPE sigterm(int) __attribute__((__noreturn__));
 SIGNAL_TYPE sigusr1(int) __attribute__((__noreturn__));
 SIGNAL_TYPE tstp(int);
+/**
+ * Wrapper for write function that prints on standard error stream in case of failure
+ */
+#define dbg_write(fd, buf, n) if(write(fd, buf, n)<0) fprintf(stderr, "Error calling write function\n");
