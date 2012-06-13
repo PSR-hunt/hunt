@@ -35,15 +35,27 @@
 __RCSID("$NetBSD: get_names.c,v 1.7 2003/06/11 12:00:22 wiz Exp $");
 #endif /* not lint */
 
-#include "bsd.h"
+/**
+ * Library already present in hunt.h
+ * #include "bsd.h"
+ */
 
 #if	defined(TALK_43) || defined(TALK_42)
 
 # include	<sys/param.h>
-# include	<netdb.h>
-# include	<stdio.h>
+/**
+ * Library already present in hunt.h
+ * # include	<netdb.h>
+ */
+/**
+ * Library already present in hunt.h
+ * # include	<stdio.h>
+ */
 # include	<stdlib.h>
-# include	<string.h>
+/**
+ * Library already present in hunt.h
+ * # include	<string.h>
+ */
 # include	<unistd.h>
 # include	"hunt.h"
 # include	"talk_ctl.h"

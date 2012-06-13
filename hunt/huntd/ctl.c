@@ -30,7 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "bsd.h"
+/**
+ * Library already present in hunt.h
+ * #include "bsd.h"
+ */
 
 #if	defined(TALK_43) || defined(TALK_42) 
 

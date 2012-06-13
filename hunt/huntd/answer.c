@@ -36,7 +36,10 @@ __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
 
 # include	<ctype.h>
-# include	<errno.h>
+/**
+ * Library already present in hunt.h
+ * # include	<errno.h>
+ */
 # include	<fcntl.h>
 # include	<stdlib.h>
 # include	<unistd.h>

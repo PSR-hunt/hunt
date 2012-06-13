@@ -38,7 +38,10 @@ __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 # include	<sys/file.h>
 # include	<sys/poll.h>
 # include	<err.h>
-# include	<errno.h>
+/**
+ * Library already present in hunt.h
+ * # include	<errno.h>
+ */
 # include	<ncurses.h> /*Edited from curses.h*/
 # include	<ctype.h>
 # include	<signal.h>

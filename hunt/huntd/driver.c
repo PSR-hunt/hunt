@@ -35,11 +35,17 @@
 __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
 
-# include	<sys/ioctl.h>
+/**
+ * Library already present in hunt.h
+ * # include	<sys/ioctl.h>
+ */
 # include	<sys/stat.h>
 # include	<sys/time.h>
 # include	<err.h>
-# include	<errno.h>
+/**
+ * Library already present in hunt.h
+ * # include	<errno.h>
+ */
 # include	<signal.h>
 # include	<stdlib.h>
 # include	<time.h>

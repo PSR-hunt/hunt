@@ -38,17 +38,27 @@ __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
 # include	<sys/param.h>
 # include	<sys/stat.h>
 # include	<sys/time.h>
-# include	<sys/poll.h>
+/**
+ * Library already present in hunt.h
+ * # include	<sys/poll.h>
+ */
 # include	<ctype.h>
 # include	<err.h>
-# include	<errno.h>
+/**
+ * Library already present in hunt.h
+ * # include	<errno.h>
+ */
+
 /**
  * Edited from curses.h
  */
 # include	<ncurses.h>
 # include	<signal.h>
 # include	<stdlib.h>
-# include	<string.h>
+/**
+ * Library already present in hunt.h
+ * # include	<string.h>
+ */
 # if !defined(USE_CURSES) && defined(BSD_RELEASE) && BSD_RELEASE >= 44
 # include	<termios.h>
 static struct termios saved_tty;
@@ -63,7 +73,7 @@ static struct termios saved_tty;
 /**
  * Enables BSD library functions.
  */
-# define 	_BSD_GAMES 1
+# define 	_BSD_SOURCE 1
 # include	<features.h>
 
 /**

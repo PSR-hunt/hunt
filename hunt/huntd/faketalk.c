@@ -35,7 +35,10 @@
 __RCSID("$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $");
 #endif /* not lint */
 
-#include "bsd.h"
+/**
+ * Library already present in hunt.h
+ * #include "bsd.h"
+ */
 #include "hunt.h"
 
 #if	defined(TALK_43) || defined(TALK_42)
@@ -43,7 +46,10 @@ __RCSID("$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $");
 # include	<sys/time.h>
 # include	<sys/wait.h>
 # include	<ctype.h>
-# include	<netdb.h>
+/**
+ * Library already present in hunt.h
+ * # include	<netdb.h>
+ */
 # include	<signal.h>
 # include	<stdio.h>
 # include	<string.h>

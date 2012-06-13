@@ -287,7 +287,7 @@ echo
 echo "The default warning flags should give a compile with few warnings."
 # -Wbad-function-cast and -Wshadow give lots of warnings that are basically
 # harmless.
-ask "C compiler warning flags" warning_flags "-Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings"
+ask "C compiler warning flags" warning_flags "-Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings -pedantic"
 
 echo
 echo "You probably want the default here, or could use -lncurses_g for"
@@ -307,7 +307,7 @@ openssl_lib=
 openssl_includes=
 subst_vars="$subst_vars openssl_lib openssl_includes"
 
-ask "Other CFLAGS" other_cflags ''
+ask "Other CFLAGS" other_cflags '-ansi -std=c99'
 ask "Other LDFLAGS" other_ldflags ''
 
 # Check for functions - not in glibc 2.1.1, but could be added later.
