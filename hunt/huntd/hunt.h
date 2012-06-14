@@ -42,6 +42,11 @@
  * sys/cdefs.h
  */
 
+/**
+ * Enables BSD library functions.
+ */
+# define 	_BSD_SOURCE
+
 # include "bsd.h"
 # ifndef TALK_MODE
 # include	<errno.h>

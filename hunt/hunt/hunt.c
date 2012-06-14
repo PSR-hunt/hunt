@@ -75,14 +75,6 @@ static struct termios saved_tty;
 # include 	<getopt.h>
 
 /**
- * Enables BSD library functions.
- */
-/**
- * # define 	_BSD_SOURCE
- */
-# include	<features.h>
-
-/**
  * Added library to support net interface socket communication.
  */
 # include	<net/if.h>
