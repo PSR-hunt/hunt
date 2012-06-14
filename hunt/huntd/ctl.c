@@ -36,8 +36,13 @@
  */
 
 #if	defined(TALK_43) || defined(TALK_42) 
-
-#include <sys/cdefs.h>
+# define TALK_MODE
+# include	"hunt.h"
+# undef TALK_MODE
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)ctl.c	5.2 (Berkeley) 3/13/86";
@@ -52,7 +57,6 @@ __RCSID("$NetBSD: ctl.c,v 1.3 2003/06/11 12:00:22 wiz Exp $");
  * the progress
  */
 
-#include "hunt.h"
 #include "talk_ctl.h"
 
 struct	sockaddr_in daemon_addr = { AF_INET };

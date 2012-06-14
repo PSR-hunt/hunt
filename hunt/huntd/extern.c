@@ -30,12 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
+# include	"hunt.h"
+
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 __RCSID("$NetBSD: extern.c,v 1.4 2003/06/11 12:00:22 wiz Exp $");
 #endif /* not lint */
-
-# include	"hunt.h"
 
 # ifdef MONITOR
 bool	Am_monitor = false;		/* current process is a monitor */

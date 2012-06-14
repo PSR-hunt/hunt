@@ -30,7 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
+# include	"hunt.h"
+
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 __RCSID("$NetBSD: shots.c,v 1.5 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -38,7 +43,6 @@ __RCSID("$NetBSD: shots.c,v 1.5 2004/01/27 20:30:29 jsm Exp $");
 # include	<err.h>
 # include	<signal.h>
 # include	<stdlib.h>
-# include	"hunt.h"
 
 # define	PLUS_DELTA(x, max)	if (x < max) x++; else x--
 # define	MINUS_DELTA(x, min)	if (x > min) x--; else x++

@@ -30,7 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
+# include	"hunt.h"
+
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -50,7 +55,6 @@ __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 # include	<termios.h>
 # include	<unistd.h>
 # endif
-# include	"hunt.h"
 
 # ifndef FREAD
 # define	FREAD	1

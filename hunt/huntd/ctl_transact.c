@@ -36,8 +36,13 @@
  */
 
 #if	defined(TALK_43) || defined(TALK_42)
-
-#include <sys/cdefs.h>
+# define TALK_MODE
+# include	"hunt.h"
+# undef	TALK_MODE
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)ctl_transact.c	5.2 (Berkeley) 3/13/86";
@@ -48,7 +53,6 @@ __RCSID("$NetBSD: ctl_transact.c,v 1.6 2003/06/11 12:00:22 wiz Exp $");
 
 #include <sys/time.h>
 #include <unistd.h>
-#include "hunt.h"
 #include "talk_ctl.h"
 
 #define CTL_WAIT 2	/* time to wait for a response, in seconds */

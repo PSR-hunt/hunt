@@ -30,13 +30,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
+# include	"hunt.h"
+
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 __RCSID("$NetBSD: expl.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
 
 # include	<stdlib.h>
-# include	"hunt.h"
 
 static	void	remove_wall(int, int);
 

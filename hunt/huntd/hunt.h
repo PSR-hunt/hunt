@@ -31,20 +31,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-# include "bsd.h"
+/**
+ * Simple mode: does not contain
+ * sys/cdefs.h library
+ *
+ * Talk mode (avoids duplicated inclusion in concurrence with talk_ctl.h
+ * inclusion): does not contain
+ * errno.h
+ * syslog.h
+ * sys/cdefs.h
+ */
 
+# include "bsd.h"
+# ifndef TALK_MODE
 # include	<errno.h>
-# include	<stdio.h>
-# include	<string.h>
 # ifdef LOG
 # include	<syslog.h>
 # endif
+# include	<sys/types.h>
+# endif
+
+# include	<stdio.h>
+# include	<string.h>
 # if !defined(TERMINFO) && BSD_RELEASE < 44
 # include	<sgtty.h>
 # else
 # include	<sys/ioctl.h>
 # endif
-# include	<sys/types.h>
 # include	<sys/uio.h>
 # include	<sys/poll.h>
 # ifdef	INTERNET
@@ -62,6 +75,10 @@
  * Added boolean type support.
  */
 # include <stdbool.h>
+
+# ifndef SIMPLE_MODE
+# include <sys/cdefs.h>
+# endif
 
 /**
  * Added from file configuration support.

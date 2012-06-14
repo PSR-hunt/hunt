@@ -30,7 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
+# include	"hunt.h"
+
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
@@ -44,7 +49,6 @@ __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 # include	<stdlib.h>
 # include	<unistd.h>
 # include	<sys/time.h>
-# include	"hunt.h"
 
 # define	SCOREDECAY	15
 

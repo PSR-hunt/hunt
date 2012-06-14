@@ -30,7 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
+# include	"hunt.h"
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
@@ -73,15 +77,15 @@ static struct termios saved_tty;
 /**
  * Enables BSD library functions.
  */
-# define 	_BSD_SOURCE 1
+/**
+ * # define 	_BSD_SOURCE
+ */
 # include	<features.h>
 
 /**
  * Added library to support net interface socket communication.
  */
 # include	<net/if.h>
-
-# include	"hunt.h"
 
 /**
  * It defines the overextimated length of a line in configuration file.

@@ -30,12 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
+# include	"hunt.h"
+
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 __RCSID("$NetBSD: makemaze.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
-
-# include	"hunt.h"
 
 # define	ISCLEAR(y,x)	(Maze[y][x] == SPACE)
 # define	ODD(n)		((n) & 01)

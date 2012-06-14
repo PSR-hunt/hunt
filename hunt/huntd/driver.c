@@ -30,7 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
+# include	"hunt.h"
+
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -54,7 +59,6 @@ __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
  *  Explicit declaration of getopt family functions
  */
 # include 	<getopt.h>
-# include	"hunt.h"
 
 # ifndef pdp11
 # define	RN	(((Seed = Seed * 11109 + 13849) >> 16) & 0xffff)

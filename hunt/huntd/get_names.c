@@ -57,7 +57,16 @@ __RCSID("$NetBSD: get_names.c,v 1.7 2003/06/11 12:00:22 wiz Exp $");
  * # include	<string.h>
  */
 # include	<unistd.h>
+
+/**
+ * Include the simple version of hunt.h
+ */
+# define TALK_MODE
+# define	SIMPLE_MODE
 # include	"hunt.h"
+# undef		SIMPLE_MODE
+# undef TALK_MODE
+
 # include	"talk_ctl.h"
 
 #ifndef MAXHOSTNAMELEN

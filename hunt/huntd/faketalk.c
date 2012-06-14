@@ -30,7 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/cdefs.h>
+# define TALK_MODE
+# include	"hunt.h"
+# undef TALK_MODE
+
+/**
+ * Pushed up in hunt.h
+ * #include <sys/cdefs.h>
+ */
 #ifndef lint
 __RCSID("$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $");
 #endif /* not lint */
@@ -39,7 +46,6 @@ __RCSID("$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $");
  * Library already present in hunt.h
  * #include "bsd.h"
  */
-#include "hunt.h"
 
 #if	defined(TALK_43) || defined(TALK_42)
 
