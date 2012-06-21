@@ -46,6 +46,7 @@
  * Enables BSD library functions.
  */
 # define 	_BSD_SOURCE
+# define	_POSIX_C_SOURCE 1
 
 # include "bsd.h"
 # ifndef TALK_MODE
@@ -521,4 +522,14 @@ SIGNAL_TYPE tstp(int);
 /**
  * Wrapper for write function that prints on standard error stream in case of failure
  */
-#define dbg_write(fd, buf, n) if(write(fd, buf, n)<0) fprintf(stderr, "Error calling write function\n");
+# define dbg_write(fd, buf, n) if(write(fd, buf, n)<0) fprintf(stderr, "Error calling write function\n");
+
+/**
+ * Wrapper for read function that prints on standard error stream in case of failure
+ */
+# define dbg_read(fd, buf, nbytes) if(read(fd, buf, nbytes)<0) fprintf(stderr, "Error calling read function\n");
+
+/**
+ * Wrapper for chdir function that prints on standard error stream in case of failure
+ */
+# define dbg_chdir(path) if(chdir(path)<0) fprintf(stderr, "Error calling chdir function\n");

@@ -290,7 +290,7 @@ static void send_stuff(){
 	if (count <= 0)
 		return;
 	if (nchar_send <= 0 && !no_beep) {
-		(void) write(1, "\7", 1);	/* CTRL('G') */
+		dbg_write(1, "\7", 1);	/* CTRL('G') */
 		return;
 	}
 
@@ -314,7 +314,7 @@ static void send_stuff(){
 		nchar_send -= count;
 		if (nchar_send < 0)
 			count += nchar_send;
-		(void) write(Socket, inp, count);
+		dbg_write(Socket, inp, count);
 	}
 }
 

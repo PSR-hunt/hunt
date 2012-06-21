@@ -228,7 +228,7 @@ void otto(int y,int x,char face){
 		wander();
 
 done:
-	(void) write(Socket, command, comlen);
+	dbg_write(Socket, command, comlen);
 	Otto_count += comlen;
 # ifdef	DEBUG
 	(void) fwrite(command, 1, comlen, debug);

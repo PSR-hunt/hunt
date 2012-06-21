@@ -448,7 +448,10 @@ SOCKET * list_drivers() {
 	unsigned short port_num;
 	static SOCKET test;
 	int test_socket;
-	int namelen;
+	/**
+	 * Edited namelen declaration type to unsigned int to match recvfrom() parameter.
+	 */
+	unsigned int namelen;
 	char local_name[MAXHOSTNAMELEN + 1];
 	static int initial = true;
 	static struct in_addr local_address;
@@ -692,7 +695,7 @@ void dump_scores(SOCKET host) {
 	if (connect(s, (struct sockaddr *) &host, sizeof host) < 0)
 	err(1, "connect");
 	while ((cnt = read(s, buf, BUFSIZ)) > 0)
-	write(fileno(stdout), buf, cnt);
+	dbg_write(fileno(stdout), buf, cnt);
 	(void) close(s);
 }
 
@@ -844,7 +847,7 @@ SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
 			ch = tolower(ch);
 		if (ch == 'y') {
 			if (Socket != 0) {
-				(void) write(Socket, "q", 1);
+				dbg_write(Socket, "q", 1);
 				(void) close(Socket);
 			}
 			leavex(0, (char *) NULL);
@@ -899,7 +902,10 @@ void leave(int eval, const char *mesg) {
 	int serrno = errno;
 	fincurs();
 	errno = serrno;
-	err(eval, mesg ? mesg : "");
+	/**
+	 * Introduced errno parameter in err() in order to display it on standard error.
+	 */
+	err(eval, (mesg ? mesg : ""), errno);
 }
 
 /*
@@ -909,7 +915,10 @@ void leave(int eval, const char *mesg) {
  */
 void leavex(int eval, const char *mesg) {
 	fincurs();
-	errx(eval, mesg ? mesg : "");
+	/**
+	 * Introduced a NULL parameter in errx() since the routine shows a generic error message.
+	 */
+	errx(eval, (mesg ? mesg : ""), NULL);
 }
 
 #if !defined(USE_CURSES) && defined(SIGTSTP)
@@ -994,6 +1003,7 @@ long env_init(long enter_status_in) {
 	char* equal; /**< Points to the position of '=' into input_row.*/
 	char* input_value; /**< Value associated to a configuration tag.*/
 	long tag_len; /**< Tag field length.*/
+	char* read;
 
 	int i;
 
@@ -1015,8 +1025,14 @@ long env_init(long enter_status_in) {
 			opened_c = true;
 		}
 		input_row = malloc(sizeof(char) * (input_len + 1));
-		fgets(input_row, input_len + 1, config);
+		read = fgets(input_row, input_len + 1, config);
 		while (!feof(config)) {
+			/**
+			 * Avoids infinite loop in case of fgets failure.
+			 */
+			if(read==NULL){
+				break;
+			}
 			equal = strpbrk(input_row, "=");
 			input_value = (equal != NULL) ? equal + 1 : input_row + input_len;
 			tag_len = input_value - input_row;
@@ -1067,14 +1083,22 @@ long env_init(long enter_status_in) {
 				input_len = EMERGENCY_BUFFER_LENGTH;
 			}
 			input_row = malloc(sizeof(char) * (input_len + 1));
-			fgets(input_row, input_len + 1, config);
+			read = fgets(input_row, input_len + 1, config);
 		}
 		free(input_row);
 		input_row = NULL;
 		if (opened_c) {
-			c = fclose(c);
+			/**
+			 * Hard-wired FILE* c setting to NULL after file closure.
+			 */
+			fclose(c);
+			c = NULL;
 		}
-		config = fclose(config);
+		/**
+		* Hard-wired FILE* config setting to NULL after file closure.
+		*/
+		fclose(config);
+		config = NULL;
 	}
 	return enter_status;
 }
@@ -1202,13 +1226,20 @@ long var_env_init(long enter_status_in) {
 long fchars_in_line(FILE* f) {
 	long counter = 0;
 	char in;
-	fscanf("%c", &in);
+	int read;
+	read = fscanf(f,"%c", &in);
 	while (!feof(f)) {
+		/**
+		 * Avoids infinite loop in case of fscanf failure.
+		 */
+		if (!read){
+			break;
+		}
 		if (in == '\n')
 			break;
 		else {
 			counter++;
-			fscanf("%c", &in);
+			read = fscanf(f,"%c", &in);
 		}
 	}
 	return counter;

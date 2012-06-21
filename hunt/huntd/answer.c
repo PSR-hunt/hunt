@@ -61,7 +61,10 @@ int answer(){
 	static char		name[NAMELEN];
 	static char		team;
 	static int		enter_status;
-	static int		socklen;
+	/**
+	 * Edited socklen declaration type in order to match accept() parameter.
+	 */
+	static unsigned int		socklen;
 	static unsigned long		machine;
 	static u_int32_t	uid;
 	static SOCKET		sockstruct;
@@ -96,15 +99,15 @@ int answer(){
 		machine = gethostid();
 # endif
 	version = htonl((u_int32_t) HUNT_VERSION);
-	(void) write(newsock, (char *) &version, LONGLEN);
-	(void) read(newsock, (char *) &uid, LONGLEN);
+	dbg_write(newsock, (char *) &version, LONGLEN);
+	dbg_read(newsock, (char *) &uid, LONGLEN);
 	uid = ntohl((unsigned long) uid);
-	(void) read(newsock, name, NAMELEN);
-	(void) read(newsock, &team, 1);
-	(void) read(newsock, (char *) &enter_status, LONGLEN);
+	dbg_read(newsock, name, NAMELEN);
+	dbg_read(newsock, &team, 1);
+	dbg_read(newsock, (char *) &enter_status, LONGLEN);
 	enter_status = ntohl((unsigned long) enter_status);
-	(void) read(newsock, Ttyname, NAMELEN);
-	(void) read(newsock, (char *) &mode, sizeof mode);
+	dbg_read(newsock, Ttyname, NAMELEN);
+	dbg_read(newsock, (char *) &mode, sizeof mode);
 	mode = ntohl(mode);
 
 	/*
@@ -160,7 +163,7 @@ int answer(){
 			i = pp - Monitor + MAXPL + 3;
 		} else {
 			socklen = 0;
-			(void) write(newsock, (char *) &socklen,
+			dbg_write(newsock, (char *) &socklen,
 				sizeof socklen);
 			(void) close(newsock);
 			return false;
@@ -172,7 +175,7 @@ int answer(){
 			i = pp - Player + 3;
 		} else {
 			socklen = 0;
-			(void) write(newsock, (char *) &socklen,
+			dbg_write(newsock, (char *) &socklen,
 				sizeof socklen);
 			(void) close(newsock);
 			return false;

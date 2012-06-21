@@ -98,28 +98,28 @@ void execute(PLAYER *pp){
 	  case CTRL('L'):
 		sendcom(pp, REDRAW);
 		break;
-	  case 'h':
+	  case 'a':
 		move_player(pp, LEFTS);
 		break;
-	  case 'H':
+	  case 'A':
 		face(pp, LEFTS);
 		break;
-	  case 'j':
+	  case 's':
 		move_player(pp, BELOW);
 		break;
-	  case 'J':
+	  case 'S':
 		face(pp, BELOW);
 		break;
-	  case 'k':
+	  case 'w':
 		move_player(pp, ABOVE);
 		break;
-	  case 'K':
+	  case 'W':
 		face(pp, ABOVE);
 		break;
-	  case 'l':
+	  case 'd':
 		move_player(pp, RIGHT);
 		break;
-	  case 'L':
+	  case 'D':
 		face(pp, RIGHT);
 		break;
 	  case 'f':
@@ -173,7 +173,7 @@ void execute(PLAYER *pp){
 		fire_slime(pp, 3);
 		break;
 # endif
-	  case 's':
+	  case 'e':
 		scan(pp);
 		break;
 	  case 'c':

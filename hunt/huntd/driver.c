@@ -99,7 +99,10 @@ int main(int argc, char* argv[], char* env[]) {
 # ifdef INTERNET
 	unsigned short msg;
 	unsigned short port_num, reply;
-	int namelen;
+	/**
+	 * Edited namelen declaration type in order to match recvfrom() parameter.
+	 */
+	unsigned int namelen;
 	SOCKET test;
 # endif
 	static bool first = true;
@@ -264,7 +267,10 @@ static void init() {
 # ifdef	INTERNET
 	SOCKET test_port;
 	int msg;
-	int len;
+	/**
+	 * Edited len declaration type in order to match getsockname() parameter.
+	 */
+	unsigned int len;
 # endif
 
 # ifndef DEBUG
@@ -284,7 +290,7 @@ static void init() {
 	(void) signal(SIGTERM, cleanup);
 # endif
 
-	(void) chdir("/var/tmp"); /* just in case it core dumps */
+	dbg_chdir("/var/tmp"); /* just in case it core dumps */
 	(void) umask(0); /* No privacy at all! */
 	(void) signal(SIGPIPE, SIG_IGN);
 
@@ -874,7 +880,10 @@ static void send_stats() {
 	FILE *fp;
 	int s;
 	SOCKET sockstruct;
-	int socklen;
+	/**
+	 * Edited socklen declaration type in order to match accept() parameter.
+	 */
+	unsigned int socklen;
 
 	/*
 	 * Get the output stream ready
@@ -951,3 +960,4 @@ static void clear_scores() {
 	}
 	Scores = NULL;
 }
+
