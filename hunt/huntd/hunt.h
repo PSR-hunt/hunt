@@ -481,6 +481,7 @@ IDENT *get_ident(unsigned long, unsigned long, const char *, char);
 void get_local_name(const char *);
 int get_remote_name(char *);
 BULLET *is_bullet(int, int);
+void iso_syslog(int, const char *, ...); //TODO
 void look(PLAYER *);
 void makemaze(void);
 void message(PLAYER *, const char *);
@@ -519,6 +520,7 @@ SIGNAL_TYPE sigemt(int) __attribute__((__noreturn__));
 SIGNAL_TYPE sigterm(int) __attribute__((__noreturn__));
 SIGNAL_TYPE sigusr1(int) __attribute__((__noreturn__));
 SIGNAL_TYPE tstp(int);
+
 /**
  * Wrapper for write function that prints on standard error stream in case of failure
  */

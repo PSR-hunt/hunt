@@ -60,7 +60,7 @@ void showexpl(int y,int x,char type){
 	ep = (EXPL *) malloc(sizeof (EXPL));	/* NOSTRICT */
 	if (ep == NULL) {
 # ifdef LOG
-		syslog(LOG_ERR, "Out of memory");
+		iso_syslog(LOG_ERR, "Out of memory");
 # else
 		warnx("Out of memory");
 # endif

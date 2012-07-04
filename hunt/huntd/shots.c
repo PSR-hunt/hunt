@@ -769,7 +769,7 @@ static void chkslime(BULLET *bp,BULLET *next){
 	nbp = (BULLET *) malloc(sizeof (BULLET));
 	if (nbp == NULL) {
 # ifdef LOG
-		syslog(LOG_ERR, "Out of memory");
+		iso_syslog(LOG_ERR, "Out of memory");
 # else
 		warnx("Out of memory");
 # endif

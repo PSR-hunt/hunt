@@ -98,7 +98,7 @@ extern	int ctl_sockt;
 extern	CTL_MSG msg;
 
 #ifdef LOG
-#define	p_error(str)	syslog(LOG_WARNING, "faketalk %s: %m", str)
+#define	p_error(str)	iso_syslog(LOG_WARNING, "faketalk %s: %m", str)
 #else
 #define	p_error(str)	warn(str)
 #endif

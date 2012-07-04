@@ -27,25 +27,6 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-atc/atc.6
-backgammon/backgammon/backgammon.6
-caesar/rot13
-canfield/canfield/canfield.6
-cribbage/cribbage.6
-dm/dm.8
-dm/dm.conf.5
-fortune/fortune/fortune.6
-hack/hack.6
-hangman/hangman.6
+
 hunt/hunt/hunt.6
 hunt/huntd/huntd.6
-monop/monop.6
-quiz/datfiles/index
-quiz/quiz.6
-robots/robots.6
-rogue/rogue.6
-snake/snake/snake.6
-tetris/tetris.6
-trek/trek.6
-wtf/wtf.6
-wtf/wtf

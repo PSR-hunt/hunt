@@ -105,7 +105,7 @@ void get_local_name(const char *my_name){
 	hp = gethostbyname(my_machine_name);
 	if (hp == (struct hostent *) 0) {
 # ifdef LOG
-		syslog(LOG_ERR,
+		iso_syslog(LOG_ERR,
 		    "This machine doesn't exist. Boy, am I confused!");
 # else
 		perror("This machine doesn't exist. Boy, am I confused!");
@@ -121,7 +121,7 @@ void get_local_name(const char *my_name){
 # endif
 	if (sp == 0) {
 # ifdef LOG
-		syslog(LOG_ERR, "This machine doesn't support talk");
+		iso_syslog(LOG_ERR, "This machine doesn't support talk");
 # else
 		perror("This machine doesn't support talk");
 # endif

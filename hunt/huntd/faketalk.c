@@ -136,7 +136,7 @@ void faketalk() {
 
 	if ((sp = getservbyname("smtp", (char *) NULL)) == NULL) {
 # ifdef LOG
-		syslog(LOG_ERR, "faketalk: smtp protocol not supported\n");
+		iso_syslog(LOG_ERR, "faketalk: smtp protocol not supported\n");
 # else
 		warn("faketalk: smtp protocol not supported");
 # endif
@@ -150,7 +150,7 @@ void faketalk() {
 
 	if ((service = socket(des.sin_family, SOCK_STREAM, 0)) < 0) {
 # ifdef LOG
-		syslog(LOG_ERR, "falktalk:  socket");
+		iso_syslog(LOG_ERR, "falktalk:  socket");
 # else
 		warn("falktalk:  socket");
 # endif
@@ -159,7 +159,7 @@ void faketalk() {
 
 	if (connect(service, (struct sockaddr *) &des, sizeof(des)) != 0) {
 # ifdef LOG
-		syslog(LOG_ERR, "faketalk:  connect");
+		iso_syslog(LOG_ERR, "faketalk:  connect");
 # else
 		warn("faketalk:  connect");
 # endif
@@ -167,7 +167,7 @@ void faketalk() {
 	}
 	if ((f = fdopen(service, "r")) == NULL) {
 # ifdef LOG
-		syslog(LOG_ERR, "fdopen failed\n");
+		iso_syslog(LOG_ERR, "fdopen failed\n");
 # else
 		warn("faketalk:  fdopen");
 # endif

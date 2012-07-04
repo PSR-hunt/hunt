@@ -149,6 +149,9 @@ void fill_in_blanks(void);
 void leave(int, const char *) __attribute__((__noreturn__));
 void leavex(int, const char *) __attribute__((__noreturn__));
 void fincurs(void);
+
+void usage(void);
+
 int main(int, char *[]);
 # ifdef INTERNET
 SOCKET *list_drivers(void);
@@ -189,7 +192,7 @@ int main(int argc, char* argv[]) {
 		case 'o':
 # ifndef OTTO
 			warnx("The -o flag is reserved for future use.");
-			goto usage;
+			usage();
 # else
 			Otto_mode = true;
 			break;
@@ -252,12 +255,12 @@ int main(int argc, char* argv[]) {
 	}
 # ifdef INTERNET
 	if (optind + 1 < argc)
-	goto usage;
+		usage();
 	else if (optind + 1 == argc)
-	Sock_host = argv[argc - 1];
+		Sock_host = argv[argc - 1];
 # else
 	if (optind > argc)
-		goto usage;
+		usage();
 # endif
 
 # ifdef INTERNET
@@ -331,7 +334,7 @@ int main(int argc, char* argv[]) {
 		find_driver(true);
 
 		if (Daemon.sin_port == 0)
-		leavex(1, "Game not found, try again");
+			leavex(1, "Game not found, try again");
 
 		jump_in:
 		do {
@@ -339,12 +342,12 @@ int main(int argc, char* argv[]) {
 
 			Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
 			if (Socket < 0)
-			err(1, "socket");
+				err(1, "socket");
 			option = 1;
 #ifdef SO_USELOOPBACK
 			if (setsockopt(Socket, SOL_SOCKET, SO_USELOOPBACK,
 							&option, sizeof option) < 0)
-			warn("setsockopt loopback");
+				warn("setsockopt loopback");
 #endif
 			errno = 0;
 			if (connect(Socket, (struct sockaddr *) &Daemon,
@@ -441,6 +444,14 @@ int broadcast_vec(struct sockaddr **vector) {
 	return vec_cnt;
 }
 # endif
+
+/**
+ * Helper function to print the usage of the program on stderr.
+ */
+void usage(){
+	fputs("usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host]\n", stderr);
+	exit(1);
+}
 
 SOCKET * list_drivers() {
 	int option;

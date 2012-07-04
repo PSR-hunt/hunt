@@ -143,7 +143,7 @@ int main(int argc, char* argv[], char* env[]) {
 		while (poll(fdset, 3 + MAXPL + MAXMON, INFTIM) < 0) {
 			if (errno != EINTR)
 # ifdef LOG
-				syslog(LOG_WARNING, "select: %m");
+				iso_syslog(LOG_WARNING, "select: %m");
 # else
 				warn("select");
 # endif
@@ -321,7 +321,7 @@ static void init() {
 			exit(0);
 		else {
 # ifdef LOG
-			syslog(LOG_ERR, "bind: %m");
+			iso_syslog(LOG_ERR, "bind: %m");
 # else
 			warn("bind");
 # endif
@@ -334,7 +334,7 @@ static void init() {
 	len = sizeof (SOCKET);
 	if (getsockname(Status, (struct sockaddr *) &Daemon, &len) < 0) {
 # ifdef LOG
-		syslog(LOG_ERR, "getsockname: %m");
+		iso_syslog(LOG_ERR, "getsockname: %m");
 # else
 		warn("getsockname");
 # endif
@@ -361,7 +361,7 @@ static void init() {
 #ifdef SO_USELOOPBACK
 	if (setsockopt(Socket, SOL_SOCKET, SO_USELOOPBACK, &msg, sizeof msg)<0)
 # ifdef LOG
-	syslog(LOG_WARNING, "setsockopt loopback %m");
+	iso_syslog(LOG_WARNING, "setsockopt loopback %m");
 # else
 	warn("setsockopt loopback");
 # endif
@@ -372,7 +372,7 @@ static void init() {
 			exit(0);
 		else {
 # ifdef LOG
-			syslog(LOG_ERR, "bind: %m");
+			iso_syslog(LOG_ERR, "bind: %m");
 # else
 			warn("bind");
 # endif
@@ -385,7 +385,7 @@ static void init() {
 	len = sizeof (SOCKET);
 	if (getsockname(Socket, (struct sockaddr *) &Daemon, &len) < 0) {
 # ifdef LOG
-		syslog(LOG_ERR, "getsockname: %m");
+		iso_syslog(LOG_ERR, "getsockname: %m");
 # else
 		warn("getsockname");
 # endif
@@ -420,7 +420,7 @@ static void init() {
 		if (bind(Test_socket, (struct sockaddr *) &test_port,
 						DAEMON_SIZE) < 0) {
 # ifdef LOG
-			syslog(LOG_ERR, "bind: %m");
+			iso_syslog(LOG_ERR, "bind: %m");
 # else
 			warn("bind");
 # endif
@@ -898,7 +898,7 @@ static void send_stats() {
 		if (errno == EINTR)
 			return;
 # ifdef LOG
-		syslog(LOG_WARNING, "accept: %m");
+		iso_syslog(LOG_WARNING, "accept: %m");
 # else
 		warn("accept");
 # endif
@@ -907,7 +907,7 @@ static void send_stats() {
 	fp = fdopen(s, "w");
 	if (fp == NULL) {
 # ifdef LOG
-		syslog(LOG_WARNING, "fdopen: %m");
+		iso_syslog(LOG_WARNING, "fdopen: %m");
 # else
 		warn("fdopen");
 # endif

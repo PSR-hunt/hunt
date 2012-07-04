@@ -85,7 +85,7 @@ int answer(){
 		if (errno == EINTR)
 			return false;
 # ifdef LOG
-		syslog(LOG_ERR, "accept: %m");
+		iso_syslog(LOG_ERR, "accept: %m");
 # else
 		perror("accept");
 # endif
