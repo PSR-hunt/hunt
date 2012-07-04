@@ -73,16 +73,16 @@ __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 # define	put_str		addstr
 # endif
 
-static int	nchar_send;
+static int nchar_send;
 # ifndef USE_CURSES
-char		screen[SCREEN_HEIGHT][SCREEN_WIDTH2], blanks[SCREEN_WIDTH];
-int		cur_row, cur_col;
+char screen[SCREEN_HEIGHT][SCREEN_WIDTH2], blanks[SCREEN_WIDTH];
+int cur_row, cur_col;
 # endif
 # ifdef OTTO
-int		Otto_count;
-int		Otto_mode;
-static int	otto_y, otto_x;
-static char	otto_face;
+int Otto_count;
+int Otto_mode;
+static int otto_y, otto_x;
+static char otto_face;
 # endif
 
 # define	MAX_SEND	5
@@ -93,27 +93,27 @@ static char	otto_face;
  * It is small because we do not check for user input when there
  * are characters in the input buffer.
  */
-static int		icnt = 0;
-static unsigned char	ibuf[256], *iptr = ibuf;
+static int icnt = 0;
+static unsigned char ibuf[256], *iptr = ibuf;
 
 #define	GETCHR()	(--icnt < 0 ? getchr() : *iptr++)
 
 #if !defined(BSD_RELEASE) || BSD_RELEASE < 44
-extern int	_putchar();
+extern int _putchar();
 #endif
 
-static	unsigned char	getchr(void);
-static	void		send_stuff(void);
+static unsigned char getchr(void);
+static void send_stuff(void);
 
 /*
  * playit:
  *	Play a given game, handling all the curses commands from
  *	the driver.
  */
-void playit(){
-	int		ch;
-	int		y, x;
-	u_int32_t	version;
+void playit() {
+	int ch;
+	int y, x;
+	u_int32_t version;
 
 	if (read(Socket, (char *) &version, LONGLEN) != LONGLEN) {
 		bad_con();
@@ -133,7 +133,7 @@ void playit(){
 		fputc(ch, stderr);
 # endif
 		switch (ch & 0377) {
-		  case MOVE:
+		case MOVE:
 			y = GETCHR();
 			x = GETCHR();
 # ifdef USE_CURSES
@@ -144,15 +144,15 @@ void playit(){
 			cur_col = x;
 # endif
 			break;
-		  case ADDCH:
+		case ADDCH:
 			ch = GETCHR();
 # ifdef OTTO
 			switch (ch) {
 
-			case '<':
-			case '>':
-			case '^':
-			case 'v':
+				case '<':
+				case '>':
+				case '^':
+				case 'v':
 				otto_face = ch;
 # ifdef USE_CURSES
 				getyx(stdscr, otto_y, otto_x);
@@ -165,30 +165,35 @@ void playit(){
 # endif
 			put_ch(ch);
 			break;
-		  case CLRTOEOL:
+		case CLRTOEOL:
 			clear_eol();
 			break;
-		  case CLEAR:
+		case CLEAR:
 			clear_the_screen();
 			break;
-		  case REFRESH:
-			refresh();
+		case REFRESH:
+			refresh()
+			;
 			break;
-		  case REDRAW:
+		case REDRAW:
 			redraw_screen();
-			refresh();
+			refresh()
+			;
 			break;
-		  case ENDWIN:
-			refresh();
+		case ENDWIN:
+			refresh()
+			;
 			if ((ch = GETCHR()) == LAST_PLAYER)
 				Last_player = true;
 			ch = EOF;
-			goto out;
-		  case BELL:
+			(void) close(Socket);
+			return;
+		case BELL:
 			beep();
 			break;
-		  case READY:
-			refresh();
+		case READY:
+			refresh()
+			;
 			if (nchar_send < 0)
 # if defined(HPUX) || (defined(BSD_RELEASE) && BSD_RELEASE >= 44)
 				tcflush(STDIN, TCIFLUSH);
@@ -209,18 +214,18 @@ void playit(){
 				fputc('0' + Otto_count, stderr);
 # endif
 				if (Otto_count == 0 && Otto_mode)
-					otto(otto_y, otto_x, otto_face);
+				otto(otto_y, otto_x, otto_face);
 			}
 # endif
 			break;
-		  default:
+		default:
 # ifdef OTTO
 			switch (ch) {
 
-			case '<':
-			case '>':
-			case '^':
-			case 'v':
+				case '<':
+				case '>':
+				case '^':
+				case 'v':
 				otto_face = ch;
 # ifdef USE_CURSES
 				getyx(stdscr, otto_y, otto_x);
@@ -235,7 +240,6 @@ void playit(){
 			break;
 		}
 	}
-out:
 	(void) close(Socket);
 }
 
@@ -246,51 +250,53 @@ out:
  *	When this routine is called by GETCHR, we already know there are
  *	no characters in the input buffer.
  */
-static unsigned char getchr(){
-	struct	pollfd set[2];
-	int	nfds;
+static unsigned char getchr() {
+	struct pollfd set[2];
+	int nfds;
 
 	set[0].fd = Socket;
 	set[0].events = POLLIN;
 	set[1].fd = STDIN;
 	set[1].events = POLLIN;
 
-one_more_time:
-	do {
-		errno = 0;
-		nfds = poll(set, 2, INFTIM);
-	} while (nfds <= 0 && errno == EINTR);
+	while (1) {
+		do {
+			errno = 0;
+			nfds = poll(set, 2, INFTIM);
+		} while (nfds <= 0 && errno == EINTR);
 
-	if (set[1].revents && POLLIN)
-		send_stuff();
-	if (! (set[0].revents & POLLIN))
-		goto one_more_time;
-	icnt = read(Socket, ibuf, sizeof ibuf);
-	if (icnt < 0) {
-		bad_con();
-		/* NOTREACHED */
+		if (set[1].revents && POLLIN)
+			send_stuff();
+		if (!(set[0].revents & POLLIN))
+			continue;
+		icnt = read(Socket, ibuf, sizeof ibuf);
+		if (icnt < 0) {
+			bad_con();
+			/* NOTREACHED */
+		}
+		if (icnt == 0)
+			continue;
+		iptr = ibuf;
+		icnt--;
+		return *iptr++;
 	}
-	if (icnt == 0)
-		goto one_more_time;
-	iptr = ibuf;
-	icnt--;
-	return *iptr++;
 }
 
 /*
  * send_stuff:
  *	Send standard input characters to the driver
  */
-static void send_stuff(){
-	int		count;
-	char		*sp, *nsp;
-	static char	inp[sizeof Buf];
+static void send_stuff() {
+	int count;
+	char *sp, *nsp;
+	static char inp[sizeof Buf];
 
 	count = read(STDIN, Buf, sizeof Buf);
 	if (count <= 0)
 		return;
 	if (nchar_send <= 0 && !no_beep) {
-		dbg_write(1, "\7", 1);	/* CTRL('G') */
+		dbg_write(1, "\7", 1);
+		/* CTRL('G') */
 		return;
 	}
 
@@ -302,7 +308,7 @@ static void send_stuff(){
 	Buf[count] = '\0';
 	nsp = inp;
 	for (sp = Buf; *sp != '\0'; sp++)
-		if ((*nsp = map_key[(int)*sp]) == 'q')
+		if ((*nsp = map_key[(int) *sp]) == 'q')
 			intr(0);
 		else
 			nsp++;
@@ -322,14 +328,14 @@ static void send_stuff(){
  * quit:
  *	Handle the end of the game when the player dies
  */
-int quit(int old_status){
-	int	explain, ch;
+int quit(int old_status) {
+	int explain, ch;
 
 	if (Last_player)
 		return Q_QUIT;
 # ifdef OTTO
 	if (Otto_mode)
-		return Q_CLOAK;
+	return Q_CLOAK;
 # endif
 # ifdef USE_CURSES
 	move(HEIGHT, 0);
@@ -365,21 +371,21 @@ int quit(int old_status){
 			refresh();
 			for (;;) {
 				if (isupper(ch = getchar()))
-					ch = tolower(ch);
+				ch = tolower(ch);
 				if (ch == 'y')
-					goto get_message;
+				goto get_message;
 				if (ch == 'n')
-					return Q_QUIT;
+				return Q_QUIT;
 			}
 # endif
 		}
 # ifdef INTERNET
 		else if (ch == 'w') {
-			static	char	buf[WIDTH + WIDTH % 2];
-			char		*cp, c;
+			static char buf[WIDTH + WIDTH % 2];
+			char *cp, c;
 
-get_message:
-			c = ch;		/* save how we got here */
+			get_message:
+			c = ch; /* save how we got here */
 # ifdef USE_CURSES
 			move(HEIGHT, 0);
 # else
@@ -394,7 +400,7 @@ get_message:
 			for (;;) {
 				refresh();
 				if ((ch = getchar()) == '\n' || ch == '\r')
-					break;
+				break;
 # if defined(TERMINFO) || BSD_RELEASE >= 44
 				if (ch == erasechar())
 # else
@@ -441,7 +447,7 @@ get_message:
 				put_ch(ch);
 				*cp++ = ch;
 				if (cp + 1 >= buf + sizeof buf)
-					break;
+				break;
 			}
 			*cp = '\0';
 			Send_message = buf;
@@ -479,7 +485,7 @@ get_message:
 			return Q_CLOAK;
 # ifdef FLY
 		else if (ch == 'f')
-			return Q_FLY;
+		return Q_FLY;
 # endif
 		else if (ch == 'q')
 			return Q_QUIT;
@@ -497,7 +503,7 @@ get_message:
 }
 
 # ifndef USE_CURSES
-void put_ch(char ch){
+void put_ch(char ch) {
 	if (!isprint(ch)) {
 		fprintf(stderr, "r,c,ch: %d,%d,%d", cur_row, cur_col, ch);
 		return;
@@ -513,19 +519,19 @@ void put_ch(char ch){
 	}
 }
 
-void put_str(const char *s){
+void put_str(const char *s) {
 	while (*s)
 		put_ch(*s++);
 }
 # endif
 
-void clear_the_screen(){
+void clear_the_screen() {
 # ifdef USE_CURSES
 	clear();
 	move(0, 0);
 	refresh();
 # else
-	int	i;
+	int i;
 
 	if (blanks[0] == '\0')
 		for (i = 0; i < SCREEN_WIDTH; i++)
@@ -553,15 +559,15 @@ void clear_the_screen(){
 }
 
 #ifndef USE_CURSES
-void clear_eol(){
+void clear_eol() {
 	if (CE != NULL)
 #if !defined(BSD_RELEASE) || BSD_RELEASE < 44
 		tputs(CE, 1, _putchar);
 #else
-		tputs(CE, 1, __cputchar);
+	tputs(CE, 1, __cputchar);
 #endif
 	else {
-		fwrite(blanks, sizeof (char), SCREEN_WIDTH - cur_col, stdout);
+		fwrite(blanks, sizeof(char), SCREEN_WIDTH - cur_col, stdout);
 		if (COLS != SCREEN_WIDTH)
 			mvcur(cur_row, SCREEN_WIDTH, cur_row, cur_col);
 		else if (AM)
@@ -573,14 +579,14 @@ void clear_eol(){
 }
 # endif
 
-void redraw_screen(){
+void redraw_screen() {
 # ifdef USE_CURSES
 	clearok(stdscr, true);
 	touchwin(stdscr);
 # else
-	int		i;
+	int i;
 # ifndef NOCURSES
-	static int	first = 1;
+	static int first = 1;
 
 	if (first) {
 		curscr = newwin(SCREEN_HEIGHT, SCREEN_WIDTH, 0, 0);
@@ -594,10 +600,10 @@ void redraw_screen(){
 	}
 # if defined(BSD_RELEASE) && BSD_RELEASE >= 44
 	for (i = 0; i < SCREEN_HEIGHT; i++) {
-		int	j;
+		int j;
 
 		for (j = 0; j < SCREEN_WIDTH; j++)
-			curscr->lines[i]->line[j].ch = screen[i][j];
+		curscr->lines[i]->line[j].ch = screen[i][j];
 	}
 	curscr->cury = cur_row;
 	curscr->curx = cur_col;
@@ -613,10 +619,10 @@ void redraw_screen(){
 	for (i = 0; i < SCREEN_HEIGHT - 1; i++) {
 		fwrite(screen[i], sizeof (char), SCREEN_WIDTH, stdout);
 		if (COLS > SCREEN_WIDTH || (COLS == SCREEN_WIDTH && !AM))
-			putchar('\n');
+		putchar('\n');
 	}
 	fwrite(screen[SCREEN_HEIGHT - 1], sizeof (char), SCREEN_WIDTH - 1,
-		stdout);
+			stdout);
 	mvcur(SCREEN_HEIGHT - 1, SCREEN_WIDTH - 1, cur_row, cur_col);
 #endif
 #endif
@@ -626,8 +632,8 @@ void redraw_screen(){
  * do_message:
  *	Send a message to the driver and return
  */
-void do_message(){
-	u_int32_t	version;
+void do_message() {
+	u_int32_t version;
 
 	if (read(Socket, (char *) &version, LONGLEN) != LONGLEN) {
 		bad_con();

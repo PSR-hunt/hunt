@@ -81,7 +81,7 @@ __RCSID("$NetBSD: otto.c,v 1.8 2004/11/05 21:30:32 dsl Exp $");
 # endif
 
 # ifndef USE_CURSES
-extern	char	screen[SCREEN_HEIGHT][SCREEN_WIDTH2];
+extern char screen[SCREEN_HEIGHT][SCREEN_WIDTH2];
 # define	SCREEN(y, x)	screen[y][x]
 # else
 # define	SCREEN(y, x)	mvinch(y, x)
@@ -119,11 +119,11 @@ extern	char	screen[SCREEN_HEIGHT][SCREEN_WIDTH2];
 # define	RELCHARS	"FLBR"
 # define	DIRKEYS		"khjl"
 
-STATIC	char	command[BUFSIZ];
-STATIC	int	comlen;
+STATIC char command[BUFSIZ];
+STATIC int comlen;
 
 # ifdef	DEBUG
-STATIC FILE	*debug = NULL;
+STATIC FILE *debug = NULL;
 # endif
 
 # define	DEADEND		0x1
@@ -133,46 +133,48 @@ STATIC FILE	*debug = NULL;
 # define	BEEN		0x8
 # define	BEEN_SAME	0x10
 
-struct	item	{
-	char	what;
-	int	distance;
-	int	flags;
+struct item {
+	char what;
+	int distance;
+	int flags;
 };
 
-STATIC	struct	item	flbr[NUMDIRECTIONS];
+STATIC struct item flbr[NUMDIRECTIONS];
 
 # define	fitem	flbr[FRONT]
 # define	litem	flbr[LEFT]
 # define	bitem	flbr[BACK]
 # define	ritem	flbr[RIGHT]
 
-STATIC	int		facing;
-STATIC	int		row, col;
-STATIC	int		num_turns;		/* for wandering */
-STATIC	char		been_there[HEIGHT][WIDTH2];
-STATIC	struct itimerval	pause_time	= { { 0, 0 }, { 0, 55000 }};
+STATIC int facing;
+STATIC int row, col;
+STATIC int num_turns; /* for wandering */
+STATIC char been_there[HEIGHT][WIDTH2];
+STATIC struct itimerval pause_time = { {0, 0}, {0, 55000}};
 
-STATIC	void		attack(int, struct item *);
-STATIC	void		duck(int);
-STATIC	void		face_and_move_direction(int, int);
-STATIC	int		go_for_ammo(char);
-STATIC	void		ottolook(int, struct item *);
-STATIC	void		look_around(void);
-STATIC	SIGNAL_TYPE	nothing(int);
-STATIC	int		stop_look(struct item *, char, int, int);
-STATIC	void		wander(void);
+STATIC void attack(int, struct item *);
+STATIC void duck(int);
+STATIC void face_and_move_direction(int, int);
+STATIC int go_for_ammo(char);
+STATIC void ottolook(int, struct item *);
+STATIC void look_around(void);
+STATIC SIGNAL_TYPE nothing(int);
+STATIC int stop_look(struct item *, char, int, int);
+STATIC void wander(void);
 
-extern	int	Otto_count;
+extern int Otto_count;
 
 STATIC SIGNAL_TYPE
 nothing(dummy)
-	int dummy __attribute__((__unused__));
+int dummy __attribute__((__unused__));
 {
 }
 
-void otto(int y,int x,char face){
-	int		i;
-	int		old_mask;
+void otto(int y,int x,char face) {
+	int i;
+	int old_mask;
+
+	bool done;
 
 # ifdef	DEBUG
 	if (debug == NULL) {
@@ -189,11 +191,11 @@ void otto(int y,int x,char face){
 
 	/* save away parameters so other functions may use/update info */
 	switch (face) {
-	case '^':	facing = NORTH; break;
-	case '<':	facing = WEST; break;
-	case 'v':	facing = SOUTH; break;
-	case '>':	facing = EAST; break;
-	default:	abort();
+		case '^': facing = NORTH; break;
+		case '<': facing = WEST; break;
+		case 'v': facing = SOUTH; break;
+		case '>': facing = EAST; break;
+		default: abort();
 	}
 	row = y; col = x;
 	been_there[row][col] |= 1 << facing;
@@ -203,31 +205,36 @@ void otto(int y,int x,char face){
 
 	/* find something to do */
 	look_around();
+
+	done=FALSE;
+
 	for (i = 0; i < NUMDIRECTIONS; i++) {
 		if (strchr(OPPONENT, flbr[i].what) != NULL) {
 			attack(i, &flbr[i]);
 			memset(been_there, 0, sizeof been_there);
-			goto done;
+			done=TRUE;
+			break;
 		}
 	}
 
-	if (strchr(SHOTS, bitem.what) != NULL && !(bitem.what & ON_SIDE)) {
-		duck(BACK);
-		memset(been_there, 0, sizeof been_there);
+	if(!done) {
+		if (strchr(SHOTS, bitem.what) != NULL && !(bitem.what & ON_SIDE)) {
+			duck(BACK);
+			memset(been_there, 0, sizeof been_there);
 # ifdef BOOTS
-	} else if (go_for_ammo(BOOT_PAIR)) {
-		memset(been_there, 0, sizeof been_there);
-	} else if (go_for_ammo(BOOT)) {
-		memset(been_there, 0, sizeof been_there);
+		} else if (go_for_ammo(BOOT_PAIR)) {
+			memset(been_there, 0, sizeof been_there);
+		} else if (go_for_ammo(BOOT)) {
+			memset(been_there, 0, sizeof been_there);
 # endif
-	} else if (go_for_ammo(GMINE))
+		} else if (go_for_ammo(GMINE))
 		memset(been_there, 0, sizeof been_there);
-	else if (go_for_ammo(MINE))
+		else if (go_for_ammo(MINE))
 		memset(been_there, 0, sizeof been_there);
-	else
+		else
 		wander();
+	}
 
-done:
 	dbg_write(Socket, command, comlen);
 	Otto_count += comlen;
 # ifdef	DEBUG
@@ -237,67 +244,67 @@ done:
 
 # define	direction(abs,rel)	(((abs) + (rel)) % NUMDIRECTIONS)
 
-STATIC int stop_look(struct item *itemp,char c,int dist,int side){
+STATIC int stop_look(struct item *itemp,char c,int dist,int side) {
 	switch (c) {
 
-	case SPACE:
+		case SPACE:
 		if (side)
-			itemp->flags &= ~DEADEND;
+		itemp->flags &= ~DEADEND;
 		return 0;
 
-	case MINE:
-	case GMINE:
+		case MINE:
+		case GMINE:
 # ifdef BOOTS
-	case BOOT:
-	case BOOT_PAIR:
+		case BOOT:
+		case BOOT_PAIR:
 # endif
 		if (itemp->distance == -1) {
 			itemp->distance = dist;
 			itemp->what = c;
 			if (side < 0)
-				itemp->flags |= ON_LEFT;
+			itemp->flags |= ON_LEFT;
 			else if (side > 0)
-				itemp->flags |= ON_RIGHT;
+			itemp->flags |= ON_RIGHT;
 		}
 		return 0;
 
-	case SHOT:
-	case GRENADE:
-	case SATCHEL:
-	case BOMB:
+		case SHOT:
+		case GRENADE:
+		case SATCHEL:
+		case BOMB:
 # ifdef OOZE
-	case SLIME:
+		case SLIME:
 # endif
 		if (itemp->distance == -1 || (!side
-		    && (itemp->flags & ON_SIDE
-		    || itemp->what == GMINE || itemp->what == MINE))) {
+						&& (itemp->flags & ON_SIDE
+								|| itemp->what == GMINE || itemp->what == MINE))) {
 			itemp->distance = dist;
 			itemp->what = c;
 			itemp->flags &= ~ON_SIDE;
 			if (side < 0)
-				itemp->flags |= ON_LEFT;
+			itemp->flags |= ON_LEFT;
 			else if (side > 0)
-				itemp->flags |= ON_RIGHT;
+			itemp->flags |= ON_RIGHT;
 		}
 		return 0;
 
-	case '{':
-	case '}':
-	case 'i':
-	case '!':
+		case '{':
+		case '}':
+		case 'i':
+		case '!':
 		itemp->distance = dist;
 		itemp->what = c;
 		itemp->flags &= ~(ON_SIDE|DEADEND);
 		if (side < 0)
-			itemp->flags |= ON_LEFT;
+		itemp->flags |= ON_LEFT;
 		else if (side > 0)
-			itemp->flags |= ON_RIGHT;
+		itemp->flags |= ON_RIGHT;
 		return 1;
 
-	default:
+		default:
 		/* a wall or unknown object */
 		if (side)
-			return 0;
+		return 0;
 		if (itemp->distance == -1) {
 			itemp->distance = dist;
 			itemp->what = c;
@@ -306,110 +313,136 @@ STATIC int stop_look(struct item *itemp,char c,int dist,int side){
 	}
 }
 
-STATIC void ottolook(int rel_dir,struct item *itemp){
-	int		r, c;
-	char		ch;
+STATIC void ottolook(int rel_dir,struct item *itemp) {
+	int r, c;
+	char ch;
+	bool exit;
 
 	r = 0;
 	itemp->what = 0;
 	itemp->distance = -1;
-	itemp->flags = DEADEND|BEEN;		/* true until proven false */
+	itemp->flags = DEADEND|BEEN; /* true until proven false */
 
 	switch (direction(facing, rel_dir)) {
 
-	case NORTH:
+		case NORTH:
 		if (been_there[row - 1][col] & NORTH)
-			itemp->flags |= BEEN_SAME;
-		for (r = row - 1; r >= 0; r--)
-			for (c = col - 1; c < col + 2; c++) {
+		itemp->flags |= BEEN_SAME;
+
+		exit = FALSE;
+		for (r = row - 1; r >= 0 && !exit; r--) {
+			for (c = col - 1; (c < col + 2) && !exit; c++) {
 				ch = SCREEN(r, c);
-				if (stop_look(itemp, ch, row - r, c - col))
-					goto cont_north;
-				if (c == col && !been_there[r][c])
-					itemp->flags &= ~BEEN;
+				if (stop_look(itemp, ch, row - r, c - col)) {
+					exit = TRUE;
+				} else {
+					if (c == col && !been_there[r][c]) {
+						itemp->flags &= ~BEEN;
+					}
+				}
 			}
-	cont_north:
+		}
+
 		if (itemp->flags & DEADEND) {
 			itemp->flags |= BEEN;
 			been_there[r][col] |= NORTH;
-			for (r = row - 1; r > row - itemp->distance; r--)
+			for (r = row - 1; r > row - itemp->distance; r--) {
 				been_there[r][col] = ALLDIRS;
+			}
 		}
 		break;
 
-	case SOUTH:
+		case SOUTH:
 		if (been_there[row + 1][col] & SOUTH)
-			itemp->flags |= BEEN_SAME;
-		for (r = row + 1; r < HEIGHT; r++)
-			for (c = col - 1; c < col + 2; c++) {
+		itemp->flags |= BEEN_SAME;
+		exit=FALSE;
+		for (r = row + 1; r < HEIGHT && !exit; r++) {
+			for (c = col - 1; (c < col + 2) && !exit; c++) {
 				ch = SCREEN(r, c);
-				if (stop_look(itemp, ch, r - row, col - c))
-					goto cont_south;
-				if (c == col && !been_there[r][c])
-					itemp->flags &= ~BEEN;
+				if (stop_look(itemp, ch, r - row, col - c)) {
+					exit=TRUE;
+				} else {
+					if (c == col && !been_there[r][c]) {
+						itemp->flags &= ~BEEN;
+					}
+				}
 			}
-	cont_south:
+		}
+
 		if (itemp->flags & DEADEND) {
 			itemp->flags |= BEEN;
 			been_there[r][col] |= SOUTH;
-			for (r = row + 1; r < row + itemp->distance; r++)
+			for (r = row + 1; r < row + itemp->distance; r++) {
 				been_there[r][col] = ALLDIRS;
+			}
 		}
 		break;
 
-	case WEST:
+		case WEST:
 		if (been_there[row][col - 1] & WEST)
-			itemp->flags |= BEEN_SAME;
-		for (c = col - 1; c >= 0; c--)
-			for (r = row - 1; r < row + 2; r++) {
+		itemp->flags |= BEEN_SAME;
+		exit=FALSE;
+		for (c = col - 1; c >= 0 && !exit; c--) {
+			for (r = row - 1; r < (row + 2)&&!exit; r++) {
 				ch = SCREEN(r, c);
-				if (stop_look(itemp, ch, col - c, row - r))
-					goto cont_west;
-				if (r == row && !been_there[r][c])
-					itemp->flags &= ~BEEN;
+				if (stop_look(itemp, ch, col - c, row - r)) {
+					exit=TRUE;
+				} else {
+					if (r == row && !been_there[r][c]) {
+						itemp->flags &= ~BEEN;
+					}
+				}
 			}
-	cont_west:
+		}
+
 		if (itemp->flags & DEADEND) {
 			itemp->flags |= BEEN;
 			been_there[r][col] |= WEST;
-			for (c = col - 1; c > col - itemp->distance; c--)
+			for (c = col - 1; c > col - itemp->distance; c--) {
 				been_there[row][c] = ALLDIRS;
+			}
 		}
 		break;
 
-	case EAST:
+		case EAST:
 		if (been_there[row][col + 1] & EAST)
-			itemp->flags |= BEEN_SAME;
-		for (c = col + 1; c < WIDTH; c++)
-			for (r = row - 1; r < row + 2; r++) {
+		itemp->flags |= BEEN_SAME;
+		exit=FALSE;
+		for (c = col + 1; c < WIDTH && !exit; c++) {
+			for (r = row - 1; r < (row + 2) && !exit; r++) {
 				ch = SCREEN(r, c);
-				if (stop_look(itemp, ch, c - col, r - row))
-					goto cont_east;
-				if (r == row && !been_there[r][c])
-					itemp->flags &= ~BEEN;
+				if (stop_look(itemp, ch, c - col, r - row)) {
+					exit=TRUE;
+				} else {
+					if (r == row && !been_there[r][c]) {
+						itemp->flags &= ~BEEN;
+					}
+				}
 			}
-	cont_east:
+		}
+
 		if (itemp->flags & DEADEND) {
 			itemp->flags |= BEEN;
 			been_there[r][col] |= EAST;
-			for (c = col + 1; c < col + itemp->distance; c++)
+			for (c = col + 1; c < col + itemp->distance; c++) {
 				been_there[row][c] = ALLDIRS;
+			}
 		}
 		break;
 
-	default:
+		default:
 		abort();
 	}
 }
 
-STATIC void look_around(){
-	int	i;
+STATIC void look_around() {
+	int i;
 
 	for (i = 0; i < NUMDIRECTIONS; i++) {
 		ottolook(i, &flbr[i]);
 # ifdef	DEBUG
 		fprintf(debug, " ottolook(%c)=%c(%d)(0x%x)",
-			RELCHARS[i], flbr[i].what, flbr[i].distance, flbr[i].flags);
+				RELCHARS[i], flbr[i].what, flbr[i].distance, flbr[i].flags);
 # endif
 	}
 }
@@ -418,23 +451,23 @@ STATIC void look_around(){
  *	as a side effect modifies facing and location (row, col)
  */
 
-STATIC void face_and_move_direction(int rel_dir,int distance){
-	int	old_facing;
-	char	cmd;
+STATIC void face_and_move_direction(int rel_dir,int distance) {
+	int old_facing;
+	char cmd;
 
 	old_facing = facing;
 	cmd = DIRKEYS[facing = direction(facing, rel_dir)];
 
 	if (rel_dir != FRONT) {
-		int	i;
-		struct	item	items[NUMDIRECTIONS];
+		int i;
+		struct item items[NUMDIRECTIONS];
 
 		command[comlen++] = toupper((unsigned char)cmd);
 		if (distance == 0) {
 			/* rotate ottolook's to be in right position */
 			for (i = 0; i < NUMDIRECTIONS; i++)
-				items[i] =
-					flbr[(i + old_facing) % NUMDIRECTIONS];
+			items[i] =
+			flbr[(i + old_facing) % NUMDIRECTIONS];
 			memcpy(flbr, items, sizeof flbr);
 		}
 	}
@@ -442,17 +475,17 @@ STATIC void face_and_move_direction(int rel_dir,int distance){
 		command[comlen++] = cmd;
 		switch (facing) {
 
-		case NORTH:	row--; break;
-		case WEST:	col--; break;
-		case SOUTH:	row++; break;
-		case EAST:	col++; break;
+			case NORTH: row--; break;
+			case WEST: col--; break;
+			case SOUTH: row++; break;
+			case EAST: col++; break;
 		}
 		if (distance == 0)
-			look_around();
+		look_around();
 	}
 }
 
-STATIC void attack(int rel_dir,struct item *itemp){
+STATIC void attack(int rel_dir,struct item *itemp) {
 	if (!(itemp->flags & ON_SIDE)) {
 		face_and_move_direction(rel_dir, 0);
 		command[comlen++] = 'o';
@@ -465,9 +498,9 @@ STATIC void attack(int rel_dir,struct item *itemp){
 	} else {
 		face_and_move_direction(rel_dir, 1);
 		if (itemp->flags & ON_LEFT)
-			rel_dir = LEFT;
+		rel_dir = LEFT;
 		else
-			rel_dir = RIGHT;
+		rel_dir = RIGHT;
 		(void) face_and_move_direction(rel_dir, 0);
 		command[comlen++] = 'f';
 		command[comlen++] = 'f';
@@ -476,45 +509,45 @@ STATIC void attack(int rel_dir,struct item *itemp){
 	}
 }
 
-STATIC void duck(int rel_dir){
-	int	dir;
+STATIC void duck(int rel_dir) {
+	int dir;
 
 	switch (dir = direction(facing, rel_dir)) {
 
-	case NORTH:
-	case SOUTH:
+		case NORTH:
+		case SOUTH:
 		if (strchr(PUSHOVER, SCREEN(row, col - 1)) != NULL)
-			command[comlen++] = 'h';
+		command[comlen++] = 'h';
 		else if (strchr(PUSHOVER, SCREEN(row, col + 1)) != NULL)
-			command[comlen++] = 'l';
+		command[comlen++] = 'l';
 		else if (dir == NORTH
-			&& strchr(PUSHOVER, SCREEN(row + 1, col)) != NULL)
-				command[comlen++] = 'j';
+				&& strchr(PUSHOVER, SCREEN(row + 1, col)) != NULL)
+		command[comlen++] = 'j';
 		else if (dir == SOUTH
-			&& strchr(PUSHOVER, SCREEN(row - 1, col)) != NULL)
-				command[comlen++] = 'k';
+				&& strchr(PUSHOVER, SCREEN(row - 1, col)) != NULL)
+		command[comlen++] = 'k';
 		else if (dir == NORTH)
-			command[comlen++] = 'k';
+		command[comlen++] = 'k';
 		else
-			command[comlen++] = 'j';
+		command[comlen++] = 'j';
 		break;
 
-	case WEST:
-	case EAST:
+		case WEST:
+		case EAST:
 		if (strchr(PUSHOVER, SCREEN(row - 1, col)) != NULL)
-			command[comlen++] = 'k';
+		command[comlen++] = 'k';
 		else if (strchr(PUSHOVER, SCREEN(row + 1, col)) != NULL)
-			command[comlen++] = 'j';
+		command[comlen++] = 'j';
 		else if (dir == WEST
-			&& strchr(PUSHOVER, SCREEN(row, col + 1)) != NULL)
-				command[comlen++] = 'l';
+				&& strchr(PUSHOVER, SCREEN(row, col + 1)) != NULL)
+		command[comlen++] = 'l';
 		else if (dir == EAST
-			&& strchr(PUSHOVER, SCREEN(row, col - 1)) != NULL)
-				command[comlen++] = 'h';
+				&& strchr(PUSHOVER, SCREEN(row, col - 1)) != NULL)
+		command[comlen++] = 'h';
 		else if (dir == WEST)
-			command[comlen++] = 'h';
+		command[comlen++] = 'h';
 		else
-			command[comlen++] = 'l';
+		command[comlen++] = 'l';
 		break;
 	}
 }
@@ -523,8 +556,8 @@ STATIC void duck(int rel_dir){
  *	go for the closest mine if possible
  */
 
-STATIC int go_for_ammo(char mine){
-	int	i, rel_dir, dist;
+STATIC int go_for_ammo(char mine) {
+	int i, rel_dir, dist;
 
 	rel_dir = -1;
 	dist = WIDTH;
@@ -535,40 +568,40 @@ STATIC int go_for_ammo(char mine){
 		}
 	}
 	if (rel_dir == -1)
-		return false;
+	return false;
 
 	if (!(flbr[rel_dir].flags & ON_SIDE)
-	|| flbr[rel_dir].distance > 1) {
+			|| flbr[rel_dir].distance > 1) {
 		if (dist > 4)
-			dist = 4;
+		dist = 4;
 		face_and_move_direction(rel_dir, dist);
 	} else
-		return false;		/* until it's done right */
+	return false; /* until it's done right */
 	return true;
 }
 
-STATIC void wander(){
-	int	i, j, rel_dir, dir_mask, dir_count;
+STATIC void wander() {
+	int i, j, rel_dir, dir_mask, dir_count;
 
 	for (i = 0; i < NUMDIRECTIONS; i++)
-		if (!(flbr[i].flags & BEEN) || flbr[i].distance <= 1)
-			break;
+	if (!(flbr[i].flags & BEEN) || flbr[i].distance <= 1)
+	break;
 	if (i == NUMDIRECTIONS)
-		memset(been_there, 0, sizeof been_there);
+	memset(been_there, 0, sizeof been_there);
 	dir_mask = dir_count = 0;
 	for (i = 0; i < NUMDIRECTIONS; i++) {
 		j = (RIGHT + i) % NUMDIRECTIONS;
 		if (flbr[j].distance <= 1 || flbr[j].flags & DEADEND)
-			continue;
+		continue;
 		if (!(flbr[j].flags & BEEN_SAME)) {
 			dir_mask = 1 << j;
 			dir_count = 1;
 			break;
 		}
 		if (j == FRONT
-		&& num_turns > 4 + (random() %
-				((flbr[FRONT].flags & BEEN) ? 7 : HEIGHT)))
-			continue;
+				&& num_turns > 4 + (random() %
+						((flbr[FRONT].flags & BEEN) ? 7 : HEIGHT)))
+		continue;
 		dir_mask |= 1 << j;
 # ifdef notdef
 		dir_count++;
@@ -582,21 +615,21 @@ STATIC void wander(){
 		num_turns = 0;
 		return;
 	} else if (dir_count == 1)
-		rel_dir = ffs(dir_mask) - 1;
+	rel_dir = ffs(dir_mask) - 1;
 	else {
 		rel_dir = ffs(dir_mask) - 1;
 		dir_mask &= ~(1 << rel_dir);
 		while (dir_mask != 0) {
 			i = ffs(dir_mask) - 1;
 			if (random() % 5 == 0)
-				rel_dir = i;
+			rel_dir = i;
 			dir_mask &= ~(1 << i);
 		}
 	}
 	if (rel_dir == FRONT)
-		num_turns++;
+	num_turns++;
 	else
-		num_turns = 0;
+	num_turns = 0;
 
 # ifdef DEBUG
 	fprintf(debug, " w(%c)", RELCHARS[rel_dir]);

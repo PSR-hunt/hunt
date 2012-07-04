@@ -171,6 +171,7 @@ int main(int argc, char* argv[]) {
 	char *term;
 	int c; /*TODO x64 compliant*/
 	long enter_status; /*TODO x64 compliant*/
+	bool exit_outer_loop;
 
 	/* Revoke setgid privileges */
 	setregid(getgid(), getgid()); /*TODO verificare sicurezza*/
@@ -247,7 +248,7 @@ int main(int argc, char* argv[]) {
 			no_beep = !no_beep;
 			break;
 		default:
-			usage: fputs(
+			fputs(
 					"usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host]\n",
 					stderr);
 			exit(1);
@@ -255,9 +256,9 @@ int main(int argc, char* argv[]) {
 	}
 # ifdef INTERNET
 	if (optind + 1 < argc)
-		usage();
+	usage();
 	else if (optind + 1 == argc)
-		Sock_host = argv[argc - 1];
+	Sock_host = argv[argc - 1];
 # else
 	if (optind > argc)
 		usage();
@@ -329,37 +330,61 @@ int main(int argc, char* argv[]) {
 	(void) signal(SIGTSTP, tstp);
 #endif
 
-	for (;;) {
+	exit_outer_loop = FALSE;
+	while (!exit_outer_loop) {
 # ifdef	INTERNET
 		find_driver(true);
 
 		if (Daemon.sin_port == 0)
-			leavex(1, "Game not found, try again");
+		leavex(1, "Game not found, try again");
 
-		jump_in:
-		do {
-			int option;
+		while(1) {
+			do {
+				int option;
 
-			Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
-			if (Socket < 0)
-				err(1, "socket");
-			option = 1;
-#ifdef SO_USELOOPBACK
-			if (setsockopt(Socket, SOL_SOCKET, SO_USELOOPBACK,
-							&option, sizeof option) < 0)
-				warn("setsockopt loopback");
-#endif
-			errno = 0;
-			if (connect(Socket, (struct sockaddr *) &Daemon,
-							DAEMON_SIZE) < 0) {
-				if (errno != ECONNREFUSED) {
-					leave(1, "connect");
+				Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
+				if (Socket < 0) {
+					err(1, "socket");
 				}
+
+				option = 1;
+#ifdef SO_USELOOPBACK
+				if (setsockopt(Socket, SOL_SOCKET, SO_USELOOPBACK,
+								&option, sizeof option) < 0) {
+					warn("setsockopt loopback");
+				}
+#endif
+				errno = 0;
+				if (connect(Socket, (struct sockaddr *) &Daemon,
+								DAEMON_SIZE) < 0) {
+					if (errno != ECONNREFUSED) {
+						leave(1, "connect");
+					}
+				} else {
+					break;
+				}
+				sleep(1);
+			}while (close(Socket) == 0);
+
+			do_connect(name, team, enter_status);
+
+			if (Send_message != NULL) {
+				do_message();
+				if (enter_status == Q_MESSAGE) {
+					exit_outer_loop = TRUE;
+					break;
+				} else {
+					Send_message = NULL;
+				}
+			} else {
+				break;
 			}
-			else
+		}
+
+		if(exit_outer_loop) {
 			break;
-			sleep(1);
-		}while (close(Socket) == 0);
+		}
+
 # else /* !INTERNET */
 		/*
 		 * set up a socket
@@ -389,19 +414,10 @@ int main(int argc, char* argv[]) {
 				sleep(2);
 			} while (connect(Socket, &Daemon, DAEMON_SIZE) < 0);
 		}
-# endif
 
 		do_connect(name, team, enter_status);
-# ifdef INTERNET
-		if (Send_message != NULL) {
-			do_message();
-			if (enter_status == Q_MESSAGE)
-			break;
-			Send_message = NULL;
-			/* don't continue as that will call find_driver */
-			goto jump_in;
-		}
 # endif
+
 		playit();
 		if ((enter_status = quit(enter_status)) == Q_QUIT)
 			break;
@@ -448,7 +464,7 @@ int broadcast_vec(struct sockaddr **vector) {
 /**
  * Helper function to print the usage of the program on stderr.
  */
-void usage(){
+void usage() {
 	fputs("usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host]\n", stderr);
 	exit(1);
 }
@@ -516,62 +532,64 @@ SOCKET * list_drivers() {
 			/* NOTREACHED */
 		}
 		test.sin_addr = *((struct in_addr *) hp->h_addr);
-		goto test_one_host;
-	}
-
-	if (!initial) {
-		/* favor host of previous session by broadcasting to it first */
-		test.sin_addr = Daemon.sin_addr;
-		msg = htons(C_PLAYER); /* Must be playing! */
+		msg = htons(C_TESTMSG());
 		(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
 				(struct sockaddr *) &test, DAEMON_SIZE);
-	}
+	} else {
+
+		if (!initial) {
+			/* favor host of previous session by broadcasting to it first */
+			test.sin_addr = Daemon.sin_addr;
+			msg = htons(C_PLAYER); /* Must be playing! */
+			(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
+					(struct sockaddr *) &test, DAEMON_SIZE);
+		}
 
 # ifdef BROADCAST
-	if (initial)
-	brdc = broadcast_vec((void *) &brdv);
+		if (initial)
+		brdc = broadcast_vec((void *) &brdv);
 
 # ifdef SO_BROADCAST
-	/* Sun's will broadcast even though this option can't be set */
-	option = 1;
-	if (setsockopt(test_socket, SOL_SOCKET, SO_BROADCAST,
-					&option, sizeof option) < 0) {
-		leave(1, "setsockopt broadcast");
-		/* NOTREACHED */
-	}
+		/* Sun's will broadcast even though this option can't be set */
+		option = 1;
+		if (setsockopt(test_socket, SOL_SOCKET, SO_BROADCAST,
+						&option, sizeof option) < 0) {
+			leave(1, "setsockopt broadcast");
+			/* NOTREACHED */
+		}
 # endif
 
-	/* send broadcast packets on all interfaces */
-	msg = htons(C_TESTMSG());
-	for (i = 0; i < brdc; i++) {
-		test.sin_addr = brdv[i].sin_addr;
+		/* send broadcast packets on all interfaces */
+		msg = htons(C_TESTMSG());
+		for (i = 0; i < brdc; i++) {
+			test.sin_addr = brdv[i].sin_addr;
+			if (sendto(test_socket, (char *) &msg, sizeof msg, 0,
+							(struct sockaddr *) &test, DAEMON_SIZE) < 0) {
+				leave(1, "sendto");
+				/* NOTREACHED */
+			}
+		}
+		test.sin_addr = local_address;
 		if (sendto(test_socket, (char *) &msg, sizeof msg, 0,
 						(struct sockaddr *) &test, DAEMON_SIZE) < 0) {
 			leave(1, "sendto");
 			/* NOTREACHED */
 		}
-	}
-	test.sin_addr = local_address;
-	if (sendto(test_socket, (char *) &msg, sizeof msg, 0,
-					(struct sockaddr *) &test, DAEMON_SIZE) < 0) {
-		leave(1, "sendto");
-		/* NOTREACHED */
-	}
 # else /* !BROADCAST */
-	/* loop thru all hosts on local net and send msg to them. */
-	msg = htons(C_TESTMSG());
-	local_net = inet_netof(local_address);
-	sethostent(0); /* rewind host file */
-	while (hp = gethostent()) {
-		if (local_net == inet_netof(* ((struct in_addr *) hp->h_addr))) {
-			test.sin_addr = * ((struct in_addr *) hp->h_addr);
-			(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
-					(struct sockaddr *) &test, DAEMON_SIZE);
+		/* loop thru all hosts on local net and send msg to them. */
+		msg = htons(C_TESTMSG());
+		local_net = inet_netof(local_address);
+		sethostent(0); /* rewind host file */
+		while (hp = gethostent()) {
+			if (local_net == inet_netof(* ((struct in_addr *) hp->h_addr))) {
+				test.sin_addr = * ((struct in_addr *) hp->h_addr);
+				(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
+						(struct sockaddr *) &test, DAEMON_SIZE);
+			}
 		}
-	}
 # endif
+	}
 
-	get_response:
 	namelen = DAEMON_SIZE;
 	errno = 0;
 	set[0].fd = test_socket;
@@ -617,11 +635,6 @@ SOCKET * list_drivers() {
 		return listv;
 	}
 
-	test_one_host:
-	msg = htons(C_TESTMSG());
-	(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
-			(struct sockaddr *) &test, DAEMON_SIZE);
-	goto get_response;
 }
 
 void find_driver(bool do_startup) {
@@ -1041,7 +1054,7 @@ long env_init(long enter_status_in) {
 			/**
 			 * Avoids infinite loop in case of fgets failure.
 			 */
-			if(read==NULL){
+			if (read == NULL) {
 				break;
 			}
 			equal = strpbrk(input_row, "=");
@@ -1106,8 +1119,8 @@ long env_init(long enter_status_in) {
 			c = NULL;
 		}
 		/**
-		* Hard-wired FILE* config setting to NULL after file closure.
-		*/
+		 * Hard-wired FILE* config setting to NULL after file closure.
+		 */
 		fclose(config);
 		config = NULL;
 	}
@@ -1238,19 +1251,19 @@ long fchars_in_line(FILE* f) {
 	long counter = 0;
 	char in;
 	int read;
-	read = fscanf(f,"%c", &in);
+	read = fscanf(f, "%c", &in);
 	while (!feof(f)) {
 		/**
 		 * Avoids infinite loop in case of fscanf failure.
 		 */
-		if (!read){
+		if (!read) {
 			break;
 		}
 		if (in == '\n')
 			break;
 		else {
 			counter++;
-			read = fscanf(f,"%c", &in);
+			read = fscanf(f, "%c", &in);
 		}
 	}
 	return counter;
@@ -1259,30 +1272,42 @@ long fchars_in_line(FILE* f) {
 void fill_in_blanks() {
 	int i;
 	char *cp;
+	bool must_continue;
 
-	again: if (name[0] != '\0') {
-		printf("Entering as '%s'", name);
-		if (team != ' ')
-			printf(" on team %c.\n", team);
-		else
-			putchar('\n');
-	} else {
-		printf("Enter your code name: ");
-		if (fgets(name, NAMELEN, stdin) == NULL)
-			exit(1);
-	}
-	rmnl(name);
-	if (name[0] == '\0') {
-		name[0] = '\0';
-		printf("You have to have a code name!\n");
-		goto again;
-	}
-	for (cp = name; *cp != '\0'; cp++)
-		if (!isprint((unsigned char)*cp)) {
-			name[0] = '\0';
-			printf("Illegal character in your code name.\n");
-			goto again;
+	must_continue = FALSE;
+	while (TRUE) {
+		if (name[0] != '\0') {
+			printf("Entering as '%s'", name);
+			if (team != ' ')
+				printf(" on team %c.\n", team);
+			else
+				putchar('\n');
+		} else {
+			printf("Enter your code name: ");
+			if (fgets(name, NAMELEN, stdin) == NULL)
+				exit(1);
 		}
+		rmnl(name);
+		if (name[0] == '\0') {
+			name[0] = '\0';
+			printf("Yntou have to have a code name!\n");
+			continue;
+		}
+		for (cp = name; *cp != '\0'; cp++) {
+			if (!isprint((unsigned char)*cp)) {
+				name[0] = '\0';
+				printf("Illegal character in your code name.\n");
+				must_continue = TRUE;
+				break;
+			}
+		}
+		if (must_continue) {
+			continue;
+		} else {
+			break;
+		}
+	}
+
 	if (team == ' ') {
 		printf("Enter your team (0-9 or nothing): ");
 		i = getchar();
