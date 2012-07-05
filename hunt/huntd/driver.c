@@ -89,6 +89,7 @@ int main(int, char *[], char *[]);
 static void makeboots(void);
 static void send_stats(void);
 static void zap(PLAYER *, bool, int);
+void erred(char *[]);
 
 /*
  * main:
@@ -129,124 +130,127 @@ int main(int argc, char* argv[], char* env[]) {
 			break;
 # endif
 		default:
-			erred: fprintf(stderr, "Usage: %s [-s] [-p port]\n", argv[0]);
-			exit(1);
+			erred(argv);
+			break;
 		}
 	}
 	if (optind < argc)
-		goto erred;
+		erred(argv);
 
 	init();
 
-	again: do {
-		errno = 0;
-		while (poll(fdset, 3 + MAXPL + MAXMON, INFTIM) < 0) {
-			if (errno != EINTR)
-# ifdef LOG
-				iso_syslog(LOG_WARNING, "select: %m");
-# else
-				warn("select");
-# endif
+	while (true) {
+		do {
 			errno = 0;
-		}
-# ifdef INTERNET
-		if (fdset[2].revents & POLLIN) {
-			namelen = DAEMON_SIZE;
-			port_num = htons(sock_port);
-			(void) recvfrom(Test_socket, (char *) &msg, sizeof msg,
-					0, (struct sockaddr *) &test, &namelen);
-			switch (ntohs(msg)) {
-				case C_MESSAGE:
-				if (Nplayer <= 0)
-				break;
-				reply = htons((unsigned short) Nplayer);
-				(void) sendto(Test_socket, (char *) &reply,
-						sizeof reply, 0,
-						(struct sockaddr *) &test, DAEMON_SIZE);
-				break;
-				case C_SCORES:
-				reply = htons(stat_port);
-				(void) sendto(Test_socket, (char *) &reply,
-						sizeof reply, 0,
-						(struct sockaddr *) &test, DAEMON_SIZE);
-				break;
-				case C_PLAYER:
-				case C_MONITOR:
-				if (msg == C_MONITOR && Nplayer <= 0)
-				break;
-				reply = htons(sock_port);
-				(void) sendto(Test_socket, (char *) &reply,
-						sizeof reply, 0,
-						(struct sockaddr *) &test, DAEMON_SIZE);
-				break;
-			}
-		}
+			while (poll(fdset, 3 + MAXPL + MAXMON, INFTIM) < 0) {
+				if (errno != EINTR)
+# ifdef LOG
+					iso_syslog(LOG_WARNING, "select: %m");
+# else
+					warn("select");
 # endif
-		{
-			for (pp = Player, i = 0; pp < End_player; pp++, i++)
-				if (havechar(pp, i + 3)) {
-					execute(pp);
+				errno = 0;
+			}
+# ifdef INTERNET
+			if (fdset[2].revents & POLLIN) {
+				namelen = DAEMON_SIZE;
+				port_num = htons(sock_port);
+				(void) recvfrom(Test_socket, (char *) &msg, sizeof msg,
+						0, (struct sockaddr *) &test, &namelen);
+				switch (ntohs(msg)) {
+					case C_MESSAGE:
+					if (Nplayer <= 0)
+					break;
+					reply = htons((unsigned short) Nplayer);
+					(void) sendto(Test_socket, (char *) &reply,
+							sizeof reply, 0,
+							(struct sockaddr *) &test, DAEMON_SIZE);
+					break;
+					case C_SCORES:
+					reply = htons(stat_port);
+					(void) sendto(Test_socket, (char *) &reply,
+							sizeof reply, 0,
+							(struct sockaddr *) &test, DAEMON_SIZE);
+					break;
+					case C_PLAYER:
+					case C_MONITOR:
+					if (msg == C_MONITOR && Nplayer <= 0)
+					break;
+					reply = htons(sock_port);
+					(void) sendto(Test_socket, (char *) &reply,
+							sizeof reply, 0,
+							(struct sockaddr *) &test, DAEMON_SIZE);
+					break;
+				}
+			}
+# endif
+			{
+				for (pp = Player, i = 0; pp < End_player; pp++, i++)
+					if (havechar(pp, i + 3)) {
+						execute(pp);
+						pp->p_nexec++;
+					}
+# ifdef MONITOR
+				for (pp = Monitor, i = 0; pp < End_monitor; pp++, i++)
+				if (havechar(pp, i + MAXPL + 3)) {
+					mon_execute(pp);
 					pp->p_nexec++;
 				}
-# ifdef MONITOR
-			for (pp = Monitor, i = 0; pp < End_monitor; pp++, i++)
-			if (havechar(pp, i + MAXPL + 3)) {
-				mon_execute(pp);
-				pp->p_nexec++;
-			}
 # endif
-			moveshots();
-			for (pp = Player, i = 0; pp < End_player;)
+				moveshots();
+				for (pp = Player, i = 0; pp < End_player;)
+					if (pp->p_death[0] != '\0')
+						zap(pp, true, i + 3);
+					else
+						pp++, i++;
+# ifdef MONITOR
+				for (pp = Monitor, i = 0; pp < End_monitor; )
 				if (pp->p_death[0] != '\0')
-					zap(pp, true, i + 3);
+				zap(pp, false, i + MAXPL + 3);
 				else
-					pp++, i++;
-# ifdef MONITOR
-			for (pp = Monitor, i = 0; pp < End_monitor; )
-			if (pp->p_death[0] != '\0')
-			zap(pp, false, i + MAXPL + 3);
-			else
-			pp++, i++;
+				pp++, i++;
 # endif
-		}
-		if (fdset[0].revents & POLLIN)
-			if (answer()) {
-# ifdef INTERNET
-				if (first && standard_port)
-				faketalk();
-# endif
-				first = false;
 			}
-		if (fdset[1].revents & POLLIN)
-			send_stats();
-		for (pp = Player, i = 0; pp < End_player; pp++, i++) {
-			if (fdset[i + 3].revents & POLLIN)
-				sendcom(pp, READY, pp->p_nexec);
-			pp->p_nexec = 0;
-			(void) fflush(pp->p_output);
-		}
+			if (fdset[0].revents & POLLIN)
+				if (answer()) {
+# ifdef INTERNET
+					if (first && standard_port)
+					faketalk();
+# endif
+					first = false;
+				}
+			if (fdset[1].revents & POLLIN)
+				send_stats();
+			for (pp = Player, i = 0; pp < End_player; pp++, i++) {
+				if (fdset[i + 3].revents & POLLIN)
+					sendcom(pp, READY, pp->p_nexec);
+				pp->p_nexec = 0;
+				(void) fflush(pp->p_output);
+			}
 # ifdef MONITOR
-		for (pp = Monitor, i = 0; pp < End_monitor; pp++, i++) {
-			if (fdset[i + MAXPL + 3].revents & POLLIN)
-			sendcom(pp, READY, pp->p_nexec);
-			pp->p_nexec = 0;
-			(void) fflush(pp->p_output);
-		}
+			for (pp = Monitor, i = 0; pp < End_monitor; pp++, i++) {
+				if (fdset[i + MAXPL + 3].revents & POLLIN)
+				sendcom(pp, READY, pp->p_nexec);
+				pp->p_nexec = 0;
+				(void) fflush(pp->p_output);
+			}
 # endif
-	} while (Nplayer > 0);
+		} while (Nplayer > 0);
 
-	if (poll(fdset, 3 + MAXPL + MAXMON, linger) > 0) {
-		goto again;
-	}
-	if (server) {
-		clear_scores();
-		makemaze();
-		clearwalls();
+		if (poll(fdset, 3 + MAXPL + MAXMON, linger) > 0) {
+			continue;
+		}
+		if (server) {
+			clear_scores();
+			makemaze();
+			clearwalls();
 # ifdef BOOTS
-		makeboots();
+			makeboots();
 # endif
-		first = true;
-		goto again;
+			first = true;
+			continue;
+		}
+		break;
 	}
 
 # ifdef MONITOR
@@ -256,6 +260,11 @@ int main(int argc, char* argv[], char* env[]) {
 	cleanup(0);
 	/* NOTREACHED */
 	return (0);
+}
+
+void erred(char* argv[]) {
+	fprintf(stderr, "Usage: %s [-s] [-p port]\n", argv[0]);
+	exit(1);
 }
 
 /*
@@ -290,7 +299,8 @@ static void init() {
 	(void) signal(SIGTERM, cleanup);
 # endif
 
-	dbg_chdir("/var/tmp"); /* just in case it core dumps */
+	dbg_chdir("/var/tmp");
+	/* just in case it core dumps */
 	(void) umask(0); /* No privacy at all! */
 	(void) signal(SIGPIPE, SIG_IGN);
 
@@ -831,12 +841,15 @@ static int havechar(PLAYER *pp, int i) {
 		return true;
 	if (!(fdset[i].revents & POLLIN))
 		return false;
-	check_again:
-	errno = 0;
-	if ((pp->p_nchar = read(pp->p_fd, pp->p_cbuf, sizeof pp->p_cbuf)) <= 0) {
-		if (errno == EINTR)
-			goto check_again;
-		pp->p_cbuf[0] = 'q';
+	while (true) {
+		errno = 0;
+		if ((pp->p_nchar = read(pp->p_fd, pp->p_cbuf, sizeof pp->p_cbuf))
+				<= 0) {
+			if (errno == EINTR)
+				continue;
+			pp->p_cbuf[0] = 'q';
+		}
+		break;
 	}
 	pp->p_ncount = 0;
 	return true;

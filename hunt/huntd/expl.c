@@ -159,6 +159,10 @@ static	REGEN	*rem_index = removed;
  */
 static void remove_wall(int y,int x){
 	REGEN	*r;
+
+	bool found;
+	found = 0;
+
 # if defined(MONITOR) || defined(FLY)
 	PLAYER	*pp;
 # endif
@@ -177,17 +181,16 @@ static void remove_wall(int y,int x){
 		  case BELOW:
 		  case FLYER:
 			save_char = Maze[r->r_y][r->r_x];
-			goto found;
+			found=1;
 		}
 # else
-		if (Maze[r->r_y][r->r_x] == SPACE)
+		if (Maze[r->r_y][r->r_x] == SPACE )
 			break;
 # endif
-		if (++r >= &removed[MAXREMOVE])
+		if ((++r >= &removed[MAXREMOVE])&&!found)
 			r = removed;
 	}
 
-found:
 	if (r->r_y != 0) {
 		/* Slot being used, put back this wall */
 # ifdef FLY
