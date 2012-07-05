@@ -329,7 +329,7 @@ static void send_stuff() {
  *	Handle the end of the game when the player dies
  */
 int quit(int old_status) {
-	int explain, ch;
+	int explain, ch, second_ch;
 	bool get_message;
 
 	if (Last_player)
@@ -350,8 +350,10 @@ int quit(int old_status) {
 	explain = false;
 	for (;;) {
 		refresh();
-		if (isupper(ch = getchar()))
+		if (isupper(ch = getchar())) {
 			ch = tolower(ch);
+		}
+
 		if (ch == 'y')
 			return old_status;
 		else if (ch == 'o')
@@ -372,22 +374,23 @@ int quit(int old_status) {
 			refresh();
 			get_message = false;
 			for (;;) {
-				if (isupper(ch = getchar()))
-				ch = tolower(ch);
-				if (ch == 'y') {
-					get_message = true;
+				if (isupper(second_ch = getchar())) {
+					second_ch = tolower(ch);
+				}
+				if (second_ch == 'y' || second_ch == 'n'){
 					break;
 				}
-				if (ch == 'n')
-				return Q_QUIT;
 			}
 # endif
 		}
 # ifdef INTERNET
-		else if (ch == 'w' || get_message) {
+		if( ch == 'n' && second_ch == 'n'){
+			return Q_QUIT;
+		} else if ((ch == 'n' && second_ch == 'y') || ch == 'w') {
 			static char buf[WIDTH + WIDTH % 2];
 			char *cp, c;
 
+			get_message:
 			c = ch; /* save how we got here */
 # ifdef USE_CURSES
 			move(HEIGHT, 0);
