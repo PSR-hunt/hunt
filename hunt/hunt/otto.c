@@ -45,23 +45,14 @@
 
 # include	"hunt.h"
 
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: otto.c,v 1.8 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
 
 # include	<sys/time.h>
-# include	<ncurses.h> /*Edited from curses.h*/
+# include	<ncurses.h> /**< Edited from curses.h. */
 # include	<ctype.h>
-
-/**
- * Forces compiler to use BSD library functions.
- */
-# define	__USE_BSD 1
-
 # include	<signal.h>
 # include	<stdlib.h>
 # include	<unistd.h>
@@ -164,9 +155,15 @@ void empty_handler(int);
 
 extern int Otto_count;
 
-void empty_handler(int param){
+/**
+ * Helper function created in order to manage signals.
+ * @param param a not used integer to mantain the function signature.
+ */
+void empty_handler(int param) {
 
 }
+
+//TODO da qui iniziare documentazione
 
 void otto(int y,int x,char face) {
 	int i;

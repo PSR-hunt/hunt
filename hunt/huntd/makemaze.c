@@ -32,10 +32,8 @@
 
 # include	"hunt.h"
 
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: makemaze.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -47,6 +45,8 @@ static	int	candig(int, int);
 static	void	dig(int, int);
 static	void	dig_maze(int, int);
 static	void	remap(void);
+
+//TODO da qui documentare
 
 void makemaze(){
 	char	*sp;

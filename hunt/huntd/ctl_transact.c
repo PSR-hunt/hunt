@@ -30,19 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * Library already present in hunt.h
- * #include "bsd.h"
- */
+/**< #include "bsd.h" already present in hunt.h. */
 
 #if	defined(TALK_43) || defined(TALK_42)
-# define TALK_MODE
+# define TALK_MODE //See documentation in hunt.h.
 # include	"hunt.h"
 # undef	TALK_MODE
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)ctl_transact.c	5.2 (Berkeley) 3/13/86";
@@ -57,6 +52,8 @@ __RCSID("$NetBSD: ctl_transact.c,v 1.6 2003/06/11 12:00:22 wiz Exp $");
 
 #define CTL_WAIT 2	/* time to wait for a response, in seconds */
 #define MAX_RETRY 5
+
+//TODO da qui iniziare documentazione
 
 /*
  * SOCKDGRAM is unreliable, so we must repeat messages if we have

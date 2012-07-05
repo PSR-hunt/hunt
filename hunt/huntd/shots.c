@@ -32,10 +32,7 @@
 
 # include	"hunt.h"
 
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: shots.c,v 1.5 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -62,6 +59,8 @@ static int move_normal_shot(BULLET *);
 static void move_slime(BULLET *, int, BULLET *);
 static void save_bullet(BULLET *);
 static void zapshot(BULLET *, BULLET *);
+
+//TODO documentare da qui
 
 /*
  * moveshots:

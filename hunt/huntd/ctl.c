@@ -30,19 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * Library already present in hunt.h
- * #include "bsd.h"
- */
+/**< #include "bsd.h" already present in hunt.h. */
 
 #if	defined(TALK_43) || defined(TALK_42) 
-# define TALK_MODE
+# define TALK_MODE //See documentation in hunt.h.
 # include	"hunt.h"
 # undef TALK_MODE
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)ctl.c	5.2 (Berkeley) 3/13/86";
@@ -66,12 +61,14 @@ struct	sockaddr_in ctl_addr = { AF_INET };
 struct	in_addr my_machine_addr;
 struct	in_addr his_machine_addr;
 
-unsigned short daemon_port;	/* port number of the talk daemon */
+/* port number of the talk daemon */
+unsigned short daemon_port;	/**< Changed from u_short. */
 
 int	ctl_sockt;
 
 CTL_MSG msg;
 
+//TODO da qui iniziare documentazione
 /* open the ctl socket */
 void open_ctl() {
 	int length;

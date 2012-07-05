@@ -93,12 +93,12 @@ extern	struct sockaddr_in ctl_addr;
 extern	struct sockaddr_in my_addr;
 extern	struct in_addr my_machine_addr;
 extern	struct in_addr his_machine_addr;
-extern	unsigned short daemon_port;
+extern	unsigned short daemon_port; /**< Changed from u_shrt. */
 extern	int ctl_sockt;
 extern	CTL_MSG msg;
 
 #ifdef LOG
-#define	p_error(str)	iso_syslog(LOG_WARNING, "faketalk %s: %m", str)
+#define	p_error(str)	iso_syslog(LOG_WARNING, "faketalk %s: %m", str) /**< Changed from syslog. */
 #else
 #define	p_error(str)	warn(str)
 #endif

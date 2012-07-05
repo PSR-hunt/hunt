@@ -32,10 +32,7 @@
 
 # include	"hunt.h"
 
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: expl.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -44,6 +41,7 @@ __RCSID("$NetBSD: expl.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 
 static	void	remove_wall(int, int);
 
+//TODO iniziare documentazione da qui
 
 /*
  * showexpl:

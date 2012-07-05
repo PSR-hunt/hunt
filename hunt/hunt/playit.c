@@ -32,10 +32,7 @@
 
 # include	"hunt.h"
 
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -43,11 +40,8 @@ __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 # include	<sys/file.h>
 # include	<sys/poll.h>
 # include	<err.h>
-/**
- * Library already present in hunt.h
- * # include	<errno.h>
- */
-# include	<ncurses.h> /*Edited from curses.h*/
+/**< # include	<errno.h> already present in hunt.h. */
+# include	<ncurses.h> /**< Edited from curses.h. */
 # include	<ctype.h>
 # include	<signal.h>
 # include	<sys/time.h>
@@ -104,6 +98,8 @@ extern int _putchar();
 
 static unsigned char getchr(void);
 static void send_stuff(void);
+
+//TODO da qui iniziare documentazione
 
 /*
  * playit:

@@ -32,19 +32,13 @@
 
 # include	"hunt.h"
 
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
 
 # include	<ctype.h>
-/**
- * Library already present in hunt.h
- * # include	<errno.h>
- */
+/**< # include	<errno.h> already present in hunt.h. */
 # include	<fcntl.h>
 # include	<stdlib.h>
 # include	<unistd.h>
@@ -52,26 +46,23 @@ __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 
 # define	SCOREDECAY	15
 
-static char	Ttyname[NAMELEN];
+static char Ttyname[NAMELEN];
 
-int answer(){
-	PLAYER			*pp;
-	int			newsock;
-	static unsigned long		mode;
-	static char		name[NAMELEN];
-	static char		team;
-	static int		enter_status;
-	/**
-	 * Edited socklen declaration type in order to match accept() parameter.
-	 */
-	static unsigned int		socklen;
-	static unsigned long		machine;
-	static u_int32_t	uid;
-	static SOCKET		sockstruct;
-	char			*cp1, *cp2;
-	int			flags;
-	u_int32_t		version;
-	int			i;
+int answer() {
+	PLAYER *pp;
+	int newsock;
+	static unsigned long mode;
+	static char name[NAMELEN];
+	static char team;
+	static int enter_status;
+	static unsigned int socklen; /**< Edited from static int in order to match accept() parameter. */
+	static unsigned long machine; /**< Edited from u_long in order to match accept() parameter. */
+	static u_int32_t uid;
+	static SOCKET sockstruct;
+	char *cp1, *cp2;
+	int flags;
+	u_int32_t version;
+	int i;
 
 # ifdef INTERNET
 	socklen = sizeof sockstruct;
@@ -80,8 +71,7 @@ int answer(){
 # endif
 	errno = 0;
 	newsock = accept(Socket, (struct sockaddr *) &sockstruct, &socklen);
-	if (newsock < 0)
-	{
+	if (newsock < 0) {
 		if (errno == EINTR)
 			return false;
 # ifdef LOG
@@ -100,14 +90,21 @@ int answer(){
 # endif
 	version = htonl((u_int32_t) HUNT_VERSION);
 	dbg_write(newsock, (char *) &version, LONGLEN);
+	//See documentation in hunt.h.
 	dbg_read(newsock, (char *) &uid, LONGLEN);
+	//See documentation in hunt.h.
 	uid = ntohl((unsigned long) uid);
 	dbg_read(newsock, name, NAMELEN);
+	//See documentation in hunt.h.
 	dbg_read(newsock, &team, 1);
+	//See documentation in hunt.h.
 	dbg_read(newsock, (char *) &enter_status, LONGLEN);
+	//See documentation in hunt.h.
 	enter_status = ntohl((unsigned long) enter_status);
 	dbg_read(newsock, Ttyname, NAMELEN);
+	//See documentation in hunt.h.
 	dbg_read(newsock, (char *) &mode, sizeof mode);
+	//See documentation in hunt.h.
 	mode = ntohl(mode);
 
 	/*
@@ -123,28 +120,33 @@ int answer(){
 	 * since we use control characters for cursor control
 	 * between driver and player processes
 	 */
-	for (cp1 = cp2 = name; *cp1 != '\0'; cp1++)
-		if (isprint((unsigned char)*cp1) || *cp1 == ' ')
+	for (cp1 = cp2 = name; *cp1 != '\0'; cp1++) {
+		if (isprint((unsigned char)*cp1) || *cp1 == ' ') {
 			*cp2++ = *cp1;
+		}
+	}
 	*cp2 = '\0';
 
 # ifdef INTERNET
 	if (mode == C_MESSAGE) {
-		char	buf[BUFSIZ + 1];
-		int	n;
+		char buf[BUFSIZ + 1];
+		int n;
 
-		if (team == ' ')
+		if (team == ' ') {
 			(void) sprintf(buf, "%s: ", name);
-		else
+		}
+		else {
 			(void) sprintf(buf, "%s[%c]: ", name, team);
+		}
 		n = strlen(buf);
 		for (pp = Player; pp < End_player; pp++) {
 			cgoto(pp, HEIGHT, 0);
 			outstr(pp, buf, n);
 		}
 		while ((n = read(newsock, buf, BUFSIZ)) > 0)
-			for (pp = Player; pp < End_player; pp++)
-				outstr(pp, buf, n);
+		for (pp = Player; pp < End_player; pp++) {
+			outstr(pp, buf, n);
+		}
 		for (pp = Player; pp < End_player; pp++) {
 			ce(pp);
 			sendcom(pp, REFRESH);
@@ -157,33 +159,34 @@ int answer(){
 	else
 # endif
 # ifdef MONITOR
-	if (mode == C_MONITOR)
+	if (mode == C_MONITOR) {
 		if (End_monitor < &Monitor[MAXMON]) {
 			pp = End_monitor++;
 			i = pp - Monitor + MAXPL + 3;
 		} else {
 			socklen = 0;
-			dbg_write(newsock, (char *) &socklen,
-				sizeof socklen);
+			dbg_write(newsock, (char *) &socklen, sizeof socklen); //See documentation in hunt.h.
 			(void) close(newsock);
 			return false;
 		}
+	}
 	else
 # endif
-		if (End_player < &Player[MAXPL]) {
-			pp = End_player++;
-			i = pp - Player + 3;
-		} else {
-			socklen = 0;
-			dbg_write(newsock, (char *) &socklen,
-				sizeof socklen);
-			(void) close(newsock);
-			return false;
-		}
+	if (End_player < &Player[MAXPL]) {
+		pp = End_player++;
+		i = pp - Player + 3;
+	} else {
+		socklen = 0;
+		dbg_write(newsock, (char *) &socklen, sizeof socklen);
+		//See documentation in hunt.h.
+		(void) close(newsock);
+		return false;
+	}
 
 #ifdef MONITOR
-	if (mode == C_MONITOR && team == ' ')
+	if (mode == C_MONITOR && team == ' ') {
 		team = '*';
+	}
 #endif
 	pp->p_ident = get_ident(machine, uid, name, team);
 	pp->p_output = fdopen(newsock, "w");
@@ -196,25 +199,28 @@ int answer(){
 	pp->p_x = 0;
 
 # ifdef MONITOR
-	if (mode == C_MONITOR)
+	if (mode == C_MONITOR) {
 		stmonitor(pp);
+	}
 	else
 # endif
-		stplayer(pp, enter_status);
+	stplayer(pp, enter_status);
 	return true;
 }
 
+//TODO iniziare documentazione da qui
+
 # ifdef MONITOR
-void stmonitor(PLAYER *pp){
-	int	line;
-	PLAYER	*npp;
+void stmonitor(PLAYER *pp) {
+	int line;
+	PLAYER *npp;
 
 	memcpy(pp->p_maze, Maze, sizeof Maze);
 
 	drawmaze(pp);
 
 	(void) sprintf(Buf, "%5.5s%c%-10.10s %c", " ", stat_char(pp),
-		pp->p_ident->i_name, pp->p_ident->i_team);
+			pp->p_ident->i_name, pp->p_ident->i_team);
 	line = STAT_MON_ROW + 1 + (pp - Monitor);
 	for (npp = Player; npp < End_player; npp++) {
 		cgoto(npp, line, STAT_NAME_COL);
@@ -231,24 +237,24 @@ void stmonitor(PLAYER *pp){
 }
 # endif
 
-void stplayer(PLAYER *newpp,int enter_status){
-	int	x, y;
-	PLAYER	*pp;
+void stplayer(PLAYER *newpp, int enter_status) {
+	int x, y;
+	PLAYER *pp;
 
 	Nplayer++;
 
 	for (y = 0; y < UBOUND; y++)
 		for (x = 0; x < WIDTH; x++)
 			newpp->p_maze[y][x] = Maze[y][x];
-	for (     ; y < DBOUND; y++) {
+	for (; y < DBOUND; y++) {
 		for (x = 0; x < LBOUND; x++)
 			newpp->p_maze[y][x] = Maze[y][x];
-		for (     ; x < RBOUND; x++)
+		for (; x < RBOUND; x++)
 			newpp->p_maze[y][x] = SPACE;
-		for (     ; x < WIDTH;  x++)
+		for (; x < WIDTH; x++)
 			newpp->p_maze[y][x] = Maze[y][x];
 	}
-	for (     ; y < HEIGHT; y++)
+	for (; y < HEIGHT; y++)
 		for (x = 0; x < WIDTH; x++)
 			newpp->p_maze[y][x] = Maze[y][x];
 
@@ -286,8 +292,7 @@ void stplayer(PLAYER *newpp,int enter_status){
 	if (enter_status == Q_SCAN) {
 		newpp->p_scan = SCANLEN;
 		newpp->p_cloak = 0;
-	}
-	else {
+	} else {
 		newpp->p_scan = 0;
 		newpp->p_cloak = CLOAKLEN;
 	}
@@ -300,7 +305,7 @@ void stplayer(PLAYER *newpp,int enter_status){
 	Maze[y][x] = GMINE;
 # ifdef MONITOR
 	for (pp = Monitor; pp < End_monitor; pp++)
-		check(pp, y, x);
+	check(pp, y, x);
 # endif
 
 	do {
@@ -310,16 +315,15 @@ void stplayer(PLAYER *newpp,int enter_status){
 	Maze[y][x] = MINE;
 # ifdef MONITOR
 	for (pp = Monitor; pp < End_monitor; pp++)
-		check(pp, y, x);
+	check(pp, y, x);
 # endif
 
 	(void) sprintf(Buf, "%5.2f%c%-10.10s %c", newpp->p_ident->i_score,
-		stat_char(newpp), newpp->p_ident->i_name,
-		newpp->p_ident->i_team);
+			stat_char(newpp), newpp->p_ident->i_name, newpp->p_ident->i_team);
 	y = STAT_PLAY_ROW + 1 + (newpp - Player);
 	for (pp = Player; pp < End_player; pp++) {
 		if (pp != newpp) {
-			char	smallbuf[10];
+			char smallbuf[10];
 
 			pp->p_ammo += NSHOTS;
 			newpp->p_ammo += NSHOTS;
@@ -342,8 +346,8 @@ void stplayer(PLAYER *newpp,int enter_status){
 	look(newpp);
 # ifdef	FLY
 	if (enter_status == Q_FLY)
-		/* Make sure that the position you enter in will be erased */
-		showexpl(newpp->p_y, newpp->p_x, FLYER);
+	/* Make sure that the position you enter in will be erased */
+	showexpl(newpp->p_y, newpp->p_x, FLYER);
 # endif
 	sendcom(newpp, REFRESH);
 	sendcom(newpp, READY, 0);
@@ -354,46 +358,44 @@ void stplayer(PLAYER *newpp,int enter_status){
  * rand_dir:
  *	Return a random direction
  */
-int rand_dir(){
+int rand_dir() {
 	switch (rand_num(4)) {
-	  case 0:
+	case 0:
 		return LEFTS;
-	  case 1:
+	case 1:
 		return RIGHT;
-	  case 2:
+	case 2:
 		return BELOW;
-	  case 3:
+	case 3:
 		return ABOVE;
 	}
 	/* NOTREACHED */
-	return(-1);
+	return (-1);
 }
 
 /*
  * get_ident:
  *	Get the score structure of a player
  */
-IDENT * get_ident(unsigned long machine,unsigned long uid,const char *name,char team){
-	IDENT		*ip;
-	static IDENT	punt;
+IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
+		char team) {
+	IDENT *ip;
+	static IDENT punt;
 
 	for (ip = Scores; ip != NULL; ip = ip->i_next)
-		if ((unsigned long)ip->i_machine == machine
-		&&  (unsigned long)ip->i_uid == uid
-		&&  ip->i_team == team
-		&&  strncmp(ip->i_name, name, NAMELEN) == 0)
+		if ((unsigned long) ip->i_machine == machine
+				&& (unsigned long) ip->i_uid == uid && ip->i_team == team
+				&& strncmp(ip->i_name, name, NAMELEN) == 0)
 			break;
 
 	if (ip != NULL) {
 		if (ip->i_entries < SCOREDECAY)
 			ip->i_entries++;
 		else
-			ip->i_kills = (ip->i_kills * (SCOREDECAY - 1))
-				/ SCOREDECAY;
+			ip->i_kills = (ip->i_kills * (SCOREDECAY - 1)) / SCOREDECAY;
 		ip->i_score = ip->i_kills / (double) ip->i_entries;
-	}
-	else {
-		ip = (IDENT *) malloc(sizeof (IDENT));
+	} else {
+		ip = (IDENT *) malloc(sizeof(IDENT));
 		if (ip == NULL) {
 			/* Fourth down, time to punt */
 			ip = &punt;

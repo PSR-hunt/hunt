@@ -30,43 +30,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-# define TALK_MODE
+# define TALK_MODE //See documentation in hunt.h.
 # include	"hunt.h"
 # undef TALK_MODE
 
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $");
 #endif /* not lint */
 
-/**
- * Library already present in hunt.h
- * #include "bsd.h"
- */
+/**< #include "bsd.h" already present in hunt.h. */
 
 #if	defined(TALK_43) || defined(TALK_42)
 
 # include	<sys/time.h>
 # include	<sys/wait.h>
 # include	<ctype.h>
-/**
- * Library already present in hunt.h
- * # include	<netdb.h>
- */
+/**< # include	<netdb.h> already present in hunt.h. */
 # include	<signal.h>
 # include	<stdio.h>
 # include	<string.h>
 # include	<unistd.h>
 # include	"talk_ctl.h"
 
-/*
- *Deprecated due to stdbool.h standard library.
- *# define	TRUE		1
- *# define	FALSE		0
- */
+/**< # define	TRUE		1 Deprecated due to stdbool.h standard library. */
+/**< # define	FALSE		0 Deprecated due to stdbool.h standard library. */
 
 /* defines for fake talk message to announce start of game */
 # ifdef TALK_43
@@ -90,6 +78,8 @@ SIGNAL_TYPE exorcise(int);
 SIGNAL_TYPE exorcise(int dummy __attribute__((__unused__))) {
 	(void) wait(0);
 }
+
+//TODO documentazione da qui
 
 /*
  *	query the local SMTP daemon to expand the RENDEZVOUS mailing list

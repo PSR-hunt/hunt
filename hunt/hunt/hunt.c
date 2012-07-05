@@ -31,10 +31,9 @@
  */
 
 # include	"hunt.h"
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+
 #ifndef lint
 __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
@@ -42,42 +41,24 @@ __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
 # include	<sys/param.h>
 # include	<sys/stat.h>
 # include	<sys/time.h>
-/**
- * Library already present in hunt.h
- * # include	<sys/poll.h>
- */
+/**< # include	<sys/poll.h> already present in hunt.h. */
 # include	<ctype.h>
 # include	<err.h>
-/**
- * Library already present in hunt.h
- * # include	<errno.h>
- */
-
-/**
- * Edited from curses.h
- */
-# include	<ncurses.h>
+ /**< # include	<errno.h> already present in hunt.h. */
+# include	<ncurses.h> /**< Edited from curses.h. */
 # include	<signal.h>
 # include	<stdlib.h>
-/**
- * Library already present in hunt.h
- * # include	<string.h>
- */
+/**< # include	<string.h> already present in hunt.h. */
 # if !defined(USE_CURSES) && defined(BSD_RELEASE) && BSD_RELEASE >= 44
 # include	<termios.h>
 static struct termios saved_tty;
 # endif
 # include	<unistd.h>
 # include	<ifaddrs.h>
-/**
- *  Explicit declaration of getopt family functions.
- */
-# include 	<getopt.h>
 
-/**
- * Added library to support net interface socket communication.
- */
-# include	<net/if.h>
+# include 	<getopt.h> /**< Explicit declaration of getopt family functions. */
+
+# include	<net/if.h> /**< Added library to support net interface socket communication. */
 
 /**
  * It defines the overextimated length of a line in configuration file.
@@ -144,24 +125,21 @@ extern int cur_row, cur_col;
 
 void dump_scores(SOCKET);
 long env_init(long);
-long var_env_init(long);
+long var_env_init(long); //See function implementation in order to know description.
 void fill_in_blanks(void);
 void leave(int, const char *) __attribute__((__noreturn__));
 void leavex(int, const char *) __attribute__((__noreturn__));
 void fincurs(void);
-
-void usage(void);
-
+void usage(void); //See function implementation in order to know description.
 int main(int, char *[]);
 # ifdef INTERNET
 SOCKET *list_drivers(void);
 # endif
-/**
- * Added explicit declaration to avoid implicit.
- */
-long fchars_in_line(FILE*);
+long fchars_in_line(FILE*); /**< Added explicit declaration to avoid implicit declaration. */
 
 extern int Otto_mode;
+
+//TODO da qui in poi documentare
 /*
  * main:
  *	Main program for local process

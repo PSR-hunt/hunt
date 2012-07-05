@@ -32,33 +32,21 @@
 
 # include	"hunt.h"
 
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
 
-/**
- * Library already present in hunt.h
- * # include	<sys/ioctl.h>
- */
+/**< # include	<sys/ioctl.h> already present in hunt.h. */
 # include	<sys/stat.h>
 # include	<sys/time.h>
 # include	<err.h>
-/**
- * Library already present in hunt.h
- * # include	<errno.h>
- */
+/**< # include	<errno.h> already present in hunt.h. */
 # include	<signal.h>
 # include	<stdlib.h>
 # include	<time.h>
 # include	<unistd.h>
-/**
- *  Explicit declaration of getopt family functions
- */
-# include 	<getopt.h>
+# include 	<getopt.h> /**< Explicit declaration of getopt family functions. */
 
 # ifndef pdp11
 # define	RN	(((Seed = Seed * 11109 + 13849) >> 16) & 0xffff)
@@ -75,8 +63,10 @@ char *Last_arg; /* pointer to end of argv/environ */
 int Test_socket; /* test socket to answer datagrams */
 bool inetd_spawned; /* invoked via inetd */
 bool standard_port = true; /* true if listening on standard port */
-unsigned short sock_port; /* port # of tcp listen socket */
-unsigned short stat_port; /* port # of statistics tcp socket */
+/* port # of tcp listen socket */
+unsigned short sock_port; /**< Changed from u_short. */
+/* port # of statistics tcp socket */
+unsigned short stat_port; /**< Changed from u_short. */
 # define	DAEMON_SIZE	(sizeof Daemon)
 # else
 # define	DAEMON_SIZE	(sizeof Daemon - 1)
@@ -90,6 +80,8 @@ static void makeboots(void);
 static void send_stats(void);
 static void zap(PLAYER *, bool, int);
 void erred(char *[]);
+
+//TODO documentazione da iniziare qui
 
 /*
  * main:

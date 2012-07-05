@@ -31,10 +31,8 @@
  */
 
 # include	"hunt.h"
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $");
 #endif /* not lint */
@@ -42,10 +40,11 @@ __RCSID("$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $");
 # include	<signal.h>
 # include	<unistd.h>
 
-void do_connect(const char	*name, char team, long enter_status){
+//TODO da qui documentare
+void do_connect(const char *name, char team, long enter_status) {
 
-	static int32_t	uid;
-	static int32_t	mode;
+	static int32_t uid;
+	static int32_t mode;
 
 	if (uid == 0)
 		uid = htonl(getuid());
@@ -58,15 +57,15 @@ void do_connect(const char	*name, char team, long enter_status){
 	dbg_write(Socket, Buf, NAMELEN);
 # ifdef INTERNET
 	if (Send_message != NULL)
-		mode = C_MESSAGE;
+	mode = C_MESSAGE;
 	else
 # endif
 # ifdef MONITOR
 	if (Am_monitor)
-		mode = C_MONITOR;
+	mode = C_MONITOR;
 	else
 # endif
-		mode = C_PLAYER;
+	mode = C_PLAYER;
 	mode = htonl(mode);
 	dbg_write(Socket, (char *) &mode, sizeof mode);
 }

@@ -42,14 +42,11 @@
  * sys/cdefs.h
  */
 
-/**
- * Enables BSD library functions.
- */
-# define 	_BSD_SOURCE
-# define	_POSIX_C_SOURCE 1
-
+# define 	_BSD_SOURCE /**< Enables BSD library functions. */
+# define	_POSIX_C_SOURCE 1 //TODO documentare
 # include "bsd.h"
-# ifndef TALK_MODE
+
+# ifndef TALK_MODE // See above
 # include	<errno.h>
 # ifdef LOG
 # include	<syslog.h>
@@ -77,19 +74,13 @@
 # include	<sys/un.h>
 # endif
 
-/**
- * Added boolean type support.
- */
-# include <stdbool.h>
+# include <stdbool.h> /**< Added boolean type support. */
 
-# ifndef SIMPLE_MODE
+# ifndef SIMPLE_MODE // See above
 # include <sys/cdefs.h>
 # endif
 
-/**
- * Added from file configuration support.
- */
-# define CONFIGURATION_FILE "hunt.cfg"
+# define CONFIGURATION_FILE "hunt.cfg" /**< Added from file configuration support. */
 
 # ifdef	INTERNET
 # define	SOCK_FAMILY	AF_INET
@@ -117,7 +108,7 @@
 # endif
 
 /* decrement version number for each change in startup protocol */
-# define	HUNT_VERSION		(u_int32_t) -1
+# define	HUNT_VERSION		(u_int32_t) -1 /**< Added cast to u_int32_t. */
 
 # define	ADDCH		('a' | 0200)
 # define	MOVE		('m' | 0200)
@@ -171,7 +162,7 @@
 # define	STAT_DAM_ROW	2
 # define	STAT_KILL_ROW	3
 # define	STAT_PLAY_ROW	5
-# ifdef MONITOR
+# ifdef 	MONITOR
 # define	STAT_MON_ROW	(STAT_PLAY_ROW + MAXPL + 1)
 # endif
 # define	STAT_NAME_LEN	18
@@ -228,11 +219,12 @@
 # define	EAST	010
 # define	WEST	020
 
-/*Deprecated due to stdbool.h library support.
- *# ifndef TRUE
- *# define	TRUE	1
- *# define	FALSE	0
- *# endif
+/**
+ * Deprecated due to stdbool.h library support.
+ * # ifndef TRUE
+ * # define	TRUE	1
+ * # define	FALSE	0
+ * # endif
  */
 
 # undef CTRL
@@ -481,7 +473,7 @@ IDENT *get_ident(unsigned long, unsigned long, const char *, char);
 void get_local_name(const char *);
 int get_remote_name(char *);
 BULLET *is_bullet(int, int);
-void iso_syslog(int, const char *, ...); //TODO
+void iso_syslog(int, const char *, ...); //TODO documentazione
 void look(PLAYER *);
 void makemaze(void);
 void message(PLAYER *, const char *);

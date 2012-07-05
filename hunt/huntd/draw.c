@@ -32,14 +32,12 @@
 
 # include	"hunt.h"
 
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: draw.c,v 1.3 2003/06/11 12:00:22 wiz Exp $");
 #endif /* not lint */
 
+//TODO da qui iniziare documentazione
 void drawmaze(PLAYER *pp){
 	int	x;
 	char	*sp;

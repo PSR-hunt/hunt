@@ -35,35 +35,20 @@
 __RCSID("$NetBSD: get_names.c,v 1.7 2003/06/11 12:00:22 wiz Exp $");
 #endif /* not lint */
 
-/**
- * Library already present in hunt.h
- * #include "bsd.h"
- */
+/**<  #include "bsd.h" already present in hunt.h. */
 
 #if	defined(TALK_43) || defined(TALK_42)
 
 # include	<sys/param.h>
-/**
- * Library already present in hunt.h
- * # include	<netdb.h>
- */
-/**
- * Library already present in hunt.h
- * # include	<stdio.h>
- */
+/**< # include	<netdb.h> already present in hunt.h. */
+/**< # include	<stdio.h> already present in hunt.h. */
 # include	<stdlib.h>
-/**
- * Library already present in hunt.h
- * # include	<string.h>
- */
+/**< # include	<string.h> already present in hunt.h. */
 # include	<unistd.h>
 
-/**
- * Include the simple version of hunt.h
- */
 # define TALK_MODE
 # define	SIMPLE_MODE
-# include	"hunt.h"
+# include	"hunt.h" /**< Include the simple version of hunt.h. */
 # undef		SIMPLE_MODE
 # undef TALK_MODE
 
@@ -73,15 +58,15 @@ __RCSID("$NetBSD: get_names.c,v 1.7 2003/06/11 12:00:22 wiz Exp $");
 #define MAXHOSTNAMELEN 256
 #endif
 
-static	char	hostname[MAXHOSTNAMELEN + 1];
-char		*my_machine_name;
+static char hostname[MAXHOSTNAMELEN + 1];
+char *my_machine_name;
 
 /*
  * Determine the local user and machine
  */
-void get_local_name(const char *my_name){
-	struct	hostent	*hp;
-	struct	servent	*sp;
+void get_local_name(const char *my_name) {
+	struct hostent *hp;
+	struct servent *sp;
 
 	/* Load these useful values into the standard message header */
 	msg.id_num = 0;
@@ -105,8 +90,10 @@ void get_local_name(const char *my_name){
 	hp = gethostbyname(my_machine_name);
 	if (hp == (struct hostent *) 0) {
 # ifdef LOG
-		iso_syslog(LOG_ERR,
-		    "This machine doesn't exist. Boy, am I confused!");
+		/**
+		 * Uses iso_syslog as a new implementation of syslog.
+		 */
+		iso_syslog(LOG_ERR, "This machine doesn't exist. Boy, am I confused!");
 # else
 		perror("This machine doesn't exist. Boy, am I confused!");
 # endif
@@ -121,6 +108,9 @@ void get_local_name(const char *my_name){
 # endif
 	if (sp == 0) {
 # ifdef LOG
+		/**
+		 * Uses iso_syslog as a new implementation of syslog.
+		 */
 		iso_syslog(LOG_ERR, "This machine doesn't support talk");
 # else
 		perror("This machine doesn't support talk");
@@ -130,20 +120,21 @@ void get_local_name(const char *my_name){
 	daemon_port = sp->s_port;
 }
 
+//TODO documentazione da qui
+
 /*
  * Determine the remote user and machine
  */
-int get_remote_name(char *his_address){
-	char		*his_name;
-	char		*his_machine_name;
-	char		*ptr;
-	struct	hostent	*hp;
-
+int get_remote_name(char *his_address) {
+	char *his_name;
+	char *his_machine_name;
+	char *ptr;
+	struct hostent *hp;
 
 	/* check for, and strip out, the machine name of the target */
 	for (ptr = his_address; *ptr != '\0' && *ptr != '@' && *ptr != ':'
-					&& *ptr != '!' && *ptr != '.'; ptr++)
-		continue;
+			&& *ptr != '!' && *ptr != '.'; ptr++)
+	continue;
 	if (*ptr == '\0') {
 		/* this is a local to local talk */
 		his_name = his_address;
@@ -166,14 +157,14 @@ int get_remote_name(char *his_address){
 
 	/* if he is on the same machine, then simply copy */
 	if (memcmp((char *) &his_machine_name, (char *) &my_machine_name,
-						sizeof(his_machine_name)) == 0)
-		memcpy(&his_machine_addr, &my_machine_addr,
-						sizeof(his_machine_name));
+					sizeof(his_machine_name)) == 0)
+	memcpy(&his_machine_addr, &my_machine_addr,
+			sizeof(his_machine_name));
 	else {
 		/* look up the address of the recipient's machine */
 		hp = gethostbyname(his_machine_name);
 		if (hp == (struct hostent *) 0)
-			return 0;			/* unknown host */
+		return 0; /* unknown host */
 		memcpy(&his_machine_addr, hp->h_addr, hp->h_length);
 	}
 	return 1;

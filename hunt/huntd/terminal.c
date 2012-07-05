@@ -32,10 +32,7 @@
 
 # include	"hunt.h"
 
-/**
- * Pushed up in hunt.h
- * #include <sys/cdefs.h>
- */
+/** #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: terminal.c,v 1.4 2003/06/11 12:00:23 wiz Exp $");
 #endif /* not lint */
@@ -43,12 +40,14 @@ __RCSID("$NetBSD: terminal.c,v 1.4 2003/06/11 12:00:23 wiz Exp $");
 #include <stdarg.h>
 #define	TERM_WIDTH	80	/* Assume terminals are 80-char wide */
 
+//TODO documentare da qui
+
 /*
  * cgoto:
  *	Move the cursor to the given position on the given player's
  *	terminal.
  */
-void cgoto(PLAYER *pp,int y,int x){
+void cgoto(PLAYER *pp, int y, int x) {
 	if (x == pp->p_curx && y == pp->p_cury)
 		return;
 	sendcom(pp, MOVE, y, x);
@@ -63,7 +62,7 @@ void cgoto(PLAYER *pp,int y,int x){
 /**
  * Uniformed to prototype in hunt.h.
  */
-void outch(PLAYER *pp,int ch){
+void outch(PLAYER *pp, int ch) {
 	if (++pp->p_curx >= TERM_WIDTH) {
 		pp->p_curx = 0;
 		pp->p_cury++;
@@ -75,7 +74,7 @@ void outch(PLAYER *pp,int ch){
  * outstr:
  *	Put out a string of the given length.
  */
-void outstr(PLAYER *pp,const char *str,int len){
+void outstr(PLAYER *pp, const char *str, int len) {
 	pp->p_curx += len;
 	pp->p_cury += (pp->p_curx / TERM_WIDTH);
 	pp->p_curx %= TERM_WIDTH;
@@ -87,7 +86,7 @@ void outstr(PLAYER *pp,const char *str,int len){
  * clrscr:
  *	Clear the screen, and reset the current position on the screen.
  */
-void clrscr(PLAYER *pp){
+void clrscr(PLAYER *pp) {
 	sendcom(pp, CLEAR);
 	pp->p_cury = 0;
 	pp->p_curx = 0;
@@ -97,7 +96,7 @@ void clrscr(PLAYER *pp){
  * ce:
  *	Clear to the end of the line
  */
-void ce(PLAYER *pp){
+void ce(PLAYER *pp) {
 	sendcom(pp, CLRTOEOL);
 }
 
@@ -108,7 +107,7 @@ void ce(PLAYER *pp){
  */
 void
 ref(pp)
-	PLAYER	*pp;
+PLAYER *pp;
 {
 	sendcom(pp, REFRESH);
 }
@@ -118,10 +117,9 @@ ref(pp)
  * sendcom:
  *	Send a command to the given user
  */
-void sendcom(PLAYER *pp, int command, ...)
-{
-	va_list	ap;
-	int	arg1, arg2;
+void sendcom(PLAYER *pp, int command, ...) {
+	va_list ap;
+	int arg1, arg2;
 
 	va_start(ap, command);
 	(void) putc(command, pp->p_output);
@@ -139,5 +137,6 @@ void sendcom(PLAYER *pp, int command, ...)
 		break;
 	}
 
-	va_end(ap);		/* No return needed for void functions. */
+	va_end(ap);
+	/* No return needed for void functions. */
 }
