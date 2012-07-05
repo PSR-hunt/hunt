@@ -330,7 +330,6 @@ static void send_stuff() {
  */
 int quit(int old_status) {
 	int explain, ch, second_ch;
-	bool get_message;
 
 	if (Last_player)
 		return Q_QUIT;
@@ -372,25 +371,23 @@ int quit(int old_status) {
 			put_str("Write a parting message [yn]? ");
 			clear_eol();
 			refresh();
-			get_message = false;
 			for (;;) {
 				if (isupper(second_ch = getchar())) {
 					second_ch = tolower(ch);
 				}
-				if (second_ch == 'y' || second_ch == 'n'){
+				if (second_ch == 'y' || second_ch == 'n') {
 					break;
 				}
 			}
 # endif
 		}
 # ifdef INTERNET
-		if( ch == 'n' && second_ch == 'n'){
+		if( ch == 'n' && second_ch == 'n') {
 			return Q_QUIT;
 		} else if ((ch == 'n' && second_ch == 'y') || ch == 'w') {
 			static char buf[WIDTH + WIDTH % 2];
 			char *cp, c;
 
-			get_message:
 			c = ch; /* save how we got here */
 # ifdef USE_CURSES
 			move(HEIGHT, 0);

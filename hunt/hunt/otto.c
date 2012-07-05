@@ -158,21 +158,20 @@ STATIC void face_and_move_direction(int, int);
 STATIC int go_for_ammo(char);
 STATIC void ottolook(int, struct item *);
 STATIC void look_around(void);
-STATIC SIGNAL_TYPE nothing(int);
 STATIC int stop_look(struct item *, char, int, int);
 STATIC void wander(void);
+void empty_handler(int);
 
 extern int Otto_count;
 
-STATIC SIGNAL_TYPE
-nothing(dummy)
-int dummy __attribute__((__unused__));
-{
+void empty_handler(int param){
+
 }
 
 void otto(int y,int x,char face) {
 	int i;
-	int old_mask;
+	struct sigaction handler, old_handler;
+	sigset_t old_mask, sig_mask;
 
 	bool done;
 
@@ -183,11 +182,14 @@ void otto(int y,int x,char face) {
 	}
 	fprintf(debug, "\n%c(%d,%d)", face, y, x);
 # endif
-	(void) signal(SIGALRM, nothing);
-	old_mask = sigblock(sigmask(SIGALRM));
+	handler.sa_handler=&empty_handler;
+	sigaction(SIGALRM, &handler, &old_handler);
+	sigemptyset(&sig_mask);
+	sigaddset(&sig_mask, SIGALRM);
+	sigprocmask(SIG_BLOCK, &sig_mask, &old_mask);
 	setitimer(ITIMER_REAL, &pause_time, NULL);
-	sigpause(old_mask);
-	sigsetmask(old_mask);
+	sigsuspend(&old_mask);
+	sigprocmask(SIG_SETMASK, &old_mask, NULL);
 
 	/* save away parameters so other functions may use/update info */
 	switch (face) {
