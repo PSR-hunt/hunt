@@ -32,13 +32,13 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
 
 # include	<ctype.h>
-/**< # include	<errno.h> already present in hunt.h. */
+/**< # include	<errno.h> already present in hunt.h. [PSR] */
 # include	<fcntl.h>
 # include	<stdlib.h>
 # include	<unistd.h>
@@ -48,15 +48,18 @@ __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 
 static char Ttyname[NAMELEN];
 
+/**
+ * todo
+ */
 int answer() {
 	PLAYER *pp;
 	int newsock;
-	static unsigned long mode;
+	static unsigned long mode; /**< Changed from u_long. [PSR] */
 	static char name[NAMELEN];
 	static char team;
 	static int enter_status;
-	static unsigned int socklen; /**< Edited from static int in order to match accept() parameter. */
-	static unsigned long machine; /**< Edited from u_long in order to match accept() parameter. */
+	static unsigned int socklen; /**< Edited from static int in order to match accept() parameter. [PSR] */
+	static unsigned long machine; /**< Edited from u_long in order to match accept() parameter. [PSR] */
 	static u_int32_t uid;
 	static SOCKET sockstruct;
 	char *cp1, *cp2;
@@ -72,8 +75,9 @@ int answer() {
 	errno = 0;
 	newsock = accept(Socket, (struct sockaddr *) &sockstruct, &socklen);
 	if (newsock < 0) {
-		if (errno == EINTR)
+		if (errno == EINTR) {
 			return false;
+		}
 # ifdef LOG
 		iso_syslog(LOG_ERR, "accept: %m");
 # else
@@ -85,8 +89,9 @@ int answer() {
 # ifdef INTERNET
 	machine = ntohl(((struct sockaddr_in *) &sockstruct)->sin_addr.s_addr);
 # else
-	if (machine == 0)
+	if (machine == 0) {
 		machine = gethostid();
+	}
 # endif
 	version = htonl((u_int32_t) HUNT_VERSION);
 	dbg_write(newsock, (char *) &version, LONGLEN);
@@ -208,9 +213,12 @@ int answer() {
 	return true;
 }
 
-//TODO iniziare documentazione da qui
-
 # ifdef MONITOR
+/**
+ * Initialize the terminal of a player.
+ * @param pp a player
+ * [PSR]
+ */
 void stmonitor(PLAYER *pp) {
 	int line;
 	PLAYER *npp;
@@ -237,26 +245,39 @@ void stmonitor(PLAYER *pp) {
 }
 # endif
 
+/**
+ * Initializes a player status.
+ * @param newpp the new player to inizialize
+ * @param enter_status the enter mode of a player
+ * [PSR]
+ */
 void stplayer(PLAYER *newpp, int enter_status) {
 	int x, y;
 	PLAYER *pp;
 
 	Nplayer++;
 
-	for (y = 0; y < UBOUND; y++)
-		for (x = 0; x < WIDTH; x++)
+	for (y = 0; y < UBOUND; y++) {
+		for (x = 0; x < WIDTH; x++) {
 			newpp->p_maze[y][x] = Maze[y][x];
-	for (; y < DBOUND; y++) {
-		for (x = 0; x < LBOUND; x++)
-			newpp->p_maze[y][x] = Maze[y][x];
-		for (; x < RBOUND; x++)
-			newpp->p_maze[y][x] = SPACE;
-		for (; x < WIDTH; x++)
-			newpp->p_maze[y][x] = Maze[y][x];
+		}
 	}
-	for (; y < HEIGHT; y++)
-		for (x = 0; x < WIDTH; x++)
+	for (; y < DBOUND; y++) {
+		for (x = 0; x < LBOUND; x++) {
 			newpp->p_maze[y][x] = Maze[y][x];
+		}
+		for (; x < RBOUND; x++) {
+			newpp->p_maze[y][x] = SPACE;
+		}
+		for (; x < WIDTH; x++) {
+			newpp->p_maze[y][x] = Maze[y][x];
+		}
+	}
+	for (; y < HEIGHT; y++) {
+		for (x = 0; x < WIDTH; x++) {
+			newpp->p_maze[y][x] = Maze[y][x];
+		}
+	}
 
 	do {
 		x = rand_num(WIDTH - 1) + 1;
@@ -304,8 +325,9 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	} while (Maze[y][x] != SPACE);
 	Maze[y][x] = GMINE;
 # ifdef MONITOR
-	for (pp = Monitor; pp < End_monitor; pp++)
-	check(pp, y, x);
+	for (pp = Monitor; pp < End_monitor; pp++) {
+		check(pp, y, x);
+	}
 # endif
 
 	do {
@@ -314,8 +336,9 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	} while (Maze[y][x] != SPACE);
 	Maze[y][x] = MINE;
 # ifdef MONITOR
-	for (pp = Monitor; pp < End_monitor; pp++)
-	check(pp, y, x);
+	for (pp = Monitor; pp < End_monitor; pp++) {
+		check(pp, y, x);
+	}
 # endif
 
 	(void) sprintf(Buf, "%5.2f%c%-10.10s %c", newpp->p_ident->i_score,
@@ -345,18 +368,18 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	drawplayer(newpp, true);
 	look(newpp);
 # ifdef	FLY
-	if (enter_status == Q_FLY)
-	/* Make sure that the position you enter in will be erased */
-	showexpl(newpp->p_y, newpp->p_x, FLYER);
+	if (enter_status == Q_FLY) {
+		/* Make sure that the position you enter in will be erased */
+		showexpl(newpp->p_y, newpp->p_x, FLYER);
+	}
 # endif
 	sendcom(newpp, REFRESH);
 	sendcom(newpp, READY, 0);
 	(void) fflush(newpp->p_output);
 }
 
-/*
- * rand_dir:
- *	Return a random direction
+/**
+ * Return a random direction.
  */
 int rand_dir() {
 	switch (rand_num(4)) {
@@ -373,26 +396,28 @@ int rand_dir() {
 	return (-1);
 }
 
-/*
- * get_ident:
- *	Get the score structure of a player
+/**
+ * Get the score structure of a player.
  */
 IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
 		char team) {
 	IDENT *ip;
 	static IDENT punt;
 
-	for (ip = Scores; ip != NULL; ip = ip->i_next)
+	for (ip = Scores; ip != NULL; ip = ip->i_next) {
 		if ((unsigned long) ip->i_machine == machine
 				&& (unsigned long) ip->i_uid == uid && ip->i_team == team
-				&& strncmp(ip->i_name, name, NAMELEN) == 0)
+				&& strncmp(ip->i_name, name, NAMELEN) == 0) {
 			break;
+		}
+	}
 
 	if (ip != NULL) {
-		if (ip->i_entries < SCOREDECAY)
+		if (ip->i_entries < SCOREDECAY) {
 			ip->i_entries++;
-		else
+		} else {
 			ip->i_kills = (ip->i_kills * (SCOREDECAY - 1)) / SCOREDECAY;
+		}
 		ip->i_score = ip->i_kills / (double) ip->i_entries;
 	} else {
 		ip = (IDENT *) malloc(sizeof(IDENT));
