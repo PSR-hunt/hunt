@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
 
 #ifndef lint
 __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
@@ -41,14 +41,14 @@ __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
 # include	<sys/param.h>
 # include	<sys/stat.h>
 # include	<sys/time.h>
-/**< # include	<sys/poll.h> already present in hunt.h. */
+/**< # include	<sys/poll.h> already present in hunt.h. [PSR]*/
 # include	<ctype.h>
 # include	<err.h>
- /**< # include	<errno.h> already present in hunt.h. */
-# include	<ncurses.h> /**< Edited from curses.h. */
+ /**< # include	<errno.h> already present in hunt.h. [PSR] */
+# include	<ncurses.h> /**< Edited from curses.h. [PSR]*/
 # include	<signal.h>
 # include	<stdlib.h>
-/**< # include	<string.h> already present in hunt.h. */
+/**< # include	<string.h> already present in hunt.h. [PSR]*/
 # if !defined(USE_CURSES) && defined(BSD_RELEASE) && BSD_RELEASE >= 44
 # include	<termios.h>
 static struct termios saved_tty;
@@ -56,13 +56,14 @@ static struct termios saved_tty;
 # include	<unistd.h>
 # include	<ifaddrs.h>
 
-# include 	<getopt.h> /**< Explicit declaration of getopt family functions. */
+# include 	<getopt.h> /**< Explicit declaration of getopt family functions. [PSR]*/
 
-# include	<net/if.h> /**< Added library to support net interface socket communication. */
+# include	<net/if.h> /**< Added library to support net interface socket communication. [PSR]*/
 
 /**
  * It defines the overextimated length of a line in configuration file.
  * It is used only if the program is not able to compute the real input line length.
+ * [PSR]
  */
 # define EMERGENCY_BUFFER_LENGTH 1024
 
@@ -135,14 +136,14 @@ int main(int, char *[]);
 # ifdef INTERNET
 SOCKET *list_drivers(void);
 # endif
-long fchars_in_line(FILE*); /**< Added explicit declaration to avoid implicit declaration. */
+long fchars_in_line(FILE*); /**< Added explicit declaration to avoid implicit declaration. [PSR] */
 
 extern int Otto_mode;
 
 //TODO da qui in poi documentare
-/*
- * main:
- *	Main program for local process
+
+/**
+ * Main program for local process.
  */
 int main(int argc, char* argv[]) {
 
@@ -441,12 +442,16 @@ int broadcast_vec(struct sockaddr **vector) {
 
 /**
  * Helper function to print the usage of the program on stderr.
+ * [PSR]
  */
 void usage() {
 	fputs("usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host]\n", stderr);
 	exit(1);
 }
 
+/**
+ * todo
+ */
 SOCKET * list_drivers() {
 	int option;
 	unsigned short msg;
@@ -615,6 +620,9 @@ SOCKET * list_drivers() {
 
 }
 
+/**
+ * todo
+ */
 void find_driver(bool do_startup) {
 	SOCKET *hosts;
 
@@ -680,6 +688,9 @@ void find_driver(bool do_startup) {
 	find_driver(false);
 }
 
+/**
+ * todo
+ */
 void dump_scores(SOCKET host) {
 	struct hostent *hp;
 	int s;
@@ -703,6 +714,9 @@ void dump_scores(SOCKET host) {
 
 # endif
 
+/**
+ * todo
+ */
 void start_driver() {
 	int procid;
 
@@ -760,37 +774,33 @@ void start_driver() {
 	refresh();
 }
 
-/*
- * bad_con:
- *	We had a bad connection.  For the moment we assume that this
- *	means the game is full.
+/**
+ * We had a bad connection.  For the moment we assume that this
+ * means the game is full.
  */
 void bad_con() {
 	leavex(1, "The game is full.  Sorry.");
 	/* NOTREACHED */
 }
 
-/*
- * bad_ver:
- *	version number mismatch.
+/**
+ * Version number mismatch.
  */
 void bad_ver() {
 	leavex(1, "Version number mismatch. No go.");
 	/* NOTREACHED */
 }
 
-/*
- * sigterm:
- *	Handle a terminate signal
+/**
+ * Handle a terminate signal.
  */
 SIGNAL_TYPE sigterm(int dummy __attribute__((__unused__))) {
 	leavex(0, (char *) NULL);
 	/* NOTREACHED */
 }
 
-/*
- * sigusr1:
- *	Handle a usr1 signal
+/**
+ * Handle a usr1 signal.
  */
 SIGNAL_TYPE sigusr1(int dummy __attribute__((__unused__))) {
 	leavex(1, "Unable to start driver.  Try again.");
@@ -798,18 +808,16 @@ SIGNAL_TYPE sigusr1(int dummy __attribute__((__unused__))) {
 }
 
 # ifdef INTERNET
-/*
- * sigalrm:
- *	Handle an alarm signal
+/**
+ * Handle an alarm signal.
  */
 SIGNAL_TYPE sigalrm(int dummy __attribute__((__unused__))) {
 	return;
 }
 # endif
 
-/*
- * rmnl:
- *	Remove a '\n' at the end of a string if there is one
+/**
+ * Remove a '\n' at the end of a string if there is one.
  */
 void rmnl(char *s) {
 	char *cp;
@@ -819,9 +827,8 @@ void rmnl(char *s) {
 		*cp = '\0';
 }
 
-/*
- * intr:
- *	Handle a interrupt signal
+/**
+ * Handle a interrupt signal.
  */
 SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
 	int ch;
@@ -875,6 +882,9 @@ SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
 	}
 }
 
+/**
+ * todo
+ */
 void fincurs() {
 	if (in_visual) {
 # ifdef USE_CURSES
@@ -895,10 +905,9 @@ void fincurs() {
 	}
 }
 
-/*
- * leave:
- *	Leave the game somewhat gracefully, restoring all current
- *	tty stats.
+/**
+ * Leave the game somewhat gracefully, restoring all current
+ * tty stats.
  */
 void leave(int eval, const char *mesg) {
 	int serrno = errno;
@@ -906,27 +915,27 @@ void leave(int eval, const char *mesg) {
 	errno = serrno;
 	/**
 	 * Introduced errno parameter in err() in order to display it on standard error.
+	 * [PSR]
 	 */
 	err(eval, (mesg ? mesg : ""), errno);
 }
 
-/*
- * leave:
- *	Leave the game somewhat gracefully, restoring all current
- *	tty stats.
+/**
+ * Leave the game somewhat gracefully, restoring all current
+ * tty stats.
  */
 void leavex(int eval, const char *mesg) {
 	fincurs();
 	/**
 	 * Introduced a NULL parameter in errx() since the routine shows a generic error message.
+	 * [PSR]
 	 */
 	errx(eval, (mesg ? mesg : ""), NULL);
 }
 
 #if !defined(USE_CURSES) && defined(SIGTSTP)
-/*
- * tstp:
- *	Handle stop and start signals
+/**
+ * Handle stop and start signals.
  */
 SIGNAL_TYPE tstp(int dummy) {
 # if BSD_RELEASE < 44
@@ -989,6 +998,7 @@ char * strpbrk(char *s,char *brk) {
  * variable using var_env_init() function.
  * @param[in] enter_status_in Status used if no status modifier is set in configuration file.
  * \return Configured enter status.
+ * [PSR]
  */
 long env_init(long enter_status_in) {
 
@@ -996,15 +1006,16 @@ long env_init(long enter_status_in) {
 
 	/**
 	 * Variables supporting configuration file parsing.
+	 * [PSR]
 	 */
-	FILE* config; /**< Points to configuration file.*/
-	FILE* c; /**< Points to configuration file. Used for char counting.*/
+	FILE* config; /**< Points to configuration file. [PSR]*/
+	FILE* c; /**< Points to configuration file. Used for char counting.[PSR]*/
 	bool opened_c;
-	long input_len; /**< Input row length.*/
-	char* input_row; /**< A row from configuration file.*/
-	char* equal; /**< Points to the position of '=' into input_row.*/
-	char* input_value; /**< Value associated to a configuration tag.*/
-	long tag_len; /**< Tag field length.*/
+	long input_len; /**< Input row length. [PSR]*/
+	char* input_row; /**< A row from configuration file. [PSR]*/
+	char* equal; /**< Points to the position of '=' into input_row. [PSR]*/
+	char* input_value; /**< Value associated to a configuration tag. [PSR]*/
+	long tag_len; /**< Tag field length. [PSR]*/
 	char* read;
 
 	int i;
@@ -1031,6 +1042,7 @@ long env_init(long enter_status_in) {
 		while (!feof(config)) {
 			/**
 			 * Avoids infinite loop in case of fgets failure.
+			 * [PSR]
 			 */
 			if (read == NULL) {
 				break;
@@ -1092,12 +1104,14 @@ long env_init(long enter_status_in) {
 		if (opened_c) {
 			/**
 			 * Hard-wired FILE* c setting to NULL after file closure.
+			 * [PSR]
 			 */
 			fclose(c);
 			c = NULL;
 		}
 		/**
 		 * Hard-wired FILE* config setting to NULL after file closure.
+		 * [PSR]
 		 */
 		fclose(config);
 		config = NULL;
@@ -1110,31 +1124,33 @@ long env_init(long enter_status_in) {
  * It is invoked only in case of configuration file unavailability.
  * @param[in] enter_status_in Status used if no status modifier is set in configuration environment variable..
  * \return Configured enter status.
+ * [PSR]
  */
 long var_env_init(long enter_status_in) {
 
-	long enter_status = enter_status_in; /**< Hosts the value to return. */
+	long enter_status = enter_status_in; /**< Hosts the value to return. [PSR] */
 
 	int i;
 
-	char *envp; /**< This string contains setting options. */
-	char *envname; /**< Temporarely stores configured player name.*/
+	char *envp; /**< This string contains setting options. [PSR]*/
+	char *envname; /**< Temporarely stores configured player name. [PSR]*/
 	char *s;
 
 	/**
 	 * Generates a map for extended ASCII conversion.
 	 * //TODO verificare sostituibilita' con libreria standard
 	 */
-	for (i = 0; i < 256; i++)
+	for (i = 0; i < 256; i++){
 		map_key[i] = (char) i;
+	}
 
-	envname = NULL; /*Verified null pointer safety*/
+	envname = NULL; /**< Verified null pointer safety. [PSR]*/
 
 	if ((envp = getenv("HUNT")) != NULL) {
 		while ((s = strpbrk(envp, "=,")) != NULL) {
-			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { /*compara i caratteri dall'inizio della stringa di configurazione non ancora analizzata sino al primo =*/
+			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { //compara i caratteri dall'inizio della stringa di configurazione non ancora analizzata sino al primo =
 				enter_status = Q_CLOAK;
-				envp = s + 1; /*elimina i caratteri già considerati da envp*/
+				envp = s + 1; //elimina i caratteri già considerati da envp
 			} else if (strncmp(envp, "scan,", s - envp + 1) == 0) {
 				enter_status = Q_SCAN;
 				envp = s + 1;
@@ -1187,8 +1203,9 @@ long var_env_init(long enter_status_in) {
 # endif
 			else if (strncmp(envp, "team=", s - envp + 1) == 0) {
 				team = *(s + 1);
-				if (!isdigit((unsigned char)team))
+				if (!isdigit((unsigned char)team)){
 					team = ' ';
+				}
 				if ((s = strchr(envp, ',')) == NULL) {
 					*envp = '\0';
 					break;
@@ -1216,15 +1233,20 @@ long var_env_init(long enter_status_in) {
 			}
 		}
 		if (*envp != '\0') {
-			if (envname == NULL)
+			if (envname == NULL){
 				strncpy(name, envp, NAMELEN);
-			else
+			}
+			else{
 				printf("unknown option %s\n", envp);
+			}
 		}
 	}
 	return enter_status;
 }
 
+/**
+ *
+ */
 long fchars_in_line(FILE* f) {
 	long counter = 0;
 	char in;
@@ -1233,12 +1255,14 @@ long fchars_in_line(FILE* f) {
 	while (!feof(f)) {
 		/**
 		 * Avoids infinite loop in case of fscanf failure.
+		 * [PSR]
 		 */
 		if (!read) {
 			break;
 		}
-		if (in == '\n')
+		if (in == '\n'){
 			break;
+		}
 		else {
 			counter++;
 			read = fscanf(f, "%c", &in);
@@ -1247,6 +1271,9 @@ long fchars_in_line(FILE* f) {
 	return counter;
 }
 
+/**
+ * todo
+ */
 void fill_in_blanks() {
 	int i;
 	char *cp;
@@ -1256,14 +1283,17 @@ void fill_in_blanks() {
 	while (TRUE) {
 		if (name[0] != '\0') {
 			printf("Entering as '%s'", name);
-			if (team != ' ')
+			if (team != ' '){
 				printf(" on team %c.\n", team);
-			else
+			}
+			else{
 				putchar('\n');
+			}
 		} else {
 			printf("Enter your code name: ");
-			if (fgets(name, NAMELEN, stdin) == NULL)
+			if (fgets(name, NAMELEN, stdin) == NULL){
 				exit(1);
+			}
 		}
 		rmnl(name);
 		if (name[0] == '\0') {
@@ -1289,9 +1319,11 @@ void fill_in_blanks() {
 	if (team == ' ') {
 		printf("Enter your team (0-9 or nothing): ");
 		i = getchar();
-		if (isdigit(i))
+		if (isdigit(i)){
 			team = i;
-		while (i != '\n' && i != EOF)
+		}
+		while (i != '\n' && i != EOF){
 			i = getchar();
+		}
 	}
 }
