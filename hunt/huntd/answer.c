@@ -49,7 +49,9 @@ __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 static char Ttyname[NAMELEN];
 
 /**
- * todo
+ * Manages the messages submission.
+ * @Return true in case of success, false instead
+ * [PSR]
  */
 int answer() {
 	PLAYER *pp;
@@ -94,22 +96,15 @@ int answer() {
 	}
 # endif
 	version = htonl((u_int32_t) HUNT_VERSION);
-	dbg_write(newsock, (char *) &version, LONGLEN);
-	//See documentation in hunt.h.
-	dbg_read(newsock, (char *) &uid, LONGLEN);
-	//See documentation in hunt.h.
+	dbg_write(newsock, (char *) &version, LONGLEN); //See documentation in hunt.h.
+	dbg_read(newsock, (char *) &uid, LONGLEN); //See documentation in hunt.h.
 	uid = ntohl((unsigned long) uid);
-	dbg_read(newsock, name, NAMELEN);
-	//See documentation in hunt.h.
-	dbg_read(newsock, &team, 1);
-	//See documentation in hunt.h.
-	dbg_read(newsock, (char *) &enter_status, LONGLEN);
-	//See documentation in hunt.h.
+	dbg_read(newsock, name, NAMELEN); //See documentation in hunt.h.
+	dbg_read(newsock, &team, 1); //See documentation in hunt.h.
+	dbg_read(newsock, (char *) &enter_status, LONGLEN); //See documentation in hunt.h.
 	enter_status = ntohl((unsigned long) enter_status);
-	dbg_read(newsock, Ttyname, NAMELEN);
-	//See documentation in hunt.h.
-	dbg_read(newsock, (char *) &mode, sizeof mode);
-	//See documentation in hunt.h.
+	dbg_read(newsock, Ttyname, NAMELEN); //See documentation in hunt.h.
+	dbg_read(newsock, (char *) &mode, sizeof mode);	//See documentation in hunt.h.
 	mode = ntohl(mode);
 
 	/*

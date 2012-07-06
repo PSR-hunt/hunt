@@ -31,7 +31,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*
+/**
  *	otto	- a hunt otto-matic player
  *
  *		This guy is buggy, unfair, stupid, and not extensible.
@@ -51,7 +51,7 @@ __RCSID("$NetBSD: otto.c,v 1.8 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
 
 # include	<sys/time.h>
-# include	<ncurses.h> /**< Edited from curses.h. */
+# include	<ncurses.h> /**< Edited from curses.h. [PSR] */
 # include	<ctype.h>
 # include	<signal.h>
 # include	<stdlib.h>
@@ -158,17 +158,23 @@ extern int Otto_count;
 /**
  * Helper function created in order to manage signals.
  * @param param a not used integer to mantain the function signature.
+ * [PSR]
  */
 void empty_handler(int param) {
 
 }
 
-//TODO da qui iniziare documentazione
-
+/**
+ * Implements the game logic of a otto-matic player located at a given coordinate with a given orientation.
+ * @Param y a coordinate
+ * @Param x a coordinate
+ * @Param face the orientation of the player
+ * [PSR]
+ */
 void otto(int y,int x,char face) {
 	int i;
-	struct sigaction handler, old_handler;
-	sigset_t old_mask, sig_mask;
+	struct sigaction handler, old_handler; /**< Added to substitute deprecated signals functions. [PSR] */
+	sigset_t old_mask, sig_mask; /**< Added to substitute deprecated signals functions. [PSR] */
 
 	bool done;
 
@@ -179,14 +185,14 @@ void otto(int y,int x,char face) {
 	}
 	fprintf(debug, "\n%c(%d,%d)", face, y, x);
 # endif
-	handler.sa_handler=&empty_handler;
-	sigaction(SIGALRM, &handler, &old_handler);
-	sigemptyset(&sig_mask);
-	sigaddset(&sig_mask, SIGALRM);
-	sigprocmask(SIG_BLOCK, &sig_mask, &old_mask);
-	setitimer(ITIMER_REAL, &pause_time, NULL);
-	sigsuspend(&old_mask);
-	sigprocmask(SIG_SETMASK, &old_mask, NULL);
+	handler.sa_handler=&empty_handler; /**< Added to substitute deprecated signals functions. [PSR] */
+	sigaction(SIGALRM, &handler, &old_handler);/**< Added to substitute deprecated signals functions. [PSR] */
+	sigemptyset(&sig_mask);/**< Added to substitute deprecated signals functions. [PSR] */
+	sigaddset(&sig_mask, SIGALRM);/**< Added to substitute deprecated signals functions. [PSR] */
+	sigprocmask(SIG_BLOCK, &sig_mask, &old_mask);/**< Added to substitute deprecated signals functions. [PSR] */
+	setitimer(ITIMER_REAL, &pause_time, NULL);/**< Added to substitute deprecated signals functions. [PSR] */
+	sigsuspend(&old_mask);/**< Added to substitute deprecated signals functions. [PSR] */
+	sigprocmask(SIG_SETMASK, &old_mask, NULL);/**< Added to substitute deprecated signals functions. [PSR] */
 
 	/* save away parameters so other functions may use/update info */
 	switch (face) {
@@ -226,12 +232,15 @@ void otto(int y,int x,char face) {
 		} else if (go_for_ammo(BOOT)) {
 			memset(been_there, 0, sizeof been_there);
 # endif
-		} else if (go_for_ammo(GMINE))
-		memset(been_there, 0, sizeof been_there);
-		else if (go_for_ammo(MINE))
-		memset(been_there, 0, sizeof been_there);
-		else
-		wander();
+		} else if (go_for_ammo(GMINE)) {
+			memset(been_there, 0, sizeof been_there);
+		}
+		else if (go_for_ammo(MINE)) {
+			memset(been_there, 0, sizeof been_there);
+		}
+		else {
+			wander();
+		}
 	}
 
 	dbg_write(Socket, command, comlen);
@@ -243,12 +252,17 @@ void otto(int y,int x,char face) {
 
 # define	direction(abs,rel)	(((abs) + (rel)) % NUMDIRECTIONS)
 
+/**
+ * Helper function for the research of an object in a given direction.
+ * [PSR]
+ */
 STATIC int stop_look(struct item *itemp,char c,int dist,int side) {
 	switch (c) {
 
 		case SPACE:
-		if (side)
-		itemp->flags &= ~DEADEND;
+		if (side) {
+			itemp->flags &= ~DEADEND;
+		}
 		return 0;
 
 		case MINE:
@@ -260,10 +274,12 @@ STATIC int stop_look(struct item *itemp,char c,int dist,int side) {
 		if (itemp->distance == -1) {
 			itemp->distance = dist;
 			itemp->what = c;
-			if (side < 0)
-			itemp->flags |= ON_LEFT;
-			else if (side > 0)
-			itemp->flags |= ON_RIGHT;
+			if (side < 0) {
+				itemp->flags |= ON_LEFT;
+			}
+			else if (side > 0) {
+				itemp->flags |= ON_RIGHT;
+			}
 		}
 		return 0;
 
@@ -280,10 +296,12 @@ STATIC int stop_look(struct item *itemp,char c,int dist,int side) {
 			itemp->distance = dist;
 			itemp->what = c;
 			itemp->flags &= ~ON_SIDE;
-			if (side < 0)
-			itemp->flags |= ON_LEFT;
-			else if (side > 0)
-			itemp->flags |= ON_RIGHT;
+			if (side < 0) {
+				itemp->flags |= ON_LEFT;
+			}
+			else if (side > 0) {
+				itemp->flags |= ON_RIGHT;
+			}
 		}
 		return 0;
 
@@ -294,16 +312,19 @@ STATIC int stop_look(struct item *itemp,char c,int dist,int side) {
 		itemp->distance = dist;
 		itemp->what = c;
 		itemp->flags &= ~(ON_SIDE|DEADEND);
-		if (side < 0)
-		itemp->flags |= ON_LEFT;
-		else if (side > 0)
-		itemp->flags |= ON_RIGHT;
+		if (side < 0) {
+			itemp->flags |= ON_LEFT;
+		}
+		else if (side > 0) {
+			itemp->flags |= ON_RIGHT;
+		}
 		return 1;
 
 		default:
 		/* a wall or unknown object */
-		if (side)
-		return 0;
+		if (side) {
+			return 0;
+		}
 		if (itemp->distance == -1) {
 			itemp->distance = dist;
 			itemp->what = c;
@@ -312,6 +333,10 @@ STATIC int stop_look(struct item *itemp,char c,int dist,int side) {
 	}
 }
 
+/**
+ * Looks for an object in a given direction.
+ * [PSR]
+ */
 STATIC void ottolook(int rel_dir,struct item *itemp) {
 	int r, c;
 	char ch;
@@ -325,8 +350,9 @@ STATIC void ottolook(int rel_dir,struct item *itemp) {
 	switch (direction(facing, rel_dir)) {
 
 		case NORTH:
-		if (been_there[row - 1][col] & NORTH)
-		itemp->flags |= BEEN_SAME;
+		if (been_there[row - 1][col] & NORTH) {
+			itemp->flags |= BEEN_SAME;
+		}
 
 		exit = FALSE;
 		for (r = row - 1; r >= 0 && !exit; r--) {
@@ -352,8 +378,9 @@ STATIC void ottolook(int rel_dir,struct item *itemp) {
 		break;
 
 		case SOUTH:
-		if (been_there[row + 1][col] & SOUTH)
-		itemp->flags |= BEEN_SAME;
+		if (been_there[row + 1][col] & SOUTH) {
+			itemp->flags |= BEEN_SAME;
+		}
 		exit=FALSE;
 		for (r = row + 1; r < HEIGHT && !exit; r++) {
 			for (c = col - 1; (c < col + 2) && !exit; c++) {
@@ -378,8 +405,9 @@ STATIC void ottolook(int rel_dir,struct item *itemp) {
 		break;
 
 		case WEST:
-		if (been_there[row][col - 1] & WEST)
-		itemp->flags |= BEEN_SAME;
+		if (been_there[row][col - 1] & WEST) {
+			itemp->flags |= BEEN_SAME;
+		}
 		exit=FALSE;
 		for (c = col - 1; c >= 0 && !exit; c--) {
 			for (r = row - 1; r < (row + 2)&&!exit; r++) {
@@ -404,8 +432,9 @@ STATIC void ottolook(int rel_dir,struct item *itemp) {
 		break;
 
 		case EAST:
-		if (been_there[row][col + 1] & EAST)
-		itemp->flags |= BEEN_SAME;
+		if (been_there[row][col + 1] & EAST) {
+			itemp->flags |= BEEN_SAME;
+		}
 		exit=FALSE;
 		for (c = col + 1; c < WIDTH && !exit; c++) {
 			for (r = row - 1; r < (row + 2) && !exit; r++) {
@@ -434,6 +463,10 @@ STATIC void ottolook(int rel_dir,struct item *itemp) {
 	}
 }
 
+/**
+ * Looks around in all the possible directions from the otto-matic player.
+ * [PSR]
+ */
 STATIC void look_around() {
 	int i;
 
@@ -446,10 +479,9 @@ STATIC void look_around() {
 	}
 }
 
-/*
- *	as a side effect modifies facing and location (row, col)
+/**
+ * As a side effect modifies facing and location (row, col).
  */
-
 STATIC void face_and_move_direction(int rel_dir,int distance) {
 	int old_facing;
 	char cmd;
@@ -479,11 +511,16 @@ STATIC void face_and_move_direction(int rel_dir,int distance) {
 			case SOUTH: row++; break;
 			case EAST: col++; break;
 		}
-		if (distance == 0)
-		look_around();
+		if (distance == 0) {
+			look_around();
+		}
 	}
 }
 
+/**
+ * Implements the attack of an item in a given direction.
+ * [PSR]
+ */
 STATIC void attack(int rel_dir,struct item *itemp) {
 	if (!(itemp->flags & ON_SIDE)) {
 		face_and_move_direction(rel_dir, 0);
@@ -496,10 +533,12 @@ STATIC void attack(int rel_dir,struct item *itemp) {
 		duck(FRONT);
 	} else {
 		face_and_move_direction(rel_dir, 1);
-		if (itemp->flags & ON_LEFT)
-		rel_dir = LEFT;
-		else
-		rel_dir = RIGHT;
+		if (itemp->flags & ON_LEFT) {
+			rel_dir = LEFT;
+		}
+		else {
+			rel_dir = RIGHT;
+		}
 		(void) face_and_move_direction(rel_dir, 0);
 		command[comlen++] = 'f';
 		command[comlen++] = 'f';
@@ -508,6 +547,11 @@ STATIC void attack(int rel_dir,struct item *itemp) {
 	}
 }
 
+/**
+ * Implements the movement of the player in a given direction.
+ * [PSR]
+ *
+ */
 STATIC void duck(int rel_dir) {
 	int dir;
 
@@ -515,46 +559,57 @@ STATIC void duck(int rel_dir) {
 
 		case NORTH:
 		case SOUTH:
-		if (strchr(PUSHOVER, SCREEN(row, col - 1)) != NULL)
-		command[comlen++] = 'h';
-		else if (strchr(PUSHOVER, SCREEN(row, col + 1)) != NULL)
-		command[comlen++] = 'l';
+		if (strchr(PUSHOVER, SCREEN(row, col - 1)) != NULL) {
+			command[comlen++] = 'h';
+		}
+		else if (strchr(PUSHOVER, SCREEN(row, col + 1)) != NULL) {
+			command[comlen++] = 'l';
+		}
 		else if (dir == NORTH
-				&& strchr(PUSHOVER, SCREEN(row + 1, col)) != NULL)
-		command[comlen++] = 'j';
+				&& strchr(PUSHOVER, SCREEN(row + 1, col)) != NULL) {
+			command[comlen++] = 'j';
+		}
 		else if (dir == SOUTH
-				&& strchr(PUSHOVER, SCREEN(row - 1, col)) != NULL)
-		command[comlen++] = 'k';
-		else if (dir == NORTH)
-		command[comlen++] = 'k';
-		else
-		command[comlen++] = 'j';
+				&& strchr(PUSHOVER, SCREEN(row - 1, col)) != NULL) {
+			command[comlen++] = 'k';
+		}
+		else if (dir == NORTH) {
+			command[comlen++] = 'k';
+		}
+		else {
+			command[comlen++] = 'j';
+		}
 		break;
 
 		case WEST:
 		case EAST:
-		if (strchr(PUSHOVER, SCREEN(row - 1, col)) != NULL)
-		command[comlen++] = 'k';
-		else if (strchr(PUSHOVER, SCREEN(row + 1, col)) != NULL)
-		command[comlen++] = 'j';
+		if (strchr(PUSHOVER, SCREEN(row - 1, col)) != NULL) {
+			command[comlen++] = 'k';
+		}
+		else if (strchr(PUSHOVER, SCREEN(row + 1, col)) != NULL) {
+			command[comlen++] = 'j';
+		}
 		else if (dir == WEST
-				&& strchr(PUSHOVER, SCREEN(row, col + 1)) != NULL)
-		command[comlen++] = 'l';
+				&& strchr(PUSHOVER, SCREEN(row, col + 1)) != NULL) {
+			command[comlen++] = 'l';
+		}
 		else if (dir == EAST
-				&& strchr(PUSHOVER, SCREEN(row, col - 1)) != NULL)
-		command[comlen++] = 'h';
-		else if (dir == WEST)
-		command[comlen++] = 'h';
-		else
-		command[comlen++] = 'l';
+				&& strchr(PUSHOVER, SCREEN(row, col - 1)) != NULL) {
+			command[comlen++] = 'h';
+		}
+		else if (dir == WEST) {
+			command[comlen++] = 'h';
+		}
+		else {
+			command[comlen++] = 'l';
+		}
 		break;
 	}
 }
 
-/*
- *	go for the closest mine if possible
+/**
+ * Go for the closest mine if possible.
  */
-
 STATIC int go_for_ammo(char mine) {
 	int i, rel_dir, dist;
 
@@ -566,32 +621,42 @@ STATIC int go_for_ammo(char mine) {
 			dist = flbr[i].distance;
 		}
 	}
-	if (rel_dir == -1)
-	return false;
+	if (rel_dir == -1) {
+		return false;
+	}
 
 	if (!(flbr[rel_dir].flags & ON_SIDE)
 			|| flbr[rel_dir].distance > 1) {
-		if (dist > 4)
-		dist = 4;
+		if (dist > 4) {
+			dist = 4;
+		}
 		face_and_move_direction(rel_dir, dist);
 	} else
 	return false; /* until it's done right */
 	return true;
 }
 
+/**
+ * Implements a function that allows the player to wander in the waze.
+ * [PSR]
+ */
 STATIC void wander() {
 	int i, j, rel_dir, dir_mask, dir_count;
 
-	for (i = 0; i < NUMDIRECTIONS; i++)
-	if (!(flbr[i].flags & BEEN) || flbr[i].distance <= 1)
-	break;
-	if (i == NUMDIRECTIONS)
-	memset(been_there, 0, sizeof been_there);
+	for (i = 0; i < NUMDIRECTIONS; i++) {
+		if (!(flbr[i].flags & BEEN) || flbr[i].distance <= 1) {
+			break;
+		}
+	}
+	if (i == NUMDIRECTIONS) {
+		memset(been_there, 0, sizeof been_there);
+	}
 	dir_mask = dir_count = 0;
 	for (i = 0; i < NUMDIRECTIONS; i++) {
 		j = (RIGHT + i) % NUMDIRECTIONS;
-		if (flbr[j].distance <= 1 || flbr[j].flags & DEADEND)
-		continue;
+		if (flbr[j].distance <= 1 || flbr[j].flags & DEADEND) {
+			continue;
+		}
 		if (!(flbr[j].flags & BEEN_SAME)) {
 			dir_mask = 1 << j;
 			dir_count = 1;
@@ -599,8 +664,9 @@ STATIC void wander() {
 		}
 		if (j == FRONT
 				&& num_turns > 4 + (random() %
-						((flbr[FRONT].flags & BEEN) ? 7 : HEIGHT)))
-		continue;
+						((flbr[FRONT].flags & BEEN) ? 7 : HEIGHT))) {
+			continue;
+		}
 		dir_mask |= 1 << j;
 # ifdef notdef
 		dir_count++;
@@ -620,15 +686,18 @@ STATIC void wander() {
 		dir_mask &= ~(1 << rel_dir);
 		while (dir_mask != 0) {
 			i = ffs(dir_mask) - 1;
-			if (random() % 5 == 0)
-			rel_dir = i;
+			if (random() % 5 == 0) {
+				rel_dir = i;
+			}
 			dir_mask &= ~(1 << i);
 		}
 	}
-	if (rel_dir == FRONT)
-	num_turns++;
-	else
-	num_turns = 0;
+	if (rel_dir == FRONT) {
+		num_turns++;
+	}
+	else {
+		num_turns = 0;
+	}
 
 # ifdef DEBUG
 	fprintf(debug, " w(%c)", RELCHARS[rel_dir]);
