@@ -40,14 +40,20 @@ __RCSID("$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $");
 # include	<signal.h>
 # include	<unistd.h>
 
-//TODO da qui documentare
+/**
+ * Manages the preliminary operations of connection of a player with a:
+ * @param name that represents the name of a player,
+ * @param team that represents the team which the player belongs to,
+ * @param enter_status that represents the enter status of a player.
+ */
 void do_connect(const char *name, char team, long enter_status) {
 
-	static int32_t uid;
-	static int32_t mode;
+	static int32_t uid; //user id
+	static int32_t mode; //game mode
 
-	if (uid == 0)
+	if (uid == 0) {
 		uid = htonl(getuid());
+	}
 	dbg_write(Socket, (char *) &uid, LONGLEN);
 	dbg_write(Socket, name, NAMELEN);
 	dbg_write(Socket, &team, 1);
@@ -56,13 +62,15 @@ void do_connect(const char *name, char team, long enter_status) {
 	(void) strcpy(Buf, ttyname(fileno(stderr)));
 	dbg_write(Socket, Buf, NAMELEN);
 # ifdef INTERNET
-	if (Send_message != NULL)
-	mode = C_MESSAGE;
+	if (Send_message != NULL) {
+		mode = C_MESSAGE;
+	}
 	else
 # endif
 # ifdef MONITOR
-	if (Am_monitor)
-	mode = C_MONITOR;
+	if (Am_monitor) {
+		mode = C_MONITOR;
+	}
 	else
 # endif
 	mode = C_PLAYER;
