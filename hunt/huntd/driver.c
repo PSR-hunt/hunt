@@ -32,21 +32,21 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
 
-/**< # include	<sys/ioctl.h> already present in hunt.h. */
+/**< # include	<sys/ioctl.h> already present in hunt.h. [PSR] */
 # include	<sys/stat.h>
 # include	<sys/time.h>
 # include	<err.h>
-/**< # include	<errno.h> already present in hunt.h. */
+/**< # include	<errno.h> already present in hunt.h. [PSR] */
 # include	<signal.h>
 # include	<stdlib.h>
 # include	<time.h>
 # include	<unistd.h>
-# include 	<getopt.h> /**< Explicit declaration of getopt family functions. */
+# include 	<getopt.h> /**< Explicit declaration of getopt family functions. [PSR] */
 
 # ifndef pdp11
 # define	RN	(((Seed = Seed * 11109 + 13849) >> 16) & 0xffff)
@@ -64,9 +64,9 @@ int Test_socket; /* test socket to answer datagrams */
 bool inetd_spawned; /* invoked via inetd */
 bool standard_port = true; /* true if listening on standard port */
 /* port # of tcp listen socket */
-unsigned short sock_port; /**< Changed from u_short. */
+unsigned short sock_port; /**< Changed from u_short. [PSR] */
 /* port # of statistics tcp socket */
-unsigned short stat_port; /**< Changed from u_short. */
+unsigned short stat_port; /**< Changed from u_short. [PSR] */
 # define	DAEMON_SIZE	(sizeof Daemon)
 # else
 # define	DAEMON_SIZE	(sizeof Daemon - 1)
@@ -81,21 +81,19 @@ static void send_stats(void);
 static void zap(PLAYER *, bool, int);
 void erred(char *[]);
 
-//TODO documentazione da iniziare qui
 
-/*
- * main:
- *	The main program.
+/**
+ * The main program.
  */
 int main(int argc, char* argv[], char* env[]) {
 	PLAYER *pp;
 # ifdef INTERNET
-	unsigned short msg;
-	unsigned short port_num, reply;
+	unsigned short msg; /**< Changed from u_short. [PSR] */
+	unsigned short port_num, reply; /** Changed from u_short. [PSR] */
 	/**
-	 * Edited namelen declaration type in order to match recvfrom() parameter.
+	 * Edited namelen declaration type in order to match recvfrom() parameter. [PSR]
 	 */
-	unsigned int namelen;
+	unsigned int namelen; /**< Changed from int. [PSR] */
 	SOCKET test;
 # endif
 	static bool first = true;
@@ -104,10 +102,12 @@ int main(int argc, char* argv[], char* env[]) {
 	const int linger = 90 * 1000;
 
 	First_arg = argv[0];
-	if (env == NULL || *env == NULL)
+	if (env == NULL || *env == NULL) {
 		env = argv + argc;
-	while (*env)
+	}
+	while (*env) {
 		env++;
+	}
 	Last_arg = env[-1] + strlen(env[-1]);
 
 	while ((c = getopt(argc, argv, "sp:")) != -1) {
@@ -126,8 +126,9 @@ int main(int argc, char* argv[], char* env[]) {
 			break;
 		}
 	}
-	if (optind < argc)
+	if (optind < argc) {
 		erred(argv);
+	}
 
 	init();
 
@@ -151,8 +152,9 @@ int main(int argc, char* argv[], char* env[]) {
 						0, (struct sockaddr *) &test, &namelen);
 				switch (ntohs(msg)) {
 					case C_MESSAGE:
-					if (Nplayer <= 0)
-					break;
+					if (Nplayer <= 0) {
+						break;
+					}
 					reply = htons((unsigned short) Nplayer);
 					(void) sendto(Test_socket, (char *) &reply,
 							sizeof reply, 0,
@@ -166,8 +168,9 @@ int main(int argc, char* argv[], char* env[]) {
 					break;
 					case C_PLAYER:
 					case C_MONITOR:
-					if (msg == C_MONITOR && Nplayer <= 0)
-					break;
+					if (msg == C_MONITOR && Nplayer <= 0) {
+						break;
+					}
 					reply = htons(sock_port);
 					(void) sendto(Test_socket, (char *) &reply,
 							sizeof reply, 0,
@@ -191,38 +194,46 @@ int main(int argc, char* argv[], char* env[]) {
 # endif
 				moveshots();
 				for (pp = Player, i = 0; pp < End_player;)
-					if (pp->p_death[0] != '\0')
+					if (pp->p_death[0] != '\0') {
 						zap(pp, true, i + 3);
-					else
+					} else {
 						pp++, i++;
+					}
 # ifdef MONITOR
 				for (pp = Monitor, i = 0; pp < End_monitor; )
-				if (pp->p_death[0] != '\0')
-				zap(pp, false, i + MAXPL + 3);
-				else
-				pp++, i++;
+				if (pp->p_death[0] != '\0') {
+					zap(pp, false, i + MAXPL + 3);
+				}
+				else {
+					pp++, i++;
+				}
 # endif
 			}
-			if (fdset[0].revents & POLLIN)
+			if (fdset[0].revents & POLLIN) {
 				if (answer()) {
 # ifdef INTERNET
-					if (first && standard_port)
-					faketalk();
+					if (first && standard_port) {
+						faketalk();
+					}
 # endif
 					first = false;
 				}
-			if (fdset[1].revents & POLLIN)
+			}
+			if (fdset[1].revents & POLLIN) {
 				send_stats();
+			}
 			for (pp = Player, i = 0; pp < End_player; pp++, i++) {
-				if (fdset[i + 3].revents & POLLIN)
+				if (fdset[i + 3].revents & POLLIN) {
 					sendcom(pp, READY, pp->p_nexec);
+				}
 				pp->p_nexec = 0;
 				(void) fflush(pp->p_output);
 			}
 # ifdef MONITOR
 			for (pp = Monitor, i = 0; pp < End_monitor; pp++, i++) {
-				if (fdset[i + MAXPL + 3].revents & POLLIN)
-				sendcom(pp, READY, pp->p_nexec);
+				if (fdset[i + MAXPL + 3].revents & POLLIN) {
+					sendcom(pp, READY, pp->p_nexec);
+				}
 				pp->p_nexec = 0;
 				(void) fflush(pp->p_output);
 			}
@@ -246,8 +257,9 @@ int main(int argc, char* argv[], char* env[]) {
 	}
 
 # ifdef MONITOR
-	for (pp = Monitor, i = 0; pp < End_monitor; i++)
-	zap(pp, false, i + MAXPL + 3);
+	for (pp = Monitor, i = 0; pp < End_monitor; i++) {
+		zap(pp, false, i + MAXPL + 3);
+	}
 # endif
 	cleanup(0);
 	/* NOTREACHED */
@@ -259,9 +271,8 @@ void erred(char* argv[]) {
 	exit(1);
 }
 
-/*
- * init:
- *	Initialize the global parameters.
+/**
+ * Initialize the global parameters.
  */
 static void init() {
 	int i;
@@ -271,7 +282,7 @@ static void init() {
 	/**
 	 * Edited len declaration type in order to match getsockname() parameter.
 	 */
-	unsigned int len;
+	unsigned int len; /**< Changed from int. */
 # endif
 
 # ifndef DEBUG
@@ -283,8 +294,9 @@ static void init() {
 	default:
 		exit(0); /* parent */
 	}
-	if (setsid() == -1)
+	if (setsid() == -1) {
 		err(1, "setsid");
+	}
 	(void) signal(SIGHUP, SIG_IGN);
 	(void) signal(SIGINT, SIG_IGN);
 	(void) signal(SIGQUIT, SIG_IGN);
@@ -319,9 +331,9 @@ static void init() {
 
 	Status = socket(SOCK_FAMILY, SOCK_STREAM, 0);
 	if (bind(Status, (struct sockaddr *) &Daemon, DAEMON_SIZE) < 0) {
-		if (errno == EADDRINUSE)
+		if (errno == EADDRINUSE) {
 			exit(0);
-		else {
+		} else {
 # ifdef LOG
 			iso_syslog(LOG_ERR, "bind: %m");
 # else
@@ -370,9 +382,9 @@ static void init() {
 #endif
 # endif
 	if (bind(Socket, (struct sockaddr *) &Daemon, DAEMON_SIZE) < 0) {
-		if (errno == EADDRINUSE)
+		if (errno == EADDRINUSE) {
 			exit(0);
-		else {
+		} else {
 # ifdef LOG
 			iso_syslog(LOG_ERR, "bind: %m");
 # else
@@ -443,8 +455,9 @@ static void init() {
 	makeboots();
 # endif
 
-	for (i = 0; i < NASCII; i++)
+	for (i = 0; i < NASCII; i++) {
 		See_over[i] = true;
+	}
 	See_over[DOOR] = false;
 	See_over[WALL1] = false;
 	See_over[WALL2] = false;
@@ -457,9 +470,8 @@ static void init() {
 }
 
 # ifdef BOOTS
-/*
- * makeboots:
- *	Put the boots in the maze
+/**
+ * Put the boots in the maze.
  */
 static void makeboots() {
 	int x, y;
@@ -475,16 +487,16 @@ static void makeboots() {
 }
 # endif
 
-/*
- * checkdam:
- *	Check the damage to the given player, and see if s/he is killed
+/**
+ * Check the damage to the given player, and see if s/he is killed.
  */
 void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 		char shot_type) {
 	const char *cp;
 
-	if (ouch->p_death[0] != '\0')
+	if (ouch->p_death[0] != '\0') {
 		return;
+	}
 # ifdef BOOTS
 	if (shot_type == SLIME)
 	switch (ouch->p_nboots) {
@@ -494,8 +506,9 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 		amt = (amt + 1) / 2;
 		break;
 		case 2:
-		if (gotcha != NULL)
-		message(gotcha, "He has boots on!");
+		if (gotcha != NULL) {
+			message(gotcha, "He has boots on!");
+		}
 		return;
 	}
 # endif
@@ -536,8 +549,9 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 # ifdef	OOZE
 		case SLIME:
 		cp = "Slimed";
-		if (credit != NULL)
-		credit->i_slime++;
+		if (credit != NULL) {
+			credit->i_slime++;
+		}
 		break;
 # endif
 # ifdef	VOLCANO
@@ -573,14 +587,17 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 	}
 	credit->i_score = credit->i_kills / (double) credit->i_entries;
 	ouch->p_ident->i_deaths++;
-	if (ouch->p_nchar == 0)
+	if (ouch->p_nchar == 0) {
 		ouch->p_ident->i_stillb++;
-	if (gotcha == NULL)
+	}
+	if (gotcha == NULL) {
 		return;
+	}
 	gotcha->p_damcap += STABDAM;
 	gotcha->p_damage -= STABDAM;
-	if (gotcha->p_damage < 0)
+	if (gotcha->p_damage < 0) {
 		gotcha->p_damage = 0;
+	}
 	(void) sprintf(Buf, "%2d/%2d", gotcha->p_damage, gotcha->p_damcap);
 	cgoto(gotcha, STAT_DAM_ROW, STAT_VALUE_COL);
 	outstr(gotcha, Buf, 5);
@@ -601,9 +618,8 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 # endif
 }
 
-/*
- * zap:
- *	Kill off a player and take him out of the game.
+/**
+ * Kill off a player and take him out of the game.
  */
 static void zap(PLAYER *pp, bool was_player, int i) {
 	int n, len;
@@ -613,8 +629,9 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	int savefd;
 
 	if (was_player) {
-		if (pp->p_undershot)
+		if (pp->p_undershot) {
 			fixshots(pp->p_y, pp->p_x, pp->p_over);
+		}
 		drawplayer(pp, false);
 		Nplayer--;
 	}
@@ -623,8 +640,9 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	x = (WIDTH - len) / 2;
 	cgoto(pp, HEIGHT / 2, x);
 	outstr(pp, pp->p_death, len);
-	for (n = 1; n < len; n++)
+	for (n = 1; n < len; n++) {
 		pp->p_death[n] = '-';
+	}
 	pp->p_death[0] = '+';
 	pp->p_death[len - 1] = '+';
 	cgoto(pp, HEIGHT / 2 - 1, x);
@@ -639,28 +657,35 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	if (was_player) {
 # endif
 	for (bp = Bullets; bp != NULL; bp = bp->b_next) {
-		if (bp->b_owner == pp)
+		if (bp->b_owner == pp) {
 			bp->b_owner = NULL;
-		if (bp->b_x == pp->p_x && bp->b_y == pp->p_y)
+		}
+		if (bp->b_x == pp->p_x && bp->b_y == pp->p_y) {
 			bp->b_over = SPACE;
+		}
 	}
 
 	n = rand_num(pp->p_ammo);
 	x = rand_num(pp->p_ammo);
-	if (x > n)
+	if (x > n) {
 		n = x;
-	if (pp->p_ammo == 0)
+	}
+	if (pp->p_ammo == 0) {
 		x = 0;
-	else if (n == pp->p_ammo - 1) {
+	} else if (n == pp->p_ammo - 1) {
 		x = pp->p_ammo;
 		len = SLIME;
 	} else {
-		for (x = MAXBOMB - 1; x > 0; x--)
-			if (n >= shot_req[x])
+		for (x = MAXBOMB - 1; x > 0; x--) {
+			if (n >= shot_req[x]) {
 				break;
-		for (y = MAXSLIME - 1; y > 0; y--)
-			if (n >= slime_req[y])
+			}
+		}
+		for (y = MAXSLIME - 1; y > 0; y--) {
+			if (n >= slime_req[y]) {
 				break;
+			}
+		}
 		if (y >= 0 && slime_req[y] > shot_req[x]) {
 			x = slime_req[y];
 			len = SLIME;
@@ -673,19 +698,24 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 		(void) add_shot(len, pp->p_y, pp->p_x, pp->p_face, x, (PLAYER *) NULL,
 				true, SPACE);
 		(void) sprintf(Buf, "%s detonated.", pp->p_ident->i_name);
-		for (np = Player; np < End_player; np++)
+		for (np = Player; np < End_player; np++) {
 			message(np, Buf);
+		}
 # ifdef MONITOR
-		for (np = Monitor; np < End_monitor; np++)
-		message(np, Buf);
+		for (np = Monitor; np < End_monitor; np++) {
+			message(np, Buf);
+		}
 # endif
 # ifdef BOOTS
 		while (pp->p_nboots-- > 0) {
-			for (np = Boot; np < &Boot[NBOOTS]; np++)
-			if (np->p_flying < 0)
-			break;
-			if (np >= &Boot[NBOOTS])
-			err(1, "Too many boots");
+			for (np = Boot; np < &Boot[NBOOTS]; np++) {
+				if (np->p_flying < 0) {
+					break;
+				}
+			}
+			if (np >= &Boot[NBOOTS]) {
+				err(1, "Too many boots");
+			}
 			np->p_undershot = false;
 			np->p_x = pp->p_x;
 			np->p_y = pp->p_y;
@@ -700,13 +730,16 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	}
 # ifdef BOOTS
 	else if (pp->p_nboots > 0) {
-		if (pp->p_nboots == 2)
-		Maze[pp->p_y][pp->p_x] = BOOT_PAIR;
-		else
-		Maze[pp->p_y][pp->p_x] = BOOT;
-		if (pp->p_undershot)
-		fixshots(pp->p_y, pp->p_x,
-				Maze[pp->p_y][pp->p_x]);
+		if (pp->p_nboots == 2) {
+			Maze[pp->p_y][pp->p_x] = BOOT_PAIR;
+		}
+		else {
+			Maze[pp->p_y][pp->p_x] = BOOT;
+		}
+		if (pp->p_undershot) {
+			fixshots(pp->p_y, pp->p_x,
+					Maze[pp->p_y][pp->p_x]);
+		}
 	}
 # endif
 
@@ -719,8 +752,9 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 		}while (Maze[y][x] != SPACE);
 		(void) add_shot(LAVA, y, x, LEFTS, volcano,
 				(PLAYER *) NULL, true, SPACE);
-		for (np = Player; np < End_player; np++)
-		message(np, "Volcano eruption.");
+		for (np = Player; np < End_player; np++) {
+			message(np, "Volcano eruption.");
+		}
 		volcano = 0;
 	}
 # endif
@@ -813,32 +847,31 @@ else {
 # endif
 }
 
-/*
- * rand_num:
- *	Return a random number in a given range.
+/**
+ * Return a random number in a given range.
  */
 int rand_num(int range) {
 	return (range == 0 ? 0 : RN % range);
 }
 
-/*
- * havechar:
- *	Check to see if we have any characters in the input queue; if
- *	we do, read them, stash them away, and return TRUE; else return
- *	FALSE.
+/**
+ * Check to see if we have any characters in the input queue; if we do, read them, stash them away, and return TRUE; else return FALSE.
  */
 static int havechar(PLAYER *pp, int i) {
 
-	if (pp->p_ncount < pp->p_nchar)
+	if (pp->p_ncount < pp->p_nchar){
 		return true;
-	if (!(fdset[i].revents & POLLIN))
+	}
+	if (!(fdset[i].revents & POLLIN)){
 		return false;
+	}
 	while (true) {
 		errno = 0;
 		if ((pp->p_nchar = read(pp->p_fd, pp->p_cbuf, sizeof pp->p_cbuf))
 				<= 0) {
-			if (errno == EINTR)
+			if (errno == EINTR){
 				continue;
+			}
 			pp->p_cbuf[0] = 'q';
 		}
 		break;
@@ -847,9 +880,8 @@ static int havechar(PLAYER *pp, int i) {
 	return true;
 }
 
-/*
- * cleanup:
- *	Exit with the given value, cleaning up any droppings lying around
+/**
+ * Exit with the given value, cleaning up any droppings lying around.
  */
 SIGNAL_TYPE cleanup(int eval) {
 	PLAYER *pp;
@@ -876,19 +908,15 @@ SIGNAL_TYPE cleanup(int eval) {
 	exit(eval);
 }
 
-/*
- * send_stats:
- *	Print stats to requestor
+/**
+ * Print stats to requestor.
  */
 static void send_stats() {
 	IDENT *ip;
 	FILE *fp;
 	int s;
 	SOCKET sockstruct;
-	/**
-	 * Edited socklen declaration type in order to match accept() parameter.
-	 */
-	unsigned int socklen;
+	unsigned int socklen; /**< Edited  declaration type in order to match accept() parameter.[PSR] */
 
 	/*
 	 * Get the output stream ready
@@ -900,8 +928,9 @@ static void send_stats() {
 # endif
 	s = accept(Status, (struct sockaddr *) &sockstruct, &socklen);
 	if (s < 0) {
-		if (errno == EINTR)
+		if (errno == EINTR){
 			return;
+		}
 # ifdef LOG
 		iso_syslog(LOG_WARNING, "accept: %m");
 # else
@@ -928,8 +957,9 @@ static void send_stats() {
 			fp);
 	for (ip = Scores; ip != NULL; ip = ip->i_next) {
 		fprintf(fp, "%s\t", ip->i_name);
-		if (strlen(ip->i_name) < 8)
+		if (strlen(ip->i_name) < 8){
 			putc('\t', fp);
+		}
 		fprintf(fp, "%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", ip->i_score,
 				ip->i_ducked, ip->i_absorbed, ip->i_faced, ip->i_shot,
 				ip->i_robbed, ip->i_missed, ip->i_slime);
@@ -938,12 +968,14 @@ static void send_stats() {
 	for (ip = Scores; ip != NULL; ip = ip->i_next) {
 		if (ip->i_team == ' ') {
 			fprintf(fp, "%s\t", ip->i_name);
-			if (strlen(ip->i_name) < 8)
+			if (strlen(ip->i_name) < 8){
 				putc('\t', fp);
+			}
 		} else {
 			fprintf(fp, "%s[%c]\t", ip->i_name, ip->i_team);
-			if (strlen(ip->i_name) + 3 < 8)
+			if (strlen(ip->i_name) + 3 < 8){
 				putc('\t', fp);
+			}
 		}
 		fprintf(fp, "%d\t%d\t%d\t%d\t%d\n", ip->i_gkills, ip->i_bkills,
 				ip->i_deaths, ip->i_stillb, ip->i_saved);
@@ -952,9 +984,8 @@ static void send_stats() {
 	(void) fclose(fp);
 }
 
-/*
- * clear_scores:
- *	Clear out the scores so the next session start clean
+/**
+ * Clear out the scores so the next session start clean.
  */
 static void clear_scores() {
 	IDENT *ip, *nextip;

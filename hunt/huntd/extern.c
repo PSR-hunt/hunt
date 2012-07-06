@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
 #ifndef lint
 __RCSID("$NetBSD: extern.c,v 1.4 2003/06/11 12:00:22 wiz Exp $");
 #endif /* not lint */

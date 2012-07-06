@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: expl.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -41,11 +41,8 @@ __RCSID("$NetBSD: expl.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 
 static	void	remove_wall(int, int);
 
-//TODO iniziare documentazione da qui
-
-/*
- * showexpl:
- *	Show the explosions as they currently are
+/**
+ * Show the explosions as they currently are.
  */
 void showexpl(int y,int x,char type){
 	PLAYER	*pp;
@@ -106,10 +103,8 @@ void showexpl(int y,int x,char type){
 	}
 }
 
-/*
- * rollexpl:
- *	Roll the explosions over, so the next one in the list is at the
- *	top
+/**
+ * Roll the explosions over, so the next one in the list is at the top.
  */
 void rollexpl(){
 	EXPL	*ep;
@@ -150,10 +145,9 @@ void rollexpl(){
 static	REGEN	removed[MAXREMOVE];
 static	REGEN	*rem_index = removed;
 
-/*
- * remove_wall - add a location where the wall was blown away.
- *		 if there is no space left over, put the a wall at
- *		 the location currently pointed at.
+/**
+ *  remove_wall - add a location where the wall was blown away.
+ *	If there is no space left over, put the a wall at the location currently pointed at.
  */
 static void remove_wall(int y,int x){
 	REGEN	*r;
@@ -239,9 +233,8 @@ static void remove_wall(int y,int x){
 # endif
 }
 
-/*
- * clearwalls:
- *	Clear out the walls array
+/**
+ * Clear out the walls array.
  */
 void clearwalls(){
 	REGEN	*rp;
