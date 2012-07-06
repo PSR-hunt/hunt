@@ -1132,8 +1132,8 @@ long var_env_init(long enter_status_in) {
 
 	int i;
 
-	char *envp; /**< This string contains setting options. [PSR]*/
-	char *envname; /**< Temporarely stores configured player name. [PSR]*/
+	char *envp; /**< This string contains setting options. [PSR] */
+	char *envname; /**< Temporarely stores configured player name. [PSR] */
 	char *s;
 
 	/**
