@@ -1,4 +1,4 @@
-# exec.libs - details of libraries needed to link hunt programs.
+# exec.libs - details of libraries needed to link bsd-games programs.
 # This file is used for automatic makefile generation.
 #
 # Copyright (c) 1998, 1999, 2000, 2003, 2004 Joseph Samuel Myers.

@@ -1,5 +1,5 @@
 #!/bin/sh
-# configure - home-grown configuration script for bsd-games.
+# configure - home-grown configuration script for hunt.
 #
 # Copyright (c) 1997, 1998, 1999, 2000, 2003, 2004 Joseph Samuel Myers.
 # All rights reserved.
@@ -399,14 +399,6 @@ ask "Pager" pager /usr/bin/less
 echo
 echo "You can configure the exact names used for data files by various"
 echo "of the games.  Most probably the defaults are OK."
-echo
-echo "Note that bsd-games no longer comes with its own word list."
-echo "For hangman you should specify the path to a word list to be read"
-echo "at runtime (probably /usr/share/dict/words or /usr/dict/words)."
-echo "For boggle you should specify one to be used at compile time to"
-echo "generate boggle's own data.  In both cases they should probably be"
-echo "English dictionaries; all words which do not consist entirely of"
-echo "lower-case ASCII letters will be silently ignored."
 echo
 
 # Generate simplistic substitution script.
