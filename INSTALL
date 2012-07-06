@@ -1,40 +1,14 @@
 Installation instructions
 =========================
 
-Packaging
-=========
-
-If packaging bsd-games or bsd-games-non-free for a Linux distribution,
-please read the PACKAGING file for further information after this one.
-Others who wish to install it under a packaging system, or rebuild it
-automatically and without interactive configuration, may also find
-this file useful.
-
-Non-free games
-==============
-
-These installation instructions apply to both bsd-games and
-bsd-games-non-free.  bsd-games-non-free contains rogue, which it seems
-cannot be sold for profit, and hack, for which porting but not
-gameplay changes may be made: the rest of the games are under the
-standard BSD distribution conditions, or very similar ones (phantasia
-is public domain, i.e. not copyrighted).  As of version 2.2 and later,
-the bsd-games-non-free package unpacks conventionally into a directory
-of its own.  It can be built separately from bsd-games, or in the same
-source directory: to do the latter, move those files and directories
-that are in bsd-games-non-free but not bsd-games into the
-bsd-games-VERSION directory before building.
-
 Prerequisites
 =============
 
 You need the following to build this distribution:
 
-* GCC (the C and C++ compilers only - other languages not needed; C++
-  only needed for dab).
+* GCC (the C and C++ compilers only - other languages not needed).
 
-* glibc 2.3 or later.  Older versions will not work (at least for
-  hunt) since they lack the <ifaddrs.h> header.
+* glibc 2.3 or later.  Older versions will not work since they lack the <ifaddrs.h> header.
 
 * ncurses; other curses / termcap implementations might work, but are
   unsupported.
@@ -48,34 +22,12 @@ You need the following to build this distribution:
 
 libcrypto from OpenSSL can optionally be used by factor.
 
-You now need a word list for boggle and hangman; bsd-games no longer
-provides one itself.  The GNU miscfiles package contains one, for
-example.  The path can be specified at configure time (default:
-/usr/share/dict/words).  The file used by hangman can also be
-specified at run time with the "-d" option.
-
 Security
 ========
 
 See the SECURITY file for a discussion of security issues about the
 BSD games.
 
-Alternative implementations
-===========================
-
-Some of the programs in this package have alternative implementations
-for Linux available, which you may wish to use some of instead of the
-BSD versions:
-
-* banner is in util-linux.
-* factor is in GNU sh-utils as of version 1.12q.
-* An extensively modified version of fortune is available as
-"fortune-mod".  There are also many additional fortune data files
-(including translations of the ones included here) available.
-* Perl implementations of some of the games are included in the "Perl
-Power Tools" project (http://language.perl.com/ppt/).
-* My enhanced version of ppt with support for PostScript output is
-available as "nppt" from metalab and its mirrors.
 
 Building and installation
 =========================
@@ -85,22 +37,13 @@ Building and installation
     for building in a directory other than the source directory.
 
 2.  Run "./configure" and configure the installation to your liking.
-    There may be some games you don't want to build because you have
-    them from elsewhere (see above).  You can specify particular games
-    you do not want built before specifying the list of games to build
-    (which will default to all those available, except those you have
-    excluded).
 
     The filesystem structure used defaults to that the the Filesystem
     Hierarchy Standard (FHS), version 2.0.  If you are using the older
     FSSTND 1.2, or a newer FHS, or wish to install into /usr/local,
     check the paths given and make changes as appropriate.
 
-3.  Type "make".  You can probably ignore compiler warnings, although
-    most should be fixed in this release.  If you are building on a 64
-    bit architecture, you might want to look over the warnings and let
-    me know about any that are normally significant in such cases.
-    Recent versions of gcc give many "missing initializer" warnings;
+3.  Type "make".  Recent versions of gcc give many "missing initializer" warnings;
     these are harmless, as are the warnings in system headers
     mentioned above.  Likewise, "null format string" warnings are
     harmless; future versions of GCC will probably eliminate them, by

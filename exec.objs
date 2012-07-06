@@ -1,4 +1,4 @@
-# exec.objs - details of objects that go into bsd-games programs.
+# exec.objs - details of objects that go into hunt programs.
 # This file is used for automatic makefile generation.
 #
 # Copyright (c) 1998, 1999, 2000, 2001, 2003, 2004, 2005 Joseph Samuel Myers.

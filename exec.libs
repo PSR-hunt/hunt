@@ -1,4 +1,4 @@
-# exec.libs - details of libraries needed to link bsd-games programs.
+# exec.libs - details of libraries needed to link hunt programs.
 # This file is used for automatic makefile generation.
 #
 # Copyright (c) 1998, 1999, 2000, 2003, 2004 Joseph Samuel Myers.
@@ -27,31 +27,5 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-atc	-lm $(NCURSES_LIB) $(LEX_LIB)
-backgammon/backgammon/backgammon	$(NCURSES_LIB)
-backgammon/teachgammon/teachgammon	$(NCURSES_LIB)
-battlestar	$(NCURSES_LIB)
-boggle/boggle/boggle	$(NCURSES_LIB)
-caesar	-lm
-canfield/canfield/canfield	$(NCURSES_LIB)
-cribbage	$(NCURSES_LIB)
-dab	$(NCURSES_LIB)
-factor	$(OPENSSL_LIB)
-gomoku	$(NCURSES_LIB)
-hack	$(NCURSES_LIB)
-hangman	$(NCURSES_LIB)
+
 hunt/hunt/hunt	$(NCURSES_LIB)
-mille	$(NCURSES_LIB)
-phantasia	-lm $(NCURSES_LIB)
-phantasia/setup	-lm
-pom	-lm
-primes	-lm
-rain	$(NCURSES_LIB)
-robots	$(NCURSES_LIB)
-rogue	$(NCURSES_LIB)
-sail	$(NCURSES_LIB)
-snake/snake/snake	$(NCURSES_LIB) -lm
-tetris	$(NCURSES_LIB)
-trek	-lm
-worm	$(NCURSES_LIB)
-worms	$(NCURSES_LIB)

@@ -1,22 +1,7 @@
-Authors of bsd-games and bsd-games-non-free
+Authors of hunt
 ===========================================
 
-The bsd-games package was originally created by Curt Olson
-<curt@me.umn.edu> and Andy Tefft <teffta@engr.dnet.ge.com>.  The games
-themselves were written by many contributers to *BSD over the past
-twenty years or so.  Maintenance of the package was passed to me in
-1997; I divided it into bsd-games and bsd-games-non-free according to
-the established (DFSG/OSD) definition, following the division used for
-the Debian package of 1.3.  Much of the packaging has been written or
-extensively modified by myself.  Joey Hess <joeyh@debian.org>
-wrote the manpages for wargames and paranoia.
-
-Based on the source and manpages, here are the details of the people
-who originally wrote the games over more than 20 years.  Many of the
-email addresses below are probably no longer valid.  Please send any
-further information you have to help improve this list.
-
-hunt:		Conrad Huang <conrad@cgl.ucsf.edu>,
+hunt:	Conrad Huang <conrad@cgl.ucsf.edu>,
 		Greg Couch <gregc@cgl.ucsf.edu>,
 		Andrea Damiani <andreadamiani90@gmail.com>,
 		Andrea Baietti <ilbaio90cr@hotmail.it>,

@@ -1,33 +1,15 @@
-Known bugs in bsd-games and bsd-games-non-free
+Known bugs in hunt
 ==============================================
 
-I know of the following bugs in bsd-games and bsd-games-non-free;
-there is no need to report them if you come across them, but fixes are
-welcome.
-
-General
-=======
-
-Some games may not handle signals (especially resizing) properly.
-Handling signals properly means in a way conforming to ISO C and
-POSIX.1: no async-unsafe functions may be used in a signal handler if
-the signal could have interrupted an async-unsafe function, and any
-variable of static storage duration assigned to must be of type
-volatile sig_atomic_t.  (See adventure for an example of proper
-handling.)
-
-Some games may not check for errors when they should, or may return
-inappropriate exit statuses.
-
-Some games may have arbitrary limits that they should not have.
-
-Specific games
-==============
-
 Under some circumstances, hunt fails to start the hunt daemon if one
-is not already running.  In general, hunt needs thorough testing by
-someone willing to investigate and fix bugs; at present hunt should be
-considered unsupported and probably broken.
+is not already running.
 
 Joseph S. Myers
 jsm@polyomino.org.uk
+
+Under some circumstances, hunt interaction slows down if a previous
+instance of hunt daemon is running at network selection time.
+
+Andrea Baietti <ilbaio90cr@hotmail.it>
+Chiara Cerletti <kya90yaya@hotmail.it>
+Andrea Damiani <andreadamiani90@gmail.com>
