@@ -70,7 +70,7 @@ void moveshots() {
 	BULLET *blist;
 
 	rollexpl();
-	if (Bullets != NULL) {
+	if (Bullets != NULL ) {
 
 		/*
 		 * First we move through the bullet list BULSPD times, looking
@@ -81,7 +81,7 @@ void moveshots() {
 
 		blist = Bullets;
 		Bullets = NULL;
-		for (bp = blist; bp != NULL; bp = next) {
+		for (bp = blist; bp != NULL ; bp = next) {
 			next = bp->b_next;
 			x = bp->b_x;
 			y = bp->b_y;
@@ -128,7 +128,7 @@ void moveshots() {
 
 		blist = Bullets;
 		Bullets = NULL;
-		for (bp = blist; bp != NULL; bp = next) {
+		for (bp = blist; bp != NULL ; bp = next) {
 			next = bp->b_next;
 			if (!bp->b_expl) {
 				save_bullet(bp);
@@ -297,9 +297,9 @@ static int move_normal_shot(BULLET *bp) {
 			pp->p_ident->i_shot += bp->b_charge;
 			if (opposite(bp->b_face, Maze[y][x])) {
 				if (rand_num(100) < 10) {
-					if (bp->b_owner != NULL)
+					if (bp->b_owner != NULL )
 						message(bp->b_owner, "Your charge was absorbed!");
-					if (bp->b_score != NULL)
+					if (bp->b_score != NULL )
 						bp->b_score->i_robbed += bp->b_charge;
 					pp->p_ammo += bp->b_charge;
 					if (pp->p_damage + bp->b_size * MINDAM > pp->p_damcap)
@@ -323,10 +323,10 @@ static int move_normal_shot(BULLET *bp) {
 				pp->p_ident->i_ducked += bp->b_charge;
 				if (pp->p_damage + bp->b_size * MINDAM > pp->p_damcap)
 					pp->p_ident->i_saved++;
-				if (bp->b_score != NULL)
+				if (bp->b_score != NULL )
 					bp->b_score->i_missed += bp->b_charge;
 				message(pp, "Zing!");
-				if (bp->b_owner == NULL)
+				if (bp->b_owner == NULL )
 					break;
 				message(bp->b_owner,
 						((bp->b_score->i_missed & 0x7) == 0x7) ?
@@ -552,6 +552,8 @@ static void save_bullet(BULLET *bp) {
  */
 static void move_flyer(PLAYER *pp) {
 	int x, y;
+	bool repeat;
+
 
 	if (pp->p_undershot) {
 		fixshots(pp->p_y, pp->p_x, pp->p_over);
@@ -574,39 +576,44 @@ static void move_flyer(PLAYER *pp) {
 		y = (HEIGHT - 2) - (y - (HEIGHT - 2));
 		pp->p_flyy = -pp->p_flyy;
 	}
-	again: switch (Maze[y][x]) {
-	default:
-		switch (rand_num(4)) {
-		case 0:
-			PLUS_DELTA(x, WIDTH - 2);
+	do {
+		switch (Maze[y][x]) {
+		default:
+			switch (rand_num(4)) {
+			case 0:
+				PLUS_DELTA(x, WIDTH - 2);
+				break;
+			case 1:
+				MINUS_DELTA(x, 1);
+				break;
+			case 2:
+				PLUS_DELTA(y, HEIGHT - 2);
+				break;
+			case 3:
+				MINUS_DELTA(y, 1);
+				break;
+			}
+			repeat = true;
 			break;
-		case 1:
-			MINUS_DELTA(x, 1);
-			break;
-		case 2:
-			PLUS_DELTA(y, HEIGHT - 2);
-			break;
-		case 3:
-			MINUS_DELTA(y, 1);
-			break;
-		}
-		goto again;
-	case WALL1:
-	case WALL2:
-	case WALL3:
+		case WALL1:
+		case WALL2:
+		case WALL3:
 # ifdef	REFLECT
-		case WALL4:
-		case WALL5:
+			case WALL4:
+			case WALL5:
 # endif
 # ifdef	RANDOM
-	case DOOR:
+		case DOOR:
 # endif
-		if (pp->p_flying == 0)
-			pp->p_flying++;
-		break;
-	case SPACE:
-		break;
-	}
+			repeat = false;
+			if (pp->p_flying == 0)
+				pp->p_flying++;
+			break;
+		case SPACE:
+			repeat = false;
+			break;
+		}
+	} while (repeat);
 	pp->p_y = y;
 	pp->p_x = x;
 	if (pp->p_flying-- == 0) {
@@ -706,9 +713,9 @@ static void chkshot(BULLET *bp, BULLET* next) {
 				break;
 			case GMINE:
 			case MINE:
-				add_shot((Maze[y][x] == GMINE) ? GRENADE : SHOT,
-				y, x, LEFTS, (Maze[y][x] == GMINE) ? GRENREQ : BULREQ,
-				(PLAYER *) NULL, true, SPACE);
+				add_shot((Maze[y][x] == GMINE) ? GRENADE : SHOT, y, x, LEFTS,
+						(Maze[y][x] == GMINE) ? GRENREQ : BULREQ,
+						(PLAYER *) NULL, true, SPACE);
 				Maze[y][x] = SPACE;
 				break;
 			}
@@ -958,7 +965,7 @@ static void zapshot(BULLET *blist, BULLET *obp) {
 	bool explode;
 
 	explode = false;
-	for (bp = blist; bp != NULL; bp = bp->b_next) {
+	for (bp = blist; bp != NULL ; bp = bp->b_next) {
 		if (bp->b_x != obp->b_x || bp->b_y != obp->b_y)
 			continue;
 		if (bp->b_face == obp->b_face)
@@ -977,10 +984,10 @@ static void zapshot(BULLET *blist, BULLET *obp) {
 void explshot(BULLET *blist, int y, int x) {
 	BULLET *bp;
 
-	for (bp = blist; bp != NULL; bp = bp->b_next)
+	for (bp = blist; bp != NULL ; bp = bp->b_next)
 		if (bp->b_x == x && bp->b_y == y) {
 			bp->b_expl = true;
-			if (bp->b_owner != NULL)
+			if (bp->b_owner != NULL )
 				message(bp->b_owner, "Shot intercepted");
 		}
 }
@@ -1022,10 +1029,10 @@ int opposite(int face, char dir) {
 BULLET * is_bullet(int y, int x) {
 	BULLET *bp;
 
-	for (bp = Bullets; bp != NULL; bp = bp->b_next)
+	for (bp = Bullets; bp != NULL ; bp = bp->b_next)
 		if (bp->b_y == y && bp->b_x == x)
 			return bp;
-	return NULL;
+	return NULL ;
 }
 
 /**
@@ -1034,7 +1041,7 @@ BULLET * is_bullet(int y, int x) {
 void fixshots(int y, int x, char over) {
 	BULLET *bp;
 
-	for (bp = Bullets; bp != NULL; bp = bp->b_next)
+	for (bp = Bullets; bp != NULL ; bp = bp->b_next)
 		if (bp->b_y == y && bp->b_x == x)
 			bp->b_over = over;
 }
@@ -1045,7 +1052,7 @@ void fixshots(int y, int x, char over) {
 static void find_under(BULLET *blist, BULLET *bp) {
 	BULLET *nbp;
 
-	for (nbp = blist; nbp != NULL; nbp = nbp->b_next)
+	for (nbp = blist; nbp != NULL ; nbp = nbp->b_next)
 		if (bp->b_y == nbp->b_y && bp->b_x == nbp->b_x) {
 			bp->b_over = nbp->b_over;
 			break;
