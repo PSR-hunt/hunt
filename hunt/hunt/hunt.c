@@ -1040,7 +1040,6 @@ long env_init(long enter_status_in) {
 
 	/**
 	 * Generates a map for extended ASCII conversion.
-	 * TODO verificare sostituibilita' con libreria standard
 	 */
 	for (i = 0; i < 256; i++)
 		map_key[i] = (char) i;
@@ -1152,7 +1151,6 @@ long var_env_init(long enter_status_in) {
 
 	/**
 	 * Generates a map for extended ASCII conversion.
-	 * //TODO verificare sostituibilita' con libreria standard
 	 */
 	for (i = 0; i < 256; i++)
 		map_key[i] = (char) i;
