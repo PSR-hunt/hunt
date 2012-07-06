@@ -84,6 +84,14 @@
 
 # define CONFIGURATION_FILE "hunt.cfg" /**< Added from file configuration support. [PSR] */
 
+#ifndef AF_INET
+#define AF_INET 2
+#endif
+
+#ifndef AF_UNIX
+#define AF_UNIX 2
+#endif
+
 # ifdef	INTERNET
 # define	SOCK_FAMILY	AF_INET
 # else
@@ -506,6 +514,11 @@ void start_driver(void);
 void stmonitor(PLAYER *);
 void stplayer(PLAYER *, int);
 char translate(char);
+
+#ifndef SIGNAL_TYPE
+#define SIGNAL_TYPE void
+#endif
+
 SIGNAL_TYPE cleanup(int) __attribute__((__noreturn__));
 SIGNAL_TYPE intr(int);
 SIGNAL_TYPE sigalrm(int);
@@ -531,3 +544,7 @@ SIGNAL_TYPE tstp(int);
  * [PSR]
  */
 # define dbg_chdir(path) if(chdir(path)<0) fprintf(stderr, "Error calling chdir function\n");
+
+#ifndef INFTIM
+#define INFTIM -1
+#endif

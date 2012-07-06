@@ -122,8 +122,9 @@ static char team = ' ';
 static int in_visual;
 
 extern int cur_row, cur_col;
-
+#ifdef INTERNET
 void dump_scores(SOCKET);
+#endif
 long env_init(long);
 long var_env_init(long); //See function implementation in order to know description.
 void fill_in_blanks(void);
@@ -137,7 +138,12 @@ SOCKET *list_drivers(void);
 # endif
 long fchars_in_line(FILE*); /**< Added explicit declaration to avoid implicit declaration. */
 
+#ifdef OTTO
 extern int Otto_mode;
+#endif
+
+extern int _tty_ch;
+extern struct sgttyb _tty;
 
 //TODO da qui in poi documentare
 /*
@@ -174,8 +180,8 @@ int main(int argc, char* argv[]) {
 			usage();
 # else
 			Otto_mode = true;
-			break;
 # endif
+			break;
 		case 'm':
 # ifdef MONITOR
 			Am_monitor = true;
@@ -293,8 +299,12 @@ int main(int argc, char* argv[]) {
 # if defined(BSD_RELEASE) && BSD_RELEASE >= 44
 	tcgetattr(0, &saved_tty);
 # endif
+# if defined(TI) && defined(VS)
 	_puts(TI);
 	_puts(VS);
+#else
+errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+#endif
 # endif /* !USE_CURSES */
 	in_visual = true;
 	if (LINES < SCREEN_HEIGHT || COLS < SCREEN_WIDTH)
@@ -679,7 +689,7 @@ void find_driver(bool do_startup) {
 	sleep(2);
 	find_driver(false);
 }
-
+#ifdef INTERNET
 void dump_scores(SOCKET host) {
 	struct hostent *hp;
 	int s;
@@ -700,7 +710,7 @@ void dump_scores(SOCKET host) {
 	dbg_write(fileno(stdout), buf, cnt);
 	(void) close(s);
 }
-
+# endif
 # endif
 
 void start_driver() {
@@ -889,8 +899,13 @@ void fincurs() {
 # else
 		resetty();
 # endif
+#if defined(VE) && defined(TE)
 		_puts(VE);
 		_puts(TE);
+#else
+		fprintf(stderr, "Missing necessary configuration entries.\nHunt will quit.\n");
+		exit(-1);
+#endif
 # endif /* !USE_CURSES */
 	}
 }
@@ -942,8 +957,12 @@ SIGNAL_TYPE tstp(int dummy) {
 # if !defined(BSD_RELEASE) || BSD_RELEASE < 44
 	tty = _tty;
 # endif
+#if defined(VE) && defined(TE)
 	_puts(VE);
 	_puts(TE);
+#else
+errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+#endif
 	(void) fflush(stdout);
 # if defined(BSD_RELEASE) && BSD_RELEASE >= 44
 	tcsetattr(0, TCSADRAIN, &__orig_termios);
@@ -956,13 +975,23 @@ SIGNAL_TYPE tstp(int dummy) {
 	tcsetattr(0, TCSADRAIN, &saved_tty);
 # else
 	_tty = tty;
+#ifdef TIOCSTEP
 	ioctl(_tty_ch, TIOCSETP, &_tty);
+#else
+errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+#endif
 # endif
+#if defined(TI) && defined(VS)
 	_puts(TI);
 	_puts(VS);
+#else
+errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+#endif
 	cur_row = y;
 	cur_col = x;
+#ifdef CM
 	_puts(tgoto(CM, cur_row, cur_col));
+#endif
 	redraw_screen();
 	(void) fflush(stdout);
 }

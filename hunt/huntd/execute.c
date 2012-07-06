@@ -42,7 +42,9 @@ __RCSID("$NetBSD: execute.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 static	void	cloak(PLAYER *);
 static	void	face(PLAYER *, int);
 static	void	fire(PLAYER *, int);
+#ifdef OOZE
 static	void	fire_slime(PLAYER *, int);
+#endif
 static	void	move_player(PLAYER *, int);
 static	void	pickup(PLAYER *, int, int, int, int);
 static	void	scan(PLAYER *);

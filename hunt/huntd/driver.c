@@ -76,7 +76,9 @@ static void clear_scores(void);
 static int havechar(PLAYER *, int);
 static void init(void);
 int main(int, char *[], char *[]);
+#ifdef BOOTS
 static void makeboots(void);
+#endif
 static void send_stats(void);
 static void zap(PLAYER *, bool, int);
 void erred(char *[]);
@@ -664,7 +666,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 			bp->b_over = SPACE;
 		}
 	}
-
+#ifdef OOZE
 	n = rand_num(pp->p_ammo);
 	x = rand_num(pp->p_ammo);
 	if (x > n) {
@@ -694,6 +696,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 			x = shot_req[x];
 		}
 	}
+#endif
 	if (x > 0) {
 		(void) add_shot(len, pp->p_y, pp->p_x, pp->p_face, x, (PLAYER *) NULL,
 				true, SPACE);

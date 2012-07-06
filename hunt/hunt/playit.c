@@ -92,9 +92,10 @@ static unsigned char ibuf[256], *iptr = ibuf;
 
 #define	GETCHR()	(--icnt < 0 ? getchr() : *iptr++)
 
-#if !defined(BSD_RELEASE) || BSD_RELEASE < 44
-extern int _putchar();
-#endif
+//Seems to be unused
+//#if !defined(BSD_RELEASE) || BSD_RELEASE < 44
+//extern int _putchar();
+//#endif
 
 static unsigned char getchr(void);
 static void send_stuff(void);
@@ -276,6 +277,8 @@ static unsigned char getchr() {
 		icnt--;
 		return *iptr++;
 	}
+	//This point should never be reached
+	return NULL;
 }
 
 /*
@@ -499,6 +502,8 @@ int quit(int old_status) {
 		}
 		refresh();
 	}
+	//This point should never be reached
+	return NULL;
 }
 
 # ifndef USE_CURSES
@@ -510,8 +515,12 @@ void put_ch(char ch) {
 	screen[cur_row][cur_col] = ch;
 	putchar(ch);
 	if (++cur_col >= COLS) {
+#if defined(AM) && defined(XN)
 		if (!AM || XN)
 			putchar('\n');
+#else
+errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+#endif
 		cur_col = 0;
 		if (++cur_row >= LINES)
 			cur_row = LINES;
@@ -535,7 +544,7 @@ void clear_the_screen() {
 	if (blanks[0] == '\0')
 		for (i = 0; i < SCREEN_WIDTH; i++)
 			blanks[i] = ' ';
-
+#ifdef CL
 	if (CL != NULL) {
 #if !defined(BSD_RELEASE) || BSD_RELEASE < 44
 		tputs(CL, LINES, _putchar);
@@ -544,7 +553,11 @@ void clear_the_screen() {
 #endif
 		for (i = 0; i < SCREEN_HEIGHT; i++)
 			memcpy(screen[i], blanks, SCREEN_WIDTH);
-	} else {
+	} else
+#else
+errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+#endif
+	{
 		for (i = 0; i < SCREEN_HEIGHT; i++) {
 			mvcur(cur_row, cur_col, i, 0);
 			cur_row = i;
@@ -559,6 +572,7 @@ void clear_the_screen() {
 
 #ifndef USE_CURSES
 void clear_eol() {
+#ifdef CE
 	if (CE != NULL)
 #if !defined(BSD_RELEASE) || BSD_RELEASE < 44
 		tputs(CE, 1, _putchar);
@@ -575,6 +589,9 @@ void clear_eol() {
 			mvcur(cur_row, SCREEN_WIDTH - 1, cur_row, cur_col);
 	}
 	memcpy(&screen[cur_row][cur_col], blanks, SCREEN_WIDTH - cur_col);
+#else
+errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+#endif
 }
 # endif
 
@@ -591,10 +608,12 @@ void redraw_screen() {
 		curscr = newwin(SCREEN_HEIGHT, SCREEN_WIDTH, 0, 0);
 		if (curscr == NULL)
 			errx(1, "Can't create curscr");
-# if !defined(BSD_RELEASE) || BSD_RELEASE < 44
-		for (i = 0; i < SCREEN_HEIGHT; i++)
-			curscr->_y[i] = screen[i];
-# endif
+
+//Uncomment only for BSD legacy compatibility
+//# if !defined(BSD_RELEASE) || BSD_RELEASE < 44
+//		for (i = 0; i < SCREEN_HEIGHT; i++)
+//			curscr->_y[i] = screen[i];
+//# endif
 		first = 0;
 	}
 # if defined(BSD_RELEASE) && BSD_RELEASE >= 44

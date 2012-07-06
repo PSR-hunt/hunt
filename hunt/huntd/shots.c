@@ -45,18 +45,28 @@ __RCSID("$NetBSD: shots.c,v 1.5 2004/01/27 20:30:29 jsm Exp $");
 # define	MINUS_DELTA(x, min)	if (x > min) x--; else x++
 
 static void chkshot(BULLET *, BULLET *);
+#ifdef OOZE
 static void chkslime(BULLET *, BULLET *);
+#endif
 static void explshot(BULLET *, int, int);
 static void find_under(BULLET *, BULLET *);
+#ifdef OOZE
 static int iswall(int, int);
+#endif
+#ifdef BOOTS
 static void mark_boot(BULLET *);
+#endif
 static void mark_player(BULLET *);
 #ifdef DRONE
 static void move_drone(BULLET *);
 #endif
+#ifdef FLY
 static void move_flyer(PLAYER *);
+#endif
 static int move_normal_shot(BULLET *);
+#ifdef OOZE
 static void move_slime(BULLET *, int, BULLET *);
+#endif
 static void save_bullet(BULLET *);
 static void zapshot(BULLET *, BULLET *);
 
@@ -336,7 +346,8 @@ static int move_normal_shot(BULLET *bp) {
 			/*
 			 * The shot hit that sucker!  Blow it up.
 			 */
-			/* FALLTHROUGH */
+			bp->b_expl = true;
+			break;
 # ifndef RANDOM
 			case DOOR:
 # endif
@@ -550,6 +561,7 @@ static void save_bullet(BULLET *bp) {
 /**
  * Update the position of a player in flight.
  */
+#ifdef FLY
 static void move_flyer(PLAYER *pp) {
 	int x, y;
 	bool repeat;
@@ -637,6 +649,7 @@ static void move_flyer(PLAYER *pp) {
 	Maze[y][x] = pp->p_face;
 	showexpl(y, x, pp->p_face);
 }
+#endif
 
 /**
  * Handle explosions.
@@ -777,7 +790,7 @@ static void chkslime(BULLET *bp,BULLET *next) {
 /**
  * Move the given slime shot speed times and add it back if it hasn't fizzled yet.
  */
-void move_slime(BULLET *bp,int speed,BULLET *next) {
+static void move_slime(BULLET *bp,int speed,BULLET *next) {
 	int i, j, dirmask, count;
 	PLAYER *pp;
 	BULLET *nbp;

@@ -298,7 +298,9 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	else
 # endif
 	{
+# ifdef FLY
 		newpp->p_flying = -1;
+# endif
 		newpp->p_face = rand_dir();
 	}
 	newpp->p_damage = 0;

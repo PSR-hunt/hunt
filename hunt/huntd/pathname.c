@@ -55,6 +55,9 @@ char	*Stat_name =	"/tmp/hunt.stats";
 
 # else
 
+#ifndef HUNTD
+#define HUNTD "/usr/games/huntd"
+#endif
 const char	*Driver =	HUNTD;
 #  ifdef INTERNET
 unsigned short	Test_port =	('h' << 8) | 't'; /**< Changed from u_short. */
