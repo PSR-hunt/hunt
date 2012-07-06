@@ -35,20 +35,20 @@
 __RCSID("$NetBSD: get_names.c,v 1.7 2003/06/11 12:00:22 wiz Exp $");
 #endif /* not lint */
 
-/**<  #include "bsd.h" already present in hunt.h. */
+/**<  #include "bsd.h" already present in hunt.h. [PSR]*/
 
 #if	defined(TALK_43) || defined(TALK_42)
 
 # include	<sys/param.h>
-/**< # include	<netdb.h> already present in hunt.h. */
-/**< # include	<stdio.h> already present in hunt.h. */
+/**< # include	<netdb.h> already present in hunt.h. [PSR]*/
+/**< # include	<stdio.h> already present in hunt.h. [PSR]*/
 # include	<stdlib.h>
-/**< # include	<string.h> already present in hunt.h. */
+/**< # include	<string.h> already present in hunt.h. [PSR]*/
 # include	<unistd.h>
 
 # define TALK_MODE
 # define	SIMPLE_MODE
-# include	"hunt.h" /**< Include the simple version of hunt.h. */
+# include	"hunt.h" /**< Include the simple version of hunt.h. [PSR]*/
 # undef		SIMPLE_MODE
 # undef TALK_MODE
 
@@ -61,8 +61,8 @@ __RCSID("$NetBSD: get_names.c,v 1.7 2003/06/11 12:00:22 wiz Exp $");
 static char hostname[MAXHOSTNAMELEN + 1];
 char *my_machine_name;
 
-/*
- * Determine the local user and machine
+/**
+ * Determine the local user and machine.
  */
 void get_local_name(const char *my_name) {
 	struct hostent *hp;
@@ -120,10 +120,8 @@ void get_local_name(const char *my_name) {
 	daemon_port = sp->s_port;
 }
 
-//TODO documentazione da qui
-
-/*
- * Determine the remote user and machine
+/**
+ * Determine the remote user and machine.
  */
 int get_remote_name(char *his_address) {
 	char *his_name;

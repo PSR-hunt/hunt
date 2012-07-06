@@ -40,10 +40,12 @@
  * errno.h
  * syslog.h
  * sys/cdefs.h
+ *
+ * [PSR]
  */
 
-# define 	_BSD_SOURCE /**< Enables BSD library functions. */
-# define	_POSIX_C_SOURCE 1 //TODO documentare
+# define 	_BSD_SOURCE /**< Enables BSD library functions. [PSR]*/
+# define	_POSIX_C_SOURCE 1 /**< [PSR] */ //TODO aggiungere altre informazioni.
 # include "bsd.h"
 
 # ifndef TALK_MODE // See above
@@ -74,13 +76,13 @@
 # include	<sys/un.h>
 # endif
 
-# include <stdbool.h> /**< Added boolean type support. */
+# include <stdbool.h> /**< Added boolean type support. [PSR]*/
 
 # ifndef SIMPLE_MODE // See above
 # include <sys/cdefs.h>
 # endif
 
-# define CONFIGURATION_FILE "hunt.cfg" /**< Added from file configuration support. */
+# define CONFIGURATION_FILE "hunt.cfg" /**< Added from file configuration support. [PSR] */
 
 # ifdef	INTERNET
 # define	SOCK_FAMILY	AF_INET
@@ -225,6 +227,7 @@
  * # define	TRUE	1
  * # define	FALSE	0
  * # endif
+ * [PSR]
  */
 
 # undef CTRL
@@ -304,9 +307,7 @@ extern int slime_req[];
 # define	stat_char(pp)	(((pp)->p_cloak < 0) ? _scan_char(pp) : '+')
 # endif
 
-/*Deprecated due to stdbool.h standard library.
- *typedef int			FLAG;
- */
+/**< typedef int			FLAG; deprecated due to stdbool.h standard library. [PSR] */
 typedef struct bullet_def BULLET;
 typedef struct expl_def EXPL;
 typedef struct player_def PLAYER;
@@ -473,7 +474,7 @@ IDENT *get_ident(unsigned long, unsigned long, const char *, char);
 void get_local_name(const char *);
 int get_remote_name(char *);
 BULLET *is_bullet(int, int);
-void iso_syslog(int, const char *, ...); //TODO documentazione
+void iso_syslog(int, const char *, ...); /**< [PSR] */
 void look(PLAYER *);
 void makemaze(void);
 void message(PLAYER *, const char *);
@@ -514,16 +515,19 @@ SIGNAL_TYPE sigusr1(int) __attribute__((__noreturn__));
 SIGNAL_TYPE tstp(int);
 
 /**
- * Wrapper for write function that prints on standard error stream in case of failure
+ * Wrapper for write function that prints on standard error stream in case of failure.
+ * [PSR]
  */
 # define dbg_write(fd, buf, n) if(write(fd, buf, n)<0) fprintf(stderr, "Error calling write function\n");
 
 /**
- * Wrapper for read function that prints on standard error stream in case of failure
+ * Wrapper for read function that prints on standard error stream in case of failure.
+ * [PSR]
  */
 # define dbg_read(fd, buf, nbytes) if(read(fd, buf, nbytes)<0) fprintf(stderr, "Error calling read function\n");
 
 /**
- * Wrapper for chdir function that prints on standard error stream in case of failure
+ * Wrapper for chdir function that prints on standard error stream in case of failure.
+ * [PSR]
  */
 # define dbg_chdir(path) if(chdir(path)<0) fprintf(stderr, "Error calling chdir function\n");

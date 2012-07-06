@@ -34,27 +34,27 @@
 # include	"hunt.h"
 # undef TALK_MODE
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $");
 #endif /* not lint */
 
-/**< #include "bsd.h" already present in hunt.h. */
+/**< #include "bsd.h" already present in hunt.h. [PSR]*/
 
 #if	defined(TALK_43) || defined(TALK_42)
 
 # include	<sys/time.h>
 # include	<sys/wait.h>
 # include	<ctype.h>
-/**< # include	<netdb.h> already present in hunt.h. */
+/**< # include	<netdb.h> already present in hunt.h. [PSR]*/
 # include	<signal.h>
 # include	<stdio.h>
 # include	<string.h>
 # include	<unistd.h>
 # include	"talk_ctl.h"
 
-/**< # define	TRUE		1 Deprecated due to stdbool.h standard library. */
-/**< # define	FALSE		0 Deprecated due to stdbool.h standard library. */
+/**< # define	TRUE		1 Deprecated due to stdbool.h standard library. [PSR] */
+/**< # define	FALSE		0 Deprecated due to stdbool.h standard library. [PSR]*/
 
 /* defines for fake talk message to announce start of game */
 # ifdef TALK_43
@@ -79,13 +79,9 @@ SIGNAL_TYPE exorcise(int dummy __attribute__((__unused__))) {
 	(void) wait(0);
 }
 
-//TODO documentazione da qui
-
-/*
- *	query the local SMTP daemon to expand the RENDEZVOUS mailing list
- *	and fake a talk request to each address thus found.
+/**
+ * Query the local SMTP daemon to expand the RENDEZVOUS mailing list and fake a talk request to each address thus found.
  */
-
 void faketalk() {
 	struct servent *sp;
 	char buf[BUFSIZ];
@@ -200,11 +196,10 @@ void faketalk() {
 	_exit(0);
 }
 
-/*
+/**
  * The msg.id's for the invitations on the local and remote machines.
  * These are used to delete the invitations.
  */
-
 static void do_announce(char *s) {
 	CTL_RESPONSE response;
 

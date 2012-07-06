@@ -32,7 +32,6 @@
 
 # include	"hunt.h"
 
-
 /**< #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: makemaze.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
@@ -41,16 +40,17 @@ __RCSID("$NetBSD: makemaze.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 # define	ISCLEAR(y,x)	(Maze[y][x] == SPACE)
 # define	ODD(n)		((n) & 01)
 
-static	int	candig(int, int);
-static	void	dig(int, int);
-static	void	dig_maze(int, int);
-static	void	remap(void);
+static int candig(int, int);
+static void dig(int, int);
+static void dig_maze(int, int);
+static void remap(void);
 
-//TODO da qui documentare
-
-void makemaze(){
-	char	*sp;
-	int	y, x;
+/**
+ * Builds the maze. [PSR]
+ */
+void makemaze() {
+	char *sp;
+	int y, x;
 
 	/*
 	 * fill maze with walls
@@ -68,74 +68,79 @@ void makemaze(){
 # define	NPERM	24
 # define	NDIR	4
 
-int	dirs[NPERM][NDIR] = {
-		{0,1,2,3},	{3,0,1,2},	{0,2,3,1},	{0,3,2,1},
-		{1,0,2,3},	{2,3,0,1},	{0,2,1,3},	{2,3,1,0},
-		{1,0,3,2},	{1,2,0,3},	{3,1,2,0},	{2,0,3,1},
-		{1,3,0,2},	{0,3,1,2},	{1,3,2,0},	{2,0,1,3},
-		{0,1,3,2},	{3,1,0,2},	{2,1,0,3},	{1,2,3,0},
-		{2,1,3,0},	{3,0,2,1},	{3,2,0,1},	{3,2,1,0}
-	};
+int dirs[NPERM][NDIR] = { { 0, 1, 2, 3 }, { 3, 0, 1, 2 }, { 0, 2, 3, 1 }, { 0,
+		3, 2, 1 }, { 1, 0, 2, 3 }, { 2, 3, 0, 1 }, { 0, 2, 1, 3 },
+		{ 2, 3, 1, 0 }, { 1, 0, 3, 2 }, { 1, 2, 0, 3 }, { 3, 1, 2, 0 }, { 2, 0,
+				3, 1 }, { 1, 3, 0, 2 }, { 0, 3, 1, 2 }, { 1, 3, 2, 0 }, { 2, 0,
+				1, 3 }, { 0, 1, 3, 2 }, { 3, 1, 0, 2 }, { 2, 1, 0, 3 }, { 1, 2,
+				3, 0 }, { 2, 1, 3, 0 }, { 3, 0, 2, 1 }, { 3, 2, 0, 1 }, { 3, 2,
+				1, 0 } };
 
-int	incr[NDIR][2] = {
-		{0, 1}, {1, 0}, {0, -1}, {-1, 0}
-	};
+int incr[NDIR][2] = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
 
-static void dig(int y,int x){
-	int	*dp;
-	int	*ip;
-	int	ny, nx;
-	int	*endp;
+/**
+ * Removes peaces of walls.
+ * [PSR]
+ */
+static void dig(int y, int x) {
+	int *dp;
+	int *ip;
+	int ny, nx;
+	int *endp;
 
-	Maze[y][x] = SPACE;			/* Clear this spot */
+	Maze[y][x] = SPACE; /* Clear this spot */
 	dp = dirs[rand_num(NPERM)];
 	endp = &dp[NDIR];
 	while (dp < endp) {
 		ip = &incr[*dp++][0];
 		ny = y + *ip++;
 		nx = x + *ip;
-		if (candig(ny, nx))
+		if (candig(ny, nx)) {
 			dig(ny, nx);
+		}
 	}
 }
 
-/*
- * candig:
- *	Is it legal to clear this spot?
+/**
+ * Is it legal to clear this spot?
  */
-static int candig(int y,int x){
-	int	i;
+static int candig(int y, int x) {
+	int i;
 
 	if (ODD(x) && ODD(y))
-		return false;		/* can't touch ODD spots */
+		return false; /* can't touch ODD spots */
 
 	if (y < UBOUND || y >= DBOUND)
-		return false;		/* Beyond vertical bounds, NO */
+		return false; /* Beyond vertical bounds, NO */
 	if (x < LBOUND || x >= RBOUND)
-		return false;		/* Beyond horizontal bounds, NO */
+		return false; /* Beyond horizontal bounds, NO */
 
 	if (ISCLEAR(y, x))
-		return false;		/* Already clear, NO */
+		return false; /* Already clear, NO */
 
 	i = ISCLEAR(y, x + 1);
 	i += ISCLEAR(y, x - 1);
 	if (i > 1)
-		return false;		/* Introduces cycle, NO */
+		return false; /* Introduces cycle, NO */
 	i += ISCLEAR(y + 1, x);
 	if (i > 1)
-		return false;		/* Introduces cycle, NO */
+		return false; /* Introduces cycle, NO */
 	i += ISCLEAR(y - 1, x);
 	if (i > 1)
-		return false;		/* Introduces cycle, NO */
+		return false; /* Introduces cycle, NO */
 
-	return true;			/* OK */
+	return true; /* OK */
 }
 
-void dig_maze(int x,int y){
-	int	tx, ty;
-	int	i, j;
-	int	order[4];
-#define	MNORTH	0x1
+/**
+ * Helper function to build the maze.
+ * [PSR]
+ */
+void dig_maze(int x, int y) {
+	int tx, ty;
+	int i, j;
+	int order[4];
+#define	MNORTH	0x1 //1 in binary.
 #define	MSOUTH	0x2
 #define	MEAST	0x4
 #define	MWEST	0x8
@@ -146,67 +151,78 @@ void dig_maze(int x,int y){
 	for (i = 1; i < 4; i++) {
 		j = rand_num(i + 1);
 		order[i] = order[j];
-		order[j] = 0x1 << i;
+		order[j] = 0x1 << i; //Shifts 0x1 on the left by i positions.
 	}
 	for (i = 0; i < 4; i++) {
 		switch (order[i]) {
-		  case MNORTH:
+		case MNORTH:
 			tx = x;
 			ty = y - 2;
 			break;
-		  case MSOUTH:
+		case MSOUTH:
 			tx = x;
 			ty = y + 2;
 			break;
-		  case MEAST:
+		case MEAST:
 			tx = x + 2;
 			ty = y;
 			break;
-		  case MWEST:
+		case MWEST:
 			tx = x - 2;
 			ty = y;
 			break;
 		}
-		if (tx < 0 || ty < 0 || tx >= WIDTH || ty >= HEIGHT)
+		if (tx < 0 || ty < 0 || tx >= WIDTH || ty >= HEIGHT){
 			continue;
-		if (Maze[ty][tx] == SPACE)
+		}
+		if (Maze[ty][tx] == SPACE){
 			continue;
+		}
 		Maze[(y + ty) / 2][(x + tx) / 2] = SPACE;
 		dig_maze(tx, ty);
 	}
 }
 
-void remap(){
-	int	y, x;
-	char	*sp;
-	int	stat;
+/**
+ * Helper function to build the maze.
+ * [PSR]
+ */
+void remap() {
+	int y, x;
+	char *sp;
+	int stat;
 
 	for (y = 0; y < HEIGHT; y++)
 		for (x = 0; x < WIDTH; x++) {
 			sp = &Maze[y][x];
-			if (*sp == SPACE)
+			if (*sp == SPACE){
 				continue;
+			}
 			stat = 0;
-			if (y - 1 >= 0 && Maze[y - 1][x] != SPACE)
+			if (y - 1 >= 0 && Maze[y - 1][x] != SPACE){
 				stat |= NORTH;
-			if (y + 1 < HEIGHT && Maze[y + 1][x] != SPACE)
+			}
+			if (y + 1 < HEIGHT && Maze[y + 1][x] != SPACE){
 				stat |= SOUTH;
-			if (x + 1 < WIDTH && Maze[y][x + 1] != SPACE)
+			}
+			if (x + 1 < WIDTH && Maze[y][x + 1] != SPACE){
 				stat |= EAST;
-			if (x - 1 >= 0 && Maze[y][x - 1] != SPACE)
+			}
+			if (x - 1 >= 0 && Maze[y][x - 1] != SPACE){
 				stat |= WEST;
+			}
 			switch (stat) {
-			  case WEST | EAST:
-			  case EAST:
-			  case WEST:
+			case WEST | EAST:
+			case EAST:
+			case WEST:
 				*sp = WALL1;
 				break;
-			  case NORTH | SOUTH:
-			  case NORTH:
-			  case SOUTH:
+			case NORTH | SOUTH:
+			case NORTH:
+			case SOUTH:
 				*sp = WALL2;
 				break;
-			  case 0:
+			case 0:
 # ifdef RANDOM
 				*sp = DOOR;
 # endif
@@ -214,7 +230,7 @@ void remap(){
 				*sp = rand_num(2) ? WALL4 : WALL5;
 # endif
 				break;
-			  default:
+			default:
 				*sp = WALL3;
 				break;
 			}

@@ -1053,7 +1053,7 @@ static void find_under(BULLET *blist, BULLET *bp) {
 }
 
 /**
- * Mark a player as under a shot
+ * Mark a player as under a shot.
  */
 static void mark_player(BULLET *bp) {
 	PLAYER *pp;
