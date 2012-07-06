@@ -30,14 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**< #include "bsd.h" already present in hunt.h. */
+/**< #include "bsd.h" already present in hunt.h. [PSR]*/
 
 #if	defined(TALK_43) || defined(TALK_42) 
 # define TALK_MODE //See documentation in hunt.h.
 # include	"hunt.h"
 # undef TALK_MODE
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)ctl.c	5.2 (Berkeley) 3/13/86";
@@ -62,26 +62,30 @@ struct	in_addr my_machine_addr;
 struct	in_addr his_machine_addr;
 
 /* port number of the talk daemon */
-unsigned short daemon_port;	/**< Changed from u_short. */
+unsigned short daemon_port;	/**< Changed from u_short. [PSR] */
 
 int	ctl_sockt;
 
 CTL_MSG msg;
 
-//TODO da qui iniziare documentazione
-/* open the ctl socket */
+/**
+ * Open the ctl socket.
+ */
 void open_ctl() {
 	int length;
 
 	ctl_addr.sin_port = 0;
 	ctl_addr.sin_addr = my_machine_addr;
 	ctl_sockt = socket(AF_INET, SOCK_DGRAM, 0);
-	if (ctl_sockt <= 0)
+	if (ctl_sockt <= 0){
 		p_error("Bad socket");
-	if (bind(ctl_sockt, &ctl_addr, sizeof(ctl_addr)) != 0)
+	}
+	if (bind(ctl_sockt, &ctl_addr, sizeof(ctl_addr)) != 0){
 		p_error("Couldn't bind to control socket");
+	}
 	length = sizeof(ctl_addr);
-	if (getsockname(ctl_sockt, (struct sockaddr *) &ctl_addr, &length) < 0)
+	if (getsockname(ctl_sockt, (struct sockaddr *) &ctl_addr, &length) < 0){
 		p_error("Bad address for ctl socket");
+	}
 }
 #endif

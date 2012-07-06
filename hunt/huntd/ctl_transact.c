@@ -30,14 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**< #include "bsd.h" already present in hunt.h. */
+/**< #include "bsd.h" already present in hunt.h. [PSR] */
 
 #if	defined(TALK_43) || defined(TALK_42)
 # define TALK_MODE //See documentation in hunt.h.
 # include	"hunt.h"
 # undef	TALK_MODE
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)ctl_transact.c	5.2 (Berkeley) 3/13/86";
@@ -53,14 +53,12 @@ __RCSID("$NetBSD: ctl_transact.c,v 1.6 2003/06/11 12:00:22 wiz Exp $");
 #define CTL_WAIT 2	/* time to wait for a response, in seconds */
 #define MAX_RETRY 5
 
-//TODO da qui iniziare documentazione
-
-/*
+/**
  * SOCKDGRAM is unreliable, so we must repeat messages if we have
  * not received an acknowledgement within a reasonable amount
  * of time
  */
-void ctl_transact(struct in_addr target,CTL_MSG msg,int type,CTL_RESPONSE *rp){
+void ctl_transact(struct in_addr target,CTL_MSG msg,int type,CTL_RESPONSE *rp) {
 	struct pollfd set[1];
 	int nready, cc, retries;
 
@@ -79,23 +77,27 @@ void ctl_transact(struct in_addr target,CTL_MSG msg,int type,CTL_RESPONSE *rp){
 		/* resend message until a response is obtained */
 		for (retries = MAX_RETRY; retries > 0; retries -= 1) {
 			cc = sendto(ctl_sockt, (char *)&msg, sizeof (msg), 0,
-				&daemon_addr, sizeof (daemon_addr));
+					&daemon_addr, sizeof (daemon_addr));
 			if (cc != sizeof (msg)) {
-				if (errno == EINTR)
+				if (errno == EINTR) {
 					continue;
+				}
 				p_error("Error on write to talk daemon");
 			}
 			nready = poll(set, 1, CTL_WAIT * 1000);
 			if (nready < 0) {
-				if (errno == EINTR)
+				if (errno == EINTR) {
 					continue;
+				}
 				p_error("Error waiting for daemon response");
 			}
-			if (nready != 0)
+			if (nready != 0) {
 				break;
+			}
 		}
-		if (retries <= 0)
+		if (retries <= 0) {
 			break;
+		}
 		/*
 		 * Keep reading while there are queued messages 
 		 * (this is not necessary, it just saves extra
@@ -104,22 +106,23 @@ void ctl_transact(struct in_addr target,CTL_MSG msg,int type,CTL_RESPONSE *rp){
 		do {
 			cc = recv(ctl_sockt, (char *)rp, sizeof (*rp), 0);
 			if (cc < 0) {
-				if (errno == EINTR)
+				if (errno == EINTR) {
 					continue;
+				}
 				p_error("Error on read from talk daemon");
 			}
 			/* an immediate poll */
 			nready = poll(set, 1, 0);
-		} while (nready > 0 && (
+		}while (nready > 0 && (
 #ifdef	TALK_43
-		    rp->vers != TALK_VERSION ||
+						rp->vers != TALK_VERSION ||
 #endif
-		    rp->type != type));
-	} while (
+						rp->type != type));
+	}while (
 #ifdef	TALK_43
-	    rp->vers != TALK_VERSION ||
+			rp->vers != TALK_VERSION ||
 #endif
-	    rp->type != type);
+			rp->type != type);
 	rp->id_num = ntohl(rp->id_num);
 #ifdef	TALK_43
 	rp->addr.sa_family = ntohs(rp->addr.sa_family);
