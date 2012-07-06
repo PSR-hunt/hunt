@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: shots.c,v 1.5 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -60,11 +60,8 @@ static void move_slime(BULLET *, int, BULLET *);
 static void save_bullet(BULLET *);
 static void zapshot(BULLET *, BULLET *);
 
-//TODO documentare da qui
-
-/*
- * moveshots:
- *	Move the shots already in the air, taking explosions into account
+/**
+ * Move the shots already in the air, taking explosions into account.
  */
 void moveshots() {
 	BULLET *bp, *next;
@@ -178,9 +175,8 @@ void moveshots() {
 	return;
 }
 
-/*
- * move_normal_shot:
- *	Move a normal shot along its trajectory
+/**
+ * Move a normal shot along its trajectory.
  */
 static int move_normal_shot(BULLET *bp) {
 	int i, x, y;
@@ -358,9 +354,8 @@ static int move_normal_shot(BULLET *bp) {
 }
 
 # ifdef	DRONE
-/*
- * move_drone:
- *	Move the drone to the next square
+/**
+ * Move the drone to the next square.
  */
 static void move_drone(BULLET *bp) {
 	int mask, count;
@@ -504,9 +499,8 @@ static void move_drone(BULLET *bp) {
 }
 # endif
 
-/*
- * save_bullet:
- *	Put this bullet back onto the bullet list
+/**
+ * Put this bullet back onto the bullet list.
  */
 static void save_bullet(BULLET *bp) {
 	bp->b_over = Maze[bp->b_y][bp->b_x];
@@ -553,9 +547,8 @@ static void save_bullet(BULLET *bp) {
 	Bullets = bp;
 }
 
-/*
- * move_flyer:
- *	Update the position of a player in flight
+/**
+ * Update the position of a player in flight.
  */
 static void move_flyer(PLAYER *pp) {
 	int x, y;
@@ -638,9 +631,8 @@ static void move_flyer(PLAYER *pp) {
 	showexpl(y, x, pp->p_face);
 }
 
-/*
- * chkshot
- *	Handle explosions
+/**
+ * Handle explosions.
  */
 static void chkshot(BULLET *bp, BULLET* next) {
 	int y, x;
@@ -725,9 +717,8 @@ static void chkshot(BULLET *bp, BULLET* next) {
 }
 
 # ifdef	OOZE
-/*
- * chkslime:
- *	handle slime shot exploding
+/**
+ * Handle slime shot exploding.
  */
 static void chkslime(BULLET *bp,BULLET *next) {
 	BULLET *nbp;
@@ -776,10 +767,8 @@ static void chkslime(BULLET *bp,BULLET *next) {
 # endif
 }
 
-/*
- * move_slime:
- *	move the given slime shot speed times and add it back if
- *	it hasn't fizzled yet
+/**
+ * Move the given slime shot speed times and add it back if it hasn't fizzled yet.
  */
 void move_slime(BULLET *bp,int speed,BULLET *next) {
 	int i, j, dirmask, count;
@@ -932,9 +921,8 @@ void move_slime(BULLET *bp,int speed,BULLET *next) {
 	free((char *) bp);
 }
 
-/*
- * iswall:
- *	returns whether the given location is a wall
+/**
+ * Returns whether the given location is a wall.
  */
 static int iswall(int y,int x) {
 	if (y < 0 || x < 0 || y >= HEIGHT || x >= WIDTH)
@@ -962,9 +950,8 @@ static int iswall(int y,int x) {
 }
 # endif
 
-/*
- * zapshot:
- *	Take a shot out of the air.
+/**
+ * Take a shot out of the air.
  */
 static void zapshot(BULLET *blist, BULLET *obp) {
 	BULLET *bp;
@@ -984,9 +971,8 @@ static void zapshot(BULLET *blist, BULLET *obp) {
 	explshot(blist, obp->b_y, obp->b_x);
 }
 
-/*
- * explshot -
- *	Make all shots at this location blow up
+/**
+ * Make all shots at this location blow up.
  */
 void explshot(BULLET *blist, int y, int x) {
 	BULLET *bp;
@@ -999,9 +985,8 @@ void explshot(BULLET *blist, int y, int x) {
 		}
 }
 
-/*
- * play_at:
- *	Return a pointer to the player at the given location
+/**
+ * Return a pointer to the player at the given location.
  */
 PLAYER * play_at(int y, int x) {
 	PLAYER *pp;
@@ -1013,10 +998,8 @@ PLAYER * play_at(int y, int x) {
 	/* NOTREACHED */
 }
 
-/*
- * opposite:
- *	Return TRUE if the bullet direction faces the opposite direction
- *	of the player in the maze
+/**
+ * Return TRUE if the bullet direction faces the opposite direction of the player in the maze.
  */
 int opposite(int face, char dir) {
 	switch (face) {
@@ -1033,10 +1016,8 @@ int opposite(int face, char dir) {
 	}
 }
 
-/*
- * is_bullet:
- *	Is there a bullet at the given coordinates?  If so, return
- *	a pointer to the bullet, otherwise return NULL
+/**
+ * Is there a bullet at the given coordinates?  If so, return a pointer to the bullet, otherwise return NULL.
  */
 BULLET * is_bullet(int y, int x) {
 	BULLET *bp;
@@ -1047,10 +1028,8 @@ BULLET * is_bullet(int y, int x) {
 	return NULL;
 }
 
-/*
- * fixshots:
- *	change the underlying character of the shots at a location
- *	to the given character.
+/**
+ * Change the underlying character of the shots at a location to the given character.
  */
 void fixshots(int y, int x, char over) {
 	BULLET *bp;
@@ -1060,10 +1039,8 @@ void fixshots(int y, int x, char over) {
 			bp->b_over = over;
 }
 
-/*
- * find_under:
- *	find the underlying character for a bullet when it lands
- *	on another bullet.
+/**
+ * Find the underlying character for a bullet when it lands on another bullet.
  */
 static void find_under(BULLET *blist, BULLET *bp) {
 	BULLET *nbp;
@@ -1075,9 +1052,8 @@ static void find_under(BULLET *blist, BULLET *bp) {
 		}
 }
 
-/*
- * mark_player:
- *	mark a player as under a shot
+/**
+ * Mark a player as under a shot
  */
 static void mark_player(BULLET *bp) {
 	PLAYER *pp;
@@ -1090,9 +1066,8 @@ static void mark_player(BULLET *bp) {
 }
 
 # ifdef BOOTS
-/*
- * mark_boot:
- *	mark a boot as under a shot
+/**
+ * Mark a boot as under a shot.
  */
 static void mark_boot(BULLET *bp) {
 	PLAYER *pp;

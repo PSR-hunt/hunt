@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/** #include <sys/cdefs.h> pushed up in hunt.h. */
+/** #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: terminal.c,v 1.4 2003/06/11 12:00:23 wiz Exp $");
 #endif /* not lint */
@@ -40,12 +40,8 @@ __RCSID("$NetBSD: terminal.c,v 1.4 2003/06/11 12:00:23 wiz Exp $");
 #include <stdarg.h>
 #define	TERM_WIDTH	80	/* Assume terminals are 80-char wide */
 
-//TODO documentare da qui
-
-/*
- * cgoto:
- *	Move the cursor to the given position on the given player's
- *	terminal.
+/**
+ * Move the cursor to the given position on the given player's terminal.
  */
 void cgoto(PLAYER *pp, int y, int x) {
 	if (x == pp->p_curx && y == pp->p_cury)
@@ -55,12 +51,9 @@ void cgoto(PLAYER *pp, int y, int x) {
 	pp->p_curx = x;
 }
 
-/*
- * outch:
- *	Put out a single character.
- */
 /**
- * Uniformed to prototype in hunt.h.
+ *  Put out a single character.
+ *  Uniformed to prototype in hunt.h. [PSR]
  */
 void outch(PLAYER *pp, int ch) {
 	if (++pp->p_curx >= TERM_WIDTH) {
@@ -70,9 +63,8 @@ void outch(PLAYER *pp, int ch) {
 	(void) putc((char) ch, pp->p_output);
 }
 
-/*
- * outstr:
- *	Put out a string of the given length.
+/**
+ * Put out a string of the given length.
  */
 void outstr(PLAYER *pp, const char *str, int len) {
 	pp->p_curx += len;
@@ -82,9 +74,8 @@ void outstr(PLAYER *pp, const char *str, int len) {
 		(void) putc(*str++, pp->p_output);
 }
 
-/*
- * clrscr:
- *	Clear the screen, and reset the current position on the screen.
+/**
+ * Clear the screen, and reset the current position on the screen.
  */
 void clrscr(PLAYER *pp) {
 	sendcom(pp, CLEAR);
@@ -92,9 +83,8 @@ void clrscr(PLAYER *pp) {
 	pp->p_curx = 0;
 }
 
-/*
- * ce:
- *	Clear to the end of the line
+/**
+ * Clear to the end of the line.
  */
 void ce(PLAYER *pp) {
 	sendcom(pp, CLRTOEOL);
@@ -113,9 +103,8 @@ PLAYER *pp;
 }
 #endif
 
-/*
- * sendcom:
- *	Send a command to the given user
+/**
+ * Send a command to the given user.
  */
 void sendcom(PLAYER *pp, int command, ...) {
 	va_list ap;

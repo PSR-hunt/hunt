@@ -47,7 +47,7 @@ __RCSID("$NetBSD: pathname.c,v 1.3 2003/06/11 12:00:23 wiz Exp $");
 
 char	*Driver =	"/home/socr/a/conrad/games/src/hunt/huntd.dbg";
 #  ifdef INTERNET
-unsigned short	Test_port =	('h' << 8) | 't';
+unsigned short	Test_port =	('h' << 8) | 't'; //TODO verifica di non averlo cambiato.
 #  else
 char	*Sock_name =	"/tmp/hunt";
 char	*Stat_name =	"/tmp/hunt.stats";
