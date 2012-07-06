@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
 
 #ifndef lint
 __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
@@ -41,14 +41,14 @@ __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
 # include	<sys/param.h>
 # include	<sys/stat.h>
 # include	<sys/time.h>
-/**< # include	<sys/poll.h> already present in hunt.h. */
+/**< # include	<sys/poll.h> already present in hunt.h. [PSR]*/
 # include	<ctype.h>
 # include	<err.h>
- /**< # include	<errno.h> already present in hunt.h. */
-# include	<ncurses.h> /**< Edited from curses.h. */
+/**< # include	<errno.h> already present in hunt.h. [PSR]*/
+# include	<ncurses.h> /**< Edited from curses.h. [PSR]*/
 # include	<signal.h>
 # include	<stdlib.h>
-/**< # include	<string.h> already present in hunt.h. */
+/**< # include	<string.h> already present in hunt.h. [PSR] */
 # if !defined(USE_CURSES) && defined(BSD_RELEASE) && BSD_RELEASE >= 44
 # include	<termios.h>
 static struct termios saved_tty;
@@ -56,13 +56,14 @@ static struct termios saved_tty;
 # include	<unistd.h>
 # include	<ifaddrs.h>
 
-# include 	<getopt.h> /**< Explicit declaration of getopt family functions. */
+# include 	<getopt.h> /**< Explicit declaration of getopt family functions. [PSR]*/
 
-# include	<net/if.h> /**< Added library to support net interface socket communication. */
+# include	<net/if.h> /**< Added library to support net interface socket communication. [PSR]*/
 
 /**
  * It defines the overextimated length of a line in configuration file.
  * It is used only if the program is not able to compute the real input line length.
+ * [PSR]
  */
 # define EMERGENCY_BUFFER_LENGTH 1024
 
@@ -136,7 +137,7 @@ int main(int, char *[]);
 # ifdef INTERNET
 SOCKET *list_drivers(void);
 # endif
-long fchars_in_line(FILE*); /**< Added explicit declaration to avoid implicit declaration. */
+long fchars_in_line(FILE*); /**< Added explicit declaration to avoid implicit declaration. [PSR] */
 
 #ifdef OTTO
 extern int Otto_mode;
@@ -146,9 +147,9 @@ extern int _tty_ch;
 extern struct sgttyb _tty;
 
 //TODO da qui in poi documentare
-/*
- * main:
- *	Main program for local process
+
+/**
+ * Main program for local process.
  */
 int main(int argc, char* argv[]) {
 
@@ -303,7 +304,7 @@ int main(int argc, char* argv[]) {
 	_puts(TI);
 	_puts(VS);
 #else
-errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+	errx(1, "Missing necessary configuration entries.\nHunt will quit.\n");
 #endif
 # endif /* !USE_CURSES */
 	in_visual = true;
@@ -417,32 +418,42 @@ errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
 
 # ifdef INTERNET
 # ifdef BROADCAST
+/**
+ * Counts the number of socket addresses.
+ * [PSR]
+ */
 int broadcast_vec(struct sockaddr **vector) {
 	/*int			s;		 socket */
 	int vec_cnt;
 	struct ifaddrs *ifp, *ip;
 
-	*vector = NULL; /*Inizializza il vettore di sockaddr a NULL*/
-	if (getifaddrs(&ifp) < 0)/*Acquisisce le interfacce di rete*/
-	return 0;/*Esce ad acquisizione fallita*/
+	*vector = NULL; //Inizializza il vettore di sockaddr a NULL
+	if (getifaddrs(&ifp) < 0) { //Acquisisce le interfacce di rete
+		return 0;//Esce ad acquisizione fallita
+	}
 
 	vec_cnt = 0;
-	for (ip = ifp; ip; ip = ip->ifa_next)/*Posiziona ip sull'ultima interfaccia della lista*/
-	if ((ip->ifa_addr->sa_family == AF_INET) &&
-			(ip->ifa_flags & IFF_BROADCAST))
-	vec_cnt++;
+	for (ip = ifp; ip; ip = ip->ifa_next) { //Posiziona ip sull'ultima interfaccia della lista
+		if ((ip->ifa_addr->sa_family == AF_INET) &&
+				(ip->ifa_flags & IFF_BROADCAST)) {
+			vec_cnt++;
+		}
+	}
 
 	*vector = (struct sockaddr *)
 	malloc(vec_cnt * sizeof(struct sockaddr_in));
-	if (*vector == NULL)
-	leave(1, "Out of memory!");
+	if (*vector == NULL) {
+		leave(1, "Out of memory!");
+	}
 
 	vec_cnt = 0;
-	for (ip = ifp; ip; ip = ip->ifa_next)
-	if ((ip->ifa_addr->sa_family == AF_INET) &&
-			(ip->ifa_flags & IFF_BROADCAST))
-	memcpy(&(*vector)[vec_cnt++], ip->ifa_broadaddr,
-			sizeof(struct sockaddr_in));
+	for (ip = ifp; ip; ip = ip->ifa_next) {
+		if ((ip->ifa_addr->sa_family == AF_INET) &&
+				(ip->ifa_flags & IFF_BROADCAST)) {
+			memcpy(&(*vector)[vec_cnt++], ip->ifa_broadaddr,
+					sizeof(struct sockaddr_in));
+		}
+	}
 
 	freeifaddrs(ifp);
 	return vec_cnt;
@@ -451,20 +462,25 @@ int broadcast_vec(struct sockaddr **vector) {
 
 /**
  * Helper function to print the usage of the program on stderr.
+ * [PSR]
  */
 void usage() {
 	fputs("usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host]\n", stderr);
 	exit(1);
 }
 
+/**
+ * TODO
+ */
 SOCKET * list_drivers() {
 	int option;
-	unsigned short msg;
-	unsigned short port_num;
+	unsigned short msg; /**< Changed from u_short. [PSR] */
+	unsigned short port_num; /**< Changed from u_short. [PSR] */
 	static SOCKET test;
 	int test_socket;
 	/**
 	 * Edited namelen declaration type to unsigned int to match recvfrom() parameter.
+	 * [PSR]
 	 */
 	unsigned int namelen;
 	char local_name[MAXHOSTNAMELEN + 1];
@@ -475,7 +491,7 @@ SOCKET * list_drivers() {
 	static int brdc;
 	static SOCKET *brdv;
 # else
-	unsigned long local_net;
+	unsigned long local_net; /**< Changed from u_long. [PSR] */
 # endif
 	int i;
 	static SOCKET *listv;
@@ -587,8 +603,9 @@ SOCKET * list_drivers() {
 			listmax += 20;
 			listv = (SOCKET *) realloc((char *) listv,
 					listmax * sizeof(SOCKET));
-			if (listv == NULL)
-			leave(1, "Out of memory!");
+			if (listv == NULL) {
+				leave(1, "Out of memory!");
+			}
 		}
 
 		if (poll(set, 1, 1000) == 1 &&
@@ -599,12 +616,15 @@ SOCKET * list_drivers() {
 			 * order since the port number *should* be in network
 			 * order:
 			 */
-			for (i = 0; (unsigned)i < listc; i += 1)
-			if (listv[listc].sin_addr.s_addr
-					== listv[i].sin_addr.s_addr)
-			break;
-			if ((unsigned)i == listc)
-			listv[listc++].sin_port = port_num;
+			for (i = 0; (unsigned)i < listc; i += 1) {
+				if (listv[listc].sin_addr.s_addr
+						== listv[i].sin_addr.s_addr) {
+					break;
+				}
+			}
+			if ((unsigned)i == listc) {
+				listv[listc++].sin_port = port_num;
+			}
 			continue;
 		}
 
@@ -625,6 +645,9 @@ SOCKET * list_drivers() {
 
 }
 
+/**
+ * TODO
+ */
 void find_driver(bool do_startup) {
 	SOCKET *hosts;
 
@@ -682,14 +705,18 @@ void find_driver(bool do_startup) {
 		clear_the_screen();
 		return;
 	}
-	if (!do_startup)
-	return;
+	if (!do_startup){
+		return;
+	}
 
 	start_driver();
 	sleep(2);
 	find_driver(false);
 }
 #ifdef INTERNET
+/**
+ * TODO
+ */
 void dump_scores(SOCKET host) {
 	struct hostent *hp;
 	int s;
@@ -713,6 +740,9 @@ void dump_scores(SOCKET host) {
 # endif
 # endif
 
+/**
+ * TODO
+ */
 void start_driver() {
 	int procid;
 
@@ -770,37 +800,33 @@ void start_driver() {
 	refresh();
 }
 
-/*
- * bad_con:
- *	We had a bad connection.  For the moment we assume that this
- *	means the game is full.
+/**
+ * We had a bad connection.  For the moment we assume that this
+ * means the game is full.
  */
 void bad_con() {
 	leavex(1, "The game is full.  Sorry.");
 	/* NOTREACHED */
 }
 
-/*
- * bad_ver:
- *	version number mismatch.
+/**
+ * Version number mismatch.
  */
 void bad_ver() {
 	leavex(1, "Version number mismatch. No go.");
 	/* NOTREACHED */
 }
 
-/*
- * sigterm:
- *	Handle a terminate signal
+/**
+ * Handle a terminate signal.
  */
 SIGNAL_TYPE sigterm(int dummy __attribute__((__unused__))) {
 	leavex(0, (char *) NULL);
 	/* NOTREACHED */
 }
 
-/*
- * sigusr1:
- *	Handle a usr1 signal
+/**
+ * Handle a usr1 signal.
  */
 SIGNAL_TYPE sigusr1(int dummy __attribute__((__unused__))) {
 	leavex(1, "Unable to start driver.  Try again.");
@@ -808,30 +834,28 @@ SIGNAL_TYPE sigusr1(int dummy __attribute__((__unused__))) {
 }
 
 # ifdef INTERNET
-/*
- * sigalrm:
- *	Handle an alarm signal
+/**
+ * Handle an alarm signal.
  */
 SIGNAL_TYPE sigalrm(int dummy __attribute__((__unused__))) {
 	return;
 }
 # endif
 
-/*
- * rmnl:
- *	Remove a '\n' at the end of a string if there is one
+/**
+ * Remove a '\n' at the end of a string if there is one.
  */
 void rmnl(char *s) {
 	char *cp;
 
 	cp = strrchr(s, '\n');
-	if (cp != NULL)
+	if (cp != NULL){
 		*cp = '\0';
+	}
 }
 
-/*
- * intr:
- *	Handle a interrupt signal
+/**
+ * Handle a interrupt signal.
  */
 SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
 	int ch;
@@ -855,8 +879,9 @@ SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
 	explained = false;
 	for (;;) {
 		ch = getchar();
-		if (isupper(ch))
+		if (isupper(ch)){
 			ch = tolower(ch);
+		}
 		if (ch == 'y') {
 			if (Socket != 0) {
 				dbg_write(Socket, "q", 1);
@@ -885,6 +910,9 @@ SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
 	}
 }
 
+/**
+ *
+ */
 void fincurs() {
 	if (in_visual) {
 # ifdef USE_CURSES
@@ -903,17 +931,17 @@ void fincurs() {
 		_puts(VE);
 		_puts(TE);
 #else
-		fprintf(stderr, "Missing necessary configuration entries.\nHunt will quit.\n");
+		fprintf(stderr,
+				"Missing necessary configuration entries.\nHunt will quit.\n");
 		exit(-1);
 #endif
 # endif /* !USE_CURSES */
 	}
 }
 
-/*
- * leave:
- *	Leave the game somewhat gracefully, restoring all current
- *	tty stats.
+/**
+ * Leave the game somewhat gracefully, restoring all current
+ * tty stats.
  */
 void leave(int eval, const char *mesg) {
 	int serrno = errno;
@@ -921,19 +949,20 @@ void leave(int eval, const char *mesg) {
 	errno = serrno;
 	/**
 	 * Introduced errno parameter in err() in order to display it on standard error.
+	 * [PSR]
 	 */
 	err(eval, (mesg ? mesg : ""), errno);
 }
 
-/*
- * leave:
- *	Leave the game somewhat gracefully, restoring all current
- *	tty stats.
+/**
+ * Leave the game somewhat gracefully, restoring all current
+ * tty stats.
  */
 void leavex(int eval, const char *mesg) {
 	fincurs();
 	/**
 	 * Introduced a NULL parameter in errx() since the routine shows a generic error message.
+	 * [PSR]
 	 */
 	errx(eval, (mesg ? mesg : ""), NULL);
 }
@@ -942,8 +971,7 @@ void leavex(int eval, const char *mesg) {
 /*
  * tstp:
  *	Handle stop and start signals
- */
-SIGNAL_TYPE tstp(int dummy) {
+ */SIGNAL_TYPE tstp(int dummy) {
 # if BSD_RELEASE < 44
 	static struct sgttyb tty;
 # endif
@@ -961,7 +989,7 @@ SIGNAL_TYPE tstp(int dummy) {
 	_puts(VE);
 	_puts(TE);
 #else
-errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+	errx(1, "Missing necessary configuration entries.\nHunt will quit.\n");
 #endif
 	(void) fflush(stdout);
 # if defined(BSD_RELEASE) && BSD_RELEASE >= 44
@@ -978,14 +1006,14 @@ errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
 #ifdef TIOCSTEP
 	ioctl(_tty_ch, TIOCSETP, &_tty);
 #else
-errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+	errx(1, "Missing necessary configuration entries.\nHunt will quit.\n");
 #endif
 # endif
 #if defined(TI) && defined(VS)
 	_puts(TI);
 	_puts(VS);
 #else
-errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+	errx(1, "Missing necessary configuration entries.\nHunt will quit.\n");
 #endif
 	cur_row = y;
 	cur_col = x;
@@ -1011,6 +1039,7 @@ char * strpbrk(char *s,char *brk) {
 	return (0);
 }
 # endif
+
 /**
  * Parses configuration file and initializes game environment.
  * This function retrives the configuration file and parses it to initialize the game environment.
@@ -1018,6 +1047,7 @@ char * strpbrk(char *s,char *brk) {
  * variable using var_env_init() function.
  * @param[in] enter_status_in Status used if no status modifier is set in configuration file.
  * \return Configured enter status.
+ * [PSR]
  */
 long env_init(long enter_status_in) {
 
@@ -1025,24 +1055,27 @@ long env_init(long enter_status_in) {
 
 	/**
 	 * Variables supporting configuration file parsing.
+	 * [PSR]
 	 */
-	FILE* config; /**< Points to configuration file.*/
-	FILE* c; /**< Points to configuration file. Used for char counting.*/
+	FILE* config; /**< Points to configuration file. [PSR]*/
+	FILE* c; /**< Points to configuration file. Used for char counting. [PSR]*/
 	bool opened_c;
-	long input_len; /**< Input row length.*/
-	char* input_row; /**< A row from configuration file.*/
-	char* equal; /**< Points to the position of '=' into input_row.*/
-	char* input_value; /**< Value associated to a configuration tag.*/
-	long tag_len; /**< Tag field length.*/
+	long input_len; /**< Input row length. [PSR]*/
+	char* input_row; /**< A row from configuration file. [PSR]*/
+	char* equal; /**< Points to the position of '=' into input_row. [PSR]*/
+	char* input_value; /**< Value associated to a configuration tag. [PSR]*/
+	long tag_len; /**< Tag field length. [PSR]*/
 	char* read;
 
 	int i;
 
 	/**
 	 * Generates a map for extended ASCII conversion.
+	 * [PSR]
 	 */
-	for (i = 0; i < 256; i++)
+	for (i = 0; i < 256; i++){
 		map_key[i] = (char) i;
+	}
 
 	if (!(config = fopen(CONFIGURATION_FILE, "r"))) {
 		return var_env_init(enter_status);
@@ -1059,6 +1092,7 @@ long env_init(long enter_status_in) {
 		while (!feof(config)) {
 			/**
 			 * Avoids infinite loop in case of fgets failure.
+			 * [PSR]
 			 */
 			if (read == NULL) {
 				break;
@@ -1120,12 +1154,14 @@ long env_init(long enter_status_in) {
 		if (opened_c) {
 			/**
 			 * Hard-wired FILE* c setting to NULL after file closure.
+			 * [PSR]
 			 */
 			fclose(c);
 			c = NULL;
 		}
 		/**
 		 * Hard-wired FILE* config setting to NULL after file closure.
+		 * [PSR]
 		 */
 		fclose(config);
 		config = NULL;
@@ -1138,30 +1174,33 @@ long env_init(long enter_status_in) {
  * It is invoked only in case of configuration file unavailability.
  * @param[in] enter_status_in Status used if no status modifier is set in configuration environment variable..
  * \return Configured enter status.
+ * [PSR]
  */
 long var_env_init(long enter_status_in) {
 
-	long enter_status = enter_status_in; /**< Hosts the value to return. */
+	long enter_status = enter_status_in; /**< Hosts the value to return. [PSR]*/
 
 	int i;
 
-	char *envp; /**< This string contains setting options. */
-	char *envname; /**< Temporarely stores configured player name.*/
+	char *envp; /**< This string contains setting options. [PSR] */
+	char *envname; /**< Temporarely stores configured player name. [PSR]*/
 	char *s;
 
 	/**
 	 * Generates a map for extended ASCII conversion.
+	 * [PSR]
 	 */
-	for (i = 0; i < 256; i++)
+	for (i = 0; i < 256; i++){
 		map_key[i] = (char) i;
+	}
 
-	envname = NULL; /*Verified null pointer safety*/
+	envname = NULL; //Verified null pointer safety
 
 	if ((envp = getenv("HUNT")) != NULL) {
 		while ((s = strpbrk(envp, "=,")) != NULL) {
-			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { /*compara i caratteri dall'inizio della stringa di configurazione non ancora analizzata sino al primo =*/
+			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { //compara i caratteri dall'inizio della stringa di configurazione non ancora analizzata sino al primo =
 				enter_status = Q_CLOAK;
-				envp = s + 1; /*elimina i caratteri già considerati da envp*/
+				envp = s + 1; //elimina i caratteri già considerati da envp
 			} else if (strncmp(envp, "scan,", s - envp + 1) == 0) {
 				enter_status = Q_SCAN;
 				envp = s + 1;
@@ -1243,15 +1282,21 @@ long var_env_init(long enter_status_in) {
 			}
 		}
 		if (*envp != '\0') {
-			if (envname == NULL)
+			if (envname == NULL){
 				strncpy(name, envp, NAMELEN);
-			else
+			}
+			else{
 				printf("unknown option %s\n", envp);
+			}
 		}
 	}
 	return enter_status;
 }
 
+/**
+ * Counts the number of characters in a line.
+ * [PSR]
+ */
 long fchars_in_line(FILE* f) {
 	long counter = 0;
 	char in;
@@ -1260,12 +1305,14 @@ long fchars_in_line(FILE* f) {
 	while (!feof(f)) {
 		/**
 		 * Avoids infinite loop in case of fscanf failure.
+		 * [PSR]
 		 */
 		if (!read) {
 			break;
 		}
-		if (in == '\n')
+		if (in == '\n'){
 			break;
+		}
 		else {
 			counter++;
 			read = fscanf(f, "%c", &in);
@@ -1274,6 +1321,9 @@ long fchars_in_line(FILE* f) {
 	return counter;
 }
 
+/**
+ * TODO
+ */
 void fill_in_blanks() {
 	int i;
 	char *cp;
@@ -1283,14 +1333,17 @@ void fill_in_blanks() {
 	while (TRUE) {
 		if (name[0] != '\0') {
 			printf("Entering as '%s'", name);
-			if (team != ' ')
+			if (team != ' '){
 				printf(" on team %c.\n", team);
-			else
+			}
+			else{
 				putchar('\n');
+			}
 		} else {
 			printf("Enter your code name: ");
-			if (fgets(name, NAMELEN, stdin) == NULL)
+			if (fgets(name, NAMELEN, stdin) == NULL){
 				exit(1);
+			}
 		}
 		rmnl(name);
 		if (name[0] == '\0') {
@@ -1316,9 +1369,11 @@ void fill_in_blanks() {
 	if (team == ' ') {
 		printf("Enter your team (0-9 or nothing): ");
 		i = getchar();
-		if (isdigit(i))
+		if (isdigit(i)){
 			team = i;
-		while (i != '\n' && i != EOF)
+		}
+		while (i != '\n' && i != EOF){
 			i = getchar();
+		}
 	}
 }
