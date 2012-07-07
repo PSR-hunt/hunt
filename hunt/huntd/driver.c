@@ -89,9 +89,9 @@ void erred(char *[]);
  */
 int main(int argc, char* argv[], char* env[]) {
 	PLAYER *pp;
-# ifdef INTERNET
+#ifdef INTERNET
 	unsigned short msg; /**< Changed from u_short. [PSR] */
-	unsigned short port_num, reply; /** Changed from u_short. [PSR] */
+	unsigned short reply; /** Changed from u_short. [PSR] */
 	/**
 	 * Edited namelen declaration type in order to match recvfrom() parameter. [PSR]
 	 */
@@ -149,7 +149,7 @@ int main(int argc, char* argv[], char* env[]) {
 # ifdef INTERNET
 			if (fdset[2].revents & POLLIN) {
 				namelen = DAEMON_SIZE;
-				port_num = htons(sock_port);
+				htons(sock_port);
 				(void) recvfrom(Test_socket, (char *) &msg, sizeof msg,
 						0, (struct sockaddr *) &test, &namelen);
 				switch (ntohs(msg)) {
@@ -280,7 +280,9 @@ static void init() {
 	int i;
 # ifdef	INTERNET
 	SOCKET test_port;
+# ifdef SO_USELOOPBACK
 	int msg;
+# endif
 	/**
 	 * Edited len declaration type in order to match getsockname() parameter.
 	 */
@@ -372,9 +374,9 @@ static void init() {
 # endif
 
 	Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
-# if defined(INTERNET)
+# ifdef INTERNET
+# ifdef SO_USELOOPBACK
 	msg = 1;
-#ifdef SO_USELOOPBACK
 	if (setsockopt(Socket, SOL_SOCKET, SO_USELOOPBACK, &msg, sizeof msg)<0)
 # ifdef LOG
 	iso_syslog(LOG_WARNING, "setsockopt loopback %m");
@@ -636,7 +638,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	BULLET *bp;
 	PLAYER *np;
 	int x, y;
-	int savefd;
+//	int savefd; /**< For future use. [PSR]*/
 
 	if (was_player) {
 		if (pp->p_undershot) {
@@ -661,7 +663,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	outstr(pp, pp->p_death, len);
 	cgoto(pp, HEIGHT, 0);
 
-	savefd = pp->p_fd;
+//	savefd = pp->p_fd;
 
 # ifdef MONITOR
 	if (was_player) {
