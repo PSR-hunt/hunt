@@ -243,7 +243,7 @@ int main(int argc, char* argv[]) {
 	}
 	else if (optind + 1 == argc) {
 		Sock_host = argv[argc - 1];
-		{
+	}
 # else
 	if (optind > argc) {
 		usage();
