@@ -102,10 +102,9 @@ static void send_stuff(void);
 
 //TODO da qui iniziare documentazione
 
-/*
- * playit:
- *	Play a given game, handling all the curses commands from
- *	the driver.
+/**
+ * Play a given game, handling all the curses commands from
+ * the driver.
  */
 void playit() {
 	int ch;
@@ -240,12 +239,12 @@ void playit() {
 	(void) close(Socket);
 }
 
-/*
- * getchr:
- *	Grab input and pass it along to the driver
+/**
+ *  Grab input and pass it along to the driver
  *	Return any characters from the driver
  *	When this routine is called by GETCHR, we already know there are
  *	no characters in the input buffer.
+ *	\return A pointer to the next char.
  */
 static unsigned char getchr() {
 	struct pollfd set[2];
@@ -281,9 +280,8 @@ static unsigned char getchr() {
 	return NULL;
 }
 
-/*
- * send_stuff:
- *	Send standard input characters to the driver
+/**
+ * Send standard input characters to the driver
  */
 static void send_stuff() {
 	int count;
@@ -323,18 +321,21 @@ static void send_stuff() {
 	}
 }
 
-/*
- * quit:
- *	Handle the end of the game when the player dies
+/**
+ * Handle the end of the game when the player dies.
+ * @param old_status An integer that represents the status of a player.
+ * \return A status to be mantained.
  */
 int quit(int old_status) {
 	int explain, ch, second_ch;
 
-	if (Last_player)
+	if (Last_player){
 		return Q_QUIT;
+	}
 # ifdef OTTO
-	if (Otto_mode)
-	return Q_CLOAK;
+	if (Otto_mode){
+		return Q_CLOAK;
+	}
 # endif
 # ifdef USE_CURSES
 	move(HEIGHT, 0);
@@ -352,8 +353,9 @@ int quit(int old_status) {
 			ch = tolower(ch);
 		}
 
-		if (ch == 'y')
+		if (ch == 'y'){
 			return old_status;
+		}
 		else if (ch == 'o')
 			break;
 		else if (ch == 'n') {
@@ -401,8 +403,9 @@ int quit(int old_status) {
 			cp = buf;
 			for (;;) {
 				refresh();
-				if ((ch = getchar()) == '\n' || ch == '\r')
-				break;
+				if ((ch = getchar()) == '\n' || ch == '\r'){
+					break;
+				}
 # if defined(TERMINFO) || BSD_RELEASE >= 44
 				if (ch == erasechar())
 # else
@@ -448,8 +451,9 @@ int quit(int old_status) {
 				}
 				put_ch(ch);
 				*cp++ = ch;
-				if (cp + 1 >= buf + sizeof buf)
-				break;
+				if (cp + 1 >= buf + sizeof buf){
+					break;
+				}
 			}
 			*cp = '\0';
 			Send_message = buf;
@@ -479,18 +483,23 @@ int quit(int old_status) {
 	refresh();
 	explain = false;
 	for (;;) {
-		if (isupper(ch = getchar()))
+		if (isupper(ch = getchar())){
 			ch = tolower(ch);
-		if (ch == 's')
+		}
+		if (ch == 's'){
 			return Q_SCAN;
-		else if (ch == 'c')
+		}
+		else if (ch == 'c'){
 			return Q_CLOAK;
+		}
 # ifdef FLY
-		else if (ch == 'f')
-		return Q_FLY;
+		else if (ch == 'f'){
+			return Q_FLY;
+		}
 # endif
-		else if (ch == 'q')
+		else if (ch == 'q'){
 			return Q_QUIT;
+		}
 		beep();
 		if (!explain) {
 # ifdef FLY
@@ -507,6 +516,11 @@ int quit(int old_status) {
 }
 
 # ifndef USE_CURSES
+/**
+ * Puts a given character in a point of the screen.
+ * @param[in] char A character.
+ * [PSR]
+ */
 void put_ch(char ch) {
 	if (!isprint(ch)) {
 		fprintf(stderr, "r,c,ch: %d,%d,%d", cur_row, cur_col, ch);
@@ -516,23 +530,34 @@ void put_ch(char ch) {
 	putchar(ch);
 	if (++cur_col >= COLS) {
 #if defined(AM) && defined(XN)
-		if (!AM || XN)
+		if (!AM || XN){
 			putchar('\n');
+		}
 #else
 errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
 #endif
 		cur_col = 0;
-		if (++cur_row >= LINES)
+		if (++cur_row >= LINES){
 			cur_row = LINES;
+		}
 	}
 }
 
+/**
+ * Puts a given sequence of characters on the screen.
+ * @param[in] s A sequence of characters.
+ * [PSR]
+ */
 void put_str(const char *s) {
 	while (*s)
 		put_ch(*s++);
 }
 # endif
 
+/**
+ * Cleans the screen.
+ * [PSR]
+ */
 void clear_the_screen() {
 # ifdef USE_CURSES
 	clear();
@@ -571,6 +596,9 @@ errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
 }
 
 #ifndef USE_CURSES
+/**
+ * Cleans the end of the line.
+ */
 void clear_eol() {
 #ifdef CE
 	if (CE != NULL)
@@ -595,6 +623,10 @@ errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
 }
 # endif
 
+/**
+ * Repaints the screen.
+ * [PSR]
+ */
 void redraw_screen() {
 # ifdef USE_CURSES
 	clearok(stdscr, true);
@@ -646,9 +678,8 @@ void redraw_screen() {
 #endif
 }
 
-/*
- * do_message:
- *	Send a message to the driver and return
+/**
+ * Send a message to the driver and return
  */
 void do_message() {
 	u_int32_t version;

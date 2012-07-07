@@ -157,7 +157,7 @@ extern int Otto_count;
 
 /**
  * Helper function created in order to manage signals.
- * @param param a not used integer to mantain the function signature.
+ * @param[in] param A not used integer to mantain the function signature.
  * [PSR]
  */
 void empty_handler(int param) {
@@ -165,10 +165,11 @@ void empty_handler(int param) {
 }
 
 /**
- * Implements the game logic of a otto-matic player located at a given coordinate with a given orientation.
- * @Param y a coordinate
- * @Param x a coordinate
- * @Param face the orientation of the player
+ * Implements the game logic of a otto-matic player located at a
+ * given coordinate with a given orientation.
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
+ * @param[in] face The orientation of the player.
  * [PSR]
  */
 void otto(int y,int x,char face) {
@@ -253,7 +254,12 @@ void otto(int y,int x,char face) {
 # define	direction(abs,rel)	(((abs) + (rel)) % NUMDIRECTIONS)
 
 /**
- * Helper function for the research of an object in a given direction.
+ * Function called when an object has been found
+ * @param[in] itemp The found object.
+ * @param[in] c The what field of itemp.
+ * @param[in] dist The distance field of itemp.
+ * @param[in] side A value on which depends the flags field of itemp.
+ * \return 0 if the object is a wall or unknown, 1 otherwise.
  * [PSR]
  */
 STATIC int stop_look(struct item *itemp,char c,int dist,int side) {
@@ -335,6 +341,8 @@ STATIC int stop_look(struct item *itemp,char c,int dist,int side) {
 
 /**
  * Looks for an object in a given direction.
+ * @param[in] rel_dir A direction.
+ * @param[in] itemp An object.
  * [PSR]
  */
 STATIC void ottolook(int rel_dir,struct item *itemp) {
@@ -481,6 +489,8 @@ STATIC void look_around() {
 
 /**
  * As a side effect modifies facing and location (row, col).
+ * @param[in] rel_dir A direction.
+ * @param[in] distance The distance.
  */
 STATIC void face_and_move_direction(int rel_dir,int distance) {
 	int old_facing;
@@ -519,6 +529,8 @@ STATIC void face_and_move_direction(int rel_dir,int distance) {
 
 /**
  * Implements the attack of an item in a given direction.
+ * @param[in] rel_dir A direction.
+ * @param[in] itemp An object.
  * [PSR]
  */
 STATIC void attack(int rel_dir,struct item *itemp) {
@@ -549,6 +561,7 @@ STATIC void attack(int rel_dir,struct item *itemp) {
 
 /**
  * Implements the movement of the player in a given direction.
+ * @param[in] A direction.
  * [PSR]
  *
  */
@@ -609,6 +622,8 @@ STATIC void duck(int rel_dir) {
 
 /**
  * Go for the closest mine if possible.
+ * @param[in] mine The ammo to be found.
+ * \return True if the ammo is correctly found, false otherwise.
  */
 STATIC int go_for_ammo(char mine) {
 	int i, rel_dir, dist;
@@ -637,7 +652,7 @@ STATIC int go_for_ammo(char mine) {
 }
 
 /**
- * Implements a function that allows the player to wander in the waze.
+ * Allows the player to wander in the waze.
  * [PSR]
  */
 STATIC void wander() {
