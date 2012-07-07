@@ -39,6 +39,7 @@ __RCSID("$NetBSD: draw.c,v 1.3 2003/06/11 12:00:22 wiz Exp $");
 
 /**
  * Draws the maze.
+ * @param[in] pp The player on whose screen we want to represent the maze.
  * [PSR]
  */
 void drawmaze(PLAYER *pp){
@@ -72,7 +73,9 @@ void drawmaze(PLAYER *pp){
 }
 
 /**
- * Put up the status lines (this assumes the screen size is 80x24 with the maze being 64x24).
+ * Put up the status lines (this assumes
+ * the screen size is 80x24 with the maze being 64x24).
+ * @param[in] pp A player on whose screen we want to put up the status line.
  */
 void drawstatus(PLAYER *pp){
 	int	i;
@@ -125,7 +128,7 @@ void drawstatus(PLAYER *pp){
 
 /**
  * Represents a player and nearby enemies.
- * @param pp a player
+ * @param[in] pp A player.
  * [PSR]
  */
 void look(PLAYER *pp){
@@ -175,8 +178,8 @@ void look(PLAYER *pp){
 
 /**
  * Draws the enemy of a given player.
- * @param pp a player
- * @param face a symbol representing the enemy basing on its position
+ * @param[in] pp A player.
+ * @param[in] face A symbol representing the enemy basing on its position.
  * [PSR]
  */
 void see(PLAYER *pp,int face){
@@ -276,9 +279,9 @@ void see(PLAYER *pp,int face){
 
 /**
  * Draws the right symbol associated to a player in a given position.
- * @param pp a player
- * @param y player's coordinate
- * @param x player's coordinate
+ * @param[in] pp A player.
+ * @param[in] y Player's coordinate.
+ * @param[in] x Player's coordinate.
  * [PSR]
  */
 void check(PLAYER *pp,int y,int x){
@@ -306,6 +309,7 @@ void check(PLAYER *pp,int y,int x){
 
 /**
  * Update the status of players.
+ * @param[in] pp A player.
  */
 void showstat(PLAYER *pp){
 	PLAYER	*np;
@@ -327,7 +331,10 @@ void showstat(PLAYER *pp){
 }
 
 /**
- * Draw the player on the screen and show him to everyone who's scanning unless he is cloaked.
+ * Draw the player on the screen and show him to everyone
+ * who's scanning unless he is cloaked.
+ * @param[in] pp A player.
+ * @param[in] draw If true is possible to draw the player, otherwise no.
  */
 void drawplayer(PLAYER *pp,bool draw){
 	PLAYER	*newp;
@@ -369,8 +376,8 @@ void drawplayer(PLAYER *pp,bool draw){
 
 /**
  * Prints messages on the terminal of a given player (under the maze).
- * @param pp the player on whose terminal we want to write the message
- * @param s the message we want to print
+ * @param[in] pp The player on whose terminal we want to write the message.
+ * @param[in] s The message we want to print.
  * [PSR]
  */
 void message(PLAYER *pp,const char *s){
@@ -380,7 +387,10 @@ void message(PLAYER *pp,const char *s){
 }
 
 /**
- * Turn a character into the right direction character if we are looking at the current player.
+ * Turn a character into the right direction character
+ * if we are looking at the current player.
+ * @param[in] ch The character to be turned.
+ * \return The turned character.
  */
 char translate(char ch){
 	switch (ch) {
@@ -398,6 +408,10 @@ char translate(char ch){
 
 /**
  * Return the player symbol.
+ * @param[in] pp A player.
+ * @param[in] y A player coordinate.
+ * @param[in] x A player coordinate.
+ * \return The player symbol.
  */
 int player_sym(const PLAYER *pp,int y,int x){
 	PLAYER	*npp;

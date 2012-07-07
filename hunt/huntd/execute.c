@@ -70,6 +70,7 @@ void mon_execute(PLAYER *pp){
 
 /**
  * Execute a single command.
+ * @param[in] pp The player who gives the command.
  */
 void execute(PLAYER *pp){
 	char	ch;
@@ -183,6 +184,8 @@ void execute(PLAYER *pp){
 
 /**
  * Execute a move in the given direction.
+ * @param[in] pp The player who wants to move.
+ * @param[in] dir The direction the player wants to go on.
  */
 static void move_player(PLAYER *pp,int dir){
 	PLAYER	*newp;
@@ -314,6 +317,8 @@ static void move_player(PLAYER *pp,int dir){
 
 /**
  * Change the direction the player is facing.
+ * @param[in] pp The player we want to change the direction.
+ * @param[in] dir The new direction.
  */
 static void face(PLAYER *pp,int dir){
 	if (pp->p_face != dir) {
@@ -324,6 +329,8 @@ static void face(PLAYER *pp,int dir){
 
 /**
  * Fire a shot of the given type in the given direction.
+ * @param[in] pp The player who want to fire a shot.
+ * @param[in] req_index the type of the shot.
  */
 static void fire(PLAYER *pp,int req_index){
 	if (pp == NULL)
@@ -368,6 +375,8 @@ static void fire(PLAYER *pp,int req_index){
 # ifdef	OOZE
 /**
  * Fire a slime shot in the given direction.
+ * @param[in] pp The player who want to fire a slime.
+ * @param[in] req_index the type of the slime.
  */
 static void fire_slime(PLAYER *pp,int req_index){
 	if (pp == NULL)
@@ -412,6 +421,14 @@ static void fire_slime(PLAYER *pp,int req_index){
 
 /**
  * Create a shot with the given properties.
+ * @param[in] type The type of the shot.
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
+ * @param[in] face
+ * @param[in] charge
+ * @param[in] owner
+ * @param[in] expl
+ * @param[in] over
  */
 void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,char over){
 	BULLET	*bp;
@@ -430,9 +447,11 @@ void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,c
 		size = 3;
 		break;
 	  case BOMB:
-		for (size = 3; size < MAXBOMB; size++)
-			if (shot_req[size] >= charge)
+		for (size = 3; size < MAXBOMB; size++){
+			if (shot_req[size] >= charge){
 				break;
+			}
+		}
 		size++;
 		break;
 	  default:
@@ -446,6 +465,9 @@ void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,c
 	Bullets = bp;
 }
 
+/**
+ *
+ */
 BULLET * create_shot(int type,int y,int x,char face,int charge,int size,PLAYER *owner,IDENT *score,int expl,char over){
 	BULLET	*bp;
 

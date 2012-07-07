@@ -50,7 +50,7 @@ static char Ttyname[NAMELEN];
 
 /**
  * Manages the messages submission.
- * @Return true in case of success, false instead
+ * \return True in case of success, false instead.
  * [PSR]
  */
 int answer() {
@@ -211,7 +211,7 @@ int answer() {
 # ifdef MONITOR
 /**
  * Initialize the terminal of a player.
- * @param pp a player
+ * @param[in] pp A player.
  * [PSR]
  */
 void stmonitor(PLAYER *pp) {
@@ -242,8 +242,8 @@ void stmonitor(PLAYER *pp) {
 
 /**
  * Initializes a player status.
- * @param newpp the new player to inizialize
- * @param enter_status the enter mode of a player
+ * @param[in] newpp The new player to inizialize.
+ * @param[in] enter_status The enter mode of a player.
  * [PSR]
  */
 void stplayer(PLAYER *newpp, int enter_status) {
@@ -377,6 +377,7 @@ void stplayer(PLAYER *newpp, int enter_status) {
 
 /**
  * Return a random direction.
+ * \return A random number representing a direction.
  */
 int rand_dir() {
 	switch (rand_num(4)) {
@@ -395,6 +396,11 @@ int rand_dir() {
 
 /**
  * Get the score structure of a player.
+ * @param[in] machine The machine identifier.
+ * @param[in] uid The user identifier.
+ * @param[in] name The user name.
+ * @param[in] team The user team.
+ * \return The score structure of a player.
  */
 IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
 		char team) {

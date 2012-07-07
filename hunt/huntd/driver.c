@@ -491,6 +491,11 @@ static void makeboots() {
 
 /**
  * Check the damage to the given player, and see if s/he is killed.
+ * @param[in] ouch The victim of the attack.
+ * @param[in] gotcha The attacker.
+ * @param[in] credit The identifier of the attacker.
+ * @param[in] amt The damage amount
+ * @param[in] shot_type The type of inferred attack.
  */
 void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 		char shot_type) {
@@ -622,6 +627,9 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 
 /**
  * Kill off a player and take him out of the game.
+ * @param[in] pp A player to remove from the game.
+ * @param[in] was_player True if the player to remove was really in the game, false otherwise.
+ * @param[in] i An identifier.
  */
 static void zap(PLAYER *pp, bool was_player, int i) {
 	int n, len;
@@ -852,13 +860,19 @@ else {
 
 /**
  * Return a random number in a given range.
+ * @param[in] range A range of number.
+ * \return A radom number.
  */
 int rand_num(int range) {
 	return (range == 0 ? 0 : RN % range);
 }
 
 /**
- * Check to see if we have any characters in the input queue; if we do, read them, stash them away, and return TRUE; else return FALSE.
+ * Check to see if we have any characters in the input queue;
+ * if we do, read them, stash them away, and return TRUE; else return FALSE.
+ * @param[in] pp A player.
+ * @param[in] i An identifier.
+ * \return True if there are any characters in the input queue, false otherwise.
  */
 static int havechar(PLAYER *pp, int i) {
 
@@ -885,6 +899,7 @@ static int havechar(PLAYER *pp, int i) {
 
 /**
  * Exit with the given value, cleaning up any droppings lying around.
+ * @param[in] eval The value to put as exit parameter.
  */
 SIGNAL_TYPE cleanup(int eval) {
 	PLAYER *pp;
