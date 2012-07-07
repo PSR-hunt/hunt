@@ -334,15 +334,17 @@ int main(int argc, char* argv[]) {
 
 		while(1) {
 			do {
+#ifdef SO_USELOOPBACK
 				int option;
+#endif
 
 				Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
 				if (Socket < 0) {
 					err(1, "socket");
 				}
 
-				option = 1;
 #ifdef SO_USELOOPBACK
+				option = 1;
 				if (setsockopt(Socket, SOL_SOCKET, SO_USELOOPBACK,
 								&option, sizeof option) < 0) {
 					warn("setsockopt loopback");

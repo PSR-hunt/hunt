@@ -277,7 +277,7 @@ static unsigned char getchr() {
 		return *iptr++;
 	}
 	//This point should never be reached
-	return NULL;
+	return ((int) NULL);
 }
 
 /**
@@ -512,7 +512,7 @@ int quit(int old_status) {
 		refresh();
 	}
 	//This point should never be reached
-	return NULL;
+	return ((int) NULL);
 }
 
 # ifndef USE_CURSES
