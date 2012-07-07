@@ -40,8 +40,8 @@ __RCSID("$NetBSD: makemaze.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 # define	ISCLEAR(y,x)	(Maze[y][x] == SPACE)
 # define	ODD(n)		((n) & 01)
 
-static int candig(int, int);
-static void dig(int, int);
+//static int candig(int, int);/**< For future use. [PSR] */
+//static void dig(int, int);/**< For future use. [PSR] */
 static void dig_maze(int, int);
 static void remap(void);
 
@@ -79,70 +79,70 @@ int dirs[NPERM][NDIR] = { { 0, 1, 2, 3 }, { 3, 0, 1, 2 }, { 0, 2, 3, 1 }, { 0,
 int incr[NDIR][2] = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
 
 /**
- * Removes peaces of walls.
+ * Allows user to dig under a wall. (For future use)
  * @param[in] y A coordinate.
  * @param[in] x A coordinate.
  * [PSR]
  */
-static void dig(int y, int x) {
-	int *dp;
-	int *ip;
-	int ny, nx;
-	int *endp;
-
-	Maze[y][x] = SPACE; /* Clear this spot */
-	dp = dirs[rand_num(NPERM)];
-	endp = &dp[NDIR];
-	while (dp < endp) {
-		ip = &incr[*dp++][0];
-		ny = y + *ip++;
-		nx = x + *ip;
-		if (candig(ny, nx)) {
-			dig(ny, nx);
-		}
-	}
-}
+//static void dig(int y, int x) {
+//	int *dp;
+//	int *ip;
+//	int ny, nx;
+//	int *endp;
+//
+//	Maze[y][x] = SPACE; /* Clear this spot */
+//	dp = dirs[rand_num(NPERM)];
+//	endp = &dp[NDIR];
+//	while (dp < endp) {
+//		ip = &incr[*dp++][0];
+//		ny = y + *ip++;
+//		nx = x + *ip;
+//		if (candig(ny, nx)) {
+//			dig(ny, nx);
+//		}
+//	}
+//}
 
 /**
- * Is it legal to clear this spot?
+ * Is it legal to clear this spot? (For future use)
  * @param[in] y A coordinate.
  * @param[in] x A coordinate.
  * \return True if is legal to clear the spot at the given coordinate, false otherwise.
  */
-static int candig(int y, int x) {
-	int i;
-
-	if (ODD(x) && ODD(y)){
-		return false; /* can't touch ODD spots */
-	}
-
-	if (y < UBOUND || y >= DBOUND){
-		return false; /* Beyond vertical bounds, NO */
-	}
-	if (x < LBOUND || x >= RBOUND){
-		return false; /* Beyond horizontal bounds, NO */
-	}
-
-	if (ISCLEAR(y, x)){
-		return false; /* Already clear, NO */
-	}
-
-	i = ISCLEAR(y, x + 1);
-	i += ISCLEAR(y, x - 1);
-	if (i > 1){
-		return false; /* Introduces cycle, NO */
-	}
-	i += ISCLEAR(y + 1, x);
-	if (i > 1){
-		return false; /* Introduces cycle, NO */
-	}
-	i += ISCLEAR(y - 1, x);
-	if (i > 1){
-		return false; /* Introduces cycle, NO */
-	}
-
-	return true; /* OK */
-}
+//static int candig(int y, int x) {
+//	int i;
+//
+//	if (ODD(x) && ODD(y)){
+//		return false; /* can't touch ODD spots */
+//	}
+//
+//	if (y < UBOUND || y >= DBOUND){
+//		return false; /* Beyond vertical bounds, NO */
+//	}
+//	if (x < LBOUND || x >= RBOUND){
+//		return false; /* Beyond horizontal bounds, NO */
+//	}
+//
+//	if (ISCLEAR(y, x)){
+//		return false; /* Already clear, NO */
+//	}
+//
+//	i = ISCLEAR(y, x + 1);
+//	i += ISCLEAR(y, x - 1);
+//	if (i > 1){
+//		return false; /* Introduces cycle, NO */
+//	}
+//	i += ISCLEAR(y + 1, x);
+//	if (i > 1){
+//		return false; /* Introduces cycle, NO */
+//	}
+//	i += ISCLEAR(y - 1, x);
+//	if (i > 1){
+//		return false; /* Introduces cycle, NO */
+//	}
+//
+//	return true; /* OK */
+//}
 
 /**
  * Helper function to build the maze.
