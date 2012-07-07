@@ -80,7 +80,8 @@ SIGNAL_TYPE exorcise(int dummy __attribute__((__unused__))) {
 }
 
 /**
- * Query the local SMTP daemon to expand the RENDEZVOUS mailing list and fake a talk request to each address thus found.
+ * Query the local SMTP daemon to expand the RENDEZVOUS mailing
+ * list and fake a talk request to each address thus found.
  */
 void faketalk() {
 	struct servent *sp;
@@ -199,6 +200,7 @@ void faketalk() {
 /**
  * The msg.id's for the invitations on the local and remote machines.
  * These are used to delete the invitations.
+ * @param[in] s The remote name.
  */
 static void do_announce(char *s) {
 	CTL_RESPONSE response;

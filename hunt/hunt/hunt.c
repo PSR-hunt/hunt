@@ -152,12 +152,12 @@ extern struct sgttyb _tty;
 int main(int argc, char* argv[]) {
 
 	char *term;
-	int c; /*TODO x64 compliant*/
-	long enter_status; /*TODO x64 compliant*/
+	int c;
+	long enter_status;
 	bool exit_outer_loop;
 
 	/* Revoke setgid privileges */
-	setregid(getgid(), getgid()); /*TODO verificare sicurezza*/
+	setregid(getgid(), getgid());
 
 	enter_status = env_init((long) Q_CLOAK);
 	while ((c = getopt(argc, argv, "Sbcfh:l:mn:op:qst:w:")) != -1) {

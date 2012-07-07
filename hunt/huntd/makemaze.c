@@ -80,6 +80,8 @@ int incr[NDIR][2] = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
 
 /**
  * Removes peaces of walls.
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
  * [PSR]
  */
 static void dig(int y, int x) {
@@ -103,37 +105,49 @@ static void dig(int y, int x) {
 
 /**
  * Is it legal to clear this spot?
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
+ * \return True if is legal to clear the spot at the given coordinate, false otherwise.
  */
 static int candig(int y, int x) {
 	int i;
 
-	if (ODD(x) && ODD(y))
+	if (ODD(x) && ODD(y)){
 		return false; /* can't touch ODD spots */
+	}
 
-	if (y < UBOUND || y >= DBOUND)
+	if (y < UBOUND || y >= DBOUND){
 		return false; /* Beyond vertical bounds, NO */
-	if (x < LBOUND || x >= RBOUND)
+	}
+	if (x < LBOUND || x >= RBOUND){
 		return false; /* Beyond horizontal bounds, NO */
+	}
 
-	if (ISCLEAR(y, x))
+	if (ISCLEAR(y, x)){
 		return false; /* Already clear, NO */
+	}
 
 	i = ISCLEAR(y, x + 1);
 	i += ISCLEAR(y, x - 1);
-	if (i > 1)
+	if (i > 1){
 		return false; /* Introduces cycle, NO */
+	}
 	i += ISCLEAR(y + 1, x);
-	if (i > 1)
+	if (i > 1){
 		return false; /* Introduces cycle, NO */
+	}
 	i += ISCLEAR(y - 1, x);
-	if (i > 1)
+	if (i > 1){
 		return false; /* Introduces cycle, NO */
+	}
 
 	return true; /* OK */
 }
 
 /**
  * Helper function to build the maze.
+ * @param[in] x A coordinate.
+ * @param[in] y A coordinate.
  * [PSR]
  */
 void dig_maze(int x, int y) {

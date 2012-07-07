@@ -3,8 +3,8 @@
 
 /**
  * Reimplements the syslog function in order to avoid the use of %m.
- * @param priority an integer that indicates the number of an error.
- * @param format the error message.
+ * @param[in] priority an integer that indicates the number of an error.
+ * @param[in] format the error message.
  * [PSR]
  */
 void iso_syslog(int priority, const char *format, ...) {

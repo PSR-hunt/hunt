@@ -424,11 +424,11 @@ static void fire_slime(PLAYER *pp,int req_index){
  * @param[in] type The type of the shot.
  * @param[in] y A coordinate.
  * @param[in] x A coordinate.
- * @param[in] face
- * @param[in] charge
- * @param[in] owner
- * @param[in] expl
- * @param[in] over
+ * @param[in] face The face of a shot.
+ * @param[in] charge The charge of a shot.
+ * @param[in] owner The owner of a shot.
+ * @param[in] expl The explosion of a shot.
+ * @param[in] over The over a shot.
  */
 void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,char over){
 	BULLET	*bp;
@@ -466,7 +466,18 @@ void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,c
 }
 
 /**
- *
+ * Helper function to add a shot.
+ * @param[in] type The type of a shot.
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
+ * @param[in] face The face of a shot.
+ * @param[in] charge The charge of a shot.
+ * @param[in] size The size of a shot.
+ * @param[in] owner The owner of a shot.
+ * @param[in] score The score of a shot.
+ * @param[in] expl The explosion of a shot.
+ * @param[in] over The over of a shot.
+ * \return A new shot.
  */
 BULLET * create_shot(int type,int y,int x,char face,int charge,int size,PLAYER *owner,IDENT *score,int expl,char over){
 	BULLET	*bp;
@@ -495,6 +506,7 @@ BULLET * create_shot(int type,int y,int x,char face,int charge,int size,PLAYER *
 
 /**
  * Turn on or increase length of a cloak.
+ * @param[in] pp A player.
  */
 static void cloak(PLAYER *pp){
 	if (pp->p_ammo <= 0) {
@@ -521,6 +533,7 @@ static void cloak(PLAYER *pp){
 
 /**
  * Turn on or increase length of a scan.
+ * @param[in] pp A player.
  */
 static void scan(PLAYER *pp){
 	if (pp->p_ammo <= 0) {
@@ -541,6 +554,11 @@ static void scan(PLAYER *pp){
 
 /**
  * Check whether the object blew up or whether he picked it up.
+ * @param[in] pp A player.
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
+ * @param[in] prob An indicative value, with which decide if an object is good (a shot to add) or evil (a shot that attacks the player).
+ * @param[in] obj An object.
  */
 void pickup(PLAYER *pp,int y,int x,int prob,int obj){
 	int	req;

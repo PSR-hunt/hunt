@@ -80,7 +80,7 @@ void moveshots() {
 	BULLET *blist;
 
 	rollexpl();
-	if (Bullets != NULL ) {
+	if (Bullets != NULL) {
 
 		/*
 		 * First we move through the bullet list BULSPD times, looking
@@ -91,7 +91,7 @@ void moveshots() {
 
 		blist = Bullets;
 		Bullets = NULL;
-		for (bp = blist; bp != NULL ; bp = next) {
+		for (bp = blist; bp != NULL; bp = next) {
 			next = bp->b_next;
 			x = bp->b_x;
 			y = bp->b_y;
@@ -138,7 +138,7 @@ void moveshots() {
 
 		blist = Bullets;
 		Bullets = NULL;
-		for (bp = blist; bp != NULL ; bp = next) {
+		for (bp = blist; bp != NULL; bp = next) {
 			next = bp->b_next;
 			if (!bp->b_expl) {
 				save_bullet(bp);
@@ -187,14 +187,17 @@ void moveshots() {
 
 /**
  * Move a normal shot along its trajectory.
+ * @param[in] bp A bullet.
+ * \return True if the shot has destroied something, false otherwise.
  */
 static int move_normal_shot(BULLET *bp) {
 	int i, x, y;
 	PLAYER *pp;
 
 	for (i = 0; i < BULSPD; i++) {
-		if (bp->b_expl)
+		if (bp->b_expl) {
 			break;
+		}
 
 		x = bp->b_x;
 		y = bp->b_y;
@@ -245,8 +248,9 @@ static int move_normal_shot(BULLET *bp) {
 			}
 			Maze[y][x] = WALL5;
 # ifdef MONITOR
-			for (pp = Monitor; pp < End_monitor; pp++)
-			check(pp, y, x);
+			for (pp = Monitor; pp < End_monitor; pp++) {
+				check(pp, y, x);
+			}
 # endif
 			break;
 			case WALL5:
@@ -266,8 +270,9 @@ static int move_normal_shot(BULLET *bp) {
 			}
 			Maze[y][x] = WALL4;
 # ifdef MONITOR
-			for (pp = Monitor; pp < End_monitor; pp++)
-			check(pp, y, x);
+			for (pp = Monitor; pp < End_monitor; pp++) {
+				check(pp, y, x);
+			}
 # endif
 			break;
 # endif
@@ -307,13 +312,16 @@ static int move_normal_shot(BULLET *bp) {
 			pp->p_ident->i_shot += bp->b_charge;
 			if (opposite(bp->b_face, Maze[y][x])) {
 				if (rand_num(100) < 10) {
-					if (bp->b_owner != NULL )
+					if (bp->b_owner != NULL) {
 						message(bp->b_owner, "Your charge was absorbed!");
-					if (bp->b_score != NULL )
+					}
+					if (bp->b_score != NULL) {
 						bp->b_score->i_robbed += bp->b_charge;
+					}
 					pp->p_ammo += bp->b_charge;
-					if (pp->p_damage + bp->b_size * MINDAM > pp->p_damcap)
+					if (pp->p_damage + bp->b_size * MINDAM > pp->p_damcap) {
 						pp->p_ident->i_saved++;
+					}
 					message(pp, "Absorbed charge (good shield!)");
 					pp->p_ident->i_absorbed += bp->b_charge;
 					free((char *) bp);
@@ -331,13 +339,16 @@ static int move_normal_shot(BULLET *bp) {
 			 */
 			if (rand_num(100) < 5) {
 				pp->p_ident->i_ducked += bp->b_charge;
-				if (pp->p_damage + bp->b_size * MINDAM > pp->p_damcap)
+				if (pp->p_damage + bp->b_size * MINDAM > pp->p_damcap) {
 					pp->p_ident->i_saved++;
-				if (bp->b_score != NULL )
+				}
+				if (bp->b_score != NULL) {
 					bp->b_score->i_missed += bp->b_charge;
+				}
 				message(pp, "Zing!");
-				if (bp->b_owner == NULL )
+				if (bp->b_owner == NULL) {
 					break;
+				}
 				message(bp->b_owner,
 						((bp->b_score->i_missed & 0x7) == 0x7) ?
 								"My!  What a bad shot you are!" : "Missed him");
@@ -367,6 +378,7 @@ static int move_normal_shot(BULLET *bp) {
 # ifdef	DRONE
 /**
  * Move the drone to the next square.
+ * @param[in] bp A bullet.
  */
 static void move_drone(BULLET *bp) {
 	int mask, count;
@@ -431,20 +443,24 @@ static void move_drone(BULLET *bp) {
 		 */
 		switch (bp->b_face) {
 			case LEFTS:
-			if (mask & EAST)
-			mask &= ~EAST, count--;
+			if (mask & EAST) {
+				mask &= ~EAST, count--;
+			}
 			break;
 			case RIGHT:
-			if (mask & WEST)
-			mask &= ~WEST, count--;
+			if (mask & WEST) {
+				mask &= ~WEST, count--;
+			}
 			break;
 			case ABOVE:
-			if (mask & SOUTH)
-			mask &= ~SOUTH, count--;
+			if (mask & SOUTH) {
+				mask &= ~SOUTH, count--;
+			}
 			break;
 			case BELOW:
-			if (mask & NORTH)
-			mask &= ~NORTH, count--;
+			if (mask & NORTH) {
+				mask &= ~NORTH, count--;
+			}
 			break;
 		}
 
@@ -452,14 +468,18 @@ static void move_drone(BULLET *bp) {
 		 * Pick one of the remaining directions
 		 */
 		n = rand_num(count);
-		if (n >= 0 && mask & NORTH)
-		dir = NORTH, n--;
-		if (n >= 0 && mask & SOUTH)
-		dir = SOUTH, n--;
-		if (n >= 0 && mask & EAST)
-		dir = EAST, n--;
-		if (n >= 0 && mask & WEST)
-		dir = WEST, n--;
+		if (n >= 0 && mask & NORTH) {
+			dir = NORTH, n--;
+		}
+		if (n >= 0 && mask & SOUTH) {
+			dir = SOUTH, n--;
+		}
+		if (n >= 0 && mask & EAST) {
+			dir = EAST, n--;
+		}
+		if (n >= 0 && mask & WEST) {
+			dir = WEST, n--;
+		}
 	}
 	/*
 	 * Now that we know the direction of movement,
@@ -512,6 +532,7 @@ static void move_drone(BULLET *bp) {
 
 /**
  * Put this bullet back onto the bullet list.
+ * @param[in] bp A bullet.
  */
 static void save_bullet(BULLET *bp) {
 	bp->b_over = Maze[bp->b_y][bp->b_x];
@@ -558,14 +579,14 @@ static void save_bullet(BULLET *bp) {
 	Bullets = bp;
 }
 
+#ifdef FLY
 /**
  * Update the position of a player in flight.
+ * @param[in] pp A player.
  */
-#ifdef FLY
 static void move_flyer(PLAYER *pp) {
 	int x, y;
 	bool repeat;
-
 
 	if (pp->p_undershot) {
 		fixshots(pp->p_y, pp->p_x, pp->p_over);
@@ -590,59 +611,61 @@ static void move_flyer(PLAYER *pp) {
 	}
 	do {
 		switch (Maze[y][x]) {
-		default:
+			default:
 			switch (rand_num(4)) {
-			case 0:
+				case 0:
 				PLUS_DELTA(x, WIDTH - 2);
 				break;
-			case 1:
+				case 1:
 				MINUS_DELTA(x, 1);
 				break;
-			case 2:
+				case 2:
 				PLUS_DELTA(y, HEIGHT - 2);
 				break;
-			case 3:
+				case 3:
 				MINUS_DELTA(y, 1);
 				break;
 			}
 			repeat = true;
 			break;
-		case WALL1:
-		case WALL2:
-		case WALL3:
+			case WALL1:
+			case WALL2:
+			case WALL3:
 # ifdef	REFLECT
 			case WALL4:
 			case WALL5:
 # endif
 # ifdef	RANDOM
-		case DOOR:
+			case DOOR:
 # endif
 			repeat = false;
-			if (pp->p_flying == 0)
+			if (pp->p_flying == 0) {
 				pp->p_flying++;
+			}
 			break;
-		case SPACE:
+			case SPACE:
 			repeat = false;
 			break;
 		}
-	} while (repeat);
+	}while (repeat);
 	pp->p_y = y;
 	pp->p_x = x;
 	if (pp->p_flying-- == 0) {
 # ifdef BOOTS
 		if (pp->p_face != BOOT && pp->p_face != BOOT_PAIR) {
 # endif
-		checkdam(pp, (PLAYER *) NULL, (IDENT *) NULL,
-				rand_num(pp->p_damage / 5), FALL);
-		pp->p_face = rand_dir();
-		showstat(pp);
+			checkdam(pp, (PLAYER *) NULL, (IDENT *) NULL,
+					rand_num(pp->p_damage / 5), FALL);
+			pp->p_face = rand_dir();
+			showstat(pp);
 # ifdef BOOTS
-	}
-	else {
-		if (Maze[y][x] == BOOT)
-		pp->p_face = BOOT_PAIR;
-		Maze[y][x] = SPACE;
-	}
+		}
+		else {
+			if (Maze[y][x] == BOOT) {
+				pp->p_face = BOOT_PAIR;
+			}
+			Maze[y][x] = SPACE;
+		}
 # endif
 	}
 	pp->p_over = Maze[y][x];
@@ -653,6 +676,8 @@ static void move_flyer(PLAYER *pp) {
 
 /**
  * Handle explosions.
+ * @param[in] bp A bullet.
+ * @param[in] next A bullet at the next iteration.
  */
 static void chkshot(BULLET *bp, BULLET* next) {
 	int y, x;
@@ -687,24 +712,27 @@ static void chkshot(BULLET *bp, BULLET* next) {
 # endif
 	}
 	for (y = bp->b_y - delta; y <= bp->b_y + delta; y++) {
-		if (y < 0 || y >= HEIGHT)
+		if (y < 0 || y >= HEIGHT) {
 			continue;
+		}
 		dy = y - bp->b_y;
 		absdy = (dy < 0) ? -dy : dy;
 		for (x = bp->b_x - delta; x <= bp->b_x + delta; x++) {
-			if (x < 0 || x >= WIDTH)
+			if (x < 0 || x >= WIDTH) {
 				continue;
+			}
 			dx = x - bp->b_x;
-			if (dx == 0)
+			if (dx == 0) {
 				expl = (dy == 0) ? '*' : '|';
-			else if (dy == 0)
+			} else if (dy == 0) {
 				expl = '-';
-			else if (dx == dy)
+			} else if (dx == dy) {
 				expl = '\\';
-			else if (dx == -dy)
+			} else if (dx == -dy) {
 				expl = '/';
-			else
+			} else {
 				expl = '*';
+			}
 			showexpl(y, x, expl);
 			switch (Maze[y][x]) {
 			case LEFTS:
@@ -714,12 +742,14 @@ static void chkshot(BULLET *bp, BULLET* next) {
 # ifdef FLY
 				case FLYER:
 # endif
-				if (dx < 0)
+				if (dx < 0) {
 					dx = -dx;
-				if (absdy > dx)
+				}
+				if (absdy > dx) {
 					damage = bp->b_size - absdy;
-				else
+				} else {
 					damage = bp->b_size - dx;
+				}
 				pp = play_at(y, x);
 				checkdam(pp, bp->b_owner, bp->b_score, damage * MINDAM,
 						bp->b_type);
@@ -739,6 +769,8 @@ static void chkshot(BULLET *bp, BULLET* next) {
 # ifdef	OOZE
 /**
  * Handle slime shot exploding.
+ * @param[in] bp A bullet.
+ * @param[in] next A bullet at the next iteration.
  */
 static void chkslime(BULLET *bp,BULLET *next) {
 	BULLET *nbp;
@@ -789,6 +821,9 @@ static void chkslime(BULLET *bp,BULLET *next) {
 
 /**
  * Move the given slime shot speed times and add it back if it hasn't fizzled yet.
+ * @param[in] bp A bullet.
+ * @param[in] speed  The bullet speed.
+ * @param[in] next A bullet at the next iteration.
  */
 static void move_slime(BULLET *bp,int speed,BULLET *next) {
 	int i, j, dirmask, count;
@@ -796,10 +831,12 @@ static void move_slime(BULLET *bp,int speed,BULLET *next) {
 	BULLET *nbp;
 
 	if (speed == 0) {
-		if (bp->b_charge <= 0)
-		free((char *) bp);
-		else
-		save_bullet(bp);
+		if (bp->b_charge <= 0) {
+			free((char *) bp);
+		}
+		else {
+			save_bullet(bp);
+		}
 		return;
 	}
 
@@ -841,48 +878,68 @@ static void move_slime(BULLET *bp,int speed,BULLET *next) {
 	count = 0;
 	switch (bp->b_face) {
 		case LEFTS:
-		if (!iswall(bp->b_y, bp->b_x - 1))
-		dirmask |= WEST, count++;
-		if (!iswall(bp->b_y - 1, bp->b_x))
-		dirmask |= NORTH, count++;
-		if (!iswall(bp->b_y + 1, bp->b_x))
-		dirmask |= SOUTH, count++;
-		if (dirmask == 0)
-		if (!iswall(bp->b_y, bp->b_x + 1))
-		dirmask |= EAST, count++;
+		if (!iswall(bp->b_y, bp->b_x - 1)) {
+			dirmask |= WEST, count++;
+		}
+		if (!iswall(bp->b_y - 1, bp->b_x)) {
+			dirmask |= NORTH, count++;
+		}
+		if (!iswall(bp->b_y + 1, bp->b_x)) {
+			dirmask |= SOUTH, count++;
+		}
+		if (dirmask == 0) {
+			if (!iswall(bp->b_y, bp->b_x + 1)) {
+				dirmask |= EAST, count++;
+			}
+		}
 		break;
 		case RIGHT:
-		if (!iswall(bp->b_y, bp->b_x + 1))
-		dirmask |= EAST, count++;
-		if (!iswall(bp->b_y - 1, bp->b_x))
-		dirmask |= NORTH, count++;
-		if (!iswall(bp->b_y + 1, bp->b_x))
-		dirmask |= SOUTH, count++;
-		if (dirmask == 0)
-		if (!iswall(bp->b_y, bp->b_x - 1))
-		dirmask |= WEST, count++;
+		if (!iswall(bp->b_y, bp->b_x + 1)) {
+			dirmask |= EAST, count++;
+		}
+		if (!iswall(bp->b_y - 1, bp->b_x)) {
+			dirmask |= NORTH, count++;
+		}
+		if (!iswall(bp->b_y + 1, bp->b_x)) {
+			dirmask |= SOUTH, count++;
+		}
+		if (dirmask == 0) {
+			if (!iswall(bp->b_y, bp->b_x - 1)) {
+				dirmask |= WEST, count++;
+			}
+		}
 		break;
 		case ABOVE:
-		if (!iswall(bp->b_y - 1, bp->b_x))
-		dirmask |= NORTH, count++;
-		if (!iswall(bp->b_y, bp->b_x - 1))
-		dirmask |= WEST, count++;
-		if (!iswall(bp->b_y, bp->b_x + 1))
-		dirmask |= EAST, count++;
-		if (dirmask == 0)
-		if (!iswall(bp->b_y + 1, bp->b_x))
-		dirmask |= SOUTH, count++;
+		if (!iswall(bp->b_y - 1, bp->b_x)) {
+			dirmask |= NORTH, count++;
+		}
+		if (!iswall(bp->b_y, bp->b_x - 1)) {
+			dirmask |= WEST, count++;
+		}
+		if (!iswall(bp->b_y, bp->b_x + 1)) {
+			dirmask |= EAST, count++;
+		}
+		if (dirmask == 0) {
+			if (!iswall(bp->b_y + 1, bp->b_x)) {
+				dirmask |= SOUTH, count++;
+			}
+		}
 		break;
 		case BELOW:
-		if (!iswall(bp->b_y + 1, bp->b_x))
-		dirmask |= SOUTH, count++;
-		if (!iswall(bp->b_y, bp->b_x - 1))
-		dirmask |= WEST, count++;
-		if (!iswall(bp->b_y, bp->b_x + 1))
-		dirmask |= EAST, count++;
-		if (dirmask == 0)
-		if (!iswall(bp->b_y - 1, bp->b_x))
-		dirmask |= NORTH, count++;
+		if (!iswall(bp->b_y + 1, bp->b_x)) {
+			dirmask |= SOUTH, count++;
+		}
+		if (!iswall(bp->b_y, bp->b_x - 1)) {
+			dirmask |= WEST, count++;
+		}
+		if (!iswall(bp->b_y, bp->b_x + 1)) {
+			dirmask |= EAST, count++;
+		}
+		if (dirmask == 0) {
+			if (!iswall(bp->b_y - 1, bp->b_x)) {
+				dirmask |= NORTH, count++;
+			}
+		}
 		break;
 	}
 	if (count == 0) {
@@ -896,14 +953,18 @@ static void move_slime(BULLET *bp,int speed,BULLET *next) {
 	if (bp->b_charge < count) {
 		/* Only bp->b_charge paths may be taken */
 		while (count > bp->b_charge) {
-			if (dirmask & WEST)
-			dirmask &= ~WEST;
-			else if (dirmask & EAST)
-			dirmask &= ~EAST;
-			else if (dirmask & NORTH)
-			dirmask &= ~NORTH;
-			else if (dirmask & SOUTH)
-			dirmask &= ~SOUTH;
+			if (dirmask & WEST) {
+				dirmask &= ~WEST;
+			}
+			else if (dirmask & EAST) {
+				dirmask &= ~EAST;
+			}
+			else if (dirmask & NORTH) {
+				dirmask &= ~NORTH;
+			}
+			else if (dirmask & SOUTH) {
+				dirmask &= ~SOUTH;
+			}
 			count--;
 		}
 	}
@@ -943,10 +1004,14 @@ static void move_slime(BULLET *bp,int speed,BULLET *next) {
 
 /**
  * Returns whether the given location is a wall.
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
+ * \return True if at the given coordinate there is a wall, false otherwise.
  */
 static int iswall(int y,int x) {
-	if (y < 0 || x < 0 || y >= HEIGHT || x >= WIDTH)
-	return true;
+	if (y < 0 || x < 0 || y >= HEIGHT || x >= WIDTH) {
+		return true;
+	}
 	switch (Maze[y][x]) {
 		case WALL1:
 		case WALL2:
@@ -972,54 +1037,71 @@ static int iswall(int y,int x) {
 
 /**
  * Take a shot out of the air.
+ * @param[in] blist A bullet.
+ * @param[in] obp The bullet at the next iteration.
  */
 static void zapshot(BULLET *blist, BULLET *obp) {
 	BULLET *bp;
 	bool explode;
 
 	explode = false;
-	for (bp = blist; bp != NULL ; bp = bp->b_next) {
-		if (bp->b_x != obp->b_x || bp->b_y != obp->b_y)
+	for (bp = blist; bp != NULL; bp = bp->b_next) {
+		if (bp->b_x != obp->b_x || bp->b_y != obp->b_y) {
 			continue;
-		if (bp->b_face == obp->b_face)
+		}
+		if (bp->b_face == obp->b_face) {
 			continue;
+		}
 		explode = true;
 		break;
 	}
-	if (!explode)
+	if (!explode) {
 		return;
+	}
 	explshot(blist, obp->b_y, obp->b_x);
 }
 
 /**
  * Make all shots at this location blow up.
+ * @param[in] blist A bullet.
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
  */
 void explshot(BULLET *blist, int y, int x) {
 	BULLET *bp;
 
-	for (bp = blist; bp != NULL ; bp = bp->b_next)
+	for (bp = blist; bp != NULL; bp = bp->b_next)
 		if (bp->b_x == x && bp->b_y == y) {
 			bp->b_expl = true;
-			if (bp->b_owner != NULL )
+			if (bp->b_owner != NULL) {
 				message(bp->b_owner, "Shot intercepted");
+			}
 		}
 }
 
 /**
  * Return a pointer to the player at the given location.
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
+ * \return A player at the given coordinate.
  */
 PLAYER * play_at(int y, int x) {
 	PLAYER *pp;
 
-	for (pp = Player; pp < End_player; pp++)
-		if (pp->p_x == x && pp->p_y == y)
+	for (pp = Player; pp < End_player; pp++) {
+		if (pp->p_x == x && pp->p_y == y) {
 			return pp;
+		}
+	}
 	errx(1, "driver: couldn't find player at (%d,%d)", x, y);
 	/* NOTREACHED */
 }
 
 /**
  * Return TRUE if the bullet direction faces the opposite direction of the player in the maze.
+ * @param[in] face The direction of the player.
+ * @param[in] dir The direction of the bullet.
+ * \return True if the bullet direction faces the opposite direcrtion of the player, false otherwise.
  */
 int opposite(int face, char dir) {
 	switch (face) {
@@ -1037,65 +1119,83 @@ int opposite(int face, char dir) {
 }
 
 /**
- * Is there a bullet at the given coordinates?  If so, return a pointer to the bullet, otherwise return NULL.
+ * Is there a bullet at the given coordinates?
+ * If so, return a pointer to the bullet, otherwise return NULL.
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
+ * \return The pointer to the bullet if it exists.
  */
 BULLET * is_bullet(int y, int x) {
 	BULLET *bp;
 
-	for (bp = Bullets; bp != NULL ; bp = bp->b_next)
-		if (bp->b_y == y && bp->b_x == x)
+	for (bp = Bullets; bp != NULL; bp = bp->b_next) {
+		if (bp->b_y == y && bp->b_x == x) {
 			return bp;
-	return NULL ;
+		}
+	}
+	return NULL;
 }
 
 /**
  * Change the underlying character of the shots at a location to the given character.
+ * @param[in] y A coordinate.
+ * @param[in] x A coordinate.
+ * @param[in] over The over of a shot.
  */
 void fixshots(int y, int x, char over) {
 	BULLET *bp;
 
-	for (bp = Bullets; bp != NULL ; bp = bp->b_next)
-		if (bp->b_y == y && bp->b_x == x)
+	for (bp = Bullets; bp != NULL; bp = bp->b_next) {
+		if (bp->b_y == y && bp->b_x == x) {
 			bp->b_over = over;
+		}
+	}
 }
 
 /**
  * Find the underlying character for a bullet when it lands on another bullet.
+ * @param[in] blist A bullet.
+ * @param[in] bp Another bullet, maybe on its trajectory.
  */
 static void find_under(BULLET *blist, BULLET *bp) {
 	BULLET *nbp;
 
-	for (nbp = blist; nbp != NULL ; nbp = nbp->b_next)
+	for (nbp = blist; nbp != NULL; nbp = nbp->b_next) {
 		if (bp->b_y == nbp->b_y && bp->b_x == nbp->b_x) {
 			bp->b_over = nbp->b_over;
 			break;
 		}
+	}
 }
 
 /**
  * Mark a player as under a shot.
+ * @param[in] bp A bullet.
  */
 static void mark_player(BULLET *bp) {
 	PLAYER *pp;
 
-	for (pp = Player; pp < End_player; pp++)
+	for (pp = Player; pp < End_player; pp++) {
 		if (pp->p_y == bp->b_y && pp->p_x == bp->b_x) {
 			pp->p_undershot = true;
 			break;
 		}
+	}
 }
 
 # ifdef BOOTS
 /**
  * Mark a boot as under a shot.
+ * @param[in] bp A bullet.
  */
 static void mark_boot(BULLET *bp) {
 	PLAYER *pp;
 
-	for (pp = Boot; pp < &Boot[NBOOTS]; pp++)
-	if (pp->p_y == bp->b_y && pp->p_x == bp->b_x) {
-		pp->p_undershot = true;
-		break;
+	for (pp = Boot; pp < &Boot[NBOOTS]; pp++) {
+		if (pp->p_y == bp->b_y && pp->p_x == bp->b_x) {
+			pp->p_undershot = true;
+			break;
+		}
 	}
 }
 # endif

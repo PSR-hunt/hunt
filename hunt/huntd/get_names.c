@@ -63,6 +63,7 @@ char *my_machine_name;
 
 /**
  * Determine the local user and machine.
+ * @param[in] my_name The user name.
  */
 void get_local_name(const char *my_name) {
 	struct hostent *hp;
@@ -122,6 +123,8 @@ void get_local_name(const char *my_name) {
 
 /**
  * Determine the remote user and machine.
+ * @param[in] his_address A user address.
+ * \return 1 if exists a known corresponding user, 0 otherwise.
  */
 int get_remote_name(char *his_address) {
 	char *his_name;
@@ -131,8 +134,9 @@ int get_remote_name(char *his_address) {
 
 	/* check for, and strip out, the machine name of the target */
 	for (ptr = his_address; *ptr != '\0' && *ptr != '@' && *ptr != ':'
-			&& *ptr != '!' && *ptr != '.'; ptr++)
-	continue;
+			&& *ptr != '!' && *ptr != '.'; ptr++) {
+		continue;
+	}
 	if (*ptr == '\0') {
 		/* this is a local to local talk */
 		his_name = his_address;
@@ -155,14 +159,16 @@ int get_remote_name(char *his_address) {
 
 	/* if he is on the same machine, then simply copy */
 	if (memcmp((char *) &his_machine_name, (char *) &my_machine_name,
-					sizeof(his_machine_name)) == 0)
-	memcpy(&his_machine_addr, &my_machine_addr,
-			sizeof(his_machine_name));
+					sizeof(his_machine_name)) == 0) {
+		memcpy(&his_machine_addr, &my_machine_addr,
+				sizeof(his_machine_name));
+	}
 	else {
 		/* look up the address of the recipient's machine */
 		hp = gethostbyname(his_machine_name);
-		if (hp == (struct hostent *) 0)
-		return 0; /* unknown host */
+		if (hp == (struct hostent *) 0) {
+			return 0; /* unknown host */
+		}
 		memcpy(&his_machine_addr, hp->h_addr, hp->h_length);
 	}
 	return 1;
