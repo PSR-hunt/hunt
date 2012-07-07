@@ -146,8 +146,6 @@ extern int Otto_mode;
 extern int _tty_ch;
 extern struct sgttyb _tty;
 
-//TODO da qui in poi documentare
-
 /**
  * Main program for local process.
  */
@@ -240,21 +238,25 @@ int main(int argc, char* argv[]) {
 		}
 	}
 # ifdef INTERNET
-	if (optind + 1 < argc)
-	usage();
-	else if (optind + 1 == argc)
-	Sock_host = argv[argc - 1];
-# else
-	if (optind > argc)
+	if (optind + 1 < argc) {
 		usage();
+	}
+	else if (optind + 1 == argc) {
+		Sock_host = argv[argc - 1];
+		{
+# else
+	if (optind > argc) {
+		usage();
+	}
 # endif
 
 # ifdef INTERNET
 	if (Show_scores) {
 		SOCKET *hosts;
 
-		for (hosts = list_drivers(); hosts->sin_port != 0; hosts += 1)
-		dump_scores(*hosts);
+		for (hosts = list_drivers(); hosts->sin_port != 0; hosts += 1) {
+			dump_scores(*hosts);
+		}
 		exit(0);
 	}
 	if (Query_driver) {
@@ -283,8 +285,9 @@ int main(int argc, char* argv[]) {
 	fill_in_blanks();
 
 	(void) fflush(stdout);
-	if (!isatty(0) || (term = getenv("TERM")) == NULL)
+	if (!isatty(0) || (term = getenv("TERM")) == NULL) {
 		errx(1, "no terminal type");
+	}
 # ifdef USE_CURSES
 	initscr();
 	(void) noecho();
@@ -308,8 +311,9 @@ int main(int argc, char* argv[]) {
 #endif
 # endif /* !USE_CURSES */
 	in_visual = true;
-	if (LINES < SCREEN_HEIGHT || COLS < SCREEN_WIDTH)
+	if (LINES < SCREEN_HEIGHT || COLS < SCREEN_WIDTH) {
 		leavex(1, "Need a larger window");
+	}
 	clear_the_screen();
 	(void) signal(SIGINT, intr);
 	(void) signal(SIGTERM, sigterm);
@@ -324,8 +328,9 @@ int main(int argc, char* argv[]) {
 # ifdef	INTERNET
 		find_driver(true);
 
-		if (Daemon.sin_port == 0)
-		leavex(1, "Game not found, try again");
+		if (Daemon.sin_port == 0) {
+			leavex(1, "Game not found, try again");
+		}
 
 		while(1) {
 			do {
@@ -379,8 +384,9 @@ int main(int argc, char* argv[]) {
 		 * set up a socket
 		 */
 
-		if ((Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0)) < 0)
+		if ((Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0)) < 0) {
 			err(1, "socket");
+		}
 
 		/*
 		 * attempt to connect the socket to a name; if it fails that
@@ -398,8 +404,9 @@ int main(int argc, char* argv[]) {
 
 			do {
 				(void) close(Socket);
-				if ((Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0)) < 0)
+				if ((Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0)) < 0) {
 					err(1, "socket");
+				}
 				sleep(2);
 			} while (connect(Socket, &Daemon, DAEMON_SIZE) < 0);
 		}
@@ -408,8 +415,9 @@ int main(int argc, char* argv[]) {
 # endif
 
 		playit();
-		if ((enter_status = quit(enter_status)) == Q_QUIT)
+		if ((enter_status = quit(enter_status)) == Q_QUIT) {
 			break;
+		}
 	}
 	leavex(0, (char *) NULL);
 	/* NOTREACHED */
@@ -419,11 +427,14 @@ int main(int argc, char* argv[]) {
 # ifdef INTERNET
 # ifdef BROADCAST
 /**
- * Counts the number of socket addresses.
+ * Counts the number of network interfaces only in the case
+ * they are of type INET and BROADCAST.
+ * @param[in] vector The place where the list of interfaces is saved.
+ * \return the counted number of network interfaces.
  * [PSR]
  */
 int broadcast_vec(struct sockaddr **vector) {
-	/*int			s;		 socket */
+	/**< int			s;		 socket Deprecated.[PSR] */
 	int vec_cnt;
 	struct ifaddrs *ifp, *ip;
 
@@ -470,7 +481,9 @@ void usage() {
 }
 
 /**
- * TODO
+ * Creates a list of local sockets.
+ * @\return The created list.
+ * [PSR]
  */
 SOCKET * list_drivers() {
 	int option;
@@ -516,12 +529,14 @@ SOCKET * list_drivers() {
 
 		listmax = 20;
 		listv = (SOCKET *) malloc(listmax * sizeof (SOCKET));
-		if (listv == NULL)
-		leave(1, "Out of memory!");
-	} else if (Sock_host != NULL)
-	return listv; /* address already valid */
+		if (listv == NULL) {
+			leave(1, "Out of memory!");
+		}
+	} else if (Sock_host != NULL) {
+		return listv; /* address already valid */
+	}
 
-	test_socket = socket(SOCK_FAMILY, SOCK_DGRAM, 0);
+	test_socket = socket(SOCK_FAMILY, SOCK_DGRAM, 0); //Creation of an UDP socket
 	if (test_socket < 0) {
 		leave(1, "socket system call failed");
 		/* NOTREACHED */
@@ -550,8 +565,9 @@ SOCKET * list_drivers() {
 		}
 
 # ifdef BROADCAST
-		if (initial)
-		brdc = broadcast_vec((void *) &brdv);
+		if (initial) {
+			brdc = broadcast_vec((void *) &brdv);
+		}
 
 # ifdef SO_BROADCAST
 		/* Sun's will broadcast even though this option can't be set */
@@ -646,13 +662,15 @@ SOCKET * list_drivers() {
 }
 
 /**
- * TODO
+ * Prints a list of drivers and let the user select one.
+ * @param[in] do_startup If it is true the user can select a driver, otherwise no.
+ * [PSR]
  */
 void find_driver(bool do_startup) {
 	SOCKET *hosts;
 
 	hosts = list_drivers();
-	if (hosts[0].sin_port != htons(0)) {
+	if (hosts[0].sin_port != htons(0)) { //Se hosts[0] è diverso dall'indirizzo locale
 		int i, c;
 
 		if (hosts[1].sin_port == htons(0)) {
@@ -705,7 +723,7 @@ void find_driver(bool do_startup) {
 		clear_the_screen();
 		return;
 	}
-	if (!do_startup){
+	if (!do_startup) {
 		return;
 	}
 
@@ -715,7 +733,9 @@ void find_driver(bool do_startup) {
 }
 #ifdef INTERNET
 /**
- * TODO
+ * Connects to the host and prints all the received informations.
+ * @param[in] host The socket that identifies the host.
+ * [PSR]
  */
 void dump_scores(SOCKET host) {
 	struct hostent *hp;
@@ -729,19 +749,23 @@ void dump_scores(SOCKET host) {
 	fflush(stdout);
 
 	s = socket(SOCK_FAMILY, SOCK_STREAM, 0);
-	if (s < 0)
-	err(1, "socket");
-	if (connect(s, (struct sockaddr *) &host, sizeof host) < 0)
-	err(1, "connect");
-	while ((cnt = read(s, buf, BUFSIZ)) > 0)
-	dbg_write(fileno(stdout), buf, cnt);
+	if (s < 0) {
+		err(1, "socket");
+	}
+	if (connect(s, (struct sockaddr *) &host, sizeof host) < 0) {
+		err(1, "connect");
+	}
+	while ((cnt = read(s, buf, BUFSIZ)) > 0) {
+		dbg_write(fileno(stdout), buf, cnt);
+	}
 	(void) close(s);
 }
 # endif
 # endif
 
 /**
- * TODO
+ * Manages the game connection.
+ * [PSR]
  */
 void start_driver() {
 	int procid;
@@ -801,8 +825,8 @@ void start_driver() {
 }
 
 /**
- * We had a bad connection.  For the moment we assume that this
- * means the game is full.
+ * We had a bad connection.
+ * For the moment we assume that this means the game is full.
  */
 void bad_con() {
 	leavex(1, "The game is full.  Sorry.");
@@ -819,16 +843,14 @@ void bad_ver() {
 
 /**
  * Handle a terminate signal.
- */
-SIGNAL_TYPE sigterm(int dummy __attribute__((__unused__))) {
+ */SIGNAL_TYPE sigterm(int dummy __attribute__((__unused__))) {
 	leavex(0, (char *) NULL);
 	/* NOTREACHED */
 }
 
 /**
  * Handle a usr1 signal.
- */
-SIGNAL_TYPE sigusr1(int dummy __attribute__((__unused__))) {
+ */SIGNAL_TYPE sigusr1(int dummy __attribute__((__unused__))) {
 	leavex(1, "Unable to start driver.  Try again.");
 	/* NOTREACHED */
 }
@@ -844,20 +866,20 @@ SIGNAL_TYPE sigalrm(int dummy __attribute__((__unused__))) {
 
 /**
  * Remove a '\n' at the end of a string if there is one.
+ * @param[in] s The string we want to remove the '\n' at the end.
  */
 void rmnl(char *s) {
 	char *cp;
 
 	cp = strrchr(s, '\n');
-	if (cp != NULL){
+	if (cp != NULL) {
 		*cp = '\0';
 	}
 }
 
 /**
  * Handle a interrupt signal.
- */
-SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
+ */SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
 	int ch;
 	int explained;
 	int y, x;
@@ -879,7 +901,7 @@ SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
 	explained = false;
 	for (;;) {
 		ch = getchar();
-		if (isupper(ch)){
+		if (isupper(ch)) {
 			ch = tolower(ch);
 		}
 		if (ch == 'y') {
@@ -911,7 +933,8 @@ SIGNAL_TYPE intr(int dummy __attribute__((__unused__))) {
 }
 
 /**
- *
+ * Verifies configuration entries.
+ * [PSR]
  */
 void fincurs() {
 	if (in_visual) {
@@ -940,8 +963,9 @@ void fincurs() {
 }
 
 /**
- * Leave the game somewhat gracefully, restoring all current
- * tty stats.
+ * Leave the game somewhat gracefully, restoring all current tty stats.
+ * @param[in] eval The error status.
+ * @param[in] mesg The error format.
  */
 void leave(int eval, const char *mesg) {
 	int serrno = errno;
@@ -955,8 +979,9 @@ void leave(int eval, const char *mesg) {
 }
 
 /**
- * Leave the game somewhat gracefully, restoring all current
- * tty stats.
+ * Leave the game somewhat gracefully, restoring all current tty stats.
+ * @param[in] eval The error status.
+ * @param[in] mesg The error format.
  */
 void leavex(int eval, const char *mesg) {
 	fincurs();
@@ -968,9 +993,8 @@ void leavex(int eval, const char *mesg) {
 }
 
 #if !defined(USE_CURSES) && defined(SIGTSTP)
-/*
- * tstp:
- *	Handle stop and start signals
+/**
+ * Handle stop and start signals
  */SIGNAL_TYPE tstp(int dummy) {
 # if BSD_RELEASE < 44
 	static struct sgttyb tty;
@@ -1073,7 +1097,7 @@ long env_init(long enter_status_in) {
 	 * Generates a map for extended ASCII conversion.
 	 * [PSR]
 	 */
-	for (i = 0; i < 256; i++){
+	for (i = 0; i < 256; i++) {
 		map_key[i] = (char) i;
 	}
 
@@ -1190,7 +1214,7 @@ long var_env_init(long enter_status_in) {
 	 * Generates a map for extended ASCII conversion.
 	 * [PSR]
 	 */
-	for (i = 0; i < 256; i++){
+	for (i = 0; i < 256; i++) {
 		map_key[i] = (char) i;
 	}
 
@@ -1282,10 +1306,9 @@ long var_env_init(long enter_status_in) {
 			}
 		}
 		if (*envp != '\0') {
-			if (envname == NULL){
+			if (envname == NULL) {
 				strncpy(name, envp, NAMELEN);
-			}
-			else{
+			} else {
 				printf("unknown option %s\n", envp);
 			}
 		}
@@ -1294,7 +1317,9 @@ long var_env_init(long enter_status_in) {
 }
 
 /**
- * Counts the number of characters in a line.
+ * Counts the number of characters of all the lines in a file.
+ * @param[in] f The file.
+ * \return The counter.
  * [PSR]
  */
 long fchars_in_line(FILE* f) {
@@ -1310,10 +1335,9 @@ long fchars_in_line(FILE* f) {
 		if (!read) {
 			break;
 		}
-		if (in == '\n'){
+		if (in == '\n') {
 			break;
-		}
-		else {
+		} else {
 			counter++;
 			read = fscanf(f, "%c", &in);
 		}
@@ -1322,7 +1346,8 @@ long fchars_in_line(FILE* f) {
 }
 
 /**
- * TODO
+ * Fills the name and team fields.
+ * [PSR]
  */
 void fill_in_blanks() {
 	int i;
@@ -1333,22 +1358,21 @@ void fill_in_blanks() {
 	while (TRUE) {
 		if (name[0] != '\0') {
 			printf("Entering as '%s'", name);
-			if (team != ' '){
+			if (team != ' ') {
 				printf(" on team %c.\n", team);
-			}
-			else{
+			} else {
 				putchar('\n');
 			}
 		} else {
 			printf("Enter your code name: ");
-			if (fgets(name, NAMELEN, stdin) == NULL){
+			if (fgets(name, NAMELEN, stdin) == NULL) {
 				exit(1);
 			}
 		}
 		rmnl(name);
 		if (name[0] == '\0') {
 			name[0] = '\0';
-			printf("Yntou have to have a code name!\n");
+			printf("You have to have a code name!\n");
 			continue;
 		}
 		for (cp = name; *cp != '\0'; cp++) {
@@ -1369,10 +1393,10 @@ void fill_in_blanks() {
 	if (team == ' ') {
 		printf("Enter your team (0-9 or nothing): ");
 		i = getchar();
-		if (isdigit(i)){
+		if (isdigit(i)) {
 			team = i;
 		}
-		while (i != '\n' && i != EOF){
+		while (i != '\n' && i != EOF) {
 			i = getchar();
 		}
 	}
