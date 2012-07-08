@@ -4,9 +4,6 @@ Known bugs in hunt
 Under some circumstances, hunt fails to start the hunt daemon if one
 is not already running.
 
-Joseph S. Myers
-jsm@polyomino.org.uk
-
 Under some circumstances, hunt interaction slows down if a previous
 instance of hunt daemon is running at network selection time.
 
