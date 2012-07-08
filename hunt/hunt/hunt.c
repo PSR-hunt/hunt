@@ -66,7 +66,7 @@ static struct termios saved_tty;
  * Some old versions of curses don't have these defined
  */
 # if !defined(cbreak) && (!defined(BSD_RELEASE) || BSD_RELEASE < 44)
-# define	cbreak()	crmode() /**< TODO [PSR] */
+# define	cbreak()	crmode() /**< Turn the terminal CBREAK mode on or off. [PSR] */
 # endif
 
 # if !defined(USE_CURSES) || !defined(TERMINFO)
@@ -90,9 +90,9 @@ bool Last_player = false; /**< Defines if a player is the last one or no. [PSR] 
 bool Am_monitor = false;
 # endif
 
-char Buf[BUFSIZ]; /**< TODO [PSR] */
+char Buf[BUFSIZ]; /**< Defined but not used in this file. [PSR] */
 
-int Socket; /**< TODO [PSR] */
+int Socket; /**< The descriptor of an endpoint for communication. [PSR] */
 # ifdef INTERNET
 char *Sock_host;
 char *use_port;
@@ -101,7 +101,7 @@ char *Send_message = NULL;
 bool Show_scores = false;
 # endif
 
-SOCKET Daemon; /**< TODO [PSR] */
+SOCKET Daemon; /**< The daemon socket. [PSR] */
 # ifdef	INTERNET
 # define	DAEMON_SIZE	(sizeof Daemon)
 # else
@@ -109,12 +109,12 @@ SOCKET Daemon; /**< TODO [PSR] */
 # endif
 
 char map_key[256]; /**< what to map keys to */
-bool no_beep; /**< TODO [PSR] */
+bool no_beep; /**< If true turns off beeping when you reach the typeahead limit. [PSR] */
 
 static char name[NAMELEN]; /**< Indicates the name of a player. [PSR] */
 static char team = ' '; /**< Indicates the belonging team of a player. [PSR] */
 
-static int in_visual; /**< TODO [PSR] */
+static int in_visual; /**< Indicates whether the configurations are correct. TODO [PSR] */
 
 extern int cur_row; /**< Indicates the current row. [PSR] */
 extern int cur_col; /**< Indicates the current column. [PSR] */
