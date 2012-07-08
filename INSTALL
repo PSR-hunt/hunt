@@ -65,21 +65,18 @@ Building and installation
     however, wish to minimise the testcase before sending a bug
     report, if you have the time to do so.
 
-4.  Run the testsuite (non-interactive) with "make check".  All tests
-    should pass.
-
-5.  Save copies of any old versions of games you like and their
+4.  Save copies of any old versions of games you like and their
     datafiles, until you know that the new versions work.
 
-6.  Become root.  (If, as an ordinary user, you are installing under
+5.  Become root.  (If, as an ordinary user, you are installing under
     your home directory, and have chosen not to set owners and groups
     on the installed files, there is of course no need to do this.)
 
-7.  Type "make install".  If you want the installed binaries to be
+6.  Type "make install".  If you want the installed binaries to be
     stripped, use "make install-strip" instead.  This saves disk
     space, but means that you cannot debug the installed binaries.
 
-8.  If you had an old installation of bsd-games, check for file
+7.  If you had an old installation of bsd-games, check for file
     locations that have changed.  You will probably want to remove old
     executables and static data (formerly defaulting to installation
     in /usr/games/lib), and replace any empty score files that have
@@ -97,16 +94,16 @@ Building and installation
     may need to adjust the permissions manually if you had a previous
     installation of version 2.3.
 
-9.  The robots scorefile format changed in version 2.8, so any old
+8.  The robots scorefile format changed in version 2.8, so any old
     score file should be removed or renamed when first upgrading to
     this or a later version, and a new one created with the correct
     permissions.
 
-10. "make distclean" will restore the source directory to the original
+9. "make distclean" will restore the source directory to the original
     unpacked state.  The automatically generated dependency files
     include paths to system headers, including those in gcc's internal
     header directory: if you have changed your compiler or library
-    headers between building bsd-games and cleaning up, you can use
+    headers between building hunt and cleaning up, you can use
     "make distclean nodep=true" to avoid this causing problems.
 
     "make clean" will restore the sources to the state just after
@@ -115,15 +112,17 @@ Building and installation
 Further information
 ===================
 
-See TODO for information on what needs to be improved in this package;
-you may want to volunteer for some of the things in there.
-
 The file BUGS lists known bugs.  The README file discusses how to
 produce useful bug reports.
 
 Joseph S. Myers
 jsm@polyomino.org.uk
-
+Andrea Baietti
+ilbaio90cr@hotmail.it
+Chiara Cerletti
+kya90yaya@hotmail.it
+Andrea Damiani
+andredami@hotmail.com
 
 
 Local Variables:
