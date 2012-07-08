@@ -5,3 +5,9 @@
 /Makeconfig
 /subst.rules
 /subst.sed
+*.o
+*.d
+*.i
+*.6
+!*.6.in
+*~
