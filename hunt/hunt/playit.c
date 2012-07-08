@@ -100,8 +100,6 @@ static unsigned char ibuf[256], *iptr = ibuf;
 static unsigned char getchr(void);
 static void send_stuff(void);
 
-//TODO da qui iniziare documentazione
-
 /**
  * Play a given game, handling all the curses commands from
  * the driver.

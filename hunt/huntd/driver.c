@@ -493,9 +493,9 @@ static void makeboots() {
 
 /**
  * Check the damage to the given player, and see if s/he is killed.
- * @param[in] ouch The victim of the attack.
- * @param[in] gotcha The attacker.
- * @param[in] credit The identifier of the attacker.
+ * @param[in] ouch The victim of the attack. TODO
+ * @param[in] gotcha The attacker. TODO
+ * @param[in] credit The identifier of the attacker. TODO
  * @param[in] amt The damage amount
  * @param[in] shot_type The type of inferred attack.
  */
@@ -629,7 +629,7 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 
 /**
  * Kill off a player and take him out of the game.
- * @param[in] pp A player to remove from the game.
+ * @param[in] pp A player to remove from the game. TODO
  * @param[in] was_player True if the player to remove was really in the game, false otherwise.
  * @param[in] i An identifier.
  */
@@ -872,7 +872,7 @@ int rand_num(int range) {
 /**
  * Check to see if we have any characters in the input queue;
  * if we do, read them, stash them away, and return TRUE; else return FALSE.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  * @param[in] i An identifier.
  * \return True if there are any characters in the input queue, false otherwise.
  */

@@ -39,7 +39,7 @@ __RCSID("$NetBSD: draw.c,v 1.3 2003/06/11 12:00:22 wiz Exp $");
 
 /**
  * Draws the maze.
- * @param[in] pp The player on whose screen we want to represent the maze.
+ * @param[in] pp The player on whose screen we want to represent the maze. TODO
  * [PSR]
  */
 void drawmaze(PLAYER *pp){
@@ -75,7 +75,7 @@ void drawmaze(PLAYER *pp){
 /**
  * Put up the status lines (this assumes
  * the screen size is 80x24 with the maze being 64x24).
- * @param[in] pp A player on whose screen we want to put up the status line.
+ * @param[in] pp A player on whose screen we want to put up the status line. TODO
  */
 void drawstatus(PLAYER *pp){
 	int	i;
@@ -128,7 +128,7 @@ void drawstatus(PLAYER *pp){
 
 /**
  * Represents a player and nearby enemies.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  * [PSR]
  */
 void look(PLAYER *pp){
@@ -178,7 +178,7 @@ void look(PLAYER *pp){
 
 /**
  * Draws the enemy of a given player.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  * @param[in] face A symbol representing the enemy basing on its position.
  * [PSR]
  */
@@ -279,7 +279,7 @@ void see(PLAYER *pp,int face){
 
 /**
  * Draws the right symbol associated to a player in a given position.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  * @param[in] y Player's coordinate.
  * @param[in] x Player's coordinate.
  * [PSR]
@@ -309,7 +309,7 @@ void check(PLAYER *pp,int y,int x){
 
 /**
  * Update the status of players.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  */
 void showstat(PLAYER *pp){
 	PLAYER	*np;
@@ -333,7 +333,7 @@ void showstat(PLAYER *pp){
 /**
  * Draw the player on the screen and show him to everyone
  * who's scanning unless he is cloaked.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  * @param[in] draw If true is possible to draw the player, otherwise no.
  */
 void drawplayer(PLAYER *pp,bool draw){
@@ -376,7 +376,7 @@ void drawplayer(PLAYER *pp,bool draw){
 
 /**
  * Prints messages on the terminal of a given player (under the maze).
- * @param[in] pp The player on whose terminal we want to write the message.
+ * @param[in] pp The player on whose terminal we want to write the message. TODO
  * @param[in] s The message we want to print.
  * [PSR]
  */
@@ -408,7 +408,7 @@ char translate(char ch){
 
 /**
  * Return the player symbol.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  * @param[in] y A player coordinate.
  * @param[in] x A player coordinate.
  * \return The player symbol.

@@ -211,7 +211,7 @@ int answer() {
 # ifdef MONITOR
 /**
  * Initialize the terminal of a player.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  * [PSR]
  */
 void stmonitor(PLAYER *pp) {
@@ -242,7 +242,7 @@ void stmonitor(PLAYER *pp) {
 
 /**
  * Initializes a player status.
- * @param[in] newpp The new player to inizialize.
+ * @param[in] newpp The new player to initialize. TODO
  * @param[in] enter_status The enter mode of a player.
  * [PSR]
  */

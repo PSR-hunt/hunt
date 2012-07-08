@@ -255,7 +255,7 @@ void otto(int y,int x,char face) {
 
 /**
  * Function called when an object has been found
- * @param[in] itemp The found object.
+ * @param[in] itemp The found object. TODO
  * @param[in] c The what field of itemp.
  * @param[in] dist The distance field of itemp.
  * @param[in] side A value on which depends the flags field of itemp.
@@ -342,7 +342,7 @@ STATIC int stop_look(struct item *itemp,char c,int dist,int side) {
 /**
  * Looks for an object in a given direction.
  * @param[in] rel_dir A direction.
- * @param[in] itemp An object.
+ * @param[in] itemp An object. TODO
  * [PSR]
  */
 STATIC void ottolook(int rel_dir,struct item *itemp) {
@@ -530,7 +530,7 @@ STATIC void face_and_move_direction(int rel_dir,int distance) {
 /**
  * Implements the attack of an item in a given direction.
  * @param[in] rel_dir A direction.
- * @param[in] itemp An object.
+ * @param[in] itemp An object. TODO
  * [PSR]
  */
 STATIC void attack(int rel_dir,struct item *itemp) {

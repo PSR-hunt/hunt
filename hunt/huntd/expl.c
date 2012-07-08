@@ -48,10 +48,12 @@ void showexpl(int y,int x,char type){
 	PLAYER	*pp;
 	EXPL	*ep;
 
-	if (y < 0 || y >= HEIGHT)
+	if (y < 0 || y >= HEIGHT){
 		return;
-	if (x < 0 || x >= WIDTH)
+	}
+	if (x < 0 || x >= WIDTH){
 		return;
+	}
 	ep = (EXPL *) malloc(sizeof (EXPL));	/* NOSTRICT */
 	if (ep == NULL) {
 # ifdef LOG
@@ -65,22 +67,26 @@ void showexpl(int y,int x,char type){
 	ep->e_x = x;
 	ep->e_char = type;
 	ep->e_next = NULL;
-	if (Last_expl == NULL)
+	if (Last_expl == NULL){
 		Expl[0] = ep;
-	else
+	}
+	else{
 		Last_expl->e_next = ep;
+	}
 	Last_expl = ep;
 	for (pp = Player; pp < End_player; pp++) {
-		if (pp->p_maze[y][x] == type)
+		if (pp->p_maze[y][x] == type){
 			continue;
+		}
 		pp->p_maze[y][x] = type;
 		cgoto(pp, y, x);
 		outch(pp, type);
 	}
 # ifdef MONITOR
 	for (pp = Monitor; pp < End_monitor; pp++) {
-		if (pp->p_maze[y][x] == type)
+		if (pp->p_maze[y][x] == type){
 			continue;
+		}
 		pp->p_maze[y][x] = type;
 		cgoto(pp, y, x);
 		outch(pp, type);
@@ -97,8 +103,9 @@ void showexpl(int y,int x,char type){
 	  case WALL4:
 	  case WALL5:
 # endif
-		if (y >= UBOUND && y < DBOUND && x >= LBOUND && x < RBOUND)
+		if (y >= UBOUND && y < DBOUND && x >= LBOUND && x < RBOUND){
 			remove_wall(y, x);
+		}
 		break;
 	}
 }
@@ -117,24 +124,29 @@ void rollexpl(){
 		nextep = ep->e_next;
 		y = ep->e_y;
 		x = ep->e_x;
-		if (y < UBOUND || y >= DBOUND || x < LBOUND || x >= RBOUND)
+		if (y < UBOUND || y >= DBOUND || x < LBOUND || x >= RBOUND){
 			c = Maze[y][x];
-		else
+		}
+		else{
 			c = SPACE;
-		for (pp = Player; pp < End_player; pp++)
+		}
+		for (pp = Player; pp < End_player; pp++){
 			if (pp->p_maze[y][x] == ep->e_char) {
 				pp->p_maze[y][x] = c;
 				cgoto(pp, y, x);
 				outch(pp, c);
 			}
+		}
 # ifdef MONITOR
-		for (pp = Monitor; pp < End_monitor; pp++)
+		for (pp = Monitor; pp < End_monitor; pp++){
 			check(pp, y, x);
+		}
 # endif
 		free((char *) ep);
 	}
-	for (x = EXPLEN - 1; x > 0; x--)
+	for (x = EXPLEN - 1; x > 0; x--){
 		Expl[x] = Expl[x - 1];
+	}
 	Last_expl = Expl[0] = NULL;
 }
 
@@ -176,22 +188,26 @@ static void remove_wall(int y,int x){
 			found=1;
 		}
 # else
-		if (Maze[r->r_y][r->r_x] == SPACE )
+		if (Maze[r->r_y][r->r_x] == SPACE ){
 			break;
+		}
 # endif
-		if ((++r >= &removed[MAXREMOVE])&&!found)
+		if ((++r >= &removed[MAXREMOVE])&&!found){
 			r = removed;
+		}
 	}
 
 	if (r->r_y != 0) {
 		/* Slot being used, put back this wall */
 # ifdef FLY
-		if (save_char == SPACE)
+		if (save_char == SPACE){
 			Maze[r->r_y][r->r_x] = Orig_maze[r->r_y][r->r_x];
+		}
 		else {
 			pp = play_at(r->r_y, r->r_x);
-			if (pp->p_flying >= 0)
+			if (pp->p_flying >= 0){
 				pp->p_flying += rand_num(10);
+			}
 			else {
 				pp->p_flying = rand_num(20);
 				pp->p_flyx = 2 * rand_num(6) - 5;
@@ -206,30 +222,36 @@ static void remove_wall(int y,int x){
 		Maze[r->r_y][r->r_x] = Orig_maze[r->r_y][r->r_x];
 # endif
 # ifdef RANDOM
-		if (rand_num(100) == 0)
+		if (rand_num(100) == 0){
 			Maze[r->r_y][r->r_x] = DOOR;
+		}
 # endif
 # ifdef REFLECT
-		if (rand_num(100) == 0)		/* one percent of the time */
+		if (rand_num(100) == 0)	{	/* one percent of the time */
 			Maze[r->r_y][r->r_x] = WALL4;
+		}
 # endif
 # ifdef MONITOR
-		for (pp = Monitor; pp < End_monitor; pp++)
+		for (pp = Monitor; pp < End_monitor; pp++){
 			check(pp, r->r_y, r->r_x);
+		}
 # endif
 	}
 
 	r->r_y = y;
 	r->r_x = x;
-	if (++r >= &removed[MAXREMOVE])
+	if (++r >= &removed[MAXREMOVE]){
 		rem_index = removed;
-	else
+	}
+	else{
 		rem_index = r;
+	}
 
 	Maze[y][x] = SPACE;
 # ifdef MONITOR
-	for (pp = Monitor; pp < End_monitor; pp++)
+	for (pp = Monitor; pp < End_monitor; pp++){
 		check(pp, y, x);
+	}
 # endif
 }
 
@@ -239,7 +261,8 @@ static void remove_wall(int y,int x){
 void clearwalls(){
 	REGEN	*rp;
 
-	for (rp = removed; rp < &removed[MAXREMOVE]; rp++)
+	for (rp = removed; rp < &removed[MAXREMOVE]; rp++){
 		rp->r_y = 0;
+	}
 	rem_index = removed;
 }

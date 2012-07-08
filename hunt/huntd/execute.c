@@ -70,7 +70,7 @@ void mon_execute(PLAYER *pp){
 
 /**
  * Execute a single command.
- * @param[in] pp The player who gives the command.
+ * @param[in] pp The player who gives the command. TODO
  */
 void execute(PLAYER *pp){
 	char	ch;
@@ -184,7 +184,7 @@ void execute(PLAYER *pp){
 
 /**
  * Execute a move in the given direction.
- * @param[in] pp The player who wants to move.
+ * @param[in] pp The player who wants to move. TODO
  * @param[in] dir The direction the player wants to go on.
  */
 static void move_player(PLAYER *pp,int dir){
@@ -258,8 +258,9 @@ static void move_player(PLAYER *pp,int dir){
 	  case RIGHT:
 	  case ABOVE:
 	  case BELOW:
-		if (dir != pp->p_face)
+		if (dir != pp->p_face){
 			sendcom(pp, BELL);
+		}
 		else {
 			newp = play_at(y, x);
 			checkdam(newp, pp, pp->p_ident, STABDAM, KNIFE);
@@ -275,34 +276,41 @@ static void move_player(PLAYER *pp,int dir){
 # ifdef BOOTS
 	  case BOOT:
 	  case BOOT_PAIR:
-		if (Maze[y][x] == BOOT)
+		if (Maze[y][x] == BOOT){
 			pp->p_nboots++;
-		else
+		}
+		else{
 			pp->p_nboots += 2;
+		}
 		for (newp = Boot; newp < &Boot[NBOOTS]; newp++) {
-			if (newp->p_flying < 0)
+			if (newp->p_flying < 0){
 				continue;
+			}
 			if (newp->p_y == y && newp->p_x == x) {
 				newp->p_flying = -1;
-				if (newp->p_undershot)
+				if (newp->p_undershot){
 					fixshots(y, x, newp->p_over);
+				}
 			}
 		}
-		if (pp->p_nboots == 2)
+		if (pp->p_nboots == 2){
 			message(pp, "Wow!  A pair of boots!");
-		else
+		}
+		else{
 			message(pp, "You can hobble around on one boot.");
+		}
 		Maze[y][x] = SPACE;
 		moved = true;
 		break;
 # endif
 	}
 	if (moved) {
-		if (pp->p_ncshot > 0)
+		if (pp->p_ncshot > 0){
 			if (--pp->p_ncshot == MAXNCSHOT) {
 				cgoto(pp, STAT_GUN_ROW, STAT_VALUE_COL);
 				outstr(pp, " ok", 3);
 			}
+		}
 		if (pp->p_undershot) {
 			fixshots(pp->p_y, pp->p_x, pp->p_over);
 			pp->p_undershot = false;
@@ -317,7 +325,7 @@ static void move_player(PLAYER *pp,int dir){
 
 /**
  * Change the direction the player is facing.
- * @param[in] pp The player we want to change the direction.
+ * @param[in] pp The player we want to change the direction. TODO
  * @param[in] dir The new direction.
  */
 static void face(PLAYER *pp,int dir){
@@ -329,7 +337,7 @@ static void face(PLAYER *pp,int dir){
 
 /**
  * Fire a shot of the given type in the given direction.
- * @param[in] pp The player who want to fire a shot.
+ * @param[in] pp The player who want to fire a shot. TODO
  * @param[in] req_index the type of the shot.
  */
 static void fire(PLAYER *pp,int req_index){
@@ -345,8 +353,9 @@ static void fire(PLAYER *pp,int req_index){
 		message(pp, "Not enough charges.");
 		return;
 	}
-	if (pp->p_ncshot > MAXNCSHOT)
+	if (pp->p_ncshot > MAXNCSHOT){
 		return;
+	}
 	if (pp->p_ncshot++ == MAXNCSHOT) {
 		cgoto(pp, STAT_GUN_ROW, STAT_VALUE_COL);
 		outstr(pp, "   ", 3);
@@ -364,18 +373,20 @@ static void fire(PLAYER *pp,int req_index){
 	 * Show the object to everyone
 	 */
 	showexpl(pp->p_y, pp->p_x, shot_type[req_index]);
-	for (pp = Player; pp < End_player; pp++)
+	for (pp = Player; pp < End_player; pp++){
 		sendcom(pp, REFRESH);
+	}
 # ifdef MONITOR
-	for (pp = Monitor; pp < End_monitor; pp++)
+	for (pp = Monitor; pp < End_monitor; pp++){
 		sendcom(pp, REFRESH);
+	}
 # endif
 }
 
 # ifdef	OOZE
 /**
  * Fire a slime shot in the given direction.
- * @param[in] pp The player who want to fire a slime.
+ * @param[in] pp The player who want to fire a slime. TODO
  * @param[in] req_index the type of the slime.
  */
 static void fire_slime(PLAYER *pp,int req_index){
@@ -391,8 +402,9 @@ static void fire_slime(PLAYER *pp,int req_index){
 		message(pp, "Not enough charges.");
 		return;
 	}
-	if (pp->p_ncshot > MAXNCSHOT)
+	if (pp->p_ncshot > MAXNCSHOT){
 		return;
+	}
 	if (pp->p_ncshot++ == MAXNCSHOT) {
 		cgoto(pp, STAT_GUN_ROW, STAT_VALUE_COL);
 		outstr(pp, "   ", 3);
@@ -410,11 +422,13 @@ static void fire_slime(PLAYER *pp,int req_index){
 	 * Show the object to everyone
 	 */
 	showexpl(pp->p_y, pp->p_x, SLIME);
-	for (pp = Player; pp < End_player; pp++)
+	for (pp = Player; pp < End_player; pp++){
 		sendcom(pp, REFRESH);
+	}
 # ifdef MONITOR
-	for (pp = Monitor; pp < End_monitor; pp++)
+	for (pp = Monitor; pp < End_monitor; pp++){
 		sendcom(pp, REFRESH);
+	}
 # endif
 }
 # endif
@@ -426,7 +440,7 @@ static void fire_slime(PLAYER *pp,int req_index){
  * @param[in] x A coordinate.
  * @param[in] face The face of a shot.
  * @param[in] charge The charge of a shot.
- * @param[in] owner The owner of a shot.
+ * @param[in] owner The owner of a shot. TODO
  * @param[in] expl The explosion of a shot.
  * @param[in] over The over a shot.
  */
@@ -473,8 +487,8 @@ void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,c
  * @param[in] face The face of a shot.
  * @param[in] charge The charge of a shot.
  * @param[in] size The size of a shot.
- * @param[in] owner The owner of a shot.
- * @param[in] score The score of a shot.
+ * @param[in] owner The owner of a shot. TODO
+ * @param[in] score The score of a shot. TODO
  * @param[in] expl The explosion of a shot.
  * @param[in] over The over of a shot.
  * \return A new shot.
@@ -484,8 +498,9 @@ BULLET * create_shot(int type,int y,int x,char face,int charge,int size,PLAYER *
 
 	bp = (BULLET *) malloc(sizeof (BULLET));	/* NOSTRICT */
 	if (bp == NULL) {
-		if (owner != NULL)
+		if (owner != NULL){
 			message(owner, "Out of memory");
+		}
 		return NULL;
 	}
 
@@ -506,7 +521,7 @@ BULLET * create_shot(int type,int y,int x,char face,int charge,int size,PLAYER *
 
 /**
  * Turn on or increase length of a cloak.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  */
 static void cloak(PLAYER *pp){
 	if (pp->p_ammo <= 0) {
@@ -525,15 +540,16 @@ static void cloak(PLAYER *pp){
 
 	pp->p_cloak += CLOAKLEN;
 
-	if (pp->p_scan >= 0)
+	if (pp->p_scan >= 0){
 		pp->p_scan = -1;
+	}
 
 	showstat(pp);
 }
 
 /**
  * Turn on or increase length of a scan.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  */
 static void scan(PLAYER *pp){
 	if (pp->p_ammo <= 0) {
@@ -546,15 +562,16 @@ static void scan(PLAYER *pp){
 
 	pp->p_scan += SCANLEN;
 
-	if (pp->p_cloak >= 0)
+	if (pp->p_cloak >= 0){
 		pp->p_cloak = -1;
+	}
 
 	showstat(pp);
 }
 
 /**
  * Check whether the object blew up or whether he picked it up.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  * @param[in] y A coordinate.
  * @param[in] x A coordinate.
  * @param[in] prob An indicative value, with which decide if an object is good (a shot to add) or evil (a shot that attacks the player).
@@ -573,9 +590,10 @@ void pickup(PLAYER *pp,int y,int x,int prob,int obj){
 	  default:
 		abort();
 	}
-	if (rand_num(100) < prob)
+	if (rand_num(100) < prob){
 		add_shot(obj, y, x, LEFTS, req, (PLAYER *) NULL,
 			true, pp->p_face);
+	}
 	else {
 		pp->p_ammo += req;
 		(void) sprintf(Buf, "%3d", pp->p_ammo);

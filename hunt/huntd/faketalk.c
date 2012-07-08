@@ -94,8 +94,9 @@ void faketalk() {
 
 	(void) signal(SIGCHLD, exorcise);
 
-	if (fork() != 0)
-	return;
+	if (fork() != 0){
+		return;
+	}
 
 	(void) signal(SIGINT, SIG_IGN);
 	(void) signal(SIGPIPE, SIG_IGN);
@@ -105,10 +106,12 @@ void faketalk() {
 	 */
 	*environ = NULL;
 	for (a = First_arg, b = ARGV0; a < Last_arg; a++) {
-		if (*b)
-		*a = *b++;
-		else
-		*a = ' ';
+		if (*b){
+			*a = *b++;
+		}
+		else{
+			*a = ' ';
+		}
 	}
 
 	/*
@@ -170,27 +173,34 @@ void faketalk() {
 	while (fgets(buf, BUFSIZ, f) != NULL) {
 		char *s, *t;
 
-		if (buf[0] != '2' || buf[1] != '5' || buf[2] != '0')
-		break;
-		if ((s = strchr(buf + 4, '<')) == NULL)
-		s = buf + 4, t = buf + strlen(buf) - 1;
+		if (buf[0] != '2' || buf[1] != '5' || buf[2] != '0'){
+			break;
+		}
+		if ((s = strchr(buf + 4, '<')) == NULL){
+			s = buf + 4, t = buf + strlen(buf) - 1;
+		}
 		else {
 			s += 1;
-			if ((t = strrchr(s, '>')) == NULL)
-			t = s + strlen(s) - 1;
-			else
-			t -= 1;
+			if ((t = strrchr(s, '>')) == NULL){
+				t = s + strlen(s) - 1;
+			}
+			else{
+				t -= 1;
+			}
 		}
 		while (isspace(*s))
 		s += 1;
-		if (*s == '\\')
-		s += 1;
-		while (isspace(*t))
-		t -= 1;
+		if (*s == '\\'){
+			s += 1;
+		}
+		while (isspace(*t)){
+			t -= 1;
+		}
 		*(t + 1) = '\0';
 		do_announce(s); /* construct and send talk request */
-		if (buf[3] == ' ')
-		break;
+		if (buf[3] == ' '){
+			break;
+		}
 	}
 	(void) shutdown(service, 2);
 	(void) close(service);
@@ -220,8 +230,9 @@ static void do_announce(char *s) {
 # endif
 	msg.id_num = (int) htonl((u_int32_t) -1); /* an impossible id_num */
 	ctl_transact(his_machine_addr, msg, ANNOUNCE, &response);
-	if (response.answer != SUCCESS)
-	return;
+	if (response.answer != SUCCESS){
+		return;
+	}
 
 	/*
 	 * Have the daemons delete the invitations now that we
@@ -234,8 +245,9 @@ static void do_announce(char *s) {
 	daemon_addr.sin_addr = his_machine_addr;
 	if (sendto(ctl_sockt, (char *) &msg, sizeof (msg), 0,
 					(struct sockaddr *) &daemon_addr, sizeof(daemon_addr))
-			!= sizeof(msg))
-	p_error("send delete remote");
+			!= sizeof(msg)){
+		p_error("send delete remote");
+	}
 }
 #else
 void faketalk() {

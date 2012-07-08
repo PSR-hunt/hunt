@@ -143,14 +143,18 @@ void moveshots() {
 			if (!bp->b_expl) {
 				save_bullet(bp);
 # ifdef MONITOR
-				for (pp = Monitor; pp < End_monitor; pp++)
-				check(pp, bp->b_y, bp->b_x);
+				for (pp = Monitor; pp < End_monitor; pp++){
+					check(pp, bp->b_y, bp->b_x);
+				}
 # endif
 # ifdef DRONE
-				if (bp->b_type == DSHOT)
-				for (pp = Player; pp < End_player; pp++)
-				if (pp->p_scan >= 0)
-				check(pp, bp->b_y, bp->b_x);
+				if (bp->b_type == DSHOT){
+					for (pp = Player; pp < End_player; pp++){
+						if (pp->p_scan >= 0){
+								check(pp, bp->b_y, bp->b_x);
+						}
+					}
+				}
 # endif
 				continue;
 			}
@@ -159,27 +163,32 @@ void moveshots() {
 			free((char *) bp);
 		}
 
-		for (pp = Player; pp < End_player; pp++)
+		for (pp = Player; pp < End_player; pp++){
 			Maze[pp->p_y][pp->p_x] = pp->p_face;
+		}
 	}
 
 # ifdef BOOTS
-	for (pp = Boot; pp < &Boot[NBOOTS]; pp++)
-	if (pp->p_flying >= 0)
-	move_flyer(pp);
+	for (pp = Boot; pp < &Boot[NBOOTS]; pp++){
+		if (pp->p_flying >= 0){
+			move_flyer(pp);
+		}
+	}
 # endif
 	for (pp = Player; pp < End_player; pp++) {
 # ifdef FLY
-		if (pp->p_flying >= 0)
-		move_flyer(pp);
+		if (pp->p_flying >= 0){
+			move_flyer(pp);
+		}
 # endif
 		sendcom(pp, REFRESH); /* Flush out the explosions */
 		look(pp);
 		sendcom(pp, REFRESH);
 	}
 # ifdef MONITOR
-	for (pp = Monitor; pp < End_monitor; pp++)
-	sendcom(pp, REFRESH);
+	for (pp = Monitor; pp < End_monitor; pp++){
+		sendcom(pp, REFRESH);
+	}
 # endif
 
 	return;
@@ -187,7 +196,7 @@ void moveshots() {
 
 /**
  * Move a normal shot along its trajectory.
- * @param[in] bp A bullet.
+ * @param[in] bp A bullet. TODO
  * \return True if the shot has destroied something, false otherwise.
  */
 static int move_normal_shot(BULLET *bp) {
@@ -413,20 +422,25 @@ static void move_drone(BULLET *bp) {
 		 * Find out what directions are clear
 		 */
 		mask = count = 0;
-		if (!iswall(bp->b_y, bp->b_x - 1))
-		mask |= WEST, count++;
-		if (!iswall(bp->b_y - 1, bp->b_x))
-		mask |= NORTH, count++;
-		if (!iswall(bp->b_y + 1, bp->b_x))
-		mask |= SOUTH, count++;
-		if (!iswall(bp->b_y, bp->b_x + 1))
-		mask |= EAST, count++;
+		if (!iswall(bp->b_y, bp->b_x - 1)){
+			mask |= WEST, count++;
+		}
+		if (!iswall(bp->b_y - 1, bp->b_x)){
+			mask |= NORTH, count++;
+		}
+		if (!iswall(bp->b_y + 1, bp->b_x)){
+			mask |= SOUTH, count++;
+		}
+		if (!iswall(bp->b_y, bp->b_x + 1)){
+			mask |= EAST, count++;
+		}
 
 		/*
 		 * All blocked up, just you wait
 		 */
-		if (count == 0)
-		return true;
+		if (count == 0){
+			return true;
+		}
 
 		/*
 		 * Only one way to go.
@@ -582,7 +596,7 @@ static void save_bullet(BULLET *bp) {
 #ifdef FLY
 /**
  * Update the position of a player in flight.
- * @param[in] pp A player.
+ * @param[in] pp A player. TODO
  */
 static void move_flyer(PLAYER *pp) {
 	int x, y;
@@ -676,8 +690,8 @@ static void move_flyer(PLAYER *pp) {
 
 /**
  * Handle explosions.
- * @param[in] bp A bullet.
- * @param[in] next A bullet at the next iteration.
+ * @param[in] bp A bullet. TODO
+ * @param[in] next A bullet at the next iteration. TODO
  */
 static void chkshot(BULLET *bp, BULLET* next) {
 	int y, x;
@@ -769,8 +783,8 @@ static void chkshot(BULLET *bp, BULLET* next) {
 # ifdef	OOZE
 /**
  * Handle slime shot exploding.
- * @param[in] bp A bullet.
- * @param[in] next A bullet at the next iteration.
+ * @param[in] bp A bullet. TODO
+ * @param[in] next A bullet at the next iteration. TODO
  */
 static void chkslime(BULLET *bp,BULLET *next) {
 	BULLET *nbp;
@@ -1037,8 +1051,8 @@ static int iswall(int y,int x) {
 
 /**
  * Take a shot out of the air.
- * @param[in] blist A bullet.
- * @param[in] obp The bullet at the next iteration.
+ * @param[in] blist A bullet. TODO
+ * @param[in] obp The bullet at the next iteration. TODO
  */
 static void zapshot(BULLET *blist, BULLET *obp) {
 	BULLET *bp;
@@ -1063,7 +1077,7 @@ static void zapshot(BULLET *blist, BULLET *obp) {
 
 /**
  * Make all shots at this location blow up.
- * @param[in] blist A bullet.
+ * @param[in] blist A bullet. TODO
  * @param[in] y A coordinate.
  * @param[in] x A coordinate.
  */
@@ -1154,8 +1168,8 @@ void fixshots(int y, int x, char over) {
 
 /**
  * Find the underlying character for a bullet when it lands on another bullet.
- * @param[in] blist A bullet.
- * @param[in] bp Another bullet, maybe on its trajectory.
+ * @param[in] blist A bullet. TODO
+ * @param[in] bp Another bullet, maybe on its trajectory. TODO
  */
 static void find_under(BULLET *blist, BULLET *bp) {
 	BULLET *nbp;
@@ -1170,7 +1184,7 @@ static void find_under(BULLET *blist, BULLET *bp) {
 
 /**
  * Mark a player as under a shot.
- * @param[in] bp A bullet.
+ * @param[in] bp A bullet. TODO
  */
 static void mark_player(BULLET *bp) {
 	PLAYER *pp;
@@ -1186,7 +1200,7 @@ static void mark_player(BULLET *bp) {
 # ifdef BOOTS
 /**
  * Mark a boot as under a shot.
- * @param[in] bp A bullet.
+ * @param[in] bp A bullet. TODO
  */
 static void mark_boot(BULLET *bp) {
 	PLAYER *pp;
