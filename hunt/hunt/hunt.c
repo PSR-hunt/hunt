@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 
 #ifndef lint
 __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
@@ -41,14 +41,14 @@ __RCSID("$NetBSD: hunt.c,v 1.23 2004/11/05 21:30:32 dsl Exp $");
 # include	<sys/param.h>
 # include	<sys/stat.h>
 # include	<sys/time.h>
-/**< # include	<sys/poll.h> already present in hunt.h. [PSR]*/
+/* # include	<sys/poll.h> already present in hunt.h. [PSR] */
 # include	<ctype.h>
 # include	<err.h>
-/**< # include	<errno.h> already present in hunt.h. [PSR]*/
-# include	<ncurses.h> /**< Edited from curses.h. [PSR]*/
+/* # include	<errno.h> already present in hunt.h. [PSR] */
+# include	<ncurses.h> /* Edited from curses.h. [PSR] */
 # include	<signal.h>
 # include	<stdlib.h>
-/**< # include	<string.h> already present in hunt.h. [PSR] */
+/* # include	<string.h> already present in hunt.h. [PSR] */
 # if !defined(USE_CURSES) && defined(BSD_RELEASE) && BSD_RELEASE >= 44
 # include	<termios.h>
 static struct termios saved_tty;
@@ -56,49 +56,43 @@ static struct termios saved_tty;
 # include	<unistd.h>
 # include	<ifaddrs.h>
 
-# include 	<getopt.h> /**< Explicit declaration of getopt family functions. [PSR]*/
+# include 	<getopt.h> /* Explicit declaration of getopt family functions. [PSR]*/
 
-# include	<net/if.h> /**< Added library to support net interface socket communication. [PSR]*/
+# include	<net/if.h> /* Added library to support net interface socket communication. [PSR]*/
 
-/**
- * It defines the overextimated length of a line in configuration file.
- * It is used only if the program is not able to compute the real input line length.
- * [PSR]
- */
-# define EMERGENCY_BUFFER_LENGTH 1024
+# define EMERGENCY_BUFFER_LENGTH 1024 /**< Overextimated length of a line in configuration file (used only if the program is not able to compute the real input line length). [PSR] */
 
 /*
  * Some old versions of curses don't have these defined
  */
 # if !defined(cbreak) && (!defined(BSD_RELEASE) || BSD_RELEASE < 44)
-# define	cbreak()	crmode()
+# define	cbreak()	crmode() /**< TODO [PSR] */
 # endif
 
 # if !defined(USE_CURSES) || !defined(TERMINFO)
-# define	beep()		(void) putchar(CTRL('G'))
+# define	beep()		(void) putchar(CTRL('G')) /**< Writes the character c, cast to an unsigned char, to stream. [PSR] */
 # endif
 # if !defined(USE_CURSES)
 # undef		refresh
-# define	refresh()	(void) fflush(stdout);
+# define	refresh()	(void) fflush(stdout); /**< Flushes a stream. [PSR] */
 # endif
 # ifdef USE_CURSES
 # define	clear_eol()	clrtoeol()
 # define	put_ch		addch
 # define	put_str		addstr
 # endif
-
 #ifndef MAXHOSTNAMELEN
-#define MAXHOSTNAMELEN 256
+#define MAXHOSTNAMELEN 256 /**< Defines the maximum length of an host name. [PSR] */
 #endif
 
-bool Last_player = false;
+bool Last_player = false; /**< Defines if a player is the last one or no. [PSR] */
 # ifdef MONITOR
 bool Am_monitor = false;
 # endif
 
-char Buf[BUFSIZ];
+char Buf[BUFSIZ]; /**< TODO [PSR] */
 
-int Socket;
+int Socket; /**< TODO [PSR] */
 # ifdef INTERNET
 char *Sock_host;
 char *use_port;
@@ -107,37 +101,38 @@ char *Send_message = NULL;
 bool Show_scores = false;
 # endif
 
-SOCKET Daemon;
+SOCKET Daemon; /**< TODO [PSR] */
 # ifdef	INTERNET
 # define	DAEMON_SIZE	(sizeof Daemon)
 # else
-# define	DAEMON_SIZE	(sizeof Daemon - 1)
+# define	DAEMON_SIZE	(sizeof Daemon - 1) /**< Defines the daemon size in case we are not in INTERNET mode. [PSR] */
 # endif
 
-char map_key[256]; /* what to map keys to */
-bool no_beep;
+char map_key[256]; /**< what to map keys to */
+bool no_beep; /**< TODO [PSR] */
 
-static char name[NAMELEN];
-static char team = ' ';
+static char name[NAMELEN]; /**< Indicates the name of a player. [PSR] */
+static char team = ' '; /**< Indicates the belonging team of a player. [PSR] */
 
-static int in_visual;
+static int in_visual; /**< TODO [PSR] */
 
-extern int cur_row, cur_col;
+extern int cur_row; /**< Indicates the current row. [PSR] */
+extern int cur_col; /**< Indicates the current column. [PSR] */
 #ifdef INTERNET
 void dump_scores(SOCKET);
 #endif
 long env_init(long);
-long var_env_init(long); //See function implementation in order to know description.
+long var_env_init(long);
 void fill_in_blanks(void);
 void leave(int, const char *) __attribute__((__noreturn__));
 void leavex(int, const char *) __attribute__((__noreturn__));
 void fincurs(void);
-void usage(void); //See function implementation in order to know description.
+void usage(void);
 int main(int, char *[]);
 # ifdef INTERNET
 SOCKET *list_drivers(void);
 # endif
-long fchars_in_line(FILE*); /**< Added explicit declaration to avoid implicit declaration. [PSR] */
+long fchars_in_line(FILE*); /* Added explicit declaration to avoid implicit declaration. [PSR] */
 
 #ifdef OTTO
 extern int Otto_mode;
@@ -278,8 +273,9 @@ int main(int argc, char* argv[]) {
 	}
 # endif
 # ifdef OTTO
-	if (Otto_mode)
-	(void) strncpy(name, "otto", NAMELEN);
+	if (Otto_mode){
+		(void) strncpy(name, "otto", NAMELEN);
+	}
 	else
 # endif
 	fill_in_blanks();
@@ -436,17 +432,17 @@ int main(int argc, char* argv[]) {
  * [PSR]
  */
 int broadcast_vec(struct sockaddr **vector) {
-	/**< int			s;		 socket Deprecated.[PSR] */
+	/* int			s;		 socket Deprecated. [PSR] */
 	int vec_cnt;
 	struct ifaddrs *ifp, *ip;
 
-	*vector = NULL; //Inizializza il vettore di sockaddr a NULL
-	if (getifaddrs(&ifp) < 0) { //Acquisisce le interfacce di rete
-		return 0;//Esce ad acquisizione fallita
+	*vector = NULL; /* Initialize the sockadrr vector. [PSR] */
+	if (getifaddrs(&ifp) < 0) { /* Acquires network interfaces. [PSR] */
+		return 0; /* Exit on failure acquisition. [PSR] */
 	}
 
 	vec_cnt = 0;
-	for (ip = ifp; ip; ip = ip->ifa_next) { //Posiziona ip sull'ultima interfaccia della lista
+	for (ip = ifp; ip; ip = ip->ifa_next) { /* ip is now on the last interface of the list. [PSR] */
 		if ((ip->ifa_addr->sa_family == AF_INET) &&
 				(ip->ifa_flags & IFF_BROADCAST)) {
 			vec_cnt++;
@@ -489,11 +485,11 @@ void usage() {
  */
 SOCKET * list_drivers() {
 	int option;
-	unsigned short msg; /**< Changed from u_short. [PSR] */
-	unsigned short port_num; /**< Changed from u_short. [PSR] */
+	unsigned short msg; /* Changed from u_short. [PSR] */
+	unsigned short port_num; /* Changed from u_short. [PSR] */
 	static SOCKET test;
 	int test_socket;
-	/**
+	/*
 	 * Edited namelen declaration type to unsigned int to match recvfrom() parameter.
 	 * [PSR]
 	 */
@@ -506,7 +502,7 @@ SOCKET * list_drivers() {
 	static int brdc;
 	static SOCKET *brdv;
 # else
-	unsigned long local_net; /**< Changed from u_long. [PSR] */
+	unsigned long local_net; /* Changed from u_long. [PSR] */
 # endif
 	int i;
 	static SOCKET *listv;
@@ -538,7 +534,7 @@ SOCKET * list_drivers() {
 		return listv; /* address already valid */
 	}
 
-	test_socket = socket(SOCK_FAMILY, SOCK_DGRAM, 0); //Creation of an UDP socket
+	test_socket = socket(SOCK_FAMILY, SOCK_DGRAM, 0); /* Creation of an UDP socket. [PSR] */
 	if (test_socket < 0) {
 		leave(1, "socket system call failed");
 		/* NOTREACHED */
@@ -672,7 +668,7 @@ void find_driver(bool do_startup) {
 	SOCKET *hosts;
 
 	hosts = list_drivers();
-	if (hosts[0].sin_port != htons(0)) { //Se hosts[0] è diverso dall'indirizzo locale
+	if (hosts[0].sin_port != htons(0)) { /* hosts[0] is different from the local address. [PSR] */
 		int i, c;
 
 		if (hosts[1].sin_port == htons(0)) {
@@ -973,7 +969,7 @@ void leave(int eval, const char *mesg) {
 	int serrno = errno;
 	fincurs();
 	errno = serrno;
-	/**
+	/*
 	 * Introduced errno parameter in err() in order to display it on standard error.
 	 * [PSR]
 	 */
@@ -987,7 +983,7 @@ void leave(int eval, const char *mesg) {
  */
 void leavex(int eval, const char *mesg) {
 	fincurs();
-	/**
+	/*
 	 * Introduced a NULL parameter in errx() since the routine shows a generic error message.
 	 * [PSR]
 	 */
@@ -1079,23 +1075,23 @@ long env_init(long enter_status_in) {
 
 	long enter_status = enter_status_in;
 
-	/**
+	/*
 	 * Variables supporting configuration file parsing.
 	 * [PSR]
 	 */
-	FILE* config; /**< Points to configuration file. [PSR]*/
-	FILE* c; /**< Points to configuration file. Used for char counting. [PSR]*/
+	FILE* config; /* Points to configuration file. [PSR] */
+	FILE* c; /* Points to configuration file. Used for char counting. [PSR] */
 	bool opened_c;
-	long input_len; /**< Input row length. [PSR]*/
-	char* input_row; /**< A row from configuration file. [PSR]*/
-	char* equal; /**< Points to the position of '=' into input_row. [PSR]*/
-	char* input_value; /**< Value associated to a configuration tag. [PSR]*/
-	long tag_len; /**< Tag field length. [PSR]*/
+	long input_len; /* Input row length. [PSR] */
+	char* input_row; /* A row from configuration file. [PSR] */
+	char* equal; /* Points to the position of '=' into input_row. [PSR] */
+	char* input_value; /* Value associated to a configuration tag. [PSR] */
+	long tag_len; /* Tag field length. [PSR] */
 	char* read;
 
 	int i;
 
-	/**
+	/*
 	 * Generates a map for extended ASCII conversion.
 	 * [PSR]
 	 */
@@ -1116,7 +1112,7 @@ long env_init(long enter_status_in) {
 		input_row = malloc(sizeof(char) * (input_len + 1));
 		read = fgets(input_row, input_len + 1, config);
 		while (!feof(config)) {
-			/**
+			/*
 			 * Avoids infinite loop in case of fgets failure.
 			 * [PSR]
 			 */
@@ -1178,14 +1174,14 @@ long env_init(long enter_status_in) {
 		free(input_row);
 		input_row = NULL;
 		if (opened_c) {
-			/**
+			/*
 			 * Hard-wired FILE* c setting to NULL after file closure.
 			 * [PSR]
 			 */
 			fclose(c);
 			c = NULL;
 		}
-		/**
+		/*
 		 * Hard-wired FILE* config setting to NULL after file closure.
 		 * [PSR]
 		 */
@@ -1204,15 +1200,15 @@ long env_init(long enter_status_in) {
  */
 long var_env_init(long enter_status_in) {
 
-	long enter_status = enter_status_in; /**< Hosts the value to return. [PSR]*/
+	long enter_status = enter_status_in; /* Hosts the value to return. [PSR] */
 
 	int i;
 
-	char *envp; /**< This string contains setting options. [PSR] */
-	char *envname; /**< Temporarely stores configured player name. [PSR]*/
+	char *envp; /* This string contains setting options. [PSR] */
+	char *envname; /* Temporarely stores configured player name. [PSR] */
 	char *s;
 
-	/**
+	/*
 	 * Generates a map for extended ASCII conversion.
 	 * [PSR]
 	 */
@@ -1220,13 +1216,13 @@ long var_env_init(long enter_status_in) {
 		map_key[i] = (char) i;
 	}
 
-	envname = NULL; //Verified null pointer safety
+	envname = NULL; /* Verified null pointer safety. [PSR] */
 
 	if ((envp = getenv("HUNT")) != NULL) {
 		while ((s = strpbrk(envp, "=,")) != NULL) {
-			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { //compara i caratteri dall'inizio della stringa di configurazione non ancora analizzata sino al primo =
+			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { /* Compare characters from the start of the conf string not yet analyzed till the first '='. [PSR] */
 				enter_status = Q_CLOAK;
-				envp = s + 1; //elimina i caratteri già considerati da envp
+				envp = s + 1; /* Deletes characters already considered. [PSR] */
 			} else if (strncmp(envp, "scan,", s - envp + 1) == 0) {
 				enter_status = Q_SCAN;
 				envp = s + 1;
@@ -1330,7 +1326,7 @@ long fchars_in_line(FILE* f) {
 	int read;
 	read = fscanf(f, "%c", &in);
 	while (!feof(f)) {
-		/**
+		/*
 		 * Avoids infinite loop in case of fscanf failure.
 		 * [PSR]
 		 */

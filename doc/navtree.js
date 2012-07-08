@@ -1,43 +1,30 @@
 var NAVTREE =
 [
   [ "[PSR]Hunt", "index.html", [
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ],
-      [ "Globals", "globals.html", [
-        [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Defines", "globals_defs.html", null ]
-      ] ]
-    ] ]
+    [ "File List", "files.html", [
+      [ "hunt/hunt/connect.c", "d0/dc3/connect_8c.html", null ],
+      [ "hunt/hunt/hunt.c", "da/d3e/hunt_8c.html", null ],
+      [ "hunt/hunt/otto.c", "df/d28/otto_8c.html", null ],
+      [ "hunt/hunt/playit.c", "da/db5/playit_8c.html", null ],
+      [ "hunt/huntd/answer.c", "d6/dfd/answer_8c.html", null ],
+      [ "hunt/huntd/ctl.c", "de/db5/ctl_8c.html", null ],
+      [ "hunt/huntd/ctl_transact.c", "d3/dad/ctl__transact_8c.html", null ],
+      [ "hunt/huntd/draw.c", "d6/dd9/draw_8c.html", null ],
+      [ "hunt/huntd/driver.c", "d1/d56/driver_8c.html", null ],
+      [ "hunt/huntd/execute.c", "d7/dd3/execute_8c.html", null ],
+      [ "hunt/huntd/expl.c", "d4/d55/expl_8c.html", null ],
+      [ "hunt/huntd/extern.c", "dc/d2c/extern_8c.html", null ],
+      [ "hunt/huntd/faketalk.c", "d0/d3e/faketalk_8c.html", null ],
+      [ "hunt/huntd/get_names.c", "d6/d0d/get__names_8c.html", null ],
+      [ "hunt/huntd/makemaze.c", "dc/df0/makemaze_8c.html", null ],
+      [ "hunt/huntd/pathname.c", "d9/d97/pathname_8c.html", null ],
+      [ "hunt/huntd/shots.c", "d4/dab/shots_8c.html", null ],
+      [ "hunt/huntd/terminal.c", "d2/d44/terminal_8c.html", null ],
+      [ "hunt/huntd/utils.c", "d3/d91/utils_8c.html", null ]
+    ] ],
+    [ "Globals", "globals.html", null ]
   ] ]
 ];
-
-function getData(varName)
-{
-  var i = varName.lastIndexOf('/');
-  var n = i>=0 ? varName.substring(i+1) : varName;
-  return eval(n);
-}
-
-function stripPath(uri)
-{
-  return uri.substring(uri.lastIndexOf('/')+1);
-}
-
-function getScript(scriptName,func,show)
-{
-  var head = document.getElementsByTagName("head")[0]; 
-  var script = document.createElement('script');
-  script.id = scriptName;
-  script.type = 'text/javascript';
-  script.onload = func; 
-  script.src = scriptName+'.js'; 
-  script.onreadystatechange = function() {
-    if (script.readyState == 'complete') { func(); if (show) showRoot(); }
-  };
-  head.appendChild(script); 
-}
 
 function createIndent(o,domNode,node,level)
 {
@@ -46,8 +33,6 @@ function createIndent(o,domNode,node,level)
     createIndent(o,domNode,node.parentNode,level+1);
   }
   var imgNode = document.createElement("img");
-  imgNode.width = 16;
-  imgNode.height = 22;
   if (level==0 && node.childrenData)
   {
     node.plus_img = imgNode;
@@ -70,7 +55,7 @@ function createIndent(o,domNode,node,level)
       } 
       else 
       {
-        expandNode(o, node, false, false);
+        expandNode(o, node, false);
       }
     }
     node.expandToggle.appendChild(imgNode);
@@ -147,36 +132,10 @@ function newNode(o, po, text, link, childrenData, lastNode)
   var a = document.createElement("a");
   node.labelSpan.appendChild(a);
   node.label = document.createTextNode(text);
-  node.expanded = false;
   a.appendChild(node.label);
   if (link) 
   {
-    a.className = stripPath(link.replace('#',':'));
-    if (link.indexOf('#')!=-1)
-    {
-      var aname = '#'+link.split('#')[1];
-      var srcPage = stripPath($(location).attr('pathname'));
-      var targetPage = stripPath(link.split('#')[0]);
-      a.href = srcPage!=targetPage ? node.relpath+link : '#';
-      a.onclick = function(){
-        $('.item').removeClass('selected');
-        $('.item').removeAttr('id');
-        $(a).parent().parent().addClass('selected');
-        $(a).parent().parent().attr('id','selected');
-        var anchor = $(aname);
-        $("#doc-content").animate({
-          scrollTop: anchor.position().top +
-          $('#doc-content').scrollTop() -
-          $('#doc-content').offset().top
-        },500,function(){
-          window.location.replace(aname);
-        });
-      };
-    }
-    else
-    {
-      a.href = node.relpath+link;
-    }
+    a.href = node.relpath+link;
   } 
   else 
   {
@@ -185,6 +144,7 @@ function newNode(o, po, text, link, childrenData, lastNode)
       a.className = "nolink";
       a.href = "javascript:void(0)";
       a.onclick = node.expandToggle.onclick;
+      node.expanded = false;
     }
   }
 
@@ -209,128 +169,34 @@ function showRoot()
   var headerHeight = $("#top").height();
   var footerHeight = $("#nav-path").height();
   var windowHeight = $(window).height() - headerHeight - footerHeight;
-  (function (){ // retry until we can scroll to the selected item
-    try {
-      navtree.scrollTo('#selected',0,{offset:-windowHeight/2});
-    } catch (err) {
-      setTimeout(arguments.callee, 0);
-    }
-  })();
+  navtree.scrollTo('#selected',0,{offset:-windowHeight/2});
 }
 
-function expandNode(o, node, imm, showRoot)
+function expandNode(o, node, imm)
 {
   if (node.childrenData && !node.expanded) 
   {
-    if (typeof(node.childrenData)==='string')
+    if (!node.childrenVisited) 
     {
-      var varName    = node.childrenData;
-      getScript(node.relpath+varName,function(){
-        node.childrenData = getData(varName);
-        expandNode(o, node, imm, showRoot);
-      }, showRoot);
+      getNode(o, node);
     }
-    else
+    if (imm)
     {
-      if (!node.childrenVisited) 
-      {
-        getNode(o, node);
-      }
-      if (imm)
-      {
-        $(node.getChildrenUL()).show();
-      } 
-      else 
-      {
-        $(node.getChildrenUL()).slideDown("fast");
-      }
-      if (node.isLast)
-      {
-        node.plus_img.src = node.relpath+"ftv2mlastnode.png";
-      }
-      else
-      {
-        node.plus_img.src = node.relpath+"ftv2mnode.png";
-      }
-      node.expanded = true;
-    }
-  }
-}
-
-function showNode(o, node, index)
-{
-  if (node.childrenData && !node.expanded) 
-  {
-    if (typeof(node.childrenData)==='string')
-    {
-      var varName    = node.childrenData;
-      getScript(node.relpath+varName,function(){
-        node.childrenData = getData(varName);
-        showNode(o,node,index);
-      },true);
-    }
-    else
-    {
-      if (!node.childrenVisited) 
-      {
-        getNode(o, node);
-      }
       $(node.getChildrenUL()).show();
-      if (node.isLast)
-      {
-        node.plus_img.src = node.relpath+"ftv2mlastnode.png";
-      }
-      else
-      {
-        node.plus_img.src = node.relpath+"ftv2mnode.png";
-      }
-      node.expanded = true;
-      var n = node.children[o.breadcrumbs[index]];
-      if (index+1<o.breadcrumbs.length)
-      {
-        showNode(o,n,index+1);
-      }
-      else
-      {
-        if (typeof(n.childrenData)==='string')
-        {
-          var varName = n.childrenData;
-          getScript(n.relpath+varName,function(){
-            n.childrenData = getData(varName);
-            node.expanded=false;
-            showNode(o,node,index); // retry with child node expanded
-          },true);
-        }
-        else
-        {
-          if (o.toroot=="index.html" || n.childrenData)
-          {
-            expandNode(o, n, true, true);
-          }
-          var a;
-          if ($(location).attr('hash'))
-          {
-            var link=stripPath($(location).attr('pathname'))+':'+
-                     $(location).attr('hash').substring(1);
-            a=$('.item a[class*=\""'+link+'"\"]');
-          }
-          if (a && a.length)
-          {
-            a.parent().parent().addClass('selected');
-            a.parent().parent().attr('id','selected');
-            var anchor = $($(location).attr('hash'));
-            var targetDiv = anchor.next();
-            $(targetDiv).children('.memproto,.memdoc').
-                     effect("highlight", {}, 1500);
-          }
-          else
-          {
-            $(n.itemDiv).addClass('selected');
-            $(n.itemDiv).attr('id','selected');
-          }
-        }
-      }
+    } 
+    else 
+    {
+      $(node.getChildrenUL()).slideDown("fast",showRoot);
     }
+    if (node.isLast)
+    {
+      node.plus_img.src = node.relpath+"ftv2mlastnode.png";
+    }
+    else
+    {
+      node.plus_img.src = node.relpath+"ftv2mnode.png";
+    }
+    node.expanded = true;
   }
 }
 
@@ -342,8 +208,31 @@ function getNode(o, po)
   {
     var nodeData = po.childrenData[i];
     po.children[i] = newNode(o, po, nodeData[0], nodeData[1], nodeData[2],
-      i==l);
+        i==l);
   }
+}
+
+function findNavTreePage(url, data)
+{
+  var nodes = data;
+  var result = null;
+  for (var i in nodes) 
+  {
+    var d = nodes[i];
+    if (d[1] == url) 
+    {
+      return new Array(i);
+    }
+    else if (d[2] != null) // array of children
+    {
+      result = findNavTreePage(url, d[2]);
+      if (result != null) 
+      {
+        return (new Array(i).concat(result));
+      }
+    }
+  }
+  return null;
 }
 
 function initNavTree(toroot,relpath)
@@ -359,53 +248,26 @@ function initNavTree(toroot,relpath)
   o.node.li.appendChild(o.node.childrenUL);
   o.node.depth = 0;
   o.node.relpath = relpath;
-  o.node.expanded = false;
-  o.node.isLast = true;
-  o.node.plus_img = document.createElement("img");
-  o.node.plus_img.src = relpath+"ftv2pnode.png";
-  o.node.plus_img.width = 16;
-  o.node.plus_img.height = 22;
 
-  getScript(relpath+"navtreeindex",function(){
-    var navTreeIndex = eval('NAVTREEINDEX');
-    if (navTreeIndex) {
-      o.breadcrumbs = navTreeIndex[toroot];
-      if (o.breadcrumbs==null) o.breadcrumbs = navTreeIndex["index.html"];
-      o.breadcrumbs.unshift(0);
-      showNode(o, o.node, 0);
+  getNode(o, o.node);
+
+  o.breadcrumbs = findNavTreePage(toroot, NAVTREE);
+  if (o.breadcrumbs == null)
+  {
+    o.breadcrumbs = findNavTreePage("index.html",NAVTREE);
+  }
+  if (o.breadcrumbs != null && o.breadcrumbs.length>0)
+  {
+    var p = o.node;
+    for (var i in o.breadcrumbs) 
+    {
+      var j = o.breadcrumbs[i];
+      p = p.children[j];
+      expandNode(o,p,true);
     }
-  },true);
-
-  $(window).bind('hashchange', function(){
-     if (window.location.hash && window.location.hash.length>1){
-       var anchor = $(window.location.hash);
-       var targetDiv = anchor.next();
-       $(targetDiv).children('.memproto,.memdoc').effect("highlight",{},1500);
-       var docContent = $('#doc-content');
-       if (docContent && anchor && anchor[0] && anchor[0].ownerDocument){
-         docContent.scrollTop(anchor.position().top+docContent.scrollTop()-docContent.offset().top);
-       }
-       var a;
-       if ($(location).attr('hash')){
-         var link=stripPath($(location).attr('pathname'))+':'+
-                  $(location).attr('hash').substring(1);
-         a=$('.item a[class*=\""'+link+'"\"]');
-       }
-       if (a && a.length){
-         $('.item').removeClass('selected');
-         $('.item').removeAttr('id');
-         a.parent().parent().addClass('selected');
-         a.parent().parent().attr('id','selected');
-         var anchor = $($(location).attr('hash'));
-         var targetDiv = anchor.next();
-         showRoot();
-       }
-     } else {
-       var docContent = $('#doc-content');
-       if (docContent){ docContent.scrollTop(0); }
-     }
-  })
-
-  $(window).load(showRoot);
+    p.itemDiv.className = p.itemDiv.className + " selected";
+    p.itemDiv.id = "selected";
+    $(window).load(showRoot);
+  }
 }
 

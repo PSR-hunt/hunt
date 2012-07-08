@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
 #ifndef lint
 __RCSID("$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $");
 #endif /* not lint */
@@ -41,7 +41,7 @@ __RCSID("$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $");
 # include	<unistd.h>
 
 /**
- * Manages the preliminary operations of connection of a player with a:
+ * Manages the preliminary operations of connection of a player.
  * @param[in] name Represents the name of a player, TODO
  * @param[in] team Represents the team which the player belongs to,
  * @param[in] enter_status Represents the enter status of a player.
@@ -49,8 +49,8 @@ __RCSID("$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $");
  */
 void do_connect(const char *name, char team, long enter_status) {
 
-	static int32_t uid; //user id
-	static int32_t mode; //game mode
+	static int32_t uid; /* User id. [PSR] */
+	static int32_t mode; /* Game mode. [PSR] */
 
 	if (uid == 0) {
 		uid = htonl(getuid());

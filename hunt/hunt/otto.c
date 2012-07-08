@@ -31,7 +31,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
+/*
  *	otto	- a hunt otto-matic player
  *
  *		This guy is buggy, unfair, stupid, and not extensible.
@@ -45,13 +45,13 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h.c[PSR] */
+/* #include <sys/cdefs.h> pushed up in hunt.h.c [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: otto.c,v 1.8 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
 
 # include	<sys/time.h>
-# include	<ncurses.h> /**< Edited from curses.h. [PSR] */
+# include	<ncurses.h> /* Edited from curses.h. [PSR] */
 # include	<ctype.h>
 # include	<signal.h>
 # include	<stdlib.h>
@@ -174,8 +174,8 @@ void empty_handler(int param) {
  */
 void otto(int y,int x,char face) {
 	int i;
-	struct sigaction handler, old_handler; /**< Added to substitute deprecated signals functions. [PSR] */
-	sigset_t old_mask, sig_mask; /**< Added to substitute deprecated signals functions. [PSR] */
+	struct sigaction handler, old_handler; /* Added to substitute deprecated signals functions. [PSR] */
+	sigset_t old_mask, sig_mask; /* Added to substitute deprecated signals functions. [PSR] */
 
 	bool done;
 
@@ -186,14 +186,14 @@ void otto(int y,int x,char face) {
 	}
 	fprintf(debug, "\n%c(%d,%d)", face, y, x);
 # endif
-	handler.sa_handler=&empty_handler; /**< Added to substitute deprecated signals functions. [PSR] */
-	sigaction(SIGALRM, &handler, &old_handler);/**< Added to substitute deprecated signals functions. [PSR] */
-	sigemptyset(&sig_mask);/**< Added to substitute deprecated signals functions. [PSR] */
-	sigaddset(&sig_mask, SIGALRM);/**< Added to substitute deprecated signals functions. [PSR] */
-	sigprocmask(SIG_BLOCK, &sig_mask, &old_mask);/**< Added to substitute deprecated signals functions. [PSR] */
-	setitimer(ITIMER_REAL, &pause_time, NULL);/**< Added to substitute deprecated signals functions. [PSR] */
-	sigsuspend(&old_mask);/**< Added to substitute deprecated signals functions. [PSR] */
-	sigprocmask(SIG_SETMASK, &old_mask, NULL);/**< Added to substitute deprecated signals functions. [PSR] */
+	handler.sa_handler=&empty_handler; /* Added to substitute deprecated signals functions. [PSR] */
+	sigaction(SIGALRM, &handler, &old_handler);/* Added to substitute deprecated signals functions. [PSR] */
+	sigemptyset(&sig_mask);/* Added to substitute deprecated signals functions. [PSR] */
+	sigaddset(&sig_mask, SIGALRM);/* Added to substitute deprecated signals functions. [PSR] */
+	sigprocmask(SIG_BLOCK, &sig_mask, &old_mask);/* Added to substitute deprecated signals functions. [PSR] */
+	setitimer(ITIMER_REAL, &pause_time, NULL);/* Added to substitute deprecated signals functions. [PSR] */
+	sigsuspend(&old_mask);/* Added to substitute deprecated signals functions. [PSR] */
+	sigprocmask(SIG_SETMASK, &old_mask, NULL);/* Added to substitute deprecated signals functions. [PSR] */
 
 	/* save away parameters so other functions may use/update info */
 	switch (face) {

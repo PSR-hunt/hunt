@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/* #include <sys/cdefs.h> pushed up in hunt.h. */
 #ifndef lint
 __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -40,8 +40,8 @@ __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 # include	<sys/file.h>
 # include	<sys/poll.h>
 # include	<err.h>
-/**< # include	<errno.h> already present in hunt.h. */
-# include	<ncurses.h> /**< Edited from curses.h. */
+/* # include	<errno.h> already present in hunt.h. */
+# include	<ncurses.h> /* Edited from curses.h. */
 # include	<ctype.h>
 # include	<signal.h>
 # include	<sys/time.h>
@@ -51,15 +51,15 @@ __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 # endif
 
 # ifndef FREAD
-# define	FREAD	1
+# define	FREAD	1 /**< Defined but not used in this file. [PSR] */
 # endif
 
 # if !defined(USE_CURSES) || !defined(TERMINFO)
-# define	beep()		(void) putchar(CTRL('G'))
+# define	beep()		(void) putchar(CTRL('G')) /**< Writes the character c, cast to an unsigned char, to stream. [PSR] */
 # endif
 # if !defined(USE_CURSES)
 # undef		refresh
-# define	refresh()	(void) fflush(stdout);
+# define	refresh()	(void) fflush(stdout); /**< Flushes a stream. [PSR] */
 # endif
 # ifdef USE_CURSES
 # define	clear_eol()	clrtoeol()
@@ -67,10 +67,12 @@ __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 # define	put_str		addstr
 # endif
 
-static int nchar_send;
+static int nchar_send; /**< Number of sent characters. [PSR] */
 # ifndef USE_CURSES
-char screen[SCREEN_HEIGHT][SCREEN_WIDTH2], blanks[SCREEN_WIDTH];
-int cur_row, cur_col;
+char screen[SCREEN_HEIGHT][SCREEN_WIDTH2]; /**< The game area. [PSR] */
+char blanks[SCREEN_WIDTH]; /**< TODO Temporary buffer. [PSR] */
+int cur_row; /**< Indicates the current row. [PSR] */
+int cur_col; /**< Indicates the current column. [PSR] */
 # endif
 # ifdef OTTO
 int Otto_count;
@@ -79,23 +81,25 @@ static int otto_y, otto_x;
 static char otto_face;
 # endif
 
-# define	MAX_SEND	5
-# define	STDIN		0
+# define	MAX_SEND	5 /**< Maximum number of characters to send. [PSR] */
+# define	STDIN		0 /**< File descriptor. [PSR] */
 
 /*
  * ibuf is the input buffer used for the stream from the driver.
  * It is small because we do not check for user input when there
  * are characters in the input buffer.
  */
-static int icnt = 0;
-static unsigned char ibuf[256], *iptr = ibuf;
+static int icnt = 0; /**< Number of read characters. [PSR] */
+static unsigned char ibuf[256]; /**< The input buffer used for the stream from the driver. [PSR] */
+static unsigned char *iptr = ibuf; /**< Points to ibuf. [PSR] */
 
-#define	GETCHR()	(--icnt < 0 ? getchr() : *iptr++)
+#define	GETCHR()	(--icnt < 0 ? getchr() : *iptr++) /**< Implements a getchr or increments iptr, basing on icnt value. [PSR] */
 
-//Seems to be unused
-//#if !defined(BSD_RELEASE) || BSD_RELEASE < 44
-//extern int _putchar();
-//#endif
+/*Seems to be unused [PSR]
+#if !defined(BSD_RELEASE) || BSD_RELEASE < 44
+extern int _putchar();
+#endif
+*/
 
 static unsigned char getchr(void);
 static void send_stuff(void);
@@ -207,8 +211,9 @@ void playit() {
 # ifdef DEBUG
 				fputc('0' + Otto_count, stderr);
 # endif
-				if (Otto_count == 0 && Otto_mode)
-				otto(otto_y, otto_x, otto_face);
+				if (Otto_count == 0 && Otto_mode){
+					otto(otto_y, otto_x, otto_face);
+				}
 			}
 # endif
 			break;
@@ -259,22 +264,25 @@ static unsigned char getchr() {
 			nfds = poll(set, 2, INFTIM);
 		} while (nfds <= 0 && errno == EINTR);
 
-		if (set[1].revents && POLLIN)
+		if (set[1].revents && POLLIN){
 			send_stuff();
-		if (!(set[0].revents & POLLIN))
+		}
+		if (!(set[0].revents & POLLIN)){
 			continue;
+		}
 		icnt = read(Socket, ibuf, sizeof ibuf);
 		if (icnt < 0) {
 			bad_con();
 			/* NOTREACHED */
 		}
-		if (icnt == 0)
+		if (icnt == 0){
 			continue;
+		}
 		iptr = ibuf;
 		icnt--;
 		return *iptr++;
 	}
-	//This point should never be reached
+	/* This point should never be reached. [PSR] */
 	return -1;
 }
 
@@ -287,8 +295,9 @@ static void send_stuff() {
 	static char inp[sizeof Buf];
 
 	count = read(STDIN, Buf, sizeof Buf);
-	if (count <= 0)
+	if (count <= 0){
 		return;
+	}
 	if (nchar_send <= 0 && !no_beep) {
 		dbg_write(1, "\7", 1);
 		/* CTRL('G') */
@@ -302,19 +311,23 @@ static void send_stuff() {
 	 */
 	Buf[count] = '\0';
 	nsp = inp;
-	for (sp = Buf; *sp != '\0'; sp++)
-		if ((*nsp = map_key[(int) *sp]) == 'q')
+	for (sp = Buf; *sp != '\0'; sp++){
+		if ((*nsp = map_key[(int) *sp]) == 'q'){
 			intr(0);
-		else
+		}
+		else{
 			nsp++;
+		}
+	}
 	count = nsp - inp;
 	if (count) {
 # ifdef OTTO
 		Otto_count += count;
 # endif
 		nchar_send -= count;
-		if (nchar_send < 0)
+		if (nchar_send < 0){
 			count += nchar_send;
+		}
 		dbg_write(Socket, inp, count);
 	}
 }
@@ -354,8 +367,9 @@ int quit(int old_status) {
 		if (ch == 'y'){
 			return old_status;
 		}
-		else if (ch == 'o')
+		else if (ch == 'o'){
 			break;
+		}
 		else if (ch == 'n') {
 # ifndef INTERNET
 			return Q_QUIT;
@@ -509,7 +523,7 @@ int quit(int old_status) {
 		}
 		refresh();
 	}
-	//This point should never be reached
+	/* This point should never be reached [PSR] */
 	return -1;
 }
 
@@ -547,8 +561,9 @@ errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
  * [PSR]
  */
 void put_str(const char *s) {
-	while (*s)
+	while (*s){
 		put_ch(*s++);
+	}
 }
 # endif
 
@@ -565,8 +580,9 @@ void clear_the_screen() {
 	int i;
 
 	if (blanks[0] == '\0')
-		for (i = 0; i < SCREEN_WIDTH; i++)
+		for (i = 0; i < SCREEN_WIDTH; i++){
 			blanks[i] = ' ';
+		}
 #ifdef CL
 	if (CL != NULL) {
 #if !defined(BSD_RELEASE) || BSD_RELEASE < 44
@@ -574,8 +590,9 @@ void clear_the_screen() {
 #else
 		tputs(CL, LINES, __cputchar);
 #endif
-		for (i = 0; i < SCREEN_HEIGHT; i++)
+		for (i = 0; i < SCREEN_HEIGHT; i++){
 			memcpy(screen[i], blanks, SCREEN_WIDTH);
+		}
 	} else
 #else
 errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
@@ -607,12 +624,15 @@ void clear_eol() {
 #endif
 	else {
 		fwrite(blanks, sizeof(char), SCREEN_WIDTH - cur_col, stdout);
-		if (COLS != SCREEN_WIDTH)
+		if (COLS != SCREEN_WIDTH){
 			mvcur(cur_row, SCREEN_WIDTH, cur_row, cur_col);
-		else if (AM)
+		}
+		else if (AM){
 			mvcur(cur_row + 1, 0, cur_row, cur_col);
-		else
+		}
+		else{
 			mvcur(cur_row, SCREEN_WIDTH - 1, cur_row, cur_col);
+		}
 	}
 	memcpy(&screen[cur_row][cur_col], blanks, SCREEN_WIDTH - cur_col);
 #else
@@ -636,22 +656,25 @@ void redraw_screen() {
 
 	if (first) {
 		curscr = newwin(SCREEN_HEIGHT, SCREEN_WIDTH, 0, 0);
-		if (curscr == NULL)
+		if (curscr == NULL){
 			errx(1, "Can't create curscr");
+		}
 
-//Uncomment only for BSD legacy compatibility
-//# if !defined(BSD_RELEASE) || BSD_RELEASE < 44
-//		for (i = 0; i < SCREEN_HEIGHT; i++)
-//			curscr->_y[i] = screen[i];
-//# endif
+/*Uncomment only for BSD legacy compatibility [PSR]
+# if !defined(BSD_RELEASE) || BSD_RELEASE < 44
+		for (i = 0; i < SCREEN_HEIGHT; i++)
+			curscr->_y[i] = screen[i];
+ * # endif
+ */
 		first = 0;
 	}
 # if defined(BSD_RELEASE) && BSD_RELEASE >= 44
 	for (i = 0; i < SCREEN_HEIGHT; i++) {
 		int j;
 
-		for (j = 0; j < SCREEN_WIDTH; j++)
-		curscr->lines[i]->line[j].ch = screen[i][j];
+		for (j = 0; j < SCREEN_WIDTH; j++){
+			curscr->lines[i]->line[j].ch = screen[i][j];
+		}
 	}
 	curscr->cury = cur_row;
 	curscr->curx = cur_col;
@@ -666,8 +689,9 @@ void redraw_screen() {
 	mvcur(cur_row, cur_col, 0, 0);
 	for (i = 0; i < SCREEN_HEIGHT - 1; i++) {
 		fwrite(screen[i], sizeof (char), SCREEN_WIDTH, stdout);
-		if (COLS > SCREEN_WIDTH || (COLS == SCREEN_WIDTH && !AM))
-		putchar('\n');
+		if (COLS > SCREEN_WIDTH || (COLS == SCREEN_WIDTH && !AM)){
+			putchar('\n');
+		}
 	}
 	fwrite(screen[SCREEN_HEIGHT - 1], sizeof (char), SCREEN_WIDTH - 1,
 			stdout);
