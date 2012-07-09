@@ -642,7 +642,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	BULLET *bp;
 	PLAYER *np;
 	int x, y;
-//	int savefd; /**< For future use. [PSR]*/
+/*	int savefd;  For future use. [PSR] */
 
 	if (was_player) {
 		if (pp->p_undershot) {
@@ -667,7 +667,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	outstr(pp, pp->p_death, len);
 	cgoto(pp, HEIGHT, 0);
 
-//	savefd = pp->p_fd;
+/*	savefd = pp->p_fd; */
 
 # ifdef MONITOR
 	if (was_player) {

@@ -1051,7 +1051,7 @@ static int iswall(int y,int x) {
 
 /**
  * Take a shot out of the air.
- * @param[in] blist A bullet. TODO
+ * @param[in] blist A bullet.
  * @param[in] obp The bullet at the next iteration. TODO
  */
 static void zapshot(BULLET *blist, BULLET *obp) {
@@ -1077,7 +1077,7 @@ static void zapshot(BULLET *blist, BULLET *obp) {
 
 /**
  * Make all shots at this location blow up.
- * @param[in] blist A bullet. TODO
+ * @param[in] blist A bullet.
  * @param[in] y A coordinate.
  * @param[in] x A coordinate.
  */
@@ -1168,7 +1168,7 @@ void fixshots(int y, int x, char over) {
 
 /**
  * Find the underlying character for a bullet when it lands on another bullet.
- * @param[in] blist A bullet. TODO
+ * @param[in] blist A bullet.
  * @param[in] bp Another bullet, maybe on its trajectory. TODO
  */
 static void find_under(BULLET *blist, BULLET *bp) {
@@ -1184,7 +1184,7 @@ static void find_under(BULLET *blist, BULLET *bp) {
 
 /**
  * Mark a player as under a shot.
- * @param[in] bp A bullet. TODO
+ * @param[in] bp A bullet.
  */
 static void mark_player(BULLET *bp) {
 	PLAYER *pp;
@@ -1200,7 +1200,7 @@ static void mark_player(BULLET *bp) {
 # ifdef BOOTS
 /**
  * Mark a boot as under a shot.
- * @param[in] bp A bullet. TODO
+ * @param[in] bp A bullet.
  */
 static void mark_boot(BULLET *bp) {
 	PLAYER *pp;

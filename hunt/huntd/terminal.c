@@ -96,7 +96,7 @@ void clrscr(PLAYER *pp) {
 
 /**
  * Clear to the end of the line.
- * @param[in] pp The player which screen will be cleared to the end of the line. TODO
+ * @param[in] pp The player which screen will be cleared to the end of the line.
  */
 void ce(PLAYER *pp) {
 	sendcom(pp, CLRTOEOL);
@@ -105,7 +105,7 @@ void ce(PLAYER *pp) {
 #if 0		/* XXX lukem*/
 /**
  * Refresh the screen
- * @param[in] pp The player which screen will be refreshed. TODO
+ * @param[in] pp The player which screen will be refreshed.
  */
 void  ref(PLAYER * pp){
 	sendcom(pp, REFRESH);

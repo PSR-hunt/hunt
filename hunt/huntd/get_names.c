@@ -63,7 +63,7 @@ char *my_machine_name;
 
 /**
  * Determine the local user and machine.
- * @param[in] my_name The user name. TODO
+ * @param[in] my_name The user name.
  */
 void get_local_name(const char *my_name) {
 	struct hostent *hp;
@@ -123,7 +123,7 @@ void get_local_name(const char *my_name) {
 
 /**
  * Determine the remote user and machine.
- * @param[in] his_address A user address. TODO
+ * @param[in] his_address A user address.
  * \return 1 if exists a known corresponding user, 0 otherwise.
  */
 int get_remote_name(char *his_address) {

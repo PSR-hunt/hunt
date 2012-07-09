@@ -33,7 +33,7 @@
 /* #include "bsd.h" already present in hunt.h. [PSR]*/
 
 #if	defined(TALK_43) || defined(TALK_42) 
-# define TALK_MODE //See documentation in hunt.h.
+# define TALK_MODE
 # include	"hunt.h"
 # undef TALK_MODE
 

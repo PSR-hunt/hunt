@@ -427,7 +427,7 @@ int main(int argc, char* argv[]) {
 /**
  * Counts the number of network interfaces only in the case
  * they are of type INET and BROADCAST.
- * @param[in] vector The place where the list of interfaces is saved. TODO
+ * @param[out] vector The place where the list of interfaces is saved.
  * \return the counted number of network interfaces.
  * [PSR]
  */
@@ -1316,7 +1316,7 @@ long var_env_init(long enter_status_in) {
 
 /**
  * Counts the number of characters of all the lines in a file.
- * @param[in] f The file. TODO
+ * @param[in] f The file.
  * \return The counter.
  * [PSR]
  */

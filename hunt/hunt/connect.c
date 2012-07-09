@@ -42,8 +42,8 @@ __RCSID("$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $");
 
 /**
  * Manages the preliminary operations of connection of a player.
- * @param[in] name Represents the name of a player, TODO
- * @param[in] team Represents the team which the player belongs to,
+ * @param[in] name Represents the name of a player.
+ * @param[in] team Represents the team which the player belongs to.
  * @param[in] enter_status Represents the enter status of a player.
  * [PSR]
  */

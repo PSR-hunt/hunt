@@ -561,7 +561,7 @@ STATIC void attack(int rel_dir,struct item *itemp) {
 
 /**
  * Implements the movement of the player in a given direction.
- * @param[in] A direction.
+ * @param[in] rel_dir A direction.
  * [PSR]
  *
  */

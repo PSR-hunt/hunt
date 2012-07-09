@@ -70,7 +70,7 @@ void mon_execute(PLAYER *pp){
 
 /**
  * Execute a single command.
- * @param[in] pp The player who gives the command. TODO
+ * @param[in] pp The player who gives the command.
  */
 void execute(PLAYER *pp){
 	char	ch;
@@ -252,8 +252,9 @@ static void move_player(PLAYER *pp,int dir){
 	  case DSHOT:
 # endif
 		bp = is_bullet(y, x);
-		if (bp != NULL)
+		if (bp != NULL){
 			bp->b_expl = true;
+		}
 		Maze[y][x] = SPACE;
 		moved = true;
 		break;
@@ -344,14 +345,17 @@ static void face(PLAYER *pp,int dir){
  * @param[in] req_index the type of the shot.
  */
 static void fire(PLAYER *pp,int req_index){
-	if (pp == NULL)
+	if (pp == NULL){
 		return;
+	}
 # ifdef DEBUG
-	if (req_index < 0 || req_index >= MAXBOMB)
+	if (req_index < 0 || req_index >= MAXBOMB){
 		message(pp, "What you do?");
+	}
 # endif
-	while (req_index >= 0 && pp->p_ammo < shot_req[req_index])
+	while (req_index >= 0 && pp->p_ammo < shot_req[req_index]){
 		req_index--;
+	}
 	if (req_index < 0) {
 		message(pp, "Not enough charges.");
 		return;
@@ -393,14 +397,17 @@ static void fire(PLAYER *pp,int req_index){
  * @param[in] req_index the type of the slime.
  */
 static void fire_slime(PLAYER *pp,int req_index){
-	if (pp == NULL)
+	if (pp == NULL){
 		return;
+	}
 # ifdef DEBUG
-	if (req_index < 0 || req_index >= MAXSLIME)
+	if (req_index < 0 || req_index >= MAXSLIME){
 		message(pp, "What you do?");
+	}
 # endif
-	while (req_index >= 0 && pp->p_ammo < slime_req[req_index])
+	while (req_index >= 0 && pp->p_ammo < slime_req[req_index]){
 		req_index--;
+	}
 	if (req_index < 0) {
 		message(pp, "Not enough charges.");
 		return;
@@ -443,7 +450,7 @@ static void fire_slime(PLAYER *pp,int req_index){
  * @param[in] x A coordinate.
  * @param[in] face The face of a shot.
  * @param[in] charge The charge of a shot.
- * @param[in] owner The owner of a shot. TODO
+ * @param[in] owner The owner of a shot.
  * @param[in] expl The explosion of a shot.
  * @param[in] over The over a shot.
  */
@@ -490,8 +497,8 @@ void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,c
  * @param[in] face The face of a shot.
  * @param[in] charge The charge of a shot.
  * @param[in] size The size of a shot.
- * @param[in] owner The owner of a shot. TODO
- * @param[in] score The score of a shot. TODO
+ * @param[in] owner The owner of a shot.
+ * @param[in] score The score of a shot.
  * @param[in] expl The explosion of a shot.
  * @param[in] over The over of a shot.
  * \return A new shot.
