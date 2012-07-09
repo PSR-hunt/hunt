@@ -164,25 +164,25 @@ function toggleVisibility(linkObj) {
 <a name="l00045"></a>00045 
 <a name="l00046"></a>00046 <span class="preprocessor"># ifdef DEBUG</span>
 <a name="l00047"></a>00047 <span class="preprocessor"></span>
-<a name="l00048"></a>00048 <span class="keywordtype">char</span>    *<a class="code" href="../../d9/d97/pathname_8c_abccaa653dcaf4921bde2156cc1a86a32.html#abccaa653dcaf4921bde2156cc1a86a32">Driver</a> =       <span class="stringliteral">&quot;/home/socr/a/conrad/games/src/hunt/huntd.dbg&quot;</span>;
+<a name="l00048"></a>00048 <span class="keywordtype">char</span>    *<a class="code" href="../../d9/d97/pathname_8c_abccaa653dcaf4921bde2156cc1a86a32.html#abccaa653dcaf4921bde2156cc1a86a32" title="Defines the path to reach folder huntd.">Driver</a> =       <span class="stringliteral">&quot;/home/socr/a/conrad/games/src/hunt/huntd.dbg&quot;</span>;
 <a name="l00049"></a>00049 <span class="preprocessor">#  ifdef INTERNET</span>
-<a name="l00050"></a>00050 <span class="preprocessor"></span><span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>  Test_port =     (<span class="charliteral">&#39;h&#39;</span> &lt;&lt; 8) | <span class="charliteral">&#39;t&#39;</span>; 
+<a name="l00050"></a>00050 <span class="preprocessor"></span><span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>  Test_port =     (<span class="charliteral">&#39;h&#39;</span> &lt;&lt; 8) | <span class="charliteral">&#39;t&#39;</span>; <span class="comment">/* Changed from u_short. [PSR] */</span>
 <a name="l00051"></a>00051 <span class="preprocessor">#  else</span>
-<a name="l00052"></a>00052 <span class="preprocessor"></span><span class="keywordtype">char</span>    *<a class="code" href="../../d9/d97/pathname_8c_ab19bda69bc4b43bdf202ff8f3429b1e5.html#ab19bda69bc4b43bdf202ff8f3429b1e5">Sock_name</a> =    <span class="stringliteral">&quot;/tmp/hunt&quot;</span>;
-<a name="l00053"></a>00053 <span class="keywordtype">char</span>    *<a class="code" href="../../d9/d97/pathname_8c_a3b16bd3e8c3d2081bd7e9cfde7856f43.html#a3b16bd3e8c3d2081bd7e9cfde7856f43">Stat_name</a> =    <span class="stringliteral">&quot;/tmp/hunt.stats&quot;</span>;
+<a name="l00052"></a>00052 <span class="preprocessor"></span><span class="keywordtype">char</span>    *<a class="code" href="../../d9/d97/pathname_8c_ab19bda69bc4b43bdf202ff8f3429b1e5.html#ab19bda69bc4b43bdf202ff8f3429b1e5" title="Identifies the socket name.">Sock_name</a> =    <span class="stringliteral">&quot;/tmp/hunt&quot;</span>;
+<a name="l00053"></a>00053 <span class="keywordtype">char</span>    *<a class="code" href="../../d9/d97/pathname_8c_a3b16bd3e8c3d2081bd7e9cfde7856f43.html#a3b16bd3e8c3d2081bd7e9cfde7856f43" title="TODO [PSR].">Stat_name</a> =    <span class="stringliteral">&quot;/tmp/hunt.stats&quot;</span>;
 <a name="l00054"></a>00054 <span class="preprocessor">#  endif</span>
 <a name="l00055"></a>00055 <span class="preprocessor"></span>
 <a name="l00056"></a>00056 <span class="preprocessor"># else</span>
 <a name="l00057"></a>00057 <span class="preprocessor"></span>
 <a name="l00058"></a>00058 <span class="preprocessor">#ifndef HUNTD</span>
-<a name="l00059"></a><a class="code" href="../../d9/d97/pathname_8c_a0dcb7f8758f2eb3a3eec5f54e78e62bb.html#a0dcb7f8758f2eb3a3eec5f54e78e62bb">00059</a> <span class="preprocessor"></span><span class="preprocessor">#define HUNTD &quot;/usr/games/huntd&quot;</span>
-<a name="l00060"></a>00060 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00061"></a><a class="code" href="../../d9/d97/pathname_8c_abccaa653dcaf4921bde2156cc1a86a32.html#abccaa653dcaf4921bde2156cc1a86a32">00061</a> <span class="preprocessor"></span><span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="../../d9/d97/pathname_8c_abccaa653dcaf4921bde2156cc1a86a32.html#abccaa653dcaf4921bde2156cc1a86a32">Driver</a> =       <a class="code" href="../../d9/d97/pathname_8c_a0dcb7f8758f2eb3a3eec5f54e78e62bb.html#a0dcb7f8758f2eb3a3eec5f54e78e62bb">HUNTD</a>;
+<a name="l00059"></a><a class="code" href="../../d9/d97/pathname_8c_a0dcb7f8758f2eb3a3eec5f54e78e62bb.html#a0dcb7f8758f2eb3a3eec5f54e78e62bb">00059</a> <span class="preprocessor"></span><span class="preprocessor">#define HUNTD &quot;/usr/games/huntd&quot; </span>
+<a name="l00060"></a>00060 <span class="preprocessor">#endif</span>
+<a name="l00061"></a><a class="code" href="../../d9/d97/pathname_8c_abccaa653dcaf4921bde2156cc1a86a32.html#abccaa653dcaf4921bde2156cc1a86a32">00061</a> <span class="preprocessor"></span><span class="keyword">const</span> <span class="keywordtype">char</span>      *<a class="code" href="../../d9/d97/pathname_8c_abccaa653dcaf4921bde2156cc1a86a32.html#abccaa653dcaf4921bde2156cc1a86a32" title="Defines the path to reach folder huntd.">Driver</a> =       <a class="code" href="../../d9/d97/pathname_8c_a0dcb7f8758f2eb3a3eec5f54e78e62bb.html#a0dcb7f8758f2eb3a3eec5f54e78e62bb" title="Defines the path to reach folder huntd.">HUNTD</a>; 
 <a name="l00062"></a>00062 <span class="preprocessor">#  ifdef INTERNET</span>
-<a name="l00063"></a>00063 <span class="preprocessor"></span><span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>  Test_port =     (<span class="charliteral">&#39;h&#39;</span> &lt;&lt; 8) | <span class="charliteral">&#39;t&#39;</span>; 
+<a name="l00063"></a>00063 <span class="preprocessor"></span><span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>  Test_port =     (<span class="charliteral">&#39;h&#39;</span> &lt;&lt; 8) | <span class="charliteral">&#39;t&#39;</span>; <span class="comment">/* Changed from u_short. [PSR] */</span>
 <a name="l00064"></a>00064 <span class="preprocessor">#  else</span>
-<a name="l00065"></a><a class="code" href="../../d9/d97/pathname_8c_ab19bda69bc4b43bdf202ff8f3429b1e5.html#ab19bda69bc4b43bdf202ff8f3429b1e5">00065</a> <span class="preprocessor"></span><span class="keywordtype">char</span>    *<a class="code" href="../../d9/d97/pathname_8c_ab19bda69bc4b43bdf202ff8f3429b1e5.html#ab19bda69bc4b43bdf202ff8f3429b1e5">Sock_name</a> =    <span class="stringliteral">&quot;/tmp/hunt&quot;</span>;
-<a name="l00066"></a><a class="code" href="../../d9/d97/pathname_8c_a3b16bd3e8c3d2081bd7e9cfde7856f43.html#a3b16bd3e8c3d2081bd7e9cfde7856f43">00066</a> <span class="keywordtype">char</span>    *<a class="code" href="../../d9/d97/pathname_8c_a3b16bd3e8c3d2081bd7e9cfde7856f43.html#a3b16bd3e8c3d2081bd7e9cfde7856f43">Stat_name</a> =    <span class="stringliteral">&quot;/tmp/hunt.stats&quot;</span>;
+<a name="l00065"></a><a class="code" href="../../d9/d97/pathname_8c_ab19bda69bc4b43bdf202ff8f3429b1e5.html#ab19bda69bc4b43bdf202ff8f3429b1e5">00065</a> <span class="preprocessor"></span><span class="keywordtype">char</span>    *<a class="code" href="../../d9/d97/pathname_8c_ab19bda69bc4b43bdf202ff8f3429b1e5.html#ab19bda69bc4b43bdf202ff8f3429b1e5" title="Identifies the socket name.">Sock_name</a> =    <span class="stringliteral">&quot;/tmp/hunt&quot;</span>; 
+<a name="l00066"></a><a class="code" href="../../d9/d97/pathname_8c_a3b16bd3e8c3d2081bd7e9cfde7856f43.html#a3b16bd3e8c3d2081bd7e9cfde7856f43">00066</a> <span class="keywordtype">char</span>    *<a class="code" href="../../d9/d97/pathname_8c_a3b16bd3e8c3d2081bd7e9cfde7856f43.html#a3b16bd3e8c3d2081bd7e9cfde7856f43" title="TODO [PSR].">Stat_name</a> =    <span class="stringliteral">&quot;/tmp/hunt.stats&quot;</span>; 
 <a name="l00067"></a>00067 <span class="preprocessor">#  endif</span>
 <a name="l00068"></a>00068 <span class="preprocessor"></span>
 <a name="l00069"></a>00069 <span class="preprocessor"># endif</span>
@@ -191,7 +191,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d9/d97/pathname_8c.html">pathname.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 8 2012 22:04:41 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

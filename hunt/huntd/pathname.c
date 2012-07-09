@@ -47,7 +47,7 @@ __RCSID("$NetBSD: pathname.c,v 1.3 2003/06/11 12:00:23 wiz Exp $");
 
 char	*Driver =	"/home/socr/a/conrad/games/src/hunt/huntd.dbg";
 #  ifdef INTERNET
-unsigned short	Test_port =	('h' << 8) | 't'; /**< Changed from u_short. */
+unsigned short	Test_port =	('h' << 8) | 't'; /* Changed from u_short. [PSR] */
 #  else
 char	*Sock_name =	"/tmp/hunt";
 char	*Stat_name =	"/tmp/hunt.stats";
@@ -56,14 +56,14 @@ char	*Stat_name =	"/tmp/hunt.stats";
 # else
 
 #ifndef HUNTD
-#define HUNTD "/usr/games/huntd"
+#define HUNTD "/usr/games/huntd" /**< Defines the path to reach folder huntd. [PSR] */
 #endif
-const char	*Driver =	HUNTD;
+const char	*Driver =	HUNTD; /**< Defines the path to reach the folder which contains drivers. [PSR] */
 #  ifdef INTERNET
-unsigned short	Test_port =	('h' << 8) | 't'; /**< Changed from u_short. */
+unsigned short	Test_port =	('h' << 8) | 't'; /* Changed from u_short. [PSR] */
 #  else
-char	*Sock_name =	"/tmp/hunt";
-char	*Stat_name =	"/tmp/hunt.stats";
+char	*Sock_name =	"/tmp/hunt"; /**< Identifies the socket name. [PSR] */
+char	*Stat_name =	"/tmp/hunt.stats"; /**< TODO [PSR] */
 #  endif
 
 # endif

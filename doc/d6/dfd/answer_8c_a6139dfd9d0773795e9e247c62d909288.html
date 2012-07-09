@@ -172,12 +172,17 @@ function toggleVisibility(linkObj) {
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The score structure of a player. </dd></dl>
 
-<p>Definition at line <a class="el" href="../../d6/dfd/answer_8c_source.html#l00405">405</a> of file <a class="el" href="../../d6/dfd/answer_8c_source.html">answer.c</a>.</p>
+<p><p>&lt; TODO [PSR]</p>
+<p>&lt; TODO [PSR]</p>
+<p>&lt; TODO [PSR] </p>
+</p>
+
+<p>Definition at line <a class="el" href="../../d6/dfd/answer_8c_source.html#l00404">404</a> of file <a class="el" href="../../d6/dfd/answer_8c_source.html">answer.c</a>.</p>
 <div class="fragment"><pre class="fragment">                           {
         IDENT *ip;
         <span class="keyword">static</span> IDENT punt;
 
-        <span class="keywordflow">for</span> (ip = <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d">Scores</a>; ip != NULL; ip = ip-&gt;i_next) {
+        <span class="keywordflow">for</span> (ip = <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d" title="Score cache.">Scores</a>; ip != NULL; ip = ip-&gt;i_next) {
                 <span class="keywordflow">if</span> ((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) ip-&gt;i_machine == machine
                                 &amp;&amp; (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) ip-&gt;i_uid == uid &amp;&amp; ip-&gt;i_team == <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>
                                 &amp;&amp; strncmp(ip-&gt;i_name, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, NAMELEN) == 0) {
@@ -186,10 +191,10 @@ function toggleVisibility(linkObj) {
         }
 
         <span class="keywordflow">if</span> (ip != NULL) {
-                <span class="keywordflow">if</span> (ip-&gt;i_entries &lt; <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="&amp;lt; # include &amp;lt;errno.h&amp;gt; already present in hunt.h.">SCOREDECAY</a>) {
+                <span class="keywordflow">if</span> (ip-&gt;i_entries &lt; <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="TODO [PSR].">SCOREDECAY</a>) {
                         ip-&gt;i_entries++;
                 } <span class="keywordflow">else</span> {
-                        ip-&gt;i_kills = (ip-&gt;i_kills * (<a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="&amp;lt; # include &amp;lt;errno.h&amp;gt; already present in hunt.h.">SCOREDECAY</a> - 1)) / <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="&amp;lt; # include &amp;lt;errno.h&amp;gt; already present in hunt.h.">SCOREDECAY</a>;
+                        ip-&gt;i_kills = (ip-&gt;i_kills * (<a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="TODO [PSR].">SCOREDECAY</a> - 1)) / <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="TODO [PSR].">SCOREDECAY</a>;
                 }
                 ip-&gt;i_score = ip-&gt;i_kills / (double) ip-&gt;i_entries;
         } <span class="keywordflow">else</span> {
@@ -214,8 +219,8 @@ function toggleVisibility(linkObj) {
                 ip-&gt;i_ducked = 0;
                 ip-&gt;i_gkills = ip-&gt;i_bkills = ip-&gt;i_deaths = 0;
                 ip-&gt;i_stillb = ip-&gt;i_saved = 0;
-                ip-&gt;i_next = <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d">Scores</a>;
-                <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d">Scores</a> = ip;
+                ip-&gt;i_next = <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d" title="Score cache.">Scores</a>;
+                <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d" title="Score cache.">Scores</a> = ip;
         }
 
         <span class="keywordflow">return</span> ip;
@@ -231,7 +236,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d6/dfd/answer_8c.html">answer.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 8 2012 22:04:41 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

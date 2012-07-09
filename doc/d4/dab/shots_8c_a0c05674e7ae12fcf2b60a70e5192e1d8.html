@@ -155,7 +155,7 @@ function toggleVisibility(linkObj) {
         BULLET *blist;
 
         <a class="code" href="../../d4/d55/expl_8c_ad634a7e2005ee9fb1c7a4d69df89e8fb.html#ad634a7e2005ee9fb1c7a4d69df89e8fb" title="Roll the explosions over, so the next one in the list is at the top.">rollexpl</a>();
-        <span class="keywordflow">if</span> (<a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a> != NULL) {
+        <span class="keywordflow">if</span> (<a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a> != NULL) {
 
                 <span class="comment">/*</span>
 <span class="comment">                 * First we move through the bullet list BULSPD times, looking</span>
@@ -164,14 +164,14 @@ function toggleVisibility(linkObj) {
 <span class="comment">                 * for damage to any player who got in the way.</span>
 <span class="comment">                 */</span>
 
-                blist = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a>;
-                <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a> = NULL;
+                blist = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a>;
+                <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a> = NULL;
                 <span class="keywordflow">for</span> (bp = blist; bp != NULL; bp = next) {
                         next = bp-&gt;b_next;
                         x = bp-&gt;b_x;
                         y = bp-&gt;b_y;
-                        <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x] = bp-&gt;b_over;
-                        <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; pp++)
+                        <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] = bp-&gt;b_over;
+                        <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++)
                                 <a class="code" href="../../d6/dd9/draw_8c_a95ad42106b804652115f3a6e29cd3d02.html#a95ad42106b804652115f3a6e29cd3d02" title="Draws the right symbol associated to a player in a given position.">check</a>(pp, y, x);
 <span class="preprocessor"># ifdef MONITOR</span>
 <span class="preprocessor"></span>                        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++)
@@ -184,35 +184,35 @@ function toggleVisibility(linkObj) {
                         <span class="keywordflow">case</span> SATCHEL:
                         <span class="keywordflow">case</span> BOMB:
                                 <span class="keywordflow">if</span> (<a class="code" href="../../d4/dab/shots_8c_afb403186cc8046378982ba1014aff932.html#afb403186cc8046378982ba1014aff932" title="Move a normal shot along its trajectory.">move_normal_shot</a>(bp)) {
-                                        bp-&gt;b_next = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a>;
-                                        <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a> = bp;
+                                        bp-&gt;b_next = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a>;
+                                        <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a> = bp;
                                 }
                                 <span class="keywordflow">break</span>;
 <span class="preprocessor"># ifdef OOZE</span>
 <span class="preprocessor"></span>                                <span class="keywordflow">case</span> SLIME:
                                 <span class="keywordflow">if</span> (bp-&gt;b_expl || <a class="code" href="../../d4/dab/shots_8c_afb403186cc8046378982ba1014aff932.html#afb403186cc8046378982ba1014aff932" title="Move a normal shot along its trajectory.">move_normal_shot</a>(bp)) {
-                                        bp-&gt;b_next = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a>;
-                                        <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a> = bp;
+                                        bp-&gt;b_next = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a>;
+                                        <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a> = bp;
                                 }
                                 <span class="keywordflow">break</span>;
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span><span class="preprocessor"># ifdef DRONE</span>
 <span class="preprocessor"></span>                                <span class="keywordflow">case</span> DSHOT:
                                 <span class="keywordflow">if</span> (move_drone(bp)) {
-                                        bp-&gt;b_next = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a>;
-                                        <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a> = bp;
+                                        bp-&gt;b_next = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a>;
+                                        <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a> = bp;
                                 }
                                 <span class="keywordflow">break</span>;
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span>                        <span class="keywordflow">default</span>:
-                                bp-&gt;b_next = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a>;
-                                <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a> = bp;
+                                bp-&gt;b_next = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a>;
+                                <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a> = bp;
                                 <span class="keywordflow">break</span>;
                         }
                 }
 
-                blist = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a>;
-                <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a> = NULL;
+                blist = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a>;
+                <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a> = NULL;
                 <span class="keywordflow">for</span> (bp = blist; bp != NULL; bp = next) {
                         next = bp-&gt;b_next;
                         <span class="keywordflow">if</span> (!bp-&gt;b_expl) {
@@ -224,7 +224,7 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span><span class="preprocessor"># ifdef DRONE</span>
 <span class="preprocessor"></span>                                <span class="keywordflow">if</span> (bp-&gt;b_type == DSHOT){
-                                        <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; pp++){
+                                        <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++){
                                                 <span class="keywordflow">if</span> (pp-&gt;p_scan &gt;= 0){
                                                                 <a class="code" href="../../d6/dd9/draw_8c_a95ad42106b804652115f3a6e29cd3d02.html#a95ad42106b804652115f3a6e29cd3d02" title="Draws the right symbol associated to a player in a given position.">check</a>(pp, bp-&gt;b_y, bp-&gt;b_x);
                                                 }
@@ -238,8 +238,8 @@ function toggleVisibility(linkObj) {
                         free((<span class="keywordtype">char</span> *) bp);
                 }
 
-                <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; pp++){
-                        <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[pp-&gt;p_y][pp-&gt;p_x] = pp-&gt;p_face;
+                <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++){
+                        <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[pp-&gt;p_y][pp-&gt;p_x] = pp-&gt;p_face;
                 }
         }
 
@@ -250,7 +250,7 @@ function toggleVisibility(linkObj) {
                 }
         }
 <span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; pp++) {
+<span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++) {
 <span class="preprocessor"># ifdef FLY</span>
 <span class="preprocessor"></span>                <span class="keywordflow">if</span> (pp-&gt;p_flying &gt;= 0){
                         move_flyer(pp);
@@ -279,7 +279,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d4/dab/shots_8c.html">shots.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 8 2012 22:04:42 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

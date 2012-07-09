@@ -229,12 +229,15 @@ static void move_player(PLAYER *pp,int dir){
 		break;
 	  case MINE:
 	  case GMINE:
-		if (dir == pp->p_face)
+		if (dir == pp->p_face){
 			pickup(pp, y, x, 2, Maze[y][x]);
-		else if (opposite(dir, pp->p_face))
+		}
+		else if (opposite(dir, pp->p_face)){
 			pickup(pp, y, x, 95, Maze[y][x]);
-		else
+		}
+		else{
 			pickup(pp, y, x, 50, Maze[y][x]);
+		}
 		Maze[y][x] = SPACE;
 		moved = true;
 		break;

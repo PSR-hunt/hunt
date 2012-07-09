@@ -32,16 +32,16 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. */
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
 #ifndef lint
 __RCSID("$NetBSD: makemaze.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
 
-# define	ISCLEAR(y,x)	(Maze[y][x] == SPACE)
-# define	ODD(n)		((n) & 01)
+# define	ISCLEAR(y,x)	(Maze[y][x] == SPACE) /**< Checks if the character at the given coordinate is a space. [PSR] */
+# define	ODD(n)		((n) & 01) /**< Bitwise AND between n and 01 to verify if n is odd. [PSR] */
 
-//static int candig(int, int);/**< For future use. [PSR] */
-//static void dig(int, int);/**< For future use. [PSR] */
+/* static int candig(int, int); For future use. [PSR] */
+/* static void dig(int, int); For future use. [PSR] */
 static void dig_maze(int, int);
 static void remap(void);
 
@@ -56,8 +56,9 @@ void makemaze() {
 	 * fill maze with walls
 	 */
 	sp = &Maze[0][0];
-	while (sp < &Maze[HEIGHT - 1][WIDTH])
+	while (sp < &Maze[HEIGHT - 1][WIDTH]){
 		*sp++ = DOOR;
+	}
 
 	x = rand_num(WIDTH / 2) * 2 + 1;
 	y = rand_num(HEIGHT / 2) * 2 + 1;
@@ -65,8 +66,8 @@ void makemaze() {
 	remap();
 }
 
-# define	NPERM	24
-# define	NDIR	4
+# define	NPERM	24 /**< Defines the number of permutations of the four possible directions. [PSR] */
+# define	NDIR	4 /**< Defines the number of directions in the maze. [PSR] */
 
 int dirs[NPERM][NDIR] = { { 0, 1, 2, 3 }, { 3, 0, 1, 2 }, { 0, 2, 3, 1 }, { 0,
 		3, 2, 1 }, { 1, 0, 2, 3 }, { 2, 3, 0, 1 }, { 0, 2, 1, 3 },
@@ -74,9 +75,9 @@ int dirs[NPERM][NDIR] = { { 0, 1, 2, 3 }, { 3, 0, 1, 2 }, { 0, 2, 3, 1 }, { 0,
 				3, 1 }, { 1, 3, 0, 2 }, { 0, 3, 1, 2 }, { 1, 3, 2, 0 }, { 2, 0,
 				1, 3 }, { 0, 1, 3, 2 }, { 3, 1, 0, 2 }, { 2, 1, 0, 3 }, { 1, 2,
 				3, 0 }, { 2, 1, 3, 0 }, { 3, 0, 2, 1 }, { 3, 2, 0, 1 }, { 3, 2,
-				1, 0 } };
+				1, 0 } }; /**< Defines a matrix of all the possible permutations of the four directions. [PSR] */
 
-int incr[NDIR][2] = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+int incr[NDIR][2] = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } }; /**< Defines all the possible movement to do in one step. [PSR] */
 
 /**
  * Allows user to dig under a wall. (For future use)
@@ -84,24 +85,26 @@ int incr[NDIR][2] = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
  * @param[in] x A coordinate.
  * [PSR]
  */
-//static void dig(int y, int x) {
-//	int *dp;
-//	int *ip;
-//	int ny, nx;
-//	int *endp;
-//
-//	Maze[y][x] = SPACE; /* Clear this spot */
-//	dp = dirs[rand_num(NPERM)];
-//	endp = &dp[NDIR];
-//	while (dp < endp) {
-//		ip = &incr[*dp++][0];
-//		ny = y + *ip++;
-//		nx = x + *ip;
-//		if (candig(ny, nx)) {
-//			dig(ny, nx);
-//		}
-//	}
-//}
+/*
+static void dig(int y, int x) {
+	int *dp;
+	int *ip;
+	int ny, nx;
+	int *endp;
+
+	Maze[y][x] = SPACE; // Clear this spot
+	dp = dirs[rand_num(NPERM)];
+	endp = &dp[NDIR];
+	while (dp < endp) {
+		ip = &incr[*dp++][0];
+		ny = y + *ip++;
+		nx = x + *ip;
+		if (candig(ny, nx)) {
+			dig(ny, nx);
+		}
+	}
+}
+*/
 
 /**
  * Is it legal to clear this spot? (For future use)
@@ -109,40 +112,42 @@ int incr[NDIR][2] = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
  * @param[in] x A coordinate.
  * \return True if is legal to clear the spot at the given coordinate, false otherwise.
  */
-//static int candig(int y, int x) {
-//	int i;
-//
-//	if (ODD(x) && ODD(y)){
-//		return false; /* can't touch ODD spots */
-//	}
-//
-//	if (y < UBOUND || y >= DBOUND){
-//		return false; /* Beyond vertical bounds, NO */
-//	}
-//	if (x < LBOUND || x >= RBOUND){
-//		return false; /* Beyond horizontal bounds, NO */
-//	}
-//
-//	if (ISCLEAR(y, x)){
-//		return false; /* Already clear, NO */
-//	}
-//
-//	i = ISCLEAR(y, x + 1);
-//	i += ISCLEAR(y, x - 1);
-//	if (i > 1){
-//		return false; /* Introduces cycle, NO */
-//	}
-//	i += ISCLEAR(y + 1, x);
-//	if (i > 1){
-//		return false; /* Introduces cycle, NO */
-//	}
-//	i += ISCLEAR(y - 1, x);
-//	if (i > 1){
-//		return false; /* Introduces cycle, NO */
-//	}
-//
-//	return true; /* OK */
-//}
+/*
+static int candig(int y, int x) {
+	int i;
+
+	if (ODD(x) && ODD(y)){
+		return false; // can't touch ODD spots
+	}
+
+	if (y < UBOUND || y >= DBOUND){
+		return false; //Beyond vertical bounds, NO
+	}
+	if (x < LBOUND || x >= RBOUND){
+		return false; //Beyond horizontal bounds, NO
+	}
+
+	if (ISCLEAR(y, x)){
+		return false; //Already clear, NO
+	}
+
+	i = ISCLEAR(y, x + 1);
+	i += ISCLEAR(y, x - 1);
+	if (i > 1){
+		return false; //Introduces cycle, NO
+	}
+	i += ISCLEAR(y + 1, x);
+	if (i > 1){
+		return false; //Introduces cycle, NO
+	}
+	i += ISCLEAR(y - 1, x);
+	if (i > 1){
+		return false; //Introduces cycle, NO
+	}
+
+	return true; //OK
+}
+*/
 
 /**
  * Helper function to build the maze.
@@ -154,10 +159,10 @@ void dig_maze(int x, int y) {
 	int tx, ty;
 	int i, j;
 	int order[4];
-#define	MNORTH	0x1 //1 in binary.
-#define	MSOUTH	0x2
-#define	MEAST	0x4
-#define	MWEST	0x8
+#define	MNORTH	0x1 /**< Associates the north direction with 1 in hex. [PSR] */
+#define	MSOUTH	0x2 /**< Associates the south direction with 2 in hex. [PSR] */
+#define	MEAST	0x4 /**< Associates the east direction with 4 in hex. [PSR] */
+#define	MWEST	0x8 /**< Associates the west direction with 8 in hex. [PSR] */
 
 	tx = ty = 0;
 	Maze[y][x] = SPACE;
@@ -165,7 +170,7 @@ void dig_maze(int x, int y) {
 	for (i = 1; i < 4; i++) {
 		j = rand_num(i + 1);
 		order[i] = order[j];
-		order[j] = 0x1 << i; //Shifts 0x1 on the left by i positions.
+		order[j] = 0x1 << i; /* Shifts 0x1 on the left by i positions. [PSR] */
 	}
 	for (i = 0; i < 4; i++) {
 		switch (order[i]) {

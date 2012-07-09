@@ -32,13 +32,13 @@
 
 # include	"hunt.h"
 
-/** #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: terminal.c,v 1.4 2003/06/11 12:00:23 wiz Exp $");
 #endif /* not lint */
 
 #include <stdarg.h>
-#define	TERM_WIDTH	80	/* Assume terminals are 80-char wide */
+#define	TERM_WIDTH	80 /**< Assume terminals are 80-char wide */
 
 /**
  * Move the cursor to the given position on the given player's terminal.

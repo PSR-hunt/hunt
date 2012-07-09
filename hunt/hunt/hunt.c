@@ -90,9 +90,9 @@ bool Last_player = false; /**< Defines if a player is the last one or no. [PSR] 
 bool Am_monitor = false;
 # endif
 
-char Buf[BUFSIZ]; /**< Defined but not used in this file. [PSR] */
+char Buf[BUFSIZ]; /**< General scribbling buffer. Defined but not used in this file. [PSR] */
 
-int Socket; /**< The descriptor of an endpoint for communication. [PSR] */
+int Socket; /**< Main socket. [PSR] */
 # ifdef INTERNET
 char *Sock_host;
 char *use_port;

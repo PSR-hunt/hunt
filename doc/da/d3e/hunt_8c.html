@@ -142,7 +142,7 @@ Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_a793a4db4619c0e9fae9a31968c0afd8a.html#a793a4db4619c0e9fae9a31968c0afd8a">EMERGENCY_BUFFER_LENGTH</a>&#160;&#160;&#160;1024</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Overextimated length of a line in configuration file (used only if the program is not able to compute the real input line length).  <a href="#a793a4db4619c0e9fae9a31968c0afd8a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_a86ed143fac955b6727f0b8fb5c6b2ba0.html#a86ed143fac955b6727f0b8fb5c6b2ba0">cbreak</a>()&#160;&#160;&#160;crmode()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO [PSR].  <a href="#a86ed143fac955b6727f0b8fb5c6b2ba0"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Turn the terminal CBREAK mode on or off.  <a href="#a86ed143fac955b6727f0b8fb5c6b2ba0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc">beep</a>()&#160;&#160;&#160;(void) putchar(CTRL('G'))</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the character c, cast to an unsigned char, to stream.  <a href="#afb18a040145c97df5956c1bba0cbb6bc"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad">refresh</a>()&#160;&#160;&#160;(void) fflush(stdout);</td></tr>
@@ -189,21 +189,21 @@ Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_af01fe333f6b6a1321297106ced4cc3cd.html#af01fe333f6b6a1321297106ced4cc3cd">Last_player</a> = false</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines if a player is the last one or no.  <a href="#af01fe333f6b6a1321297106ced4cc3cd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7">Buf</a> [BUFSIZ]</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO [PSR].  <a href="#a9d389c02f89c2fe0d635a6a60f62f8e7"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">General scribbling buffer.  <a href="#a9d389c02f89c2fe0d635a6a60f62f8e7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d">Socket</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO [PSR].  <a href="#aa0b3e8a8ae7db46522c6ef7ce4471c5d"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Main socket.  <a href="#aa0b3e8a8ae7db46522c6ef7ce4471c5d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">SOCKET&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4">Daemon</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO [PSR].  <a href="#aaf1dd5a96b4d9b41354d804b1291e1e4"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The daemon socket.  <a href="#aaf1dd5a96b4d9b41354d804b1291e1e4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271">map_key</a> [256]</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">what to map keys to  <a href="#a52777fdcc2ab4d0159bfb25c42ccc271"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_a3bd306747807d95cebe18856fff82c71.html#a3bd306747807d95cebe18856fff82c71">no_beep</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO [PSR].  <a href="#a3bd306747807d95cebe18856fff82c71"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If true turns off beeping when you reach the typeahead limit.  <a href="#a3bd306747807d95cebe18856fff82c71"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a">name</a> [NAMELEN]</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates the name of a player.  <a href="#ad8d465ebab381c5670e270054c3d0b6a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5">team</a> = ' '</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates the belonging team of a player.  <a href="#a7e250aa32c2b9147cff34dff82b5d1e5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_a8becc7d6e2252dd02dffb5b62f2358ef.html#a8becc7d6e2252dd02dffb5b62f2358ef">in_visual</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO [PSR].  <a href="#a8becc7d6e2252dd02dffb5b62f2358ef"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates whether the configurations are correct.  <a href="#a8becc7d6e2252dd02dffb5b62f2358ef"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394">cur_row</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates the current row.  <a href="#a8f895a4d3103f4d5068a192327271394"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62">cur_col</a></td></tr>
@@ -214,7 +214,7 @@ Variables</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/d3e/hunt_8c.html">hunt.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 8 2012 22:04:41 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

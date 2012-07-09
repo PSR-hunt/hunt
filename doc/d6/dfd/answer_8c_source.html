@@ -151,29 +151,29 @@ function toggleVisibility(linkObj) {
 <a name="l00032"></a>00032 
 <a name="l00033"></a>00033 <span class="preprocessor"># include       &quot;hunt.h&quot;</span>
 <a name="l00034"></a>00034 
+<a name="l00035"></a>00035 <span class="comment">/* #include &lt;sys/cdefs.h&gt; pushed up in hunt.h. [PSR] */</span>
 <a name="l00036"></a>00036 <span class="preprocessor">#ifndef lint</span>
 <a name="l00037"></a>00037 <span class="preprocessor"></span><a class="code" href="../../d0/dc3/connect_8c_a1b9b0345f811ff7769642745394c179f.html#a1b9b0345f811ff7769642745394c179f">__RCSID</a>(<span class="stringliteral">&quot;$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $&quot;</span>);
 <a name="l00038"></a>00038 <span class="preprocessor">#endif </span><span class="comment">/* not lint */</span>
 <a name="l00039"></a>00039 
 <a name="l00040"></a>00040 <span class="preprocessor"># include       &lt;ctype.h&gt;</span>
+<a name="l00041"></a>00041 <span class="comment">/* # include    &lt;errno.h&gt; already present in hunt.h. [PSR] */</span>
 <a name="l00042"></a>00042 <span class="preprocessor"># include       &lt;fcntl.h&gt;</span>
 <a name="l00043"></a>00043 <span class="preprocessor"># include       &lt;stdlib.h&gt;</span>
 <a name="l00044"></a>00044 <span class="preprocessor"># include       &lt;unistd.h&gt;</span>
 <a name="l00045"></a>00045 <span class="preprocessor"># include       &lt;sys/time.h&gt;</span>
 <a name="l00046"></a>00046 
-<a name="l00047"></a><a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140">00047</a> <span class="preprocessor"># define        SCOREDECAY      15</span>
-<a name="l00048"></a>00048 <span class="preprocessor"></span>
-<a name="l00049"></a><a class="code" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc">00049</a> <span class="keyword">static</span> <span class="keywordtype">char</span> <a class="code" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc">Ttyname</a>[NAMELEN];
-<a name="l00050"></a>00050 
-<a name="l00056"></a><a class="code" href="../../d6/dfd/answer_8c_ad9d4798f47a390f33923cfc52ad74e2d.html#ad9d4798f47a390f33923cfc52ad74e2d">00056</a> <span class="keywordtype">int</span> <a class="code" href="../../d6/dfd/answer_8c_ad9d4798f47a390f33923cfc52ad74e2d.html#ad9d4798f47a390f33923cfc52ad74e2d" title="Manages the messages submission.">answer</a>() {
-<a name="l00057"></a>00057         PLAYER *pp;
+<a name="l00047"></a><a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140">00047</a> <span class="preprocessor"># define        SCOREDECAY      15 </span>
+<a name="l00049"></a><a class="code" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc">00049</a> <span class="preprocessor">static char Ttyname[NAMELEN]; </span>
+<a name="l00056"></a><a class="code" href="../../d6/dfd/answer_8c_ad9d4798f47a390f33923cfc52ad74e2d.html#ad9d4798f47a390f33923cfc52ad74e2d">00056</a> <span class="preprocessor">int answer() {</span>
+<a name="l00057"></a>00057 <span class="preprocessor"></span>        PLAYER *pp;
 <a name="l00058"></a>00058         <span class="keywordtype">int</span> newsock;
-<a name="l00059"></a>00059         <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> mode; 
+<a name="l00059"></a>00059         <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> mode; <span class="comment">/* Changed from u_long. [PSR] */</span>
 <a name="l00060"></a>00060         <span class="keyword">static</span> <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[NAMELEN];
 <a name="l00061"></a>00061         <span class="keyword">static</span> <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>;
 <a name="l00062"></a>00062         <span class="keyword">static</span> <span class="keywordtype">int</span> enter_status;
-<a name="l00063"></a>00063         <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> socklen; 
-<a name="l00064"></a>00064         <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> machine; 
+<a name="l00063"></a>00063         <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> socklen; <span class="comment">/* Edited from static int in order to match accept() parameter. [PSR] */</span>
+<a name="l00064"></a>00064         <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> machine; <span class="comment">/* Edited from u_long in order to match accept() parameter. [PSR] */</span>
 <a name="l00065"></a>00065         <span class="keyword">static</span> u_int32_t uid;
 <a name="l00066"></a>00066         <span class="keyword">static</span> SOCKET sockstruct;
 <a name="l00067"></a>00067         <span class="keywordtype">char</span> *cp1, *cp2;
@@ -187,7 +187,7 @@ function toggleVisibility(linkObj) {
 <a name="l00075"></a>00075 <span class="preprocessor"></span>        socklen = <span class="keyword">sizeof</span> sockstruct - 1;
 <a name="l00076"></a>00076 <span class="preprocessor"># endif</span>
 <a name="l00077"></a>00077 <span class="preprocessor"></span>        errno = 0;
-<a name="l00078"></a>00078         newsock = accept(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="TODO [PSR].">Socket</a>, (<span class="keyword">struct</span> sockaddr *) &amp;sockstruct, &amp;socklen);
+<a name="l00078"></a>00078         newsock = accept(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keyword">struct</span> sockaddr *) &amp;sockstruct, &amp;socklen);
 <a name="l00079"></a>00079         <span class="keywordflow">if</span> (newsock &lt; 0) {
 <a name="l00080"></a>00080                 <span class="keywordflow">if</span> (errno == EINTR) {
 <a name="l00081"></a>00081                         <span class="keywordflow">return</span> <span class="keyword">false</span>;
@@ -208,15 +208,15 @@ function toggleVisibility(linkObj) {
 <a name="l00096"></a>00096         }
 <a name="l00097"></a>00097 <span class="preprocessor"># endif</span>
 <a name="l00098"></a>00098 <span class="preprocessor"></span>        version = htonl((u_int32_t) HUNT_VERSION);
-<a name="l00099"></a>00099         dbg_write(newsock, (<span class="keywordtype">char</span> *) &amp;version, LONGLEN); <span class="comment">//See documentation in hunt.h.</span>
-<a name="l00100"></a>00100         dbg_read(newsock, (<span class="keywordtype">char</span> *) &amp;uid, LONGLEN); <span class="comment">//See documentation in hunt.h.</span>
+<a name="l00099"></a>00099         dbg_write(newsock, (<span class="keywordtype">char</span> *) &amp;version, LONGLEN);
+<a name="l00100"></a>00100         dbg_read(newsock, (<span class="keywordtype">char</span> *) &amp;uid, LONGLEN);
 <a name="l00101"></a>00101         uid = ntohl((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) uid);
-<a name="l00102"></a>00102         dbg_read(newsock, name, NAMELEN); <span class="comment">//See documentation in hunt.h.</span>
-<a name="l00103"></a>00103         dbg_read(newsock, &amp;team, 1); <span class="comment">//See documentation in hunt.h.</span>
-<a name="l00104"></a>00104         dbg_read(newsock, (<span class="keywordtype">char</span> *) &amp;enter_status, LONGLEN); <span class="comment">//See documentation in hunt.h.</span>
+<a name="l00102"></a>00102         dbg_read(newsock, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, NAMELEN);
+<a name="l00103"></a>00103         dbg_read(newsock, &amp;<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>, 1);
+<a name="l00104"></a>00104         dbg_read(newsock, (<span class="keywordtype">char</span> *) &amp;enter_status, LONGLEN);
 <a name="l00105"></a>00105         enter_status = ntohl((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) enter_status);
-<a name="l00106"></a>00106         dbg_read(newsock, <a class="code" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc">Ttyname</a>, NAMELEN); <span class="comment">//See documentation in hunt.h.</span>
-<a name="l00107"></a>00107         dbg_read(newsock, (<span class="keywordtype">char</span> *) &amp;mode, <span class="keyword">sizeof</span> mode); <span class="comment">//See documentation in hunt.h.</span>
+<a name="l00106"></a>00106         dbg_read(newsock, <a class="code" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc" title="TODO [PSR].">Ttyname</a>, NAMELEN);
+<a name="l00107"></a>00107         dbg_read(newsock, (<span class="keywordtype">char</span> *) &amp;mode, <span class="keyword">sizeof</span> mode);
 <a name="l00108"></a>00108         mode = ntohl(mode);
 <a name="l00109"></a>00109 
 <a name="l00110"></a>00110         <span class="comment">/*</span>
@@ -232,7 +232,7 @@ function toggleVisibility(linkObj) {
 <a name="l00120"></a>00120 <span class="comment">         * since we use control characters for cursor control</span>
 <a name="l00121"></a>00121 <span class="comment">         * between driver and player processes</span>
 <a name="l00122"></a>00122 <span class="comment">         */</span>
-<a name="l00123"></a>00123         <span class="keywordflow">for</span> (cp1 = cp2 = name; *cp1 != <span class="charliteral">&#39;\0&#39;</span>; cp1++) {
+<a name="l00123"></a>00123         <span class="keywordflow">for</span> (cp1 = cp2 = <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>; *cp1 != <span class="charliteral">&#39;\0&#39;</span>; cp1++) {
 <a name="l00124"></a>00124                 <span class="keywordflow">if</span> (isprint((<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>)*cp1) || *cp1 == <span class="charliteral">&#39; &#39;</span>) {
 <a name="l00125"></a>00125                         *cp2++ = *cp1;
 <a name="l00126"></a>00126                 }
@@ -244,22 +244,22 @@ function toggleVisibility(linkObj) {
 <a name="l00132"></a>00132                 <span class="keywordtype">char</span> buf[BUFSIZ + 1];
 <a name="l00133"></a>00133                 <span class="keywordtype">int</span> n;
 <a name="l00134"></a>00134 
-<a name="l00135"></a>00135                 <span class="keywordflow">if</span> (team == <span class="charliteral">&#39; &#39;</span>) {
-<a name="l00136"></a>00136                         (void) sprintf(buf, <span class="stringliteral">&quot;%s: &quot;</span>, name);
+<a name="l00135"></a>00135                 <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a> == <span class="charliteral">&#39; &#39;</span>) {
+<a name="l00136"></a>00136                         (void) sprintf(buf, <span class="stringliteral">&quot;%s: &quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>);
 <a name="l00137"></a>00137                 }
 <a name="l00138"></a>00138                 <span class="keywordflow">else</span> {
-<a name="l00139"></a>00139                         (void) sprintf(buf, <span class="stringliteral">&quot;%s[%c]: &quot;</span>, name, team);
+<a name="l00139"></a>00139                         (void) sprintf(buf, <span class="stringliteral">&quot;%s[%c]: &quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>);
 <a name="l00140"></a>00140                 }
 <a name="l00141"></a>00141                 n = strlen(buf);
-<a name="l00142"></a>00142                 <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; pp++) {
+<a name="l00142"></a>00142                 <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++) {
 <a name="l00143"></a>00143                         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, HEIGHT, 0);
 <a name="l00144"></a>00144                         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, buf, n);
 <a name="l00145"></a>00145                 }
 <a name="l00146"></a>00146                 <span class="keywordflow">while</span> ((n = read(newsock, buf, BUFSIZ)) &gt; 0)
-<a name="l00147"></a>00147                 <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; pp++) {
+<a name="l00147"></a>00147                 <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++) {
 <a name="l00148"></a>00148                         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, buf, n);
 <a name="l00149"></a>00149                 }
-<a name="l00150"></a>00150                 <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; pp++) {
+<a name="l00150"></a>00150                 <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++) {
 <a name="l00151"></a>00151                         <a class="code" href="../../d2/d44/terminal_8c_a8a92ccf5ea858dccb47307a244b67245.html#a8a92ccf5ea858dccb47307a244b67245" title="Clear to the end of the line.">ce</a>(pp);
 <a name="l00152"></a>00152                         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, REFRESH);
 <a name="l00153"></a>00153                         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, READY, 0);
@@ -277,275 +277,274 @@ function toggleVisibility(linkObj) {
 <a name="l00165"></a>00165                         i = pp - Monitor + MAXPL + 3;
 <a name="l00166"></a>00166                 } <span class="keywordflow">else</span> {
 <a name="l00167"></a>00167                         socklen = 0;
-<a name="l00168"></a>00168                         dbg_write(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen); <span class="comment">//See documentation in hunt.h.</span>
+<a name="l00168"></a>00168                         dbg_write(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen);
 <a name="l00169"></a>00169                         (void) close(newsock);
 <a name="l00170"></a>00170                         <span class="keywordflow">return</span> <span class="keyword">false</span>;
 <a name="l00171"></a>00171                 }
 <a name="l00172"></a>00172         }
 <a name="l00173"></a>00173         <span class="keywordflow">else</span>
 <a name="l00174"></a>00174 <span class="preprocessor"># endif</span>
-<a name="l00175"></a>00175 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (<a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a> &lt; &amp;<a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>[MAXPL]) {
-<a name="l00176"></a>00176                 pp = <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>++;
-<a name="l00177"></a>00177                 i = pp - <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a> + 3;
+<a name="l00175"></a>00175 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (End_player &lt; &amp;<a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>[MAXPL]) {
+<a name="l00176"></a>00176                 pp = End_player++;
+<a name="l00177"></a>00177                 i = pp - <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a> + 3;
 <a name="l00178"></a>00178         } <span class="keywordflow">else</span> {
 <a name="l00179"></a>00179                 socklen = 0;
 <a name="l00180"></a>00180                 dbg_write(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen);
-<a name="l00181"></a>00181                 <span class="comment">//See documentation in hunt.h.</span>
-<a name="l00182"></a>00182                 (void) close(newsock);
-<a name="l00183"></a>00183                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00184"></a>00184         }
-<a name="l00185"></a>00185 
-<a name="l00186"></a>00186 <span class="preprocessor">#ifdef MONITOR</span>
-<a name="l00187"></a>00187 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (mode == C_MONITOR &amp;&amp; team == <span class="charliteral">&#39; &#39;</span>) {
-<a name="l00188"></a>00188                 team = <span class="charliteral">&#39;*&#39;</span>;
-<a name="l00189"></a>00189         }
-<a name="l00190"></a>00190 <span class="preprocessor">#endif</span>
-<a name="l00191"></a>00191 <span class="preprocessor"></span>        pp-&gt;p_ident = <a class="code" href="../../d6/dfd/answer_8c_a6139dfd9d0773795e9e247c62d909288.html#a6139dfd9d0773795e9e247c62d909288" title="Get the score structure of a player.">get_ident</a>(machine, uid, name, team);
-<a name="l00192"></a>00192         pp-&gt;p_output = fdopen(newsock, <span class="stringliteral">&quot;w&quot;</span>);
-<a name="l00193"></a>00193         pp-&gt;p_death[0] = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l00194"></a>00194         pp-&gt;p_fd = newsock;
-<a name="l00195"></a>00195         <a class="code" href="../../dc/d2c/extern_8c_a11af15344ece6eeb20ac37e1ce97cbc8.html#a11af15344ece6eeb20ac37e1ce97cbc8">fdset</a>[i].fd = newsock;
-<a name="l00196"></a>00196         <a class="code" href="../../dc/d2c/extern_8c_a11af15344ece6eeb20ac37e1ce97cbc8.html#a11af15344ece6eeb20ac37e1ce97cbc8">fdset</a>[i].events = POLLIN;
-<a name="l00197"></a>00197 
-<a name="l00198"></a>00198         pp-&gt;p_y = 0;
-<a name="l00199"></a>00199         pp-&gt;p_x = 0;
-<a name="l00200"></a>00200 
-<a name="l00201"></a>00201 <span class="preprocessor"># ifdef MONITOR</span>
-<a name="l00202"></a>00202 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (mode == C_MONITOR) {
-<a name="l00203"></a>00203                 stmonitor(pp);
-<a name="l00204"></a>00204         }
-<a name="l00205"></a>00205         <span class="keywordflow">else</span>
-<a name="l00206"></a>00206 <span class="preprocessor"># endif</span>
-<a name="l00207"></a>00207 <span class="preprocessor"></span>        <a class="code" href="../../d6/dfd/answer_8c_a8455f2e936605abf7cb0faaa32cbea33.html#a8455f2e936605abf7cb0faaa32cbea33" title="Initializes a player status.">stplayer</a>(pp, enter_status);
-<a name="l00208"></a>00208         <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00209"></a>00209 }
-<a name="l00210"></a>00210 
-<a name="l00211"></a>00211 <span class="preprocessor"># ifdef MONITOR</span>
-<a name="l00212"></a>00212 <span class="preprocessor"></span>
-<a name="l00217"></a>00217 <span class="keywordtype">void</span> stmonitor(PLAYER *pp) {
-<a name="l00218"></a>00218         <span class="keywordtype">int</span> line;
-<a name="l00219"></a>00219         PLAYER *npp;
-<a name="l00220"></a>00220 
-<a name="l00221"></a>00221         memcpy(pp-&gt;p_maze, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>, <span class="keyword">sizeof</span> <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>);
-<a name="l00222"></a>00222 
-<a name="l00223"></a>00223         <a class="code" href="../../d6/dd9/draw_8c_af1f4563b67948504e22a8b383ce69caa.html#af1f4563b67948504e22a8b383ce69caa" title="Draws the maze.">drawmaze</a>(pp);
-<a name="l00224"></a>00224 
-<a name="l00225"></a>00225         (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="TODO [PSR].">Buf</a>, <span class="stringliteral">&quot;%5.5s%c%-10.10s %c&quot;</span>, <span class="stringliteral">&quot; &quot;</span>, stat_char(pp),
-<a name="l00226"></a>00226                         pp-&gt;p_ident-&gt;i_name, pp-&gt;p_ident-&gt;i_team);
-<a name="l00227"></a>00227         line = STAT_MON_ROW + 1 + (pp - Monitor);
-<a name="l00228"></a>00228         <span class="keywordflow">for</span> (npp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; npp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; npp++) {
-<a name="l00229"></a>00229                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(npp, line, STAT_NAME_COL);
-<a name="l00230"></a>00230                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(npp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="TODO [PSR].">Buf</a>, STAT_NAME_LEN);
-<a name="l00231"></a>00231         }
-<a name="l00232"></a>00232         <span class="keywordflow">for</span> (npp = Monitor; npp &lt; End_monitor; npp++) {
-<a name="l00233"></a>00233                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(npp, line, STAT_NAME_COL);
-<a name="l00234"></a>00234                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(npp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="TODO [PSR].">Buf</a>, STAT_NAME_LEN);
-<a name="l00235"></a>00235         }
-<a name="l00236"></a>00236 
-<a name="l00237"></a>00237         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, REFRESH);
-<a name="l00238"></a>00238         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, READY, 0);
-<a name="l00239"></a>00239         (void) fflush(pp-&gt;p_output);
-<a name="l00240"></a>00240 }
-<a name="l00241"></a>00241 <span class="preprocessor"># endif</span>
-<a name="l00242"></a>00242 <span class="preprocessor"></span>
-<a name="l00249"></a><a class="code" href="../../d6/dfd/answer_8c_a8455f2e936605abf7cb0faaa32cbea33.html#a8455f2e936605abf7cb0faaa32cbea33">00249</a> <span class="keywordtype">void</span> <a class="code" href="../../d6/dfd/answer_8c_a8455f2e936605abf7cb0faaa32cbea33.html#a8455f2e936605abf7cb0faaa32cbea33" title="Initializes a player status.">stplayer</a>(PLAYER *newpp, <span class="keywordtype">int</span> enter_status) {
-<a name="l00250"></a>00250         <span class="keywordtype">int</span> x, y;
-<a name="l00251"></a>00251         PLAYER *pp;
-<a name="l00252"></a>00252 
-<a name="l00253"></a>00253         <a class="code" href="../../dc/d2c/extern_8c_a7694030219c7458ab55ba6dd800ceea3.html#a7694030219c7458ab55ba6dd800ceea3">Nplayer</a>++;
-<a name="l00254"></a>00254 
-<a name="l00255"></a>00255         <span class="keywordflow">for</span> (y = 0; y &lt; UBOUND; y++) {
-<a name="l00256"></a>00256                 <span class="keywordflow">for</span> (x = 0; x &lt; WIDTH; x++) {
-<a name="l00257"></a>00257                         newpp-&gt;p_maze[y][x] = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x];
-<a name="l00258"></a>00258                 }
-<a name="l00259"></a>00259         }
-<a name="l00260"></a>00260         <span class="keywordflow">for</span> (; y &lt; DBOUND; y++) {
-<a name="l00261"></a>00261                 <span class="keywordflow">for</span> (x = 0; x &lt; LBOUND; x++) {
-<a name="l00262"></a>00262                         newpp-&gt;p_maze[y][x] = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x];
-<a name="l00263"></a>00263                 }
-<a name="l00264"></a>00264                 <span class="keywordflow">for</span> (; x &lt; RBOUND; x++) {
-<a name="l00265"></a>00265                         newpp-&gt;p_maze[y][x] = SPACE;
-<a name="l00266"></a>00266                 }
-<a name="l00267"></a>00267                 <span class="keywordflow">for</span> (; x &lt; WIDTH; x++) {
-<a name="l00268"></a>00268                         newpp-&gt;p_maze[y][x] = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x];
-<a name="l00269"></a>00269                 }
-<a name="l00270"></a>00270         }
-<a name="l00271"></a>00271         <span class="keywordflow">for</span> (; y &lt; HEIGHT; y++) {
-<a name="l00272"></a>00272                 <span class="keywordflow">for</span> (x = 0; x &lt; WIDTH; x++) {
-<a name="l00273"></a>00273                         newpp-&gt;p_maze[y][x] = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x];
-<a name="l00274"></a>00274                 }
-<a name="l00275"></a>00275         }
-<a name="l00276"></a>00276 
-<a name="l00277"></a>00277         <span class="keywordflow">do</span> {
-<a name="l00278"></a>00278                 x = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(WIDTH - 1) + 1;
-<a name="l00279"></a>00279                 y = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(HEIGHT - 1) + 1;
-<a name="l00280"></a>00280         } <span class="keywordflow">while</span> (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x] != SPACE);
-<a name="l00281"></a>00281         newpp-&gt;p_over = SPACE;
-<a name="l00282"></a>00282         newpp-&gt;p_x = x;
-<a name="l00283"></a>00283         newpp-&gt;p_y = y;
-<a name="l00284"></a>00284         newpp-&gt;p_undershot = <span class="keyword">false</span>;
-<a name="l00285"></a>00285 
-<a name="l00286"></a>00286 <span class="preprocessor"># ifdef FLY</span>
-<a name="l00287"></a>00287 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (enter_status == Q_FLY) {
-<a name="l00288"></a>00288                 newpp-&gt;p_flying = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(20);
-<a name="l00289"></a>00289                 newpp-&gt;p_flyx = 2 * <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(6) - 5;
-<a name="l00290"></a>00290                 newpp-&gt;p_flyy = 2 * <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(6) - 5;
-<a name="l00291"></a>00291                 newpp-&gt;p_face = FLYER;
-<a name="l00292"></a>00292         }
-<a name="l00293"></a>00293         <span class="keywordflow">else</span>
-<a name="l00294"></a>00294 <span class="preprocessor"># endif</span>
-<a name="l00295"></a>00295 <span class="preprocessor"></span>        {
-<a name="l00296"></a>00296 <span class="preprocessor"># ifdef FLY</span>
-<a name="l00297"></a>00297 <span class="preprocessor"></span>                newpp-&gt;p_flying = -1;
-<a name="l00298"></a>00298 <span class="preprocessor"># endif</span>
-<a name="l00299"></a>00299 <span class="preprocessor"></span>                newpp-&gt;p_face = <a class="code" href="../../d6/dfd/answer_8c_a8a9a38822e66f50a287cc236ac0545c3.html#a8a9a38822e66f50a287cc236ac0545c3" title="Return a random direction.">rand_dir</a>();
-<a name="l00300"></a>00300         }
-<a name="l00301"></a>00301         newpp-&gt;p_damage = 0;
-<a name="l00302"></a>00302         newpp-&gt;p_damcap = MAXDAM;
-<a name="l00303"></a>00303         newpp-&gt;p_nchar = 0;
-<a name="l00304"></a>00304         newpp-&gt;p_ncount = 0;
-<a name="l00305"></a>00305         newpp-&gt;p_nexec = 0;
-<a name="l00306"></a>00306         newpp-&gt;p_ammo = ISHOTS;
-<a name="l00307"></a>00307 <span class="preprocessor"># ifdef BOOTS</span>
-<a name="l00308"></a>00308 <span class="preprocessor"></span>        newpp-&gt;p_nboots = 0;
-<a name="l00309"></a>00309 <span class="preprocessor"># endif</span>
-<a name="l00310"></a>00310 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (enter_status == Q_SCAN) {
-<a name="l00311"></a>00311                 newpp-&gt;p_scan = SCANLEN;
-<a name="l00312"></a>00312                 newpp-&gt;p_cloak = 0;
-<a name="l00313"></a>00313         } <span class="keywordflow">else</span> {
-<a name="l00314"></a>00314                 newpp-&gt;p_scan = 0;
-<a name="l00315"></a>00315                 newpp-&gt;p_cloak = CLOAKLEN;
-<a name="l00316"></a>00316         }
-<a name="l00317"></a>00317         newpp-&gt;p_ncshot = 0;
-<a name="l00318"></a>00318 
-<a name="l00319"></a>00319         <span class="keywordflow">do</span> {
-<a name="l00320"></a>00320                 x = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(WIDTH - 1) + 1;
-<a name="l00321"></a>00321                 y = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(HEIGHT - 1) + 1;
-<a name="l00322"></a>00322         } <span class="keywordflow">while</span> (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x] != SPACE);
-<a name="l00323"></a>00323         <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x] = GMINE;
-<a name="l00324"></a>00324 <span class="preprocessor"># ifdef MONITOR</span>
-<a name="l00325"></a>00325 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++) {
-<a name="l00326"></a>00326                 <a class="code" href="../../d6/dd9/draw_8c_a95ad42106b804652115f3a6e29cd3d02.html#a95ad42106b804652115f3a6e29cd3d02" title="Draws the right symbol associated to a player in a given position.">check</a>(pp, y, x);
-<a name="l00327"></a>00327         }
-<a name="l00328"></a>00328 <span class="preprocessor"># endif</span>
-<a name="l00329"></a>00329 <span class="preprocessor"></span>
-<a name="l00330"></a>00330         <span class="keywordflow">do</span> {
-<a name="l00331"></a>00331                 x = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(WIDTH - 1) + 1;
-<a name="l00332"></a>00332                 y = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(HEIGHT - 1) + 1;
-<a name="l00333"></a>00333         } <span class="keywordflow">while</span> (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x] != SPACE);
-<a name="l00334"></a>00334         <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x] = MINE;
-<a name="l00335"></a>00335 <span class="preprocessor"># ifdef MONITOR</span>
-<a name="l00336"></a>00336 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++) {
-<a name="l00337"></a>00337                 <a class="code" href="../../d6/dd9/draw_8c_a95ad42106b804652115f3a6e29cd3d02.html#a95ad42106b804652115f3a6e29cd3d02" title="Draws the right symbol associated to a player in a given position.">check</a>(pp, y, x);
-<a name="l00338"></a>00338         }
-<a name="l00339"></a>00339 <span class="preprocessor"># endif</span>
-<a name="l00340"></a>00340 <span class="preprocessor"></span>
-<a name="l00341"></a>00341         (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="TODO [PSR].">Buf</a>, <span class="stringliteral">&quot;%5.2f%c%-10.10s %c&quot;</span>, newpp-&gt;p_ident-&gt;i_score,
-<a name="l00342"></a>00342                         stat_char(newpp), newpp-&gt;p_ident-&gt;i_name, newpp-&gt;p_ident-&gt;i_team);
-<a name="l00343"></a>00343         y = STAT_PLAY_ROW + 1 + (newpp - <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>);
-<a name="l00344"></a>00344         <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; pp++) {
-<a name="l00345"></a>00345                 <span class="keywordflow">if</span> (pp != newpp) {
-<a name="l00346"></a>00346                         <span class="keywordtype">char</span> smallbuf[10];
-<a name="l00347"></a>00347 
-<a name="l00348"></a>00348                         pp-&gt;p_ammo += NSHOTS;
-<a name="l00349"></a>00349                         newpp-&gt;p_ammo += NSHOTS;
-<a name="l00350"></a>00350                         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, y, STAT_NAME_COL);
-<a name="l00351"></a>00351                         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="TODO [PSR].">Buf</a>, STAT_NAME_LEN);
-<a name="l00352"></a>00352                         (void) sprintf(smallbuf, <span class="stringliteral">&quot;%3d&quot;</span>, pp-&gt;p_ammo);
-<a name="l00353"></a>00353                         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-<a name="l00354"></a>00354                         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, smallbuf, 3);
-<a name="l00355"></a>00355                 }
-<a name="l00356"></a>00356         }
-<a name="l00357"></a>00357 <span class="preprocessor"># ifdef MONITOR</span>
-<a name="l00358"></a>00358 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++) {
-<a name="l00359"></a>00359                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, y, STAT_NAME_COL);
-<a name="l00360"></a>00360                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="TODO [PSR].">Buf</a>, STAT_NAME_LEN);
-<a name="l00361"></a>00361         }
-<a name="l00362"></a>00362 <span class="preprocessor"># endif</span>
-<a name="l00363"></a>00363 <span class="preprocessor"></span>
-<a name="l00364"></a>00364         <a class="code" href="../../d6/dd9/draw_8c_af1f4563b67948504e22a8b383ce69caa.html#af1f4563b67948504e22a8b383ce69caa" title="Draws the maze.">drawmaze</a>(newpp);
-<a name="l00365"></a>00365         <a class="code" href="../../d6/dd9/draw_8c_a18aa8122aab8d91c26a986cd277321e4.html#a18aa8122aab8d91c26a986cd277321e4" title="Draw the player on the screen and show him to everyone who&amp;#39;s scanning unless he is cloaked...">drawplayer</a>(newpp, <span class="keyword">true</span>);
-<a name="l00366"></a>00366         <a class="code" href="../../d6/dd9/draw_8c_a1183caa22951f046d93b2ac3037acd78.html#a1183caa22951f046d93b2ac3037acd78" title="Represents a player and nearby enemies.">look</a>(newpp);
-<a name="l00367"></a>00367 <span class="preprocessor"># ifdef FLY</span>
-<a name="l00368"></a>00368 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (enter_status == Q_FLY) {
-<a name="l00369"></a>00369                 <span class="comment">/* Make sure that the position you enter in will be erased */</span>
-<a name="l00370"></a>00370                 <a class="code" href="../../d4/d55/expl_8c_ab254b1eddcf486fa71e40576ca6d28fb.html#ab254b1eddcf486fa71e40576ca6d28fb" title="Show the explosions as they currently are.">showexpl</a>(newpp-&gt;p_y, newpp-&gt;p_x, FLYER);
-<a name="l00371"></a>00371         }
-<a name="l00372"></a>00372 <span class="preprocessor"># endif</span>
-<a name="l00373"></a>00373 <span class="preprocessor"></span>        <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(newpp, REFRESH);
-<a name="l00374"></a>00374         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(newpp, READY, 0);
-<a name="l00375"></a>00375         (void) fflush(newpp-&gt;p_output);
-<a name="l00376"></a>00376 }
-<a name="l00377"></a>00377 
-<a name="l00382"></a><a class="code" href="../../d6/dfd/answer_8c_a8a9a38822e66f50a287cc236ac0545c3.html#a8a9a38822e66f50a287cc236ac0545c3">00382</a> <span class="keywordtype">int</span> <a class="code" href="../../d6/dfd/answer_8c_a8a9a38822e66f50a287cc236ac0545c3.html#a8a9a38822e66f50a287cc236ac0545c3" title="Return a random direction.">rand_dir</a>() {
-<a name="l00383"></a>00383         <span class="keywordflow">switch</span> (<a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(4)) {
-<a name="l00384"></a>00384         <span class="keywordflow">case</span> 0:
-<a name="l00385"></a>00385                 <span class="keywordflow">return</span> LEFTS;
-<a name="l00386"></a>00386         <span class="keywordflow">case</span> 1:
-<a name="l00387"></a>00387                 <span class="keywordflow">return</span> RIGHT;
-<a name="l00388"></a>00388         <span class="keywordflow">case</span> 2:
-<a name="l00389"></a>00389                 <span class="keywordflow">return</span> BELOW;
-<a name="l00390"></a>00390         <span class="keywordflow">case</span> 3:
-<a name="l00391"></a>00391                 <span class="keywordflow">return</span> ABOVE;
-<a name="l00392"></a>00392         }
-<a name="l00393"></a>00393         <span class="comment">/* NOTREACHED */</span>
-<a name="l00394"></a>00394         <span class="keywordflow">return</span> (-1);
-<a name="l00395"></a>00395 }
-<a name="l00396"></a>00396 
-<a name="l00405"></a><a class="code" href="../../d6/dfd/answer_8c_a6139dfd9d0773795e9e247c62d909288.html#a6139dfd9d0773795e9e247c62d909288">00405</a> IDENT * <a class="code" href="../../d6/dfd/answer_8c_a6139dfd9d0773795e9e247c62d909288.html#a6139dfd9d0773795e9e247c62d909288" title="Get the score structure of a player.">get_ident</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> machine, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> uid, <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>,
-<a name="l00406"></a>00406                 <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>) {
-<a name="l00407"></a>00407         IDENT *ip;
-<a name="l00408"></a>00408         <span class="keyword">static</span> IDENT punt;
-<a name="l00409"></a>00409 
-<a name="l00410"></a>00410         <span class="keywordflow">for</span> (ip = <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d">Scores</a>; ip != NULL; ip = ip-&gt;i_next) {
-<a name="l00411"></a>00411                 <span class="keywordflow">if</span> ((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) ip-&gt;i_machine == machine
-<a name="l00412"></a>00412                                 &amp;&amp; (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) ip-&gt;i_uid == uid &amp;&amp; ip-&gt;i_team == team
-<a name="l00413"></a>00413                                 &amp;&amp; strncmp(ip-&gt;i_name, name, NAMELEN) == 0) {
-<a name="l00414"></a>00414                         <span class="keywordflow">break</span>;
-<a name="l00415"></a>00415                 }
-<a name="l00416"></a>00416         }
-<a name="l00417"></a>00417 
-<a name="l00418"></a>00418         <span class="keywordflow">if</span> (ip != NULL) {
-<a name="l00419"></a>00419                 <span class="keywordflow">if</span> (ip-&gt;i_entries &lt; <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="&amp;lt; # include &amp;lt;errno.h&amp;gt; already present in hunt.h.">SCOREDECAY</a>) {
-<a name="l00420"></a>00420                         ip-&gt;i_entries++;
-<a name="l00421"></a>00421                 } <span class="keywordflow">else</span> {
-<a name="l00422"></a>00422                         ip-&gt;i_kills = (ip-&gt;i_kills * (<a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="&amp;lt; # include &amp;lt;errno.h&amp;gt; already present in hunt.h.">SCOREDECAY</a> - 1)) / <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="&amp;lt; # include &amp;lt;errno.h&amp;gt; already present in hunt.h.">SCOREDECAY</a>;
-<a name="l00423"></a>00423                 }
-<a name="l00424"></a>00424                 ip-&gt;i_score = ip-&gt;i_kills / (double) ip-&gt;i_entries;
-<a name="l00425"></a>00425         } <span class="keywordflow">else</span> {
-<a name="l00426"></a>00426                 ip = (IDENT *) malloc(<span class="keyword">sizeof</span>(IDENT));
-<a name="l00427"></a>00427                 <span class="keywordflow">if</span> (ip == NULL) {
-<a name="l00428"></a>00428                         <span class="comment">/* Fourth down, time to punt */</span>
-<a name="l00429"></a>00429                         ip = &amp;punt;
-<a name="l00430"></a>00430                 }
-<a name="l00431"></a>00431                 ip-&gt;i_machine = machine;
-<a name="l00432"></a>00432                 ip-&gt;i_team = <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>;
-<a name="l00433"></a>00433                 ip-&gt;i_uid = uid;
-<a name="l00434"></a>00434                 strncpy(ip-&gt;i_name, name, NAMELEN);
-<a name="l00435"></a>00435                 ip-&gt;i_kills = 0;
-<a name="l00436"></a>00436                 ip-&gt;i_entries = 1;
-<a name="l00437"></a>00437                 ip-&gt;i_score = 0;
-<a name="l00438"></a>00438                 ip-&gt;i_absorbed = 0;
-<a name="l00439"></a>00439                 ip-&gt;i_faced = 0;
-<a name="l00440"></a>00440                 ip-&gt;i_shot = 0;
-<a name="l00441"></a>00441                 ip-&gt;i_robbed = 0;
-<a name="l00442"></a>00442                 ip-&gt;i_slime = 0;
-<a name="l00443"></a>00443                 ip-&gt;i_missed = 0;
-<a name="l00444"></a>00444                 ip-&gt;i_ducked = 0;
-<a name="l00445"></a>00445                 ip-&gt;i_gkills = ip-&gt;i_bkills = ip-&gt;i_deaths = 0;
-<a name="l00446"></a>00446                 ip-&gt;i_stillb = ip-&gt;i_saved = 0;
-<a name="l00447"></a>00447                 ip-&gt;i_next = <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d">Scores</a>;
-<a name="l00448"></a>00448                 <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d">Scores</a> = ip;
-<a name="l00449"></a>00449         }
-<a name="l00450"></a>00450 
-<a name="l00451"></a>00451         <span class="keywordflow">return</span> ip;
-<a name="l00452"></a>00452 }
+<a name="l00181"></a>00181                 (void) close(newsock);
+<a name="l00182"></a>00182                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00183"></a>00183         }
+<a name="l00184"></a>00184 
+<a name="l00185"></a>00185 <span class="preprocessor">#ifdef MONITOR</span>
+<a name="l00186"></a>00186 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (mode == C_MONITOR &amp;&amp; <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a> == <span class="charliteral">&#39; &#39;</span>) {
+<a name="l00187"></a>00187                 <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a> = <span class="charliteral">&#39;*&#39;</span>;
+<a name="l00188"></a>00188         }
+<a name="l00189"></a>00189 <span class="preprocessor">#endif</span>
+<a name="l00190"></a>00190 <span class="preprocessor"></span>        pp-&gt;p_ident = <a class="code" href="../../d6/dfd/answer_8c_a6139dfd9d0773795e9e247c62d909288.html#a6139dfd9d0773795e9e247c62d909288" title="Get the score structure of a player.">get_ident</a>(machine, uid, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>);
+<a name="l00191"></a>00191         pp-&gt;p_output = fdopen(newsock, <span class="stringliteral">&quot;w&quot;</span>);
+<a name="l00192"></a>00192         pp-&gt;p_death[0] = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l00193"></a>00193         pp-&gt;p_fd = newsock;
+<a name="l00194"></a>00194         <a class="code" href="../../dc/d2c/extern_8c_a11af15344ece6eeb20ac37e1ce97cbc8.html#a11af15344ece6eeb20ac37e1ce97cbc8" title="A set of file descriptors.">fdset</a>[i].fd = newsock;
+<a name="l00195"></a>00195         <a class="code" href="../../dc/d2c/extern_8c_a11af15344ece6eeb20ac37e1ce97cbc8.html#a11af15344ece6eeb20ac37e1ce97cbc8" title="A set of file descriptors.">fdset</a>[i].events = POLLIN;
+<a name="l00196"></a>00196 
+<a name="l00197"></a>00197         pp-&gt;p_y = 0;
+<a name="l00198"></a>00198         pp-&gt;p_x = 0;
+<a name="l00199"></a>00199 
+<a name="l00200"></a>00200 <span class="preprocessor"># ifdef MONITOR</span>
+<a name="l00201"></a>00201 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (mode == C_MONITOR) {
+<a name="l00202"></a>00202                 stmonitor(pp);
+<a name="l00203"></a>00203         }
+<a name="l00204"></a>00204         <span class="keywordflow">else</span>
+<a name="l00205"></a>00205 <span class="preprocessor"># endif</span>
+<a name="l00206"></a>00206 <span class="preprocessor"></span>        <a class="code" href="../../d6/dfd/answer_8c_a8455f2e936605abf7cb0faaa32cbea33.html#a8455f2e936605abf7cb0faaa32cbea33" title="Initializes a player status.">stplayer</a>(pp, enter_status);
+<a name="l00207"></a>00207         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00208"></a>00208 }
+<a name="l00209"></a>00209 
+<a name="l00210"></a>00210 <span class="preprocessor"># ifdef MONITOR</span>
+<a name="l00211"></a>00211 <span class="preprocessor"></span>
+<a name="l00216"></a>00216 <span class="keywordtype">void</span> stmonitor(PLAYER *pp) {
+<a name="l00217"></a>00217         <span class="keywordtype">int</span> line;
+<a name="l00218"></a>00218         PLAYER *npp;
+<a name="l00219"></a>00219 
+<a name="l00220"></a>00220         memcpy(pp-&gt;p_maze, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>, <span class="keyword">sizeof</span> <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>);
+<a name="l00221"></a>00221 
+<a name="l00222"></a>00222         <a class="code" href="../../d6/dd9/draw_8c_af1f4563b67948504e22a8b383ce69caa.html#af1f4563b67948504e22a8b383ce69caa" title="Draws the maze.">drawmaze</a>(pp);
+<a name="l00223"></a>00223 
+<a name="l00224"></a>00224         (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, <span class="stringliteral">&quot;%5.5s%c%-10.10s %c&quot;</span>, <span class="stringliteral">&quot; &quot;</span>, stat_char(pp),
+<a name="l00225"></a>00225                         pp-&gt;p_ident-&gt;i_name, pp-&gt;p_ident-&gt;i_team);
+<a name="l00226"></a>00226         line = STAT_MON_ROW + 1 + (pp - Monitor);
+<a name="l00227"></a>00227         <span class="keywordflow">for</span> (npp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; npp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; npp++) {
+<a name="l00228"></a>00228                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(npp, line, STAT_NAME_COL);
+<a name="l00229"></a>00229                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(npp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, STAT_NAME_LEN);
+<a name="l00230"></a>00230         }
+<a name="l00231"></a>00231         <span class="keywordflow">for</span> (npp = Monitor; npp &lt; End_monitor; npp++) {
+<a name="l00232"></a>00232                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(npp, line, STAT_NAME_COL);
+<a name="l00233"></a>00233                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(npp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, STAT_NAME_LEN);
+<a name="l00234"></a>00234         }
+<a name="l00235"></a>00235 
+<a name="l00236"></a>00236         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, REFRESH);
+<a name="l00237"></a>00237         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, READY, 0);
+<a name="l00238"></a>00238         (void) fflush(pp-&gt;p_output);
+<a name="l00239"></a>00239 }
+<a name="l00240"></a>00240 <span class="preprocessor"># endif</span>
+<a name="l00241"></a>00241 <span class="preprocessor"></span>
+<a name="l00248"></a><a class="code" href="../../d6/dfd/answer_8c_a8455f2e936605abf7cb0faaa32cbea33.html#a8455f2e936605abf7cb0faaa32cbea33">00248</a> <span class="keywordtype">void</span> <a class="code" href="../../d6/dfd/answer_8c_a8455f2e936605abf7cb0faaa32cbea33.html#a8455f2e936605abf7cb0faaa32cbea33" title="Initializes a player status.">stplayer</a>(PLAYER *newpp, <span class="keywordtype">int</span> enter_status) {
+<a name="l00249"></a>00249         <span class="keywordtype">int</span> x, y;
+<a name="l00250"></a>00250         PLAYER *pp;
+<a name="l00251"></a>00251 
+<a name="l00252"></a>00252         <a class="code" href="../../dc/d2c/extern_8c_a7694030219c7458ab55ba6dd800ceea3.html#a7694030219c7458ab55ba6dd800ceea3" title="Number of players.">Nplayer</a>++;
+<a name="l00253"></a>00253 
+<a name="l00254"></a>00254         <span class="keywordflow">for</span> (y = 0; y &lt; UBOUND; y++) {
+<a name="l00255"></a>00255                 <span class="keywordflow">for</span> (x = 0; x &lt; WIDTH; x++) {
+<a name="l00256"></a>00256                         newpp-&gt;p_maze[y][x] = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x];
+<a name="l00257"></a>00257                 }
+<a name="l00258"></a>00258         }
+<a name="l00259"></a>00259         <span class="keywordflow">for</span> (; y &lt; DBOUND; y++) {
+<a name="l00260"></a>00260                 <span class="keywordflow">for</span> (x = 0; x &lt; LBOUND; x++) {
+<a name="l00261"></a>00261                         newpp-&gt;p_maze[y][x] = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x];
+<a name="l00262"></a>00262                 }
+<a name="l00263"></a>00263                 <span class="keywordflow">for</span> (; x &lt; RBOUND; x++) {
+<a name="l00264"></a>00264                         newpp-&gt;p_maze[y][x] = SPACE;
+<a name="l00265"></a>00265                 }
+<a name="l00266"></a>00266                 <span class="keywordflow">for</span> (; x &lt; WIDTH; x++) {
+<a name="l00267"></a>00267                         newpp-&gt;p_maze[y][x] = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x];
+<a name="l00268"></a>00268                 }
+<a name="l00269"></a>00269         }
+<a name="l00270"></a>00270         <span class="keywordflow">for</span> (; y &lt; HEIGHT; y++) {
+<a name="l00271"></a>00271                 <span class="keywordflow">for</span> (x = 0; x &lt; WIDTH; x++) {
+<a name="l00272"></a>00272                         newpp-&gt;p_maze[y][x] = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x];
+<a name="l00273"></a>00273                 }
+<a name="l00274"></a>00274         }
+<a name="l00275"></a>00275 
+<a name="l00276"></a>00276         <span class="keywordflow">do</span> {
+<a name="l00277"></a>00277                 x = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(WIDTH - 1) + 1;
+<a name="l00278"></a>00278                 y = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(HEIGHT - 1) + 1;
+<a name="l00279"></a>00279         } <span class="keywordflow">while</span> (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] != SPACE);
+<a name="l00280"></a>00280         newpp-&gt;p_over = SPACE;
+<a name="l00281"></a>00281         newpp-&gt;p_x = x;
+<a name="l00282"></a>00282         newpp-&gt;p_y = y;
+<a name="l00283"></a>00283         newpp-&gt;p_undershot = <span class="keyword">false</span>;
+<a name="l00284"></a>00284 
+<a name="l00285"></a>00285 <span class="preprocessor"># ifdef FLY</span>
+<a name="l00286"></a>00286 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (enter_status == Q_FLY) {
+<a name="l00287"></a>00287                 newpp-&gt;p_flying = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(20);
+<a name="l00288"></a>00288                 newpp-&gt;p_flyx = 2 * <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(6) - 5;
+<a name="l00289"></a>00289                 newpp-&gt;p_flyy = 2 * <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(6) - 5;
+<a name="l00290"></a>00290                 newpp-&gt;p_face = FLYER;
+<a name="l00291"></a>00291         }
+<a name="l00292"></a>00292         <span class="keywordflow">else</span>
+<a name="l00293"></a>00293 <span class="preprocessor"># endif</span>
+<a name="l00294"></a>00294 <span class="preprocessor"></span>        {
+<a name="l00295"></a>00295 <span class="preprocessor"># ifdef FLY</span>
+<a name="l00296"></a>00296 <span class="preprocessor"></span>                newpp-&gt;p_flying = -1;
+<a name="l00297"></a>00297 <span class="preprocessor"># endif</span>
+<a name="l00298"></a>00298 <span class="preprocessor"></span>                newpp-&gt;p_face = <a class="code" href="../../d6/dfd/answer_8c_a8a9a38822e66f50a287cc236ac0545c3.html#a8a9a38822e66f50a287cc236ac0545c3" title="Return a random direction.">rand_dir</a>();
+<a name="l00299"></a>00299         }
+<a name="l00300"></a>00300         newpp-&gt;p_damage = 0;
+<a name="l00301"></a>00301         newpp-&gt;p_damcap = MAXDAM;
+<a name="l00302"></a>00302         newpp-&gt;p_nchar = 0;
+<a name="l00303"></a>00303         newpp-&gt;p_ncount = 0;
+<a name="l00304"></a>00304         newpp-&gt;p_nexec = 0;
+<a name="l00305"></a>00305         newpp-&gt;p_ammo = ISHOTS;
+<a name="l00306"></a>00306 <span class="preprocessor"># ifdef BOOTS</span>
+<a name="l00307"></a>00307 <span class="preprocessor"></span>        newpp-&gt;p_nboots = 0;
+<a name="l00308"></a>00308 <span class="preprocessor"># endif</span>
+<a name="l00309"></a>00309 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (enter_status == Q_SCAN) {
+<a name="l00310"></a>00310                 newpp-&gt;p_scan = SCANLEN;
+<a name="l00311"></a>00311                 newpp-&gt;p_cloak = 0;
+<a name="l00312"></a>00312         } <span class="keywordflow">else</span> {
+<a name="l00313"></a>00313                 newpp-&gt;p_scan = 0;
+<a name="l00314"></a>00314                 newpp-&gt;p_cloak = CLOAKLEN;
+<a name="l00315"></a>00315         }
+<a name="l00316"></a>00316         newpp-&gt;p_ncshot = 0;
+<a name="l00317"></a>00317 
+<a name="l00318"></a>00318         <span class="keywordflow">do</span> {
+<a name="l00319"></a>00319                 x = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(WIDTH - 1) + 1;
+<a name="l00320"></a>00320                 y = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(HEIGHT - 1) + 1;
+<a name="l00321"></a>00321         } <span class="keywordflow">while</span> (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] != SPACE);
+<a name="l00322"></a>00322         <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] = GMINE;
+<a name="l00323"></a>00323 <span class="preprocessor"># ifdef MONITOR</span>
+<a name="l00324"></a>00324 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++) {
+<a name="l00325"></a>00325                 <a class="code" href="../../d6/dd9/draw_8c_a95ad42106b804652115f3a6e29cd3d02.html#a95ad42106b804652115f3a6e29cd3d02" title="Draws the right symbol associated to a player in a given position.">check</a>(pp, y, x);
+<a name="l00326"></a>00326         }
+<a name="l00327"></a>00327 <span class="preprocessor"># endif</span>
+<a name="l00328"></a>00328 <span class="preprocessor"></span>
+<a name="l00329"></a>00329         <span class="keywordflow">do</span> {
+<a name="l00330"></a>00330                 x = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(WIDTH - 1) + 1;
+<a name="l00331"></a>00331                 y = <a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(HEIGHT - 1) + 1;
+<a name="l00332"></a>00332         } <span class="keywordflow">while</span> (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] != SPACE);
+<a name="l00333"></a>00333         <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] = MINE;
+<a name="l00334"></a>00334 <span class="preprocessor"># ifdef MONITOR</span>
+<a name="l00335"></a>00335 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++) {
+<a name="l00336"></a>00336                 <a class="code" href="../../d6/dd9/draw_8c_a95ad42106b804652115f3a6e29cd3d02.html#a95ad42106b804652115f3a6e29cd3d02" title="Draws the right symbol associated to a player in a given position.">check</a>(pp, y, x);
+<a name="l00337"></a>00337         }
+<a name="l00338"></a>00338 <span class="preprocessor"># endif</span>
+<a name="l00339"></a>00339 <span class="preprocessor"></span>
+<a name="l00340"></a>00340         (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, <span class="stringliteral">&quot;%5.2f%c%-10.10s %c&quot;</span>, newpp-&gt;p_ident-&gt;i_score,
+<a name="l00341"></a>00341                         stat_char(newpp), newpp-&gt;p_ident-&gt;i_name, newpp-&gt;p_ident-&gt;i_team);
+<a name="l00342"></a>00342         y = STAT_PLAY_ROW + 1 + (newpp - <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>);
+<a name="l00343"></a>00343         <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++) {
+<a name="l00344"></a>00344                 <span class="keywordflow">if</span> (pp != newpp) {
+<a name="l00345"></a>00345                         <span class="keywordtype">char</span> smallbuf[10];
+<a name="l00346"></a>00346 
+<a name="l00347"></a>00347                         pp-&gt;p_ammo += NSHOTS;
+<a name="l00348"></a>00348                         newpp-&gt;p_ammo += NSHOTS;
+<a name="l00349"></a>00349                         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, y, STAT_NAME_COL);
+<a name="l00350"></a>00350                         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, STAT_NAME_LEN);
+<a name="l00351"></a>00351                         (void) sprintf(smallbuf, <span class="stringliteral">&quot;%3d&quot;</span>, pp-&gt;p_ammo);
+<a name="l00352"></a>00352                         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
+<a name="l00353"></a>00353                         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, smallbuf, 3);
+<a name="l00354"></a>00354                 }
+<a name="l00355"></a>00355         }
+<a name="l00356"></a>00356 <span class="preprocessor"># ifdef MONITOR</span>
+<a name="l00357"></a>00357 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++) {
+<a name="l00358"></a>00358                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, y, STAT_NAME_COL);
+<a name="l00359"></a>00359                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, STAT_NAME_LEN);
+<a name="l00360"></a>00360         }
+<a name="l00361"></a>00361 <span class="preprocessor"># endif</span>
+<a name="l00362"></a>00362 <span class="preprocessor"></span>
+<a name="l00363"></a>00363         <a class="code" href="../../d6/dd9/draw_8c_af1f4563b67948504e22a8b383ce69caa.html#af1f4563b67948504e22a8b383ce69caa" title="Draws the maze.">drawmaze</a>(newpp);
+<a name="l00364"></a>00364         <a class="code" href="../../d6/dd9/draw_8c_a18aa8122aab8d91c26a986cd277321e4.html#a18aa8122aab8d91c26a986cd277321e4" title="Draw the player on the screen and show him to everyone who&amp;#39;s scanning unless he is cloaked...">drawplayer</a>(newpp, <span class="keyword">true</span>);
+<a name="l00365"></a>00365         <a class="code" href="../../d6/dd9/draw_8c_a1183caa22951f046d93b2ac3037acd78.html#a1183caa22951f046d93b2ac3037acd78" title="Represents a player and nearby enemies.">look</a>(newpp);
+<a name="l00366"></a>00366 <span class="preprocessor"># ifdef FLY</span>
+<a name="l00367"></a>00367 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (enter_status == Q_FLY) {
+<a name="l00368"></a>00368                 <span class="comment">/* Make sure that the position you enter in will be erased */</span>
+<a name="l00369"></a>00369                 <a class="code" href="../../d4/d55/expl_8c_ab254b1eddcf486fa71e40576ca6d28fb.html#ab254b1eddcf486fa71e40576ca6d28fb" title="Show the explosions as they currently are.">showexpl</a>(newpp-&gt;p_y, newpp-&gt;p_x, FLYER);
+<a name="l00370"></a>00370         }
+<a name="l00371"></a>00371 <span class="preprocessor"># endif</span>
+<a name="l00372"></a>00372 <span class="preprocessor"></span>        <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(newpp, REFRESH);
+<a name="l00373"></a>00373         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(newpp, READY, 0);
+<a name="l00374"></a>00374         (void) fflush(newpp-&gt;p_output);
+<a name="l00375"></a>00375 }
+<a name="l00376"></a>00376 
+<a name="l00381"></a><a class="code" href="../../d6/dfd/answer_8c_a8a9a38822e66f50a287cc236ac0545c3.html#a8a9a38822e66f50a287cc236ac0545c3">00381</a> <span class="keywordtype">int</span> <a class="code" href="../../d6/dfd/answer_8c_a8a9a38822e66f50a287cc236ac0545c3.html#a8a9a38822e66f50a287cc236ac0545c3" title="Return a random direction.">rand_dir</a>() {
+<a name="l00382"></a>00382         <span class="keywordflow">switch</span> (<a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(4)) {
+<a name="l00383"></a>00383         <span class="keywordflow">case</span> 0:
+<a name="l00384"></a>00384                 <span class="keywordflow">return</span> LEFTS;
+<a name="l00385"></a>00385         <span class="keywordflow">case</span> 1:
+<a name="l00386"></a>00386                 <span class="keywordflow">return</span> RIGHT;
+<a name="l00387"></a>00387         <span class="keywordflow">case</span> 2:
+<a name="l00388"></a>00388                 <span class="keywordflow">return</span> BELOW;
+<a name="l00389"></a>00389         <span class="keywordflow">case</span> 3:
+<a name="l00390"></a>00390                 <span class="keywordflow">return</span> ABOVE;
+<a name="l00391"></a>00391         }
+<a name="l00392"></a>00392         <span class="comment">/* NOTREACHED */</span>
+<a name="l00393"></a>00393         <span class="keywordflow">return</span> (-1);
+<a name="l00394"></a>00394 }
+<a name="l00395"></a>00395 
+<a name="l00404"></a><a class="code" href="../../d6/dfd/answer_8c_a6139dfd9d0773795e9e247c62d909288.html#a6139dfd9d0773795e9e247c62d909288">00404</a> IDENT * <a class="code" href="../../d6/dfd/answer_8c_a6139dfd9d0773795e9e247c62d909288.html#a6139dfd9d0773795e9e247c62d909288" title="Get the score structure of a player.">get_ident</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> machine, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> uid, <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>,
+<a name="l00405"></a>00405                 <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>) {
+<a name="l00406"></a>00406         IDENT *ip;
+<a name="l00407"></a>00407         <span class="keyword">static</span> IDENT punt;
+<a name="l00408"></a>00408 
+<a name="l00409"></a>00409         <span class="keywordflow">for</span> (ip = <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d" title="Score cache.">Scores</a>; ip != NULL; ip = ip-&gt;i_next) {
+<a name="l00410"></a>00410                 <span class="keywordflow">if</span> ((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) ip-&gt;i_machine == machine
+<a name="l00411"></a>00411                                 &amp;&amp; (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) ip-&gt;i_uid == uid &amp;&amp; ip-&gt;i_team == team
+<a name="l00412"></a>00412                                 &amp;&amp; strncmp(ip-&gt;i_name, name, NAMELEN) == 0) {
+<a name="l00413"></a>00413                         <span class="keywordflow">break</span>;
+<a name="l00414"></a>00414                 }
+<a name="l00415"></a>00415         }
+<a name="l00416"></a>00416 
+<a name="l00417"></a>00417         <span class="keywordflow">if</span> (ip != NULL) {
+<a name="l00418"></a>00418                 <span class="keywordflow">if</span> (ip-&gt;i_entries &lt; <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="TODO [PSR].">SCOREDECAY</a>) {
+<a name="l00419"></a>00419                         ip-&gt;i_entries++;
+<a name="l00420"></a>00420                 } <span class="keywordflow">else</span> {
+<a name="l00421"></a>00421                         ip-&gt;i_kills = (ip-&gt;i_kills * (<a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="TODO [PSR].">SCOREDECAY</a> - 1)) / <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="TODO [PSR].">SCOREDECAY</a>;
+<a name="l00422"></a>00422                 }
+<a name="l00423"></a>00423                 ip-&gt;i_score = ip-&gt;i_kills / (double) ip-&gt;i_entries;
+<a name="l00424"></a>00424         } <span class="keywordflow">else</span> {
+<a name="l00425"></a>00425                 ip = (IDENT *) malloc(<span class="keyword">sizeof</span>(IDENT));
+<a name="l00426"></a>00426                 <span class="keywordflow">if</span> (ip == NULL) {
+<a name="l00427"></a>00427                         <span class="comment">/* Fourth down, time to punt */</span>
+<a name="l00428"></a>00428                         ip = &amp;punt;
+<a name="l00429"></a>00429                 }
+<a name="l00430"></a>00430                 ip-&gt;i_machine = machine;
+<a name="l00431"></a>00431                 ip-&gt;i_team = <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>;
+<a name="l00432"></a>00432                 ip-&gt;i_uid = uid;
+<a name="l00433"></a>00433                 strncpy(ip-&gt;i_name, name, NAMELEN);
+<a name="l00434"></a>00434                 ip-&gt;i_kills = 0;
+<a name="l00435"></a>00435                 ip-&gt;i_entries = 1;
+<a name="l00436"></a>00436                 ip-&gt;i_score = 0;
+<a name="l00437"></a>00437                 ip-&gt;i_absorbed = 0;
+<a name="l00438"></a>00438                 ip-&gt;i_faced = 0;
+<a name="l00439"></a>00439                 ip-&gt;i_shot = 0;
+<a name="l00440"></a>00440                 ip-&gt;i_robbed = 0;
+<a name="l00441"></a>00441                 ip-&gt;i_slime = 0;
+<a name="l00442"></a>00442                 ip-&gt;i_missed = 0;
+<a name="l00443"></a>00443                 ip-&gt;i_ducked = 0;
+<a name="l00444"></a>00444                 ip-&gt;i_gkills = ip-&gt;i_bkills = ip-&gt;i_deaths = 0;
+<a name="l00445"></a>00445                 ip-&gt;i_stillb = ip-&gt;i_saved = 0;
+<a name="l00446"></a>00446                 ip-&gt;i_next = <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d" title="Score cache.">Scores</a>;
+<a name="l00447"></a>00447                 <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d" title="Score cache.">Scores</a> = ip;
+<a name="l00448"></a>00448         }
+<a name="l00449"></a>00449 
+<a name="l00450"></a>00450         <span class="keywordflow">return</span> ip;
+<a name="l00451"></a>00451 }
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d6/dfd/answer_8c.html">answer.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 8 2012 22:04:41 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

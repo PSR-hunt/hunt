@@ -30,14 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**< #include "bsd.h" already present in hunt.h. [PSR]*/
+/* #include "bsd.h" already present in hunt.h. [PSR]*/
 
 #if	defined(TALK_43) || defined(TALK_42) 
 # define TALK_MODE //See documentation in hunt.h.
 # include	"hunt.h"
 # undef TALK_MODE
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)ctl.c	5.2 (Berkeley) 3/13/86";
@@ -62,7 +62,7 @@ struct	in_addr my_machine_addr;
 struct	in_addr his_machine_addr;
 
 /* port number of the talk daemon */
-unsigned short daemon_port;	/**< Changed from u_short. [PSR] */
+unsigned short daemon_port;	/* Changed from u_short. [PSR] */
 
 int	ctl_sockt;
 

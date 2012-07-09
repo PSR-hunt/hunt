@@ -149,25 +149,32 @@ function toggleVisibility(linkObj) {
 <a name="l00030"></a>00030 <span class="comment"> * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
 <a name="l00031"></a>00031 <span class="comment"> */</span>
 <a name="l00032"></a>00032 
-<a name="l00033"></a><a class="code" href="../../d0/d3e/faketalk_8c_ac721e9c24d8598243155ecd72ba1a991.html#ac721e9c24d8598243155ecd72ba1a991">00033</a> <span class="preprocessor"># define TALK_MODE //See documentation in hunt.h.</span>
-<a name="l00034"></a>00034 <span class="preprocessor"></span><span class="preprocessor"># include       &quot;hunt.h&quot;</span>
-<a name="l00035"></a>00035 <span class="preprocessor"># undef TALK_MODE</span>
+<a name="l00033"></a><a class="code" href="../../d0/d3e/faketalk_8c_ac721e9c24d8598243155ecd72ba1a991.html#ac721e9c24d8598243155ecd72ba1a991">00033</a> <span class="preprocessor"># define TALK_MODE </span>
+<a name="l00034"></a>00034 <span class="preprocessor"># include       &quot;hunt.h&quot;</span>
+<a name="l00035"></a>00035 <span class="preprocessor"></span><span class="preprocessor"># undef TALK_MODE</span>
 <a name="l00036"></a>00036 <span class="preprocessor"></span>
+<a name="l00037"></a>00037 <span class="comment">/* #include &lt;sys/cdefs.h&gt; pushed up in hunt.h. [PSR] */</span>
 <a name="l00038"></a>00038 <span class="preprocessor">#ifndef lint</span>
 <a name="l00039"></a>00039 <span class="preprocessor"></span><a class="code" href="../../d0/dc3/connect_8c_a1b9b0345f811ff7769642745394c179f.html#a1b9b0345f811ff7769642745394c179f">__RCSID</a>(<span class="stringliteral">&quot;$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $&quot;</span>);
 <a name="l00040"></a>00040 <span class="preprocessor">#endif </span><span class="comment">/* not lint */</span>
 <a name="l00041"></a>00041 
+<a name="l00042"></a>00042 <span class="comment">/* #include &quot;bsd.h&quot; already present in hunt.h. [PSR] */</span>
+<a name="l00043"></a>00043 
 <a name="l00044"></a>00044 <span class="preprocessor">#if     defined(TALK_43) || defined(TALK_42)</span>
 <a name="l00045"></a>00045 <span class="preprocessor"></span>
 <a name="l00046"></a>00046 <span class="preprocessor"># include       &lt;sys/time.h&gt;</span>
 <a name="l00047"></a>00047 <span class="preprocessor"># include       &lt;sys/wait.h&gt;</span>
 <a name="l00048"></a>00048 <span class="preprocessor"># include       &lt;ctype.h&gt;</span>
+<a name="l00049"></a>00049 <span class="comment">/* # include    &lt;netdb.h&gt; already present in hunt.h. [PSR] */</span>
 <a name="l00050"></a>00050 <span class="preprocessor"># include       &lt;signal.h&gt;</span>
 <a name="l00051"></a>00051 <span class="preprocessor"># include       &lt;stdio.h&gt;</span>
 <a name="l00052"></a>00052 <span class="preprocessor"># include       &lt;string.h&gt;</span>
 <a name="l00053"></a>00053 <span class="preprocessor"># include       &lt;unistd.h&gt;</span>
 <a name="l00054"></a>00054 <span class="preprocessor"># include       &quot;talk_ctl.h&quot;</span>
 <a name="l00055"></a>00055 
+<a name="l00056"></a>00056 <span class="comment">/* # define     TRUE            1 Deprecated due to stdbool.h standard library. [PSR] */</span>
+<a name="l00057"></a>00057 <span class="comment">/* # define     FALSE           0 Deprecated due to stdbool.h standard library. [PSR]*/</span>
+<a name="l00058"></a>00058 
 <a name="l00059"></a>00059 <span class="comment">/* defines for fake talk message to announce start of game */</span>
 <a name="l00060"></a>00060 <span class="preprocessor"># ifdef TALK_43</span>
 <a name="l00061"></a>00061 <span class="preprocessor"></span><span class="preprocessor"># define        MASQUERADE      &quot;\&quot;Hunt Game\&quot;&quot;</span>
@@ -178,7 +185,7 @@ function toggleVisibility(linkObj) {
 <a name="l00066"></a>00066 <span class="preprocessor"></span><span class="preprocessor"># define        ARGV0           &quot;HUNT-ANNOUNCE&quot;</span>
 <a name="l00067"></a>00067 <span class="preprocessor"></span>
 <a name="l00068"></a>00068 <span class="keyword">extern</span> <span class="keywordtype">char</span> *my_machine_name;
-<a name="l00069"></a>00069 <span class="keyword">extern</span> <span class="keywordtype">char</span> *<a class="code" href="../../d1/d56/driver_8c_a04a99c9869cd27c25c13214e72692243.html#a04a99c9869cd27c25c13214e72692243">First_arg</a>, *<a class="code" href="../../d1/d56/driver_8c_aa884cf292c6811a6c80193e99dccb564.html#aa884cf292c6811a6c80193e99dccb564">Last_arg</a>;
+<a name="l00069"></a>00069 <span class="keyword">extern</span> <span class="keywordtype">char</span> *<a class="code" href="../../d1/d56/driver_8c_a04a99c9869cd27c25c13214e72692243.html#a04a99c9869cd27c25c13214e72692243" title="Pointer to argv[0].">First_arg</a>, *<a class="code" href="../../d1/d56/driver_8c_aa884cf292c6811a6c80193e99dccb564.html#aa884cf292c6811a6c80193e99dccb564" title="Pointer to end of argv/environ.">Last_arg</a>;
 <a name="l00070"></a>00070 <span class="keyword">extern</span> <span class="keywordtype">char</span> **environ;
 <a name="l00071"></a>00071 
 <a name="l00072"></a>00072 <span class="keyword">static</span> <span class="keywordtype">void</span> do_announce(<span class="keywordtype">char</span> *);
@@ -191,7 +198,7 @@ function toggleVisibility(linkObj) {
 <a name="l00079"></a>00079         (void) wait(0);
 <a name="l00080"></a>00080 }
 <a name="l00081"></a>00081 
-<a name="l00086"></a>00086 <span class="keywordtype">void</span> <a class="code" href="../../d0/d3e/faketalk_8c_a276404056071774aa4e3697fdd4d4be1.html#a276404056071774aa4e3697fdd4d4be1" title="&amp;lt; #include &amp;quot;bsd.h&amp;quot; already present in hunt.h.">faketalk</a>() {
+<a name="l00086"></a>00086 <span class="keywordtype">void</span> <a class="code" href="../../d0/d3e/faketalk_8c_a276404056071774aa4e3697fdd4d4be1.html#a276404056071774aa4e3697fdd4d4be1">faketalk</a>() {
 <a name="l00087"></a>00087         <span class="keyword">struct </span>servent *sp;
 <a name="l00088"></a>00088         <span class="keywordtype">char</span> buf[BUFSIZ];
 <a name="l00089"></a>00089         FILE *f;
@@ -213,7 +220,7 @@ function toggleVisibility(linkObj) {
 <a name="l00105"></a>00105 <span class="comment">         *      change argv so that a ps shows ARGV0</span>
 <a name="l00106"></a>00106 <span class="comment">         */</span>
 <a name="l00107"></a>00107         *environ = NULL;
-<a name="l00108"></a>00108         <span class="keywordflow">for</span> (a = <a class="code" href="../../d1/d56/driver_8c_a04a99c9869cd27c25c13214e72692243.html#a04a99c9869cd27c25c13214e72692243">First_arg</a>, b = ARGV0; a &lt; <a class="code" href="../../d1/d56/driver_8c_aa884cf292c6811a6c80193e99dccb564.html#aa884cf292c6811a6c80193e99dccb564">Last_arg</a>; a++) {
+<a name="l00108"></a>00108         <span class="keywordflow">for</span> (a = <a class="code" href="../../d1/d56/driver_8c_a04a99c9869cd27c25c13214e72692243.html#a04a99c9869cd27c25c13214e72692243" title="Pointer to argv[0].">First_arg</a>, b = ARGV0; a &lt; <a class="code" href="../../d1/d56/driver_8c_aa884cf292c6811a6c80193e99dccb564.html#aa884cf292c6811a6c80193e99dccb564" title="Pointer to end of argv/environ.">Last_arg</a>; a++) {
 <a name="l00109"></a>00109                 <span class="keywordflow">if</span> (*b){
 <a name="l00110"></a>00110                         *a = *b++;
 <a name="l00111"></a>00111                 }
@@ -353,7 +360,7 @@ function toggleVisibility(linkObj) {
 <a name="l00250"></a>00250         }
 <a name="l00251"></a>00251 }
 <a name="l00252"></a>00252 <span class="preprocessor">#else</span>
-<a name="l00253"></a><a class="code" href="../../d0/d3e/faketalk_8c_a276404056071774aa4e3697fdd4d4be1.html#a276404056071774aa4e3697fdd4d4be1">00253</a> <span class="preprocessor"></span><span class="keywordtype">void</span> <a class="code" href="../../d0/d3e/faketalk_8c_a276404056071774aa4e3697fdd4d4be1.html#a276404056071774aa4e3697fdd4d4be1" title="&amp;lt; #include &amp;quot;bsd.h&amp;quot; already present in hunt.h.">faketalk</a>() {
+<a name="l00253"></a><a class="code" href="../../d0/d3e/faketalk_8c_a276404056071774aa4e3697fdd4d4be1.html#a276404056071774aa4e3697fdd4d4be1">00253</a> <span class="preprocessor"></span><span class="keywordtype">void</span> <a class="code" href="../../d0/d3e/faketalk_8c_a276404056071774aa4e3697fdd4d4be1.html#a276404056071774aa4e3697fdd4d4be1">faketalk</a>() {
 <a name="l00254"></a>00254         <span class="keywordflow">return</span>;
 <a name="l00255"></a>00255 }
 <a name="l00256"></a>00256 <span class="preprocessor">#endif</span>
@@ -362,7 +369,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d0/d3e/faketalk_8c.html">faketalk.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 8 2012 22:04:41 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: shots.c,v 1.5 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -41,8 +41,8 @@ __RCSID("$NetBSD: shots.c,v 1.5 2004/01/27 20:30:29 jsm Exp $");
 # include	<signal.h>
 # include	<stdlib.h>
 
-# define	PLUS_DELTA(x, max)	if (x < max) x++; else x--
-# define	MINUS_DELTA(x, min)	if (x > min) x--; else x++
+# define	PLUS_DELTA(x, max)	if (x < max) x++; else x-- /**< After a comparison with max, increments or decrements x. [PSR] */
+# define	MINUS_DELTA(x, min)	if (x > min) x--; else x++ /**< After a comparison with min, decrements or implements y. [PSR] */
 
 static void chkshot(BULLET *, BULLET *);
 #ifdef OOZE

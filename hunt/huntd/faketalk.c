@@ -30,31 +30,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-# define TALK_MODE //See documentation in hunt.h.
+# define TALK_MODE /**< Avoids duplicated inclusion in concurrence with talk_ctl.h inclusion. [PSR] */
 # include	"hunt.h"
 # undef TALK_MODE
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: faketalk.c,v 1.10 2004/02/08 22:23:50 jsm Exp $");
 #endif /* not lint */
 
-/**< #include "bsd.h" already present in hunt.h. [PSR]*/
+/* #include "bsd.h" already present in hunt.h. [PSR] */
 
 #if	defined(TALK_43) || defined(TALK_42)
 
 # include	<sys/time.h>
 # include	<sys/wait.h>
 # include	<ctype.h>
-/**< # include	<netdb.h> already present in hunt.h. [PSR]*/
+/* # include	<netdb.h> already present in hunt.h. [PSR] */
 # include	<signal.h>
 # include	<stdio.h>
 # include	<string.h>
 # include	<unistd.h>
 # include	"talk_ctl.h"
 
-/**< # define	TRUE		1 Deprecated due to stdbool.h standard library. [PSR] */
-/**< # define	FALSE		0 Deprecated due to stdbool.h standard library. [PSR]*/
+/* # define	TRUE		1 Deprecated due to stdbool.h standard library. [PSR] */
+/* # define	FALSE		0 Deprecated due to stdbool.h standard library. [PSR]*/
 
 /* defines for fake talk message to announce start of game */
 # ifdef TALK_43

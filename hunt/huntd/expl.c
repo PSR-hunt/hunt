@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: expl.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -152,10 +152,10 @@ void rollexpl(){
 
 /* There's about 700 walls in the initial maze.  So we pick a number
  * that keeps the maze relatively full. */
-# define MAXREMOVE	40
+# define MAXREMOVE	40 /**< TODO [PSR] */
 
-static	REGEN	removed[MAXREMOVE];
-static	REGEN	*rem_index = removed;
+static	REGEN	removed[MAXREMOVE]; /**< TODO [PSR] */
+static	REGEN	*rem_index = removed; /**< TODO [PSR] */
 
 /**
  *  remove_wall - add a location where the wall was blown away.

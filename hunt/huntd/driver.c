@@ -32,44 +32,44 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
 
-/**< # include	<sys/ioctl.h> already present in hunt.h. [PSR] */
+/* # include	<sys/ioctl.h> already present in hunt.h. [PSR] */
 # include	<sys/stat.h>
 # include	<sys/time.h>
 # include	<err.h>
-/**< # include	<errno.h> already present in hunt.h. [PSR] */
+/* # include	<errno.h> already present in hunt.h. [PSR] */
 # include	<signal.h>
 # include	<stdlib.h>
 # include	<time.h>
 # include	<unistd.h>
-# include 	<getopt.h> /**< Explicit declaration of getopt family functions. [PSR] */
+# include 	<getopt.h> /* Explicit declaration of getopt family functions. [PSR] */
 
 # ifndef pdp11
-# define	RN	(((Seed = Seed * 11109 + 13849) >> 16) & 0xffff)
+# define	RN	(((Seed = Seed * 11109 + 13849) >> 16) & 0xffff) /**< A random number. [PSR] */
 # else
 # define	RN	((Seed = Seed * 11109 + 13849) & 0x7fff)
 # endif
 
-int Seed = 0;
+int Seed = 0; /**< A random number. [PSR] */
 
-SOCKET Daemon;
-char *First_arg; /* pointer to argv[0] */
-char *Last_arg; /* pointer to end of argv/environ */
+SOCKET Daemon; /**< The daemon socket. [PSR] */
+char *First_arg; /**< Pointer to argv[0] */
+char *Last_arg; /**< Pointer to end of argv/environ */
 # ifdef	INTERNET
 int Test_socket; /* test socket to answer datagrams */
 bool inetd_spawned; /* invoked via inetd */
 bool standard_port = true; /* true if listening on standard port */
 /* port # of tcp listen socket */
-unsigned short sock_port; /**< Changed from u_short. [PSR] */
+unsigned short sock_port; /* Changed from u_short. [PSR] */
 /* port # of statistics tcp socket */
-unsigned short stat_port; /**< Changed from u_short. [PSR] */
+unsigned short stat_port; /* Changed from u_short. [PSR] */
 # define	DAEMON_SIZE	(sizeof Daemon)
 # else
-# define	DAEMON_SIZE	(sizeof Daemon - 1)
+# define	DAEMON_SIZE	(sizeof Daemon - 1) /**< TODO [PSR] */
 # endif
 
 static void clear_scores(void);
@@ -268,6 +268,10 @@ int main(int argc, char* argv[], char* env[]) {
 	return (0);
 }
 
+/**
+ * Prints on stderr the usage of the function.
+ * [PSR]
+ */
 void erred(char* argv[]) {
 	fprintf(stderr, "Usage: %s [-s] [-p port]\n", argv[0]);
 	exit(1);

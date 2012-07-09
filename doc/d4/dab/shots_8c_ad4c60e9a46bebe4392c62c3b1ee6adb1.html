@@ -221,7 +221,7 @@ function toggleVisibility(linkObj) {
                                 expl = <span class="charliteral">&#39;*&#39;</span>;
                         }
                         <a class="code" href="../../d4/d55/expl_8c_ab254b1eddcf486fa71e40576ca6d28fb.html#ab254b1eddcf486fa71e40576ca6d28fb" title="Show the explosions as they currently are.">showexpl</a>(y, x, expl);
-                        <span class="keywordflow">switch</span> (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x]) {
+                        <span class="keywordflow">switch</span> (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x]) {
                         <span class="keywordflow">case</span> LEFTS:
                         <span class="keywordflow">case</span> RIGHT:
                         <span class="keywordflow">case</span> ABOVE:
@@ -243,10 +243,10 @@ function toggleVisibility(linkObj) {
                                 <span class="keywordflow">break</span>;
                         <span class="keywordflow">case</span> GMINE:
                         <span class="keywordflow">case</span> MINE:
-                                <a class="code" href="../../d7/dd3/execute_8c_a6c463ddb8efde2d3dd7db31dfe3222b5.html#a6c463ddb8efde2d3dd7db31dfe3222b5" title="Create a shot with the given properties.">add_shot</a>((<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x] == GMINE) ? GRENADE : SHOT, y, x, LEFTS,
-                                                (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x] == GMINE) ? GRENREQ : BULREQ,
+                                <a class="code" href="../../d7/dd3/execute_8c_a6c463ddb8efde2d3dd7db31dfe3222b5.html#a6c463ddb8efde2d3dd7db31dfe3222b5" title="Create a shot with the given properties.">add_shot</a>((<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] == GMINE) ? GRENADE : SHOT, y, x, LEFTS,
+                                                (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] == GMINE) ? GRENREQ : BULREQ,
                                                 (PLAYER *) NULL, <span class="keyword">true</span>, SPACE);
-                                <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x] = SPACE;
+                                <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] = SPACE;
                                 <span class="keywordflow">break</span>;
                         }
                 }
@@ -263,7 +263,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d4/dab/shots_8c.html">shots.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 8 2012 22:04:42 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

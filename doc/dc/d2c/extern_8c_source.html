@@ -151,6 +151,7 @@ function toggleVisibility(linkObj) {
 <a name="l00032"></a>00032 
 <a name="l00033"></a>00033 <span class="preprocessor"># include       &quot;hunt.h&quot;</span>
 <a name="l00034"></a>00034 
+<a name="l00035"></a>00035 <span class="comment">/* #include &lt;sys/cdefs.h&gt; pushed up in hunt.h. [PSR] */</span>
 <a name="l00036"></a>00036 <span class="preprocessor">#ifndef lint</span>
 <a name="l00037"></a>00037 <span class="preprocessor"></span><a class="code" href="../../d0/dc3/connect_8c_a1b9b0345f811ff7769642745394c179f.html#a1b9b0345f811ff7769642745394c179f">__RCSID</a>(<span class="stringliteral">&quot;$NetBSD: extern.c,v 1.4 2003/06/11 12:00:22 wiz Exp $&quot;</span>);
 <a name="l00038"></a>00038 <span class="preprocessor">#endif </span><span class="comment">/* not lint */</span>
@@ -159,51 +160,45 @@ function toggleVisibility(linkObj) {
 <a name="l00041"></a>00041 <span class="preprocessor"></span><span class="keywordtype">bool</span> Am_monitor = <span class="keyword">false</span>; <span class="comment">/* current process is a monitor */</span>
 <a name="l00042"></a>00042 <span class="preprocessor"># endif</span>
 <a name="l00043"></a>00043 <span class="preprocessor"></span>
-<a name="l00044"></a><a class="code" href="../../dc/d2c/extern_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7">00044</a> <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="TODO [PSR].">Buf</a>[BUFSIZ]; <span class="comment">/* general scribbling buffer */</span>
-<a name="l00045"></a><a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">00045</a> <span class="keywordtype">char</span> <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[HEIGHT][WIDTH2]; <span class="comment">/* the maze */</span>
-<a name="l00046"></a><a class="code" href="../../dc/d2c/extern_8c_ad8fb73bca04863c2e3930c5c078523ec.html#ad8fb73bca04863c2e3930c5c078523ec">00046</a> <span class="keywordtype">char</span> <a class="code" href="../../dc/d2c/extern_8c_ad8fb73bca04863c2e3930c5c078523ec.html#ad8fb73bca04863c2e3930c5c078523ec">Orig_maze</a>[HEIGHT][WIDTH2]; <span class="comment">/* the original maze */</span>
-<a name="l00047"></a>00047 
-<a name="l00048"></a><a class="code" href="../../dc/d2c/extern_8c_a11af15344ece6eeb20ac37e1ce97cbc8.html#a11af15344ece6eeb20ac37e1ce97cbc8">00048</a> <span class="keyword">struct </span>pollfd <a class="code" href="../../dc/d2c/extern_8c_a11af15344ece6eeb20ac37e1ce97cbc8.html#a11af15344ece6eeb20ac37e1ce97cbc8">fdset</a>[3 + MAXPL + MAXMON];
-<a name="l00049"></a><a class="code" href="../../dc/d2c/extern_8c_a7694030219c7458ab55ba6dd800ceea3.html#a7694030219c7458ab55ba6dd800ceea3">00049</a> <span class="keywordtype">int</span> <a class="code" href="../../dc/d2c/extern_8c_a7694030219c7458ab55ba6dd800ceea3.html#a7694030219c7458ab55ba6dd800ceea3">Nplayer</a> = 0; <span class="comment">/* number of players */</span>
-<a name="l00050"></a><a class="code" href="../../dc/d2c/extern_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d">00050</a> <span class="keywordtype">int</span> <a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="TODO [PSR].">Socket</a>; <span class="comment">/* main socket */</span>
-<a name="l00051"></a><a class="code" href="../../dc/d2c/extern_8c_ae58c2415cf1178457fa1254234c3f017.html#ae58c2415cf1178457fa1254234c3f017">00051</a> <span class="keywordtype">int</span> <a class="code" href="../../dc/d2c/extern_8c_ae58c2415cf1178457fa1254234c3f017.html#ae58c2415cf1178457fa1254234c3f017">Status</a>; <span class="comment">/* stat socket */</span>
-<a name="l00052"></a><a class="code" href="../../dc/d2c/extern_8c_a3b7f6f1db5f439ccc6b98ba95c7dc975.html#a3b7f6f1db5f439ccc6b98ba95c7dc975">00052</a> <span class="keywordtype">int</span> <a class="code" href="../../dc/d2c/extern_8c_a3b7f6f1db5f439ccc6b98ba95c7dc975.html#a3b7f6f1db5f439ccc6b98ba95c7dc975">See_over</a>[NASCII]; <span class="comment">/* lookup table for determining whether</span>
-<a name="l00053"></a>00053 <span class="comment"> * character represents &quot;transparent&quot;</span>
-<a name="l00054"></a>00054 <span class="comment"> * item */</span>
-<a name="l00055"></a>00055 
-<a name="l00056"></a><a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">00056</a> BULLET *<a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">Bullets</a> = NULL; <span class="comment">/* linked list of bullets */</span>
-<a name="l00057"></a>00057 
-<a name="l00058"></a><a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d">00058</a> EXPL *<a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d">Expl</a>[EXPLEN]; <span class="comment">/* explosion lists */</span>
-<a name="l00059"></a><a class="code" href="../../dc/d2c/extern_8c_a537ebc34733a6d1bb5b44288a1615ec3.html#a537ebc34733a6d1bb5b44288a1615ec3">00059</a> EXPL *<a class="code" href="../../dc/d2c/extern_8c_a537ebc34733a6d1bb5b44288a1615ec3.html#a537ebc34733a6d1bb5b44288a1615ec3">Last_expl</a>; <span class="comment">/* last explosion on Expl[0] */</span>
-<a name="l00060"></a>00060 
-<a name="l00061"></a><a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">00061</a> PLAYER <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>[MAXPL]; <span class="comment">/* all the players */</span>
-<a name="l00062"></a><a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">00062</a> PLAYER *<a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a> = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; <span class="comment">/* last active player slot */</span>
-<a name="l00063"></a>00063 <span class="preprocessor"># ifdef BOOTS</span>
-<a name="l00064"></a>00064 <span class="preprocessor"></span>PLAYER Boot[NBOOTS]; <span class="comment">/* all the boots */</span>
-<a name="l00065"></a>00065 <span class="preprocessor"># endif</span>
-<a name="l00066"></a><a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d">00066</a> <span class="preprocessor"></span>IDENT *<a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d">Scores</a>; <span class="comment">/* score cache */</span>
-<a name="l00067"></a>00067 <span class="preprocessor"># ifdef MONITOR</span>
-<a name="l00068"></a>00068 <span class="preprocessor"></span>PLAYER Monitor[MAXMON]; <span class="comment">/* all the monitors */</span>
-<a name="l00069"></a>00069 PLAYER *End_monitor = Monitor; <span class="comment">/* last active monitor slot */</span>
-<a name="l00070"></a>00070 <span class="preprocessor"># endif</span>
-<a name="l00071"></a>00071 <span class="preprocessor"></span>
-<a name="l00072"></a>00072 <span class="preprocessor"># ifdef VOLCANO</span>
-<a name="l00073"></a>00073 <span class="preprocessor"></span><span class="keywordtype">int</span> volcano = 0; <span class="comment">/* Explosion size */</span>
-<a name="l00074"></a>00074 <span class="preprocessor"># endif</span>
-<a name="l00075"></a>00075 <span class="preprocessor"></span>
-<a name="l00076"></a><a class="code" href="../../dc/d2c/extern_8c_a081025baa5e842c14fc22ec3b04a670c.html#a081025baa5e842c14fc22ec3b04a670c">00076</a> <span class="keywordtype">int</span> <a class="code" href="../../dc/d2c/extern_8c_a081025baa5e842c14fc22ec3b04a670c.html#a081025baa5e842c14fc22ec3b04a670c">shot_req</a>[MAXBOMB] = { BULREQ, GRENREQ, SATREQ, BOMB7REQ, BOMB9REQ,
-<a name="l00077"></a>00077                 BOMB11REQ, BOMB13REQ, BOMB15REQ, BOMB17REQ, BOMB19REQ, BOMB21REQ, };
-<a name="l00078"></a><a class="code" href="../../dc/d2c/extern_8c_a4671d6af1c5f143dc5895e248860dc36.html#a4671d6af1c5f143dc5895e248860dc36">00078</a> <span class="keywordtype">int</span> <a class="code" href="../../dc/d2c/extern_8c_a4671d6af1c5f143dc5895e248860dc36.html#a4671d6af1c5f143dc5895e248860dc36">shot_type</a>[MAXBOMB] = { SHOT, GRENADE, SATCHEL, BOMB, BOMB, BOMB, BOMB, BOMB,
-<a name="l00079"></a>00079                 BOMB, BOMB, BOMB, };
-<a name="l00080"></a>00080 <span class="preprocessor">#ifdef OOZE</span>
-<a name="l00081"></a>00081 <span class="preprocessor"></span><span class="keywordtype">int</span> slime_req[MAXSLIME] = { SLIMEREQ, SSLIMEREQ, SLIME2REQ, SLIME3REQ, };
-<a name="l00082"></a>00082 <span class="preprocessor">#endif</span>
+<a name="l00044"></a><a class="code" href="../../dc/d2c/extern_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7">00044</a> <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>[BUFSIZ]; 
+<a name="l00045"></a><a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">00045</a> <span class="keywordtype">char</span> <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[HEIGHT][WIDTH2]; 
+<a name="l00046"></a><a class="code" href="../../dc/d2c/extern_8c_ad8fb73bca04863c2e3930c5c078523ec.html#ad8fb73bca04863c2e3930c5c078523ec">00046</a> <span class="keywordtype">char</span> <a class="code" href="../../dc/d2c/extern_8c_ad8fb73bca04863c2e3930c5c078523ec.html#ad8fb73bca04863c2e3930c5c078523ec" title="The original maze.">Orig_maze</a>[HEIGHT][WIDTH2]; 
+<a name="l00048"></a><a class="code" href="../../dc/d2c/extern_8c_a11af15344ece6eeb20ac37e1ce97cbc8.html#a11af15344ece6eeb20ac37e1ce97cbc8">00048</a> <span class="keyword">struct </span>pollfd <a class="code" href="../../dc/d2c/extern_8c_a11af15344ece6eeb20ac37e1ce97cbc8.html#a11af15344ece6eeb20ac37e1ce97cbc8" title="A set of file descriptors.">fdset</a>[3 + MAXPL + MAXMON]; 
+<a name="l00049"></a><a class="code" href="../../dc/d2c/extern_8c_a7694030219c7458ab55ba6dd800ceea3.html#a7694030219c7458ab55ba6dd800ceea3">00049</a> <span class="keywordtype">int</span> <a class="code" href="../../dc/d2c/extern_8c_a7694030219c7458ab55ba6dd800ceea3.html#a7694030219c7458ab55ba6dd800ceea3" title="Number of players.">Nplayer</a> = 0; 
+<a name="l00050"></a><a class="code" href="../../dc/d2c/extern_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d">00050</a> <span class="keywordtype">int</span> <a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>; 
+<a name="l00051"></a><a class="code" href="../../dc/d2c/extern_8c_ae58c2415cf1178457fa1254234c3f017.html#ae58c2415cf1178457fa1254234c3f017">00051</a> <span class="keywordtype">int</span> <a class="code" href="../../dc/d2c/extern_8c_ae58c2415cf1178457fa1254234c3f017.html#ae58c2415cf1178457fa1254234c3f017" title="Stat socket.">Status</a>; 
+<a name="l00052"></a><a class="code" href="../../dc/d2c/extern_8c_a3b7f6f1db5f439ccc6b98ba95c7dc975.html#a3b7f6f1db5f439ccc6b98ba95c7dc975">00052</a> <span class="keywordtype">int</span> <a class="code" href="../../dc/d2c/extern_8c_a3b7f6f1db5f439ccc6b98ba95c7dc975.html#a3b7f6f1db5f439ccc6b98ba95c7dc975" title="Lookup table for determining whether character represents &amp;quot;transparent&amp;quot; item...">See_over</a>[NASCII]; 
+<a name="l00054"></a><a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4">00054</a> BULLET *<a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a> = NULL; 
+<a name="l00056"></a><a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d">00056</a> EXPL *<a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d" title="Explosion lists.">Expl</a>[EXPLEN]; 
+<a name="l00057"></a><a class="code" href="../../dc/d2c/extern_8c_a537ebc34733a6d1bb5b44288a1615ec3.html#a537ebc34733a6d1bb5b44288a1615ec3">00057</a> EXPL *<a class="code" href="../../dc/d2c/extern_8c_a537ebc34733a6d1bb5b44288a1615ec3.html#a537ebc34733a6d1bb5b44288a1615ec3" title="Last explosion on Expl[0].">Last_expl</a>; 
+<a name="l00059"></a><a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">00059</a> PLAYER <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>[MAXPL]; 
+<a name="l00060"></a><a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">00060</a> PLAYER *<a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a> = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; 
+<a name="l00061"></a>00061 <span class="preprocessor"># ifdef BOOTS</span>
+<a name="l00062"></a>00062 <span class="preprocessor"></span>PLAYER Boot[NBOOTS]; <span class="comment">/* all the boots */</span>
+<a name="l00063"></a>00063 <span class="preprocessor"># endif</span>
+<a name="l00064"></a><a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d">00064</a> <span class="preprocessor"></span>IDENT *<a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d" title="Score cache.">Scores</a>; 
+<a name="l00065"></a>00065 <span class="preprocessor"># ifdef MONITOR</span>
+<a name="l00066"></a>00066 <span class="preprocessor"></span>PLAYER Monitor[MAXMON]; <span class="comment">/* all the monitors */</span>
+<a name="l00067"></a>00067 PLAYER *End_monitor = Monitor; <span class="comment">/* last active monitor slot */</span>
+<a name="l00068"></a>00068 <span class="preprocessor"># endif</span>
+<a name="l00069"></a>00069 <span class="preprocessor"></span>
+<a name="l00070"></a>00070 <span class="preprocessor"># ifdef VOLCANO</span>
+<a name="l00071"></a>00071 <span class="preprocessor"></span><span class="keywordtype">int</span> volcano = 0; <span class="comment">/* Explosion size */</span>
+<a name="l00072"></a>00072 <span class="preprocessor"># endif</span>
+<a name="l00073"></a>00073 <span class="preprocessor"></span>
+<a name="l00074"></a><a class="code" href="../../dc/d2c/extern_8c_a081025baa5e842c14fc22ec3b04a670c.html#a081025baa5e842c14fc22ec3b04a670c">00074</a> <span class="keywordtype">int</span> <a class="code" href="../../dc/d2c/extern_8c_a081025baa5e842c14fc22ec3b04a670c.html#a081025baa5e842c14fc22ec3b04a670c" title="The possible shot requests.">shot_req</a>[MAXBOMB] = { BULREQ, GRENREQ, SATREQ, BOMB7REQ, BOMB9REQ,
+<a name="l00075"></a>00075                 BOMB11REQ, BOMB13REQ, BOMB15REQ, BOMB17REQ, BOMB19REQ, BOMB21REQ, }; 
+<a name="l00076"></a><a class="code" href="../../dc/d2c/extern_8c_a4671d6af1c5f143dc5895e248860dc36.html#a4671d6af1c5f143dc5895e248860dc36">00076</a> <span class="keywordtype">int</span> <a class="code" href="../../dc/d2c/extern_8c_a4671d6af1c5f143dc5895e248860dc36.html#a4671d6af1c5f143dc5895e248860dc36" title="The possible shot types.">shot_type</a>[MAXBOMB] = { SHOT, GRENADE, SATCHEL, BOMB, BOMB, BOMB, BOMB, BOMB,
+<a name="l00077"></a>00077                 BOMB, BOMB, BOMB, }; 
+<a name="l00078"></a>00078 <span class="preprocessor">#ifdef OOZE</span>
+<a name="l00079"></a>00079 <span class="preprocessor"></span><span class="keywordtype">int</span> slime_req[MAXSLIME] = { SLIMEREQ, SSLIMEREQ, SLIME2REQ, SLIME3REQ, };
+<a name="l00080"></a>00080 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../dc/d2c/extern_8c.html">extern.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 8 2012 22:04:41 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

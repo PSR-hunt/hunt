@@ -32,21 +32,21 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 #endif /* not lint */
 
 # include	<ctype.h>
-/**< # include	<errno.h> already present in hunt.h. [PSR] */
+/* # include	<errno.h> already present in hunt.h. [PSR] */
 # include	<fcntl.h>
 # include	<stdlib.h>
 # include	<unistd.h>
 # include	<sys/time.h>
 
-# define	SCOREDECAY	15
+# define	SCOREDECAY	15 /**< TODO [PSR] */
 
-static char Ttyname[NAMELEN];
+static char Ttyname[NAMELEN]; /**< TODO [PSR] */
 
 /**
  * Manages the messages submission.
@@ -56,12 +56,12 @@ static char Ttyname[NAMELEN];
 int answer() {
 	PLAYER *pp;
 	int newsock;
-	static unsigned long mode; /**< Changed from u_long. [PSR] */
+	static unsigned long mode; /* Changed from u_long. [PSR] */
 	static char name[NAMELEN];
 	static char team;
 	static int enter_status;
-	static unsigned int socklen; /**< Edited from static int in order to match accept() parameter. [PSR] */
-	static unsigned long machine; /**< Edited from u_long in order to match accept() parameter. [PSR] */
+	static unsigned int socklen; /* Edited from static int in order to match accept() parameter. [PSR] */
+	static unsigned long machine; /* Edited from u_long in order to match accept() parameter. [PSR] */
 	static u_int32_t uid;
 	static SOCKET sockstruct;
 	char *cp1, *cp2;
@@ -96,15 +96,15 @@ int answer() {
 	}
 # endif
 	version = htonl((u_int32_t) HUNT_VERSION);
-	dbg_write(newsock, (char *) &version, LONGLEN); //See documentation in hunt.h.
-	dbg_read(newsock, (char *) &uid, LONGLEN); //See documentation in hunt.h.
+	dbg_write(newsock, (char *) &version, LONGLEN);
+	dbg_read(newsock, (char *) &uid, LONGLEN);
 	uid = ntohl((unsigned long) uid);
-	dbg_read(newsock, name, NAMELEN); //See documentation in hunt.h.
-	dbg_read(newsock, &team, 1); //See documentation in hunt.h.
-	dbg_read(newsock, (char *) &enter_status, LONGLEN); //See documentation in hunt.h.
+	dbg_read(newsock, name, NAMELEN);
+	dbg_read(newsock, &team, 1);
+	dbg_read(newsock, (char *) &enter_status, LONGLEN);
 	enter_status = ntohl((unsigned long) enter_status);
-	dbg_read(newsock, Ttyname, NAMELEN); //See documentation in hunt.h.
-	dbg_read(newsock, (char *) &mode, sizeof mode);	//See documentation in hunt.h.
+	dbg_read(newsock, Ttyname, NAMELEN);
+	dbg_read(newsock, (char *) &mode, sizeof mode);
 	mode = ntohl(mode);
 
 	/*
@@ -165,7 +165,7 @@ int answer() {
 			i = pp - Monitor + MAXPL + 3;
 		} else {
 			socklen = 0;
-			dbg_write(newsock, (char *) &socklen, sizeof socklen); //See documentation in hunt.h.
+			dbg_write(newsock, (char *) &socklen, sizeof socklen);
 			(void) close(newsock);
 			return false;
 		}
@@ -178,7 +178,6 @@ int answer() {
 	} else {
 		socklen = 0;
 		dbg_write(newsock, (char *) &socklen, sizeof socklen);
-		//See documentation in hunt.h.
 		(void) close(newsock);
 		return false;
 	}

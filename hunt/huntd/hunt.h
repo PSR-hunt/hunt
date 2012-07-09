@@ -31,7 +31,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
+/*
  * Simple mode: does not contain
  * sys/cdefs.h library
  *
@@ -44,11 +44,11 @@
  * [PSR]
  */
 
-# define 	_BSD_SOURCE /**< Enables BSD library functions. [PSR]*/
-# define	_POSIX_C_SOURCE 1 /**< [PSR] */ //TODO aggiungere altre informazioni.
+# define 	_BSD_SOURCE /* Enables BSD library functions. [PSR]*/
+# define	_POSIX_C_SOURCE 1 /* [PSR] */ //TODO aggiungere altre informazioni.
 # include "bsd.h"
 
-# ifndef TALK_MODE // See above
+# ifndef TALK_MODE /* See above. [PSR] */
 # include	<errno.h>
 # ifdef LOG
 # include	<syslog.h>
@@ -76,13 +76,13 @@
 # include	<sys/un.h>
 # endif
 
-# include <stdbool.h> /**< Added boolean type support. [PSR]*/
+# include <stdbool.h> /* Added boolean type support. [PSR]*/
 
 # ifndef SIMPLE_MODE // See above
 # include <sys/cdefs.h>
 # endif
 
-# define CONFIGURATION_FILE "hunt.cfg" /**< Added from file configuration support. [PSR] */
+# define CONFIGURATION_FILE "hunt.cfg" /* Added from file configuration support. [PSR] */
 
 #ifndef AF_INET
 #define AF_INET 2
@@ -118,7 +118,7 @@
 # endif
 
 /* decrement version number for each change in startup protocol */
-# define	HUNT_VERSION		(u_int32_t) -1 /**< Added cast to u_int32_t. */
+# define	HUNT_VERSION		(u_int32_t) -1 /* Added cast to u_int32_t. [PSR] */
 
 # define	ADDCH		('a' | 0200)
 # define	MOVE		('m' | 0200)
@@ -229,13 +229,13 @@
 # define	EAST	010
 # define	WEST	020
 
-/**
- * Deprecated due to stdbool.h library support.
- * # ifndef TRUE
- * # define	TRUE	1
- * # define	FALSE	0
- * # endif
- * [PSR]
+/*
+ Deprecated due to stdbool.h library support.
+ # ifndef TRUE
+ # define	TRUE	1
+ # define	FALSE	0
+ # endif
+ [PSR]
  */
 
 # undef CTRL
@@ -315,7 +315,7 @@ extern int slime_req[];
 # define	stat_char(pp)	(((pp)->p_cloak < 0) ? _scan_char(pp) : '+')
 # endif
 
-/**< typedef int			FLAG; deprecated due to stdbool.h standard library. [PSR] */
+/* typedef int			FLAG; deprecated due to stdbool.h standard library. [PSR] */
 typedef struct bullet_def BULLET;
 typedef struct expl_def EXPL;
 typedef struct player_def PLAYER;

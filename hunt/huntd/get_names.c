@@ -35,20 +35,20 @@
 __RCSID("$NetBSD: get_names.c,v 1.7 2003/06/11 12:00:22 wiz Exp $");
 #endif /* not lint */
 
-/**<  #include "bsd.h" already present in hunt.h. [PSR]*/
+/*  #include "bsd.h" already present in hunt.h. [PSR]*/
 
 #if	defined(TALK_43) || defined(TALK_42)
 
 # include	<sys/param.h>
-/**< # include	<netdb.h> already present in hunt.h. [PSR]*/
-/**< # include	<stdio.h> already present in hunt.h. [PSR]*/
+/* # include	<netdb.h> already present in hunt.h. [PSR]*/
+/* # include	<stdio.h> already present in hunt.h. [PSR]*/
 # include	<stdlib.h>
-/**< # include	<string.h> already present in hunt.h. [PSR]*/
+/* # include	<string.h> already present in hunt.h. [PSR]*/
 # include	<unistd.h>
 
 # define TALK_MODE
 # define	SIMPLE_MODE
-# include	"hunt.h" /**< Include the simple version of hunt.h. [PSR]*/
+# include	"hunt.h" /* Include the simple version of hunt.h. [PSR]*/
 # undef		SIMPLE_MODE
 # undef TALK_MODE
 
@@ -91,8 +91,8 @@ void get_local_name(const char *my_name) {
 	hp = gethostbyname(my_machine_name);
 	if (hp == (struct hostent *) 0) {
 # ifdef LOG
-		/**
-		 * Uses iso_syslog as a new implementation of syslog.
+		/*
+		 Uses iso_syslog as a new implementation of syslog. [PSR]
 		 */
 		iso_syslog(LOG_ERR, "This machine doesn't exist. Boy, am I confused!");
 # else
@@ -109,8 +109,8 @@ void get_local_name(const char *my_name) {
 # endif
 	if (sp == 0) {
 # ifdef LOG
-		/**
-		 * Uses iso_syslog as a new implementation of syslog.
+		/*
+		 Uses iso_syslog as a new implementation of syslog. [PSR]
 		 */
 		iso_syslog(LOG_ERR, "This machine doesn't support talk");
 # else

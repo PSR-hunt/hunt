@@ -148,17 +148,17 @@ function toggleVisibility(linkObj) {
         <span class="keywordtype">char</span>    c;
         EXPL    *nextep;
 
-        <span class="keywordflow">for</span> (ep = <a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d">Expl</a>[EXPLEN - 1]; ep != NULL; ep = nextep) {
+        <span class="keywordflow">for</span> (ep = <a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d" title="Explosion lists.">Expl</a>[EXPLEN - 1]; ep != NULL; ep = nextep) {
                 nextep = ep-&gt;e_next;
                 y = ep-&gt;e_y;
                 x = ep-&gt;e_x;
                 <span class="keywordflow">if</span> (y &lt; UBOUND || y &gt;= DBOUND || x &lt; LBOUND || x &gt;= RBOUND){
-                        c = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e">Maze</a>[y][x];
+                        c = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x];
                 }
                 <span class="keywordflow">else</span>{
                         c = SPACE;
                 }
-                <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; pp++){
+                <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++){
                         <span class="keywordflow">if</span> (pp-&gt;p_maze[y][x] == ep-&gt;e_char) {
                                 pp-&gt;p_maze[y][x] = c;
                                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, y, x);
@@ -173,9 +173,9 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"></span>                free((<span class="keywordtype">char</span> *) ep);
         }
         <span class="keywordflow">for</span> (x = EXPLEN - 1; x &gt; 0; x--){
-                <a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d">Expl</a>[x] = <a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d">Expl</a>[x - 1];
+                <a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d" title="Explosion lists.">Expl</a>[x] = <a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d" title="Explosion lists.">Expl</a>[x - 1];
         }
-        <a class="code" href="../../dc/d2c/extern_8c_a537ebc34733a6d1bb5b44288a1615ec3.html#a537ebc34733a6d1bb5b44288a1615ec3">Last_expl</a> = <a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d">Expl</a>[0] = NULL;
+        <a class="code" href="../../dc/d2c/extern_8c_a537ebc34733a6d1bb5b44288a1615ec3.html#a537ebc34733a6d1bb5b44288a1615ec3" title="Last explosion on Expl[0].">Last_expl</a> = <a class="code" href="../../dc/d2c/extern_8c_a6030c3f2cf8ec9f0ea40ecc4bee27b7d.html#a6030c3f2cf8ec9f0ea40ecc4bee27b7d" title="Explosion lists.">Expl</a>[0] = NULL;
 }
 </pre></div>
 </div>
@@ -188,7 +188,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d4/d55/expl_8c.html">expl.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 8 2012 22:04:42 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
