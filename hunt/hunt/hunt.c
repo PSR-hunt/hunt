@@ -81,9 +81,10 @@ static struct termios saved_tty;
 # define	put_ch		addch
 # define	put_str		addstr
 # endif
-#ifndef MAXHOSTNAMELEN
-#define MAXHOSTNAMELEN 256 /**< Defines the maximum length of an host name. [PSR] */
-#endif
+# ifndef MAXHOSTNAMELEN
+# define MAXHOSTNAMELEN 256 /**< Defines the maximum length of an host name. [PSR] */
+# endif
+# define MAXPSW		32 /**< Defines the maximum length of a server password [PSW] */
 
 bool Last_player = false; /**< Defines if a player is the last one or no. [PSR] */
 # ifdef MONITOR
@@ -113,6 +114,9 @@ bool no_beep; /**< If true turns off beeping when you reach the typeahead limit.
 
 static char name[NAMELEN]; /**< Indicates the name of a player. [PSR] */
 static char team = ' '; /**< Indicates the belonging team of a player. [PSR] */
+# ifdef INTERNET
+static char psw[MAXPSW];
+# endif
 
 static int in_visual; /**< Indicates whether the configurations are correct. TODO [PSR] */
 
@@ -120,6 +124,7 @@ extern int cur_row; /**< Indicates the current row. [PSR] */
 extern int cur_col; /**< Indicates the current column. [PSR] */
 #ifdef INTERNET
 void dump_scores(SOCKET);
+void password(void);
 #endif
 long env_init(long);
 long var_env_init(long);
@@ -128,6 +133,7 @@ void leave(int, const char *) __attribute__((__noreturn__));
 void leavex(int, const char *) __attribute__((__noreturn__));
 void fincurs(void);
 void usage(void);
+
 int main(int, char *[]);
 # ifdef INTERNET
 SOCKET *list_drivers(void);
@@ -155,7 +161,7 @@ int main(int argc, char* argv[]) {
 	setregid(getgid(), getgid());
 
 	enter_status = env_init((long) Q_CLOAK);
-	while ((c = getopt(argc, argv, "Sbcfh:l:mn:op:qst:w:")) != -1) {
+	while ((c = getopt(argc, argv, "Sbcfh:l:mn:op:qst:w:P")) != -1) {
 		switch (c) {
 		case 'l': /* rsh compatibility */
 		case 'n':
@@ -225,9 +231,16 @@ int main(int argc, char* argv[]) {
 		case 'b':
 			no_beep = !no_beep;
 			break;
+		case 'P': //TODO
+# ifdef INTERNET
+		password();
+# else
+			warnx("The password code was not compiled in.");
+# endif
+			break;
 		default:
 			fputs(
-					"usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host]\n",
+					"usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host] [-P server password]\n",
 					stderr);
 			exit(1);
 		}
@@ -273,7 +286,7 @@ int main(int argc, char* argv[]) {
 	}
 # endif
 # ifdef OTTO
-	if (Otto_mode){
+	if (Otto_mode) {
 		(void) strncpy(name, "otto", NAMELEN);
 	}
 	else
@@ -281,7 +294,7 @@ int main(int argc, char* argv[]) {
 	fill_in_blanks();
 
 	(void) fflush(stdout);
-	if (!isatty(0) || (term = getenv("TERM")) == NULL) {
+	if (!isatty(0) || (term = getenv("TERM")) == NULL ) {
 		errx(1, "no terminal type");
 	}
 # ifdef USE_CURSES
@@ -314,7 +327,7 @@ int main(int argc, char* argv[]) {
 	(void) signal(SIGINT, intr);
 	(void) signal(SIGTERM, sigterm);
 	(void) signal(SIGUSR1, sigusr1);
-	(void) signal(SIGPIPE, SIG_IGN);
+	(void) signal(SIGPIPE, SIG_IGN );
 #if !defined(USE_CURSES) && defined(SIGTSTP)
 	(void) signal(SIGTSTP, tstp);
 #endif
@@ -417,7 +430,7 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 	}
-	leavex(0, (char *) NULL);
+	leavex(0, (char *) NULL );
 	/* NOTREACHED */
 	return (0);
 }
@@ -474,7 +487,7 @@ int broadcast_vec(struct sockaddr **vector) {
  * [PSR]
  */
 void usage() {
-	fputs("usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host]\n", stderr);
+	fputs("usage:\thunt [-qmcsfS] [-n name] [-t team] [-p port] [-w message] [host] [-P server password]\n", stderr);
 	exit(1);
 }
 
@@ -790,19 +803,20 @@ void start_driver() {
 	cur_col = 0;
 # endif
 	put_str("Starting...");
-	refresh();
+	refresh()
+	;
 	procid = fork();
 	if (procid == -1) {
 		leave(1, "fork failed.");
 	}
 	if (procid == 0) {
-		(void) signal(SIGINT, SIG_IGN);
+		(void) signal(SIGINT, SIG_IGN );
 # ifndef INTERNET
 		(void) close(Socket);
 # else
 		if (use_port == NULL)
 # endif
-		execl(Driver, "HUNT", (char *) NULL);
+		execl(Driver, "HUNT", (char *) NULL );
 # ifdef INTERNET
 		else
 		execl(Driver, "HUNT", "-p", use_port, (char *) NULL);
@@ -819,7 +833,8 @@ void start_driver() {
 	cur_col = 0;
 # endif
 	put_str("Connecting...");
-	refresh();
+	refresh()
+	;
 }
 
 /**
@@ -842,7 +857,7 @@ void bad_ver() {
 /**
  * Handle a terminate signal.
  */SIGNAL_TYPE sigterm(int dummy __attribute__((__unused__))) {
-	leavex(0, (char *) NULL);
+	leavex(0, (char *) NULL );
 	/* NOTREACHED */
 }
 
@@ -870,7 +885,7 @@ void rmnl(char *s) {
 	char *cp;
 
 	cp = strrchr(s, '\n');
-	if (cp != NULL) {
+	if (cp != NULL ) {
 		*cp = '\0';
 	}
 }
@@ -882,7 +897,7 @@ void rmnl(char *s) {
 	int explained;
 	int y, x;
 
-	(void) signal(SIGINT, SIG_IGN);
+	(void) signal(SIGINT, SIG_IGN );
 # ifdef USE_CURSES
 	getyx(stdscr, y, x);
 	move(HEIGHT, 0);
@@ -895,7 +910,8 @@ void rmnl(char *s) {
 # endif
 	put_str("Really quit? ");
 	clear_eol();
-	refresh();
+	refresh()
+	;
 	explained = false;
 	for (;;) {
 		ch = getchar();
@@ -907,7 +923,7 @@ void rmnl(char *s) {
 				dbg_write(Socket, "q", 1);
 				(void) close(Socket);
 			}
-			leavex(0, (char *) NULL);
+			leavex(0, (char *) NULL );
 		} else if (ch == 'n') {
 			(void) signal(SIGINT, intr);
 # ifdef USE_CURSES
@@ -917,16 +933,19 @@ void rmnl(char *s) {
 			cur_row = y;
 			cur_col = x;
 # endif
-			refresh();
+			refresh()
+			;
 			return;
 		}
 		if (!explained) {
 			put_str("(Yes or No) ");
-			refresh();
+			refresh()
+			;
 			explained = true;
 		}
 		beep();
-		refresh();
+		refresh()
+		;
 	}
 }
 
@@ -987,7 +1006,7 @@ void leavex(int eval, const char *mesg) {
 	 * Introduced a NULL parameter in errx() since the routine shows a generic error message.
 	 * [PSR]
 	 */
-	errx(eval, (mesg ? mesg : ""), NULL);
+	errx(eval, (mesg ? mesg : ""), NULL );
 }
 
 #if !defined(USE_CURSES) && defined(SIGTSTP)
@@ -1116,11 +1135,11 @@ long env_init(long enter_status_in) {
 			 * Avoids infinite loop in case of fgets failure.
 			 * [PSR]
 			 */
-			if (read == NULL) {
+			if (read == NULL ) {
 				break;
 			}
 			equal = strpbrk(input_row, "=");
-			input_value = (equal != NULL) ? equal + 1 : input_row + input_len;
+			input_value = (equal != NULL ) ? equal + 1 : input_row + input_len;
 			tag_len = input_value - input_row;
 			if (strncmp(input_row, "cloak", tag_len) == 0) {
 				enter_status = Q_CLOAK;
@@ -1218,8 +1237,8 @@ long var_env_init(long enter_status_in) {
 
 	envname = NULL; /* Verified null pointer safety. [PSR] */
 
-	if ((envp = getenv("HUNT")) != NULL) {
-		while ((s = strpbrk(envp, "=,")) != NULL) {
+	if ((envp = getenv("HUNT")) != NULL ) {
+		while ((s = strpbrk(envp, "=,")) != NULL ) {
 			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { /* Compare characters from the start of the conf string not yet analyzed till the first '='. [PSR] */
 				enter_status = Q_CLOAK;
 				envp = s + 1; /* Deletes characters already considered. [PSR] */
@@ -1234,7 +1253,7 @@ long var_env_init(long enter_status_in) {
 				envp = s + 1;
 			} else if (strncmp(envp, "name=", s - envp + 1) == 0) {
 				envname = s + 1;
-				if ((s = strchr(envp, ',')) == NULL) {
+				if ((s = strchr(envp, ',')) == NULL ) {
 					*envp = '\0';
 					strncpy(name, envname, NAMELEN);
 					break;
@@ -1277,7 +1296,7 @@ long var_env_init(long enter_status_in) {
 				team = *(s + 1);
 				if (!isdigit((unsigned char)team))
 					team = ' ';
-				if ((s = strchr(envp, ',')) == NULL) {
+				if ((s = strchr(envp, ',')) == NULL ) {
 					*envp = '\0';
 					break;
 				}
@@ -1296,7 +1315,7 @@ long var_env_init(long enter_status_in) {
 			} else {
 				*s = '\0';
 				printf("unknown option %s\n", envp);
-				if ((s = strchr(envp, ',')) == NULL) {
+				if ((s = strchr(envp, ',')) == NULL ) {
 					*envp = '\0';
 					break;
 				}
@@ -1304,7 +1323,7 @@ long var_env_init(long enter_status_in) {
 			}
 		}
 		if (*envp != '\0') {
-			if (envname == NULL) {
+			if (envname == NULL ) {
 				strncpy(name, envp, NAMELEN);
 			} else {
 				printf("unknown option %s\n", envp);
@@ -1363,7 +1382,7 @@ void fill_in_blanks() {
 			}
 		} else {
 			printf("Enter your code name: ");
-			if (fgets(name, NAMELEN, stdin) == NULL) {
+			if (fgets(name, NAMELEN, stdin) == NULL ) {
 				exit(1);
 			}
 		}
@@ -1399,3 +1418,42 @@ void fill_in_blanks() {
 		}
 	}
 }
+
+/**
+ * TODO
+ * [PSR]
+ */
+# ifdef INTERNET
+void password() {
+	char *cp;
+	bool must_continue;
+
+	while (TRUE) {
+		must_continue = false;
+		printf("Enter server password: ");
+		if (fgets(psw, MAXPSW, stdin) == NULL ) {
+			exit(1);
+		}
+		rmnl(psw);
+
+		if (psw[0] == '\0') {
+			psw[0] = '\0';
+			printf("You have to have a server password!\n");
+			continue;
+		}
+		for (cp = psw; *cp != '\0'; cp++) {
+			if (!isprint((unsigned char)*cp)) {
+				name[0] = '\0';
+				printf("Illegal character in your server password.\n");
+				must_continue = true;
+				break;
+			}
+		}
+		if (must_continue) {
+			continue;
+		} else {
+			break;
+		}
+	}
+}
+# endif
