@@ -1021,406 +1021,409 @@ function toggleVisibility(linkObj) {
 <a name="l00969"></a>00969         <span class="keywordtype">int</span> serrno = errno;
 <a name="l00970"></a>00970         <a class="code" href="../../da/d3e/hunt_8c_adda160470baeb981a77704613a284e4e.html#adda160470baeb981a77704613a284e4e" title="Verifies configuration entries.">fincurs</a>();
 <a name="l00971"></a>00971         errno = serrno;
-<a name="l00972"></a>00972 
-<a name="l00973"></a>00973         err(eval, (mesg ? mesg : <span class="stringliteral">&quot;&quot;</span>), errno);
-<a name="l00974"></a>00974 }
-<a name="l00975"></a>00975 
-<a name="l00981"></a><a class="code" href="../../da/d3e/hunt_8c_ad5bc8590e5cb02383be0d63a2052d461.html#ad5bc8590e5cb02383be0d63a2052d461">00981</a> <span class="keywordtype">void</span> <a class="code" href="../../da/d3e/hunt_8c_ad5bc8590e5cb02383be0d63a2052d461.html#ad5bc8590e5cb02383be0d63a2052d461" title="Leave the game somewhat gracefully, restoring all current tty stats.">leavex</a>(<span class="keywordtype">int</span> eval, <span class="keyword">const</span> <span class="keywordtype">char</span> *mesg) {
-<a name="l00982"></a>00982         <a class="code" href="../../da/d3e/hunt_8c_adda160470baeb981a77704613a284e4e.html#adda160470baeb981a77704613a284e4e" title="Verifies configuration entries.">fincurs</a>();
-<a name="l00983"></a>00983         <span class="comment">/*</span>
-<a name="l00984"></a>00984 <span class="comment">         * Introduced a NULL parameter in errx() since the routine shows a generic error message.</span>
-<a name="l00985"></a>00985 <span class="comment">         * [PSR]</span>
-<a name="l00986"></a>00986 <span class="comment">         */</span>
-<a name="l00987"></a>00987         errx(eval, (mesg ? mesg : <span class="stringliteral">&quot;&quot;</span>), NULL);
-<a name="l00988"></a>00988 }
-<a name="l00989"></a>00989 
-<a name="l00990"></a>00990 <span class="preprocessor">#if !defined(USE_CURSES) &amp;&amp; defined(SIGTSTP)</span>
-<a name="l00991"></a>00991 <span class="preprocessor"></span>SIGNAL_TYPE tstp(<span class="keywordtype">int</span> dummy) {
-<a name="l00994"></a>00994 <span class="preprocessor"># if BSD_RELEASE &lt; 44</span>
-<a name="l00995"></a>00995 <span class="preprocessor"></span>        <span class="keyword">static</span> <span class="keyword">struct </span>sgttyb tty;
-<a name="l00996"></a>00996 <span class="preprocessor"># endif</span>
-<a name="l00997"></a>00997 <span class="preprocessor"></span>        <span class="keywordtype">int</span> y, x;
-<a name="l00998"></a>00998 
-<a name="l00999"></a>00999         y = <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>;
-<a name="l01000"></a>01000         x = <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>;
-<a name="l01001"></a>01001         mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, HEIGHT, 0);
-<a name="l01002"></a>01002         <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a> = HEIGHT;
-<a name="l01003"></a>01003         <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> = 0;
-<a name="l01004"></a>01004 <span class="preprocessor"># if !defined(BSD_RELEASE) || BSD_RELEASE &lt; 44</span>
-<a name="l01005"></a>01005 <span class="preprocessor"></span>        tty = _tty;
-<a name="l01006"></a>01006 <span class="preprocessor"># endif</span>
-<a name="l01007"></a>01007 <span class="preprocessor"></span><span class="preprocessor">#if defined(VE) &amp;&amp; defined(TE)</span>
-<a name="l01008"></a>01008 <span class="preprocessor"></span>        _puts(VE);
-<a name="l01009"></a>01009         _puts(TE);
-<a name="l01010"></a>01010 <span class="preprocessor">#else</span>
-<a name="l01011"></a>01011 <span class="preprocessor"></span>        errx(1, <span class="stringliteral">&quot;Missing necessary configuration entries.\nHunt will quit.\n&quot;</span>);
-<a name="l01012"></a>01012 <span class="preprocessor">#endif</span>
-<a name="l01013"></a>01013 <span class="preprocessor"></span>        (void) fflush(stdout);
-<a name="l01014"></a>01014 <span class="preprocessor"># if defined(BSD_RELEASE) &amp;&amp; BSD_RELEASE &gt;= 44</span>
-<a name="l01015"></a>01015 <span class="preprocessor"></span>        tcsetattr(0, TCSADRAIN, &amp;__orig_termios);
-<a name="l01016"></a>01016 <span class="preprocessor"># else</span>
-<a name="l01017"></a>01017 <span class="preprocessor"></span>        resetty();
-<a name="l01018"></a>01018 <span class="preprocessor"># endif</span>
-<a name="l01019"></a>01019 <span class="preprocessor"></span>        (void) kill(getpid(), SIGSTOP);
-<a name="l01020"></a>01020         (void) signal(SIGTSTP, tstp);
-<a name="l01021"></a>01021 <span class="preprocessor"># if defined(BSD_RELEASE) &amp;&amp; BSD_RELEASE &gt;= 44</span>
-<a name="l01022"></a>01022 <span class="preprocessor"></span>        tcsetattr(0, TCSADRAIN, &amp;saved_tty);
-<a name="l01023"></a>01023 <span class="preprocessor"># else</span>
-<a name="l01024"></a>01024 <span class="preprocessor"></span>        _tty = tty;
-<a name="l01025"></a>01025 <span class="preprocessor">#ifdef TIOCSTEP</span>
-<a name="l01026"></a>01026 <span class="preprocessor"></span>        ioctl(_tty_ch, TIOCSETP, &amp;_tty);
-<a name="l01027"></a>01027 <span class="preprocessor">#else</span>
-<a name="l01028"></a>01028 <span class="preprocessor"></span>        errx(1, <span class="stringliteral">&quot;Missing necessary configuration entries.\nHunt will quit.\n&quot;</span>);
-<a name="l01029"></a>01029 <span class="preprocessor">#endif</span>
-<a name="l01030"></a>01030 <span class="preprocessor"></span><span class="preprocessor"># endif</span>
-<a name="l01031"></a>01031 <span class="preprocessor"></span><span class="preprocessor">#if defined(TI) &amp;&amp; defined(VS)</span>
-<a name="l01032"></a>01032 <span class="preprocessor"></span>        _puts(TI);
-<a name="l01033"></a>01033         _puts(VS);
-<a name="l01034"></a>01034 <span class="preprocessor">#else</span>
-<a name="l01035"></a>01035 <span class="preprocessor"></span>        errx(1, <span class="stringliteral">&quot;Missing necessary configuration entries.\nHunt will quit.\n&quot;</span>);
-<a name="l01036"></a>01036 <span class="preprocessor">#endif</span>
-<a name="l01037"></a>01037 <span class="preprocessor"></span>        <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a> = y;
-<a name="l01038"></a>01038         <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> = x;
-<a name="l01039"></a>01039 <span class="preprocessor">#ifdef CM</span>
-<a name="l01040"></a>01040 <span class="preprocessor"></span>        _puts(tgoto(CM, <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>));
-<a name="l01041"></a>01041 <span class="preprocessor">#endif</span>
-<a name="l01042"></a>01042 <span class="preprocessor"></span>        <a class="code" href="../../da/db5/playit_8c_a82c285fd87da5a5cef6e9c18276dc689.html#a82c285fd87da5a5cef6e9c18276dc689" title="Repaints the screen.">redraw_screen</a>();
-<a name="l01043"></a>01043         (void) fflush(stdout);
-<a name="l01044"></a>01044 }
-<a name="l01045"></a>01045 <span class="preprocessor">#endif </span><span class="comment">/* !defined(USE_CURSES) &amp;&amp; defined(SIGTSTP) */</span>
-<a name="l01046"></a>01046 
-<a name="l01047"></a>01047 <span class="preprocessor"># if defined(BSD_RELEASE) &amp;&amp; BSD_RELEASE &lt; 43</span>
-<a name="l01048"></a>01048 <span class="preprocessor"></span><span class="keywordtype">char</span> * strpbrk(<span class="keywordtype">char</span> *s,<span class="keywordtype">char</span> *brk) {
-<a name="l01049"></a>01049         <span class="keywordtype">char</span> *p;
-<a name="l01050"></a>01050         c;
-<a name="l01051"></a>01051 
-<a name="l01052"></a>01052         <span class="keywordflow">while</span> (c = *s) {
-<a name="l01053"></a>01053                 <span class="keywordflow">for</span> (p = brk; *p; p++)
-<a name="l01054"></a>01054                 <span class="keywordflow">if</span> (c == *p)
-<a name="l01055"></a>01055                 <span class="keywordflow">return</span> (s);
-<a name="l01056"></a>01056                 s++;
-<a name="l01057"></a>01057         }
-<a name="l01058"></a>01058         <span class="keywordflow">return</span> (0);
-<a name="l01059"></a>01059 }
-<a name="l01060"></a>01060 <span class="preprocessor"># endif</span>
-<a name="l01061"></a>01061 <span class="preprocessor"></span>
-<a name="l01071"></a><a class="code" href="../../da/d3e/hunt_8c_ab3e8e6b11b84402fb8ed7a7d8c765f01.html#ab3e8e6b11b84402fb8ed7a7d8c765f01">01071</a> <span class="keywordtype">long</span> <a class="code" href="../../da/d3e/hunt_8c_ab3e8e6b11b84402fb8ed7a7d8c765f01.html#ab3e8e6b11b84402fb8ed7a7d8c765f01" title="Parses configuration file and initializes game environment.">env_init</a>(<span class="keywordtype">long</span> enter_status_in) {
-<a name="l01072"></a>01072 
-<a name="l01073"></a>01073         <span class="keywordtype">long</span> enter_status = enter_status_in;
-<a name="l01074"></a>01074 
-<a name="l01075"></a>01075         <span class="comment">/*</span>
-<a name="l01076"></a>01076 <span class="comment">         * Variables supporting configuration file parsing.</span>
-<a name="l01077"></a>01077 <span class="comment">         * [PSR]</span>
-<a name="l01078"></a>01078 <span class="comment">         */</span>
-<a name="l01079"></a>01079         FILE* config; <span class="comment">/* Points to configuration file. [PSR] */</span>
-<a name="l01080"></a>01080         FILE* c; <span class="comment">/* Points to configuration file. Used for char counting. [PSR] */</span>
-<a name="l01081"></a>01081         <span class="keywordtype">bool</span> opened_c;
-<a name="l01082"></a>01082         <span class="keywordtype">long</span> input_len; <span class="comment">/* Input row length. [PSR] */</span>
-<a name="l01083"></a>01083         <span class="keywordtype">char</span>* input_row; <span class="comment">/* A row from configuration file. [PSR] */</span>
-<a name="l01084"></a>01084         <span class="keywordtype">char</span>* equal; <span class="comment">/* Points to the position of &#39;=&#39; into input_row. [PSR] */</span>
-<a name="l01085"></a>01085         <span class="keywordtype">char</span>* input_value; <span class="comment">/* Value associated to a configuration tag. [PSR] */</span>
-<a name="l01086"></a>01086         <span class="keywordtype">long</span> tag_len; <span class="comment">/* Tag field length. [PSR] */</span>
-<a name="l01087"></a>01087         <span class="keywordtype">char</span>* read;
-<a name="l01088"></a>01088 
-<a name="l01089"></a>01089         <span class="keywordtype">int</span> i;
-<a name="l01090"></a>01090 
-<a name="l01091"></a>01091         <span class="comment">/*</span>
-<a name="l01092"></a>01092 <span class="comment">         * Generates a map for extended ASCII conversion.</span>
-<a name="l01093"></a>01093 <span class="comment">         * [PSR]</span>
-<a name="l01094"></a>01094 <span class="comment">         */</span>
-<a name="l01095"></a>01095         <span class="keywordflow">for</span> (i = 0; i &lt; 256; i++) {
-<a name="l01096"></a>01096                 <a class="code" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271" title="What to map keys to.">map_key</a>[i] = (char) i;
-<a name="l01097"></a>01097         }
-<a name="l01098"></a>01098 
-<a name="l01099"></a>01099         <span class="keywordflow">if</span> (!(config = fopen(CONFIGURATION_FILE, <span class="stringliteral">&quot;r&quot;</span>))) {
-<a name="l01100"></a>01100                 <span class="keywordflow">return</span> <a class="code" href="../../da/d3e/hunt_8c_a2b299719d63c16971a4a96d8d37e78e0.html#a2b299719d63c16971a4a96d8d37e78e0" title="Imports game settings from environment.">var_env_init</a>(enter_status);
-<a name="l01101"></a>01101         } <span class="keywordflow">else</span> {
-<a name="l01102"></a>01102                 <span class="keywordflow">if</span> ((c = fopen(CONFIGURATION_FILE, <span class="stringliteral">&quot;r&quot;</span>))) {
-<a name="l01103"></a>01103                         opened_c = <span class="keyword">false</span>;
-<a name="l01104"></a>01104                         input_len = <a class="code" href="../../da/d3e/hunt_8c_a793a4db4619c0e9fae9a31968c0afd8a.html#a793a4db4619c0e9fae9a31968c0afd8a" title="Overextimated length of a line in configuration file (used only if the program is not able to compute...">EMERGENCY_BUFFER_LENGTH</a>;
-<a name="l01105"></a>01105                 } <span class="keywordflow">else</span> {
-<a name="l01106"></a>01106                         input_len = <a class="code" href="../../da/d3e/hunt_8c_adfa8fd1522d2dcd0dc1e514ac0194b59.html#adfa8fd1522d2dcd0dc1e514ac0194b59" title="Counts the number of characters of all the lines in a file.">fchars_in_line</a>(c);
-<a name="l01107"></a>01107                         opened_c = <span class="keyword">true</span>;
-<a name="l01108"></a>01108                 }
-<a name="l01109"></a>01109                 input_row = malloc(<span class="keyword">sizeof</span>(<span class="keywordtype">char</span>) * (input_len + 1));
-<a name="l01110"></a>01110                 read = fgets(input_row, input_len + 1, config);
-<a name="l01111"></a>01111                 <span class="keywordflow">while</span> (!feof(config)) {
-<a name="l01112"></a>01112                         <span class="comment">/*</span>
-<a name="l01113"></a>01113 <span class="comment">                         * Avoids infinite loop in case of fgets failure.</span>
-<a name="l01114"></a>01114 <span class="comment">                         * [PSR]</span>
-<a name="l01115"></a>01115 <span class="comment">                         */</span>
-<a name="l01116"></a>01116                         <span class="keywordflow">if</span> (read == NULL) {
-<a name="l01117"></a>01117                                 <span class="keywordflow">break</span>;
-<a name="l01118"></a>01118                         }
-<a name="l01119"></a>01119                         equal = strpbrk(input_row, <span class="stringliteral">&quot;=&quot;</span>);
-<a name="l01120"></a>01120                         input_value = (equal != NULL) ? equal + 1 : input_row + input_len;
-<a name="l01121"></a>01121                         tag_len = input_value - input_row;
-<a name="l01122"></a>01122                         <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;cloak&quot;</span>, tag_len) == 0) {
-<a name="l01123"></a>01123                                 enter_status = Q_CLOAK;
-<a name="l01124"></a>01124                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;scan&quot;</span>, tag_len) == 0) {
-<a name="l01125"></a>01125                                 enter_status = Q_SCAN;
-<a name="l01126"></a>01126                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;fly&quot;</span>, tag_len) == 0) {
-<a name="l01127"></a>01127                                 enter_status = Q_FLY;
-<a name="l01128"></a>01128                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;nobeep&quot;</span>, tag_len) == 0) {
-<a name="l01129"></a>01129                                 <a class="code" href="../../da/d3e/hunt_8c_a3bd306747807d95cebe18856fff82c71.html#a3bd306747807d95cebe18856fff82c71" title="If true turns off beeping when you reach the typeahead limit.">no_beep</a> = <span class="keyword">true</span>;
-<a name="l01130"></a>01130                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;name=&quot;</span>, tag_len) == 0) {
-<a name="l01131"></a>01131                                 strncpy(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, input_value, NAMELEN);
-<a name="l01132"></a>01132                         }
-<a name="l01133"></a>01133 <span class="preprocessor"># ifdef INTERNET</span>
-<a name="l01134"></a>01134 <span class="preprocessor"></span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;port=&quot;</span>, tag_len) == 0) {
-<a name="l01135"></a>01135                                 use_port = input_value;
-<a name="l01136"></a>01136                                 Test_port = atoi(use_port);
-<a name="l01137"></a>01137                         }
-<a name="l01138"></a>01138                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;host=&quot;</span>, tag_len) == 0) {
-<a name="l01139"></a>01139                                 Sock_host = input_value;
+<a name="l00972"></a>00972         <span class="comment">/*</span>
+<a name="l00973"></a>00973 <span class="comment">         Introduced errno parameter in err() in order to display it on standard error.</span>
+<a name="l00974"></a>00974 <span class="comment">         [PSR]</span>
+<a name="l00975"></a>00975 <span class="comment">        */</span>
+<a name="l00976"></a>00976         err(eval, (mesg ? mesg : <span class="stringliteral">&quot;&quot;</span>), errno);
+<a name="l00977"></a>00977 }
+<a name="l00978"></a>00978 
+<a name="l00984"></a><a class="code" href="../../da/d3e/hunt_8c_ad5bc8590e5cb02383be0d63a2052d461.html#ad5bc8590e5cb02383be0d63a2052d461">00984</a> <span class="keywordtype">void</span> <a class="code" href="../../da/d3e/hunt_8c_ad5bc8590e5cb02383be0d63a2052d461.html#ad5bc8590e5cb02383be0d63a2052d461" title="Leave the game somewhat gracefully, restoring all current tty stats.">leavex</a>(<span class="keywordtype">int</span> eval, <span class="keyword">const</span> <span class="keywordtype">char</span> *mesg) {
+<a name="l00985"></a>00985         <a class="code" href="../../da/d3e/hunt_8c_adda160470baeb981a77704613a284e4e.html#adda160470baeb981a77704613a284e4e" title="Verifies configuration entries.">fincurs</a>();
+<a name="l00986"></a>00986         <span class="comment">/*</span>
+<a name="l00987"></a>00987 <span class="comment">         * Introduced a NULL parameter in errx() since the routine shows a generic error message.</span>
+<a name="l00988"></a>00988 <span class="comment">         * [PSR]</span>
+<a name="l00989"></a>00989 <span class="comment">         */</span>
+<a name="l00990"></a>00990         errx(eval, (mesg ? mesg : <span class="stringliteral">&quot;&quot;</span>), NULL);
+<a name="l00991"></a>00991 }
+<a name="l00992"></a>00992 
+<a name="l00993"></a>00993 <span class="preprocessor">#if !defined(USE_CURSES) &amp;&amp; defined(SIGTSTP)</span>
+<a name="l00994"></a>00994 <span class="preprocessor"></span>SIGNAL_TYPE tstp(<span class="keywordtype">int</span> dummy) {
+<a name="l00997"></a>00997 <span class="preprocessor"># if BSD_RELEASE &lt; 44</span>
+<a name="l00998"></a>00998 <span class="preprocessor"></span>        <span class="keyword">static</span> <span class="keyword">struct </span>sgttyb tty;
+<a name="l00999"></a>00999 <span class="preprocessor"># endif</span>
+<a name="l01000"></a>01000 <span class="preprocessor"></span>        <span class="keywordtype">int</span> y, x;
+<a name="l01001"></a>01001 
+<a name="l01002"></a>01002         y = <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>;
+<a name="l01003"></a>01003         x = <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>;
+<a name="l01004"></a>01004         mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, HEIGHT, 0);
+<a name="l01005"></a>01005         <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a> = HEIGHT;
+<a name="l01006"></a>01006         <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> = 0;
+<a name="l01007"></a>01007 <span class="preprocessor"># if !defined(BSD_RELEASE) || BSD_RELEASE &lt; 44</span>
+<a name="l01008"></a>01008 <span class="preprocessor"></span>        tty = _tty;
+<a name="l01009"></a>01009 <span class="preprocessor"># endif</span>
+<a name="l01010"></a>01010 <span class="preprocessor"></span><span class="preprocessor">#if defined(VE) &amp;&amp; defined(TE)</span>
+<a name="l01011"></a>01011 <span class="preprocessor"></span>        _puts(VE);
+<a name="l01012"></a>01012         _puts(TE);
+<a name="l01013"></a>01013 <span class="preprocessor">#else</span>
+<a name="l01014"></a>01014 <span class="preprocessor"></span>        errx(1, <span class="stringliteral">&quot;Missing necessary configuration entries.\nHunt will quit.\n&quot;</span>);
+<a name="l01015"></a>01015 <span class="preprocessor">#endif</span>
+<a name="l01016"></a>01016 <span class="preprocessor"></span>        (void) fflush(stdout);
+<a name="l01017"></a>01017 <span class="preprocessor"># if defined(BSD_RELEASE) &amp;&amp; BSD_RELEASE &gt;= 44</span>
+<a name="l01018"></a>01018 <span class="preprocessor"></span>        tcsetattr(0, TCSADRAIN, &amp;__orig_termios);
+<a name="l01019"></a>01019 <span class="preprocessor"># else</span>
+<a name="l01020"></a>01020 <span class="preprocessor"></span>        resetty();
+<a name="l01021"></a>01021 <span class="preprocessor"># endif</span>
+<a name="l01022"></a>01022 <span class="preprocessor"></span>        (void) kill(getpid(), SIGSTOP);
+<a name="l01023"></a>01023         (void) signal(SIGTSTP, tstp);
+<a name="l01024"></a>01024 <span class="preprocessor"># if defined(BSD_RELEASE) &amp;&amp; BSD_RELEASE &gt;= 44</span>
+<a name="l01025"></a>01025 <span class="preprocessor"></span>        tcsetattr(0, TCSADRAIN, &amp;saved_tty);
+<a name="l01026"></a>01026 <span class="preprocessor"># else</span>
+<a name="l01027"></a>01027 <span class="preprocessor"></span>        _tty = tty;
+<a name="l01028"></a>01028 <span class="preprocessor">#ifdef TIOCSTEP</span>
+<a name="l01029"></a>01029 <span class="preprocessor"></span>        ioctl(_tty_ch, TIOCSETP, &amp;_tty);
+<a name="l01030"></a>01030 <span class="preprocessor">#else</span>
+<a name="l01031"></a>01031 <span class="preprocessor"></span>        errx(1, <span class="stringliteral">&quot;Missing necessary configuration entries.\nHunt will quit.\n&quot;</span>);
+<a name="l01032"></a>01032 <span class="preprocessor">#endif</span>
+<a name="l01033"></a>01033 <span class="preprocessor"></span><span class="preprocessor"># endif</span>
+<a name="l01034"></a>01034 <span class="preprocessor"></span><span class="preprocessor">#if defined(TI) &amp;&amp; defined(VS)</span>
+<a name="l01035"></a>01035 <span class="preprocessor"></span>        _puts(TI);
+<a name="l01036"></a>01036         _puts(VS);
+<a name="l01037"></a>01037 <span class="preprocessor">#else</span>
+<a name="l01038"></a>01038 <span class="preprocessor"></span>        errx(1, <span class="stringliteral">&quot;Missing necessary configuration entries.\nHunt will quit.\n&quot;</span>);
+<a name="l01039"></a>01039 <span class="preprocessor">#endif</span>
+<a name="l01040"></a>01040 <span class="preprocessor"></span>        <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a> = y;
+<a name="l01041"></a>01041         <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> = x;
+<a name="l01042"></a>01042 <span class="preprocessor">#ifdef CM</span>
+<a name="l01043"></a>01043 <span class="preprocessor"></span>        _puts(tgoto(CM, <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>));
+<a name="l01044"></a>01044 <span class="preprocessor">#endif</span>
+<a name="l01045"></a>01045 <span class="preprocessor"></span>        <a class="code" href="../../da/db5/playit_8c_a82c285fd87da5a5cef6e9c18276dc689.html#a82c285fd87da5a5cef6e9c18276dc689" title="Repaints the screen.">redraw_screen</a>();
+<a name="l01046"></a>01046         (void) fflush(stdout);
+<a name="l01047"></a>01047 }
+<a name="l01048"></a>01048 <span class="preprocessor">#endif </span><span class="comment">/* !defined(USE_CURSES) &amp;&amp; defined(SIGTSTP) */</span>
+<a name="l01049"></a>01049 
+<a name="l01050"></a>01050 <span class="preprocessor"># if defined(BSD_RELEASE) &amp;&amp; BSD_RELEASE &lt; 43</span>
+<a name="l01051"></a>01051 <span class="preprocessor"></span><span class="keywordtype">char</span> * strpbrk(<span class="keywordtype">char</span> *s,<span class="keywordtype">char</span> *brk) {
+<a name="l01052"></a>01052         <span class="keywordtype">char</span> *p;
+<a name="l01053"></a>01053         c;
+<a name="l01054"></a>01054 
+<a name="l01055"></a>01055         <span class="keywordflow">while</span> (c = *s) {
+<a name="l01056"></a>01056                 <span class="keywordflow">for</span> (p = brk; *p; p++)
+<a name="l01057"></a>01057                 <span class="keywordflow">if</span> (c == *p)
+<a name="l01058"></a>01058                 <span class="keywordflow">return</span> (s);
+<a name="l01059"></a>01059                 s++;
+<a name="l01060"></a>01060         }
+<a name="l01061"></a>01061         <span class="keywordflow">return</span> (0);
+<a name="l01062"></a>01062 }
+<a name="l01063"></a>01063 <span class="preprocessor"># endif</span>
+<a name="l01064"></a>01064 <span class="preprocessor"></span>
+<a name="l01074"></a><a class="code" href="../../da/d3e/hunt_8c_ab3e8e6b11b84402fb8ed7a7d8c765f01.html#ab3e8e6b11b84402fb8ed7a7d8c765f01">01074</a> <span class="keywordtype">long</span> <a class="code" href="../../da/d3e/hunt_8c_ab3e8e6b11b84402fb8ed7a7d8c765f01.html#ab3e8e6b11b84402fb8ed7a7d8c765f01" title="Parses configuration file and initializes game environment.">env_init</a>(<span class="keywordtype">long</span> enter_status_in) {
+<a name="l01075"></a>01075 
+<a name="l01076"></a>01076         <span class="keywordtype">long</span> enter_status = enter_status_in;
+<a name="l01077"></a>01077 
+<a name="l01078"></a>01078         <span class="comment">/*</span>
+<a name="l01079"></a>01079 <span class="comment">         * Variables supporting configuration file parsing.</span>
+<a name="l01080"></a>01080 <span class="comment">         * [PSR]</span>
+<a name="l01081"></a>01081 <span class="comment">         */</span>
+<a name="l01082"></a>01082         FILE* config; <span class="comment">/* Points to configuration file. [PSR] */</span>
+<a name="l01083"></a>01083         FILE* c; <span class="comment">/* Points to configuration file. Used for char counting. [PSR] */</span>
+<a name="l01084"></a>01084         <span class="keywordtype">bool</span> opened_c;
+<a name="l01085"></a>01085         <span class="keywordtype">long</span> input_len; <span class="comment">/* Input row length. [PSR] */</span>
+<a name="l01086"></a>01086         <span class="keywordtype">char</span>* input_row; <span class="comment">/* A row from configuration file. [PSR] */</span>
+<a name="l01087"></a>01087         <span class="keywordtype">char</span>* equal; <span class="comment">/* Points to the position of &#39;=&#39; into input_row. [PSR] */</span>
+<a name="l01088"></a>01088         <span class="keywordtype">char</span>* input_value; <span class="comment">/* Value associated to a configuration tag. [PSR] */</span>
+<a name="l01089"></a>01089         <span class="keywordtype">long</span> tag_len; <span class="comment">/* Tag field length. [PSR] */</span>
+<a name="l01090"></a>01090         <span class="keywordtype">char</span>* read;
+<a name="l01091"></a>01091 
+<a name="l01092"></a>01092         <span class="keywordtype">int</span> i;
+<a name="l01093"></a>01093 
+<a name="l01094"></a>01094         <span class="comment">/*</span>
+<a name="l01095"></a>01095 <span class="comment">         * Generates a map for extended ASCII conversion.</span>
+<a name="l01096"></a>01096 <span class="comment">         * [PSR]</span>
+<a name="l01097"></a>01097 <span class="comment">         */</span>
+<a name="l01098"></a>01098         <span class="keywordflow">for</span> (i = 0; i &lt; 256; i++) {
+<a name="l01099"></a>01099                 <a class="code" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271" title="What to map keys to.">map_key</a>[i] = (char) i;
+<a name="l01100"></a>01100         }
+<a name="l01101"></a>01101 
+<a name="l01102"></a>01102         <span class="keywordflow">if</span> (!(config = fopen(CONFIGURATION_FILE, <span class="stringliteral">&quot;r&quot;</span>))) {
+<a name="l01103"></a>01103                 <span class="keywordflow">return</span> <a class="code" href="../../da/d3e/hunt_8c_a2b299719d63c16971a4a96d8d37e78e0.html#a2b299719d63c16971a4a96d8d37e78e0" title="Imports game settings from environment.">var_env_init</a>(enter_status);
+<a name="l01104"></a>01104         } <span class="keywordflow">else</span> {
+<a name="l01105"></a>01105                 <span class="keywordflow">if</span> ((c = fopen(CONFIGURATION_FILE, <span class="stringliteral">&quot;r&quot;</span>))) {
+<a name="l01106"></a>01106                         opened_c = <span class="keyword">false</span>;
+<a name="l01107"></a>01107                         input_len = <a class="code" href="../../da/d3e/hunt_8c_a793a4db4619c0e9fae9a31968c0afd8a.html#a793a4db4619c0e9fae9a31968c0afd8a" title="Overextimated length of a line in configuration file (used only if the program is not able to compute...">EMERGENCY_BUFFER_LENGTH</a>;
+<a name="l01108"></a>01108                 } <span class="keywordflow">else</span> {
+<a name="l01109"></a>01109                         input_len = <a class="code" href="../../da/d3e/hunt_8c_adfa8fd1522d2dcd0dc1e514ac0194b59.html#adfa8fd1522d2dcd0dc1e514ac0194b59" title="Counts the number of characters of all the lines in a file.">fchars_in_line</a>(c);
+<a name="l01110"></a>01110                         opened_c = <span class="keyword">true</span>;
+<a name="l01111"></a>01111                 }
+<a name="l01112"></a>01112                 input_row = malloc(<span class="keyword">sizeof</span>(<span class="keywordtype">char</span>) * (input_len + 1));
+<a name="l01113"></a>01113                 read = fgets(input_row, input_len + 1, config);
+<a name="l01114"></a>01114                 <span class="keywordflow">while</span> (!feof(config)) {
+<a name="l01115"></a>01115                         <span class="comment">/*</span>
+<a name="l01116"></a>01116 <span class="comment">                         * Avoids infinite loop in case of fgets failure.</span>
+<a name="l01117"></a>01117 <span class="comment">                         * [PSR]</span>
+<a name="l01118"></a>01118 <span class="comment">                         */</span>
+<a name="l01119"></a>01119                         <span class="keywordflow">if</span> (read == NULL) {
+<a name="l01120"></a>01120                                 <span class="keywordflow">break</span>;
+<a name="l01121"></a>01121                         }
+<a name="l01122"></a>01122                         equal = strpbrk(input_row, <span class="stringliteral">&quot;=&quot;</span>);
+<a name="l01123"></a>01123                         input_value = (equal != NULL) ? equal + 1 : input_row + input_len;
+<a name="l01124"></a>01124                         tag_len = input_value - input_row;
+<a name="l01125"></a>01125                         <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;cloak&quot;</span>, tag_len) == 0) {
+<a name="l01126"></a>01126                                 enter_status = Q_CLOAK;
+<a name="l01127"></a>01127                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;scan&quot;</span>, tag_len) == 0) {
+<a name="l01128"></a>01128                                 enter_status = Q_SCAN;
+<a name="l01129"></a>01129                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;fly&quot;</span>, tag_len) == 0) {
+<a name="l01130"></a>01130                                 enter_status = Q_FLY;
+<a name="l01131"></a>01131                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;nobeep&quot;</span>, tag_len) == 0) {
+<a name="l01132"></a>01132                                 <a class="code" href="../../da/d3e/hunt_8c_a3bd306747807d95cebe18856fff82c71.html#a3bd306747807d95cebe18856fff82c71" title="If true turns off beeping when you reach the typeahead limit.">no_beep</a> = <span class="keyword">true</span>;
+<a name="l01133"></a>01133                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;name=&quot;</span>, tag_len) == 0) {
+<a name="l01134"></a>01134                                 strncpy(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, input_value, NAMELEN);
+<a name="l01135"></a>01135                         }
+<a name="l01136"></a>01136 <span class="preprocessor"># ifdef INTERNET</span>
+<a name="l01137"></a>01137 <span class="preprocessor"></span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;port=&quot;</span>, tag_len) == 0) {
+<a name="l01138"></a>01138                                 use_port = input_value;
+<a name="l01139"></a>01139                                 Test_port = atoi(use_port);
 <a name="l01140"></a>01140                         }
-<a name="l01141"></a>01141                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;message=&quot;</span>, tag_len) == 0) {
-<a name="l01142"></a>01142                                 Send_message = input_value;
+<a name="l01141"></a>01141                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;host=&quot;</span>, tag_len) == 0) {
+<a name="l01142"></a>01142                                 Sock_host = input_value;
 <a name="l01143"></a>01143                         }
-<a name="l01144"></a>01144 <span class="preprocessor"># endif</span>
-<a name="l01145"></a>01145 <span class="preprocessor"></span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;team=&quot;</span>, tag_len) == 0) {
-<a name="l01146"></a>01146                                 <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> = *(input_value);
-<a name="l01147"></a>01147                                 <span class="keywordflow">if</span> (!isdigit((<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>)<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>))
-<a name="l01148"></a>01148                                         team = <span class="charliteral">&#39; &#39;</span>;
-<a name="l01149"></a>01149                         } <span class="comment">/* must be last option */</span>
-<a name="l01150"></a>01150                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;mapkey=&quot;</span>, tag_len) == 0) {
-<a name="l01151"></a>01151                                 <span class="keywordflow">for</span> (i = 0; input_value[i] != <span class="charliteral">&#39;\0&#39;</span>; i += 2) {
-<a name="l01152"></a>01152                                         <a class="code" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271" title="What to map keys to.">map_key</a>[(<span class="keywordtype">unsigned</span> int) input_value[i]] = input_value[i + 1];
-<a name="l01153"></a>01153                                         <span class="keywordflow">if</span> (input_value[i + 1] == <span class="charliteral">&#39;\0&#39;</span>) {
-<a name="l01154"></a>01154                                                 <span class="keywordflow">break</span>;
-<a name="l01155"></a>01155                                         }
-<a name="l01156"></a>01156                                 }
-<a name="l01157"></a>01157                                 <span class="keywordflow">break</span>;
-<a name="l01158"></a>01158                         } <span class="keywordflow">else</span> {
-<a name="l01159"></a>01159                                 printf(<span class="stringliteral">&quot;unknown option %s\n&quot;</span>, input_row);
-<a name="l01160"></a>01160                         }
-<a name="l01161"></a>01161                         free(input_row);
-<a name="l01162"></a>01162                         input_row = NULL;
-<a name="l01163"></a>01163                         <span class="keywordflow">if</span> (opened_c) {
-<a name="l01164"></a>01164                                 input_len = <a class="code" href="../../da/d3e/hunt_8c_adfa8fd1522d2dcd0dc1e514ac0194b59.html#adfa8fd1522d2dcd0dc1e514ac0194b59" title="Counts the number of characters of all the lines in a file.">fchars_in_line</a>(c);
-<a name="l01165"></a>01165                         } <span class="keywordflow">else</span> {
-<a name="l01166"></a>01166                                 input_len = <a class="code" href="../../da/d3e/hunt_8c_a793a4db4619c0e9fae9a31968c0afd8a.html#a793a4db4619c0e9fae9a31968c0afd8a" title="Overextimated length of a line in configuration file (used only if the program is not able to compute...">EMERGENCY_BUFFER_LENGTH</a>;
-<a name="l01167"></a>01167                         }
-<a name="l01168"></a>01168                         input_row = malloc(<span class="keyword">sizeof</span>(<span class="keywordtype">char</span>) * (input_len + 1));
-<a name="l01169"></a>01169                         read = fgets(input_row, input_len + 1, config);
-<a name="l01170"></a>01170                 }
-<a name="l01171"></a>01171                 free(input_row);
-<a name="l01172"></a>01172                 input_row = NULL;
-<a name="l01173"></a>01173                 <span class="keywordflow">if</span> (opened_c) {
-<a name="l01174"></a>01174                         <span class="comment">/*</span>
-<a name="l01175"></a>01175 <span class="comment">                         * Hard-wired FILE* c setting to NULL after file closure.</span>
-<a name="l01176"></a>01176 <span class="comment">                         * [PSR]</span>
-<a name="l01177"></a>01177 <span class="comment">                         */</span>
-<a name="l01178"></a>01178                         fclose(c);
-<a name="l01179"></a>01179                         c = NULL;
-<a name="l01180"></a>01180                 }
-<a name="l01181"></a>01181                 <span class="comment">/*</span>
-<a name="l01182"></a>01182 <span class="comment">                 * Hard-wired FILE* config setting to NULL after file closure.</span>
-<a name="l01183"></a>01183 <span class="comment">                 * [PSR]</span>
-<a name="l01184"></a>01184 <span class="comment">                 */</span>
-<a name="l01185"></a>01185                 fclose(config);
-<a name="l01186"></a>01186                 config = NULL;
-<a name="l01187"></a>01187         }
-<a name="l01188"></a>01188         <span class="keywordflow">return</span> enter_status;
-<a name="l01189"></a>01189 }
-<a name="l01190"></a>01190 
-<a name="l01198"></a><a class="code" href="../../da/d3e/hunt_8c_a2b299719d63c16971a4a96d8d37e78e0.html#a2b299719d63c16971a4a96d8d37e78e0">01198</a> <span class="keywordtype">long</span> <a class="code" href="../../da/d3e/hunt_8c_a2b299719d63c16971a4a96d8d37e78e0.html#a2b299719d63c16971a4a96d8d37e78e0" title="Imports game settings from environment.">var_env_init</a>(<span class="keywordtype">long</span> enter_status_in) {
-<a name="l01199"></a>01199 
-<a name="l01200"></a>01200         <span class="keywordtype">long</span> enter_status = enter_status_in; <span class="comment">/* Hosts the value to return. [PSR] */</span>
-<a name="l01201"></a>01201 
-<a name="l01202"></a>01202         <span class="keywordtype">int</span> i;
-<a name="l01203"></a>01203 
-<a name="l01204"></a>01204         <span class="keywordtype">char</span> *envp; <span class="comment">/* This string contains setting options. [PSR] */</span>
-<a name="l01205"></a>01205         <span class="keywordtype">char</span> *envname; <span class="comment">/* Temporarely stores configured player name. [PSR] */</span>
-<a name="l01206"></a>01206         <span class="keywordtype">char</span> *s;
-<a name="l01207"></a>01207 
-<a name="l01208"></a>01208         <span class="comment">/*</span>
-<a name="l01209"></a>01209 <span class="comment">         * Generates a map for extended ASCII conversion.</span>
-<a name="l01210"></a>01210 <span class="comment">         * [PSR]</span>
-<a name="l01211"></a>01211 <span class="comment">         */</span>
-<a name="l01212"></a>01212         <span class="keywordflow">for</span> (i = 0; i &lt; 256; i++) {
-<a name="l01213"></a>01213                 <a class="code" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271" title="What to map keys to.">map_key</a>[i] = (char) i;
-<a name="l01214"></a>01214         }
-<a name="l01215"></a>01215 
-<a name="l01216"></a>01216         envname = NULL; <span class="comment">/* Verified null pointer safety. [PSR] */</span>
-<a name="l01217"></a>01217 
-<a name="l01218"></a>01218         <span class="keywordflow">if</span> ((envp = getenv(<span class="stringliteral">&quot;HUNT&quot;</span>)) != NULL) {
-<a name="l01219"></a>01219                 <span class="keywordflow">while</span> ((s = strpbrk(envp, <span class="stringliteral">&quot;=,&quot;</span>)) != NULL) {
-<a name="l01220"></a>01220                         <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;cloak,&quot;</span>, s - envp + 1) == 0) { <span class="comment">/* Compare characters from the start of the conf string not yet analyzed till the first &#39;=&#39;. [PSR] */</span>
-<a name="l01221"></a>01221                                 enter_status = Q_CLOAK;
-<a name="l01222"></a>01222                                 envp = s + 1; <span class="comment">/* Deletes characters already considered. [PSR] */</span>
-<a name="l01223"></a>01223                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;scan,&quot;</span>, s - envp + 1) == 0) {
-<a name="l01224"></a>01224                                 enter_status = Q_SCAN;
-<a name="l01225"></a>01225                                 envp = s + 1;
-<a name="l01226"></a>01226                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;fly,&quot;</span>, s - envp + 1) == 0) {
-<a name="l01227"></a>01227                                 enter_status = Q_FLY;
+<a name="l01144"></a>01144                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;message=&quot;</span>, tag_len) == 0) {
+<a name="l01145"></a>01145                                 Send_message = input_value;
+<a name="l01146"></a>01146                         }
+<a name="l01147"></a>01147 <span class="preprocessor"># endif</span>
+<a name="l01148"></a>01148 <span class="preprocessor"></span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;team=&quot;</span>, tag_len) == 0) {
+<a name="l01149"></a>01149                                 <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> = *(input_value);
+<a name="l01150"></a>01150                                 <span class="keywordflow">if</span> (!isdigit((<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>)<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>))
+<a name="l01151"></a>01151                                         team = <span class="charliteral">&#39; &#39;</span>;
+<a name="l01152"></a>01152                         } <span class="comment">/* must be last option */</span>
+<a name="l01153"></a>01153                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(input_row, <span class="stringliteral">&quot;mapkey=&quot;</span>, tag_len) == 0) {
+<a name="l01154"></a>01154                                 <span class="keywordflow">for</span> (i = 0; input_value[i] != <span class="charliteral">&#39;\0&#39;</span>; i += 2) {
+<a name="l01155"></a>01155                                         <a class="code" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271" title="What to map keys to.">map_key</a>[(<span class="keywordtype">unsigned</span> int) input_value[i]] = input_value[i + 1];
+<a name="l01156"></a>01156                                         <span class="keywordflow">if</span> (input_value[i + 1] == <span class="charliteral">&#39;\0&#39;</span>) {
+<a name="l01157"></a>01157                                                 <span class="keywordflow">break</span>;
+<a name="l01158"></a>01158                                         }
+<a name="l01159"></a>01159                                 }
+<a name="l01160"></a>01160                                 <span class="keywordflow">break</span>;
+<a name="l01161"></a>01161                         } <span class="keywordflow">else</span> {
+<a name="l01162"></a>01162                                 printf(<span class="stringliteral">&quot;unknown option %s\n&quot;</span>, input_row);
+<a name="l01163"></a>01163                         }
+<a name="l01164"></a>01164                         free(input_row);
+<a name="l01165"></a>01165                         input_row = NULL;
+<a name="l01166"></a>01166                         <span class="keywordflow">if</span> (opened_c) {
+<a name="l01167"></a>01167                                 input_len = <a class="code" href="../../da/d3e/hunt_8c_adfa8fd1522d2dcd0dc1e514ac0194b59.html#adfa8fd1522d2dcd0dc1e514ac0194b59" title="Counts the number of characters of all the lines in a file.">fchars_in_line</a>(c);
+<a name="l01168"></a>01168                         } <span class="keywordflow">else</span> {
+<a name="l01169"></a>01169                                 input_len = <a class="code" href="../../da/d3e/hunt_8c_a793a4db4619c0e9fae9a31968c0afd8a.html#a793a4db4619c0e9fae9a31968c0afd8a" title="Overextimated length of a line in configuration file (used only if the program is not able to compute...">EMERGENCY_BUFFER_LENGTH</a>;
+<a name="l01170"></a>01170                         }
+<a name="l01171"></a>01171                         input_row = malloc(<span class="keyword">sizeof</span>(<span class="keywordtype">char</span>) * (input_len + 1));
+<a name="l01172"></a>01172                         read = fgets(input_row, input_len + 1, config);
+<a name="l01173"></a>01173                 }
+<a name="l01174"></a>01174                 free(input_row);
+<a name="l01175"></a>01175                 input_row = NULL;
+<a name="l01176"></a>01176                 <span class="keywordflow">if</span> (opened_c) {
+<a name="l01177"></a>01177                         <span class="comment">/*</span>
+<a name="l01178"></a>01178 <span class="comment">                         * Hard-wired FILE* c setting to NULL after file closure.</span>
+<a name="l01179"></a>01179 <span class="comment">                         * [PSR]</span>
+<a name="l01180"></a>01180 <span class="comment">                         */</span>
+<a name="l01181"></a>01181                         fclose(c);
+<a name="l01182"></a>01182                         c = NULL;
+<a name="l01183"></a>01183                 }
+<a name="l01184"></a>01184                 <span class="comment">/*</span>
+<a name="l01185"></a>01185 <span class="comment">                 * Hard-wired FILE* config setting to NULL after file closure.</span>
+<a name="l01186"></a>01186 <span class="comment">                 * [PSR]</span>
+<a name="l01187"></a>01187 <span class="comment">                 */</span>
+<a name="l01188"></a>01188                 fclose(config);
+<a name="l01189"></a>01189                 config = NULL;
+<a name="l01190"></a>01190         }
+<a name="l01191"></a>01191         <span class="keywordflow">return</span> enter_status;
+<a name="l01192"></a>01192 }
+<a name="l01193"></a>01193 
+<a name="l01201"></a><a class="code" href="../../da/d3e/hunt_8c_a2b299719d63c16971a4a96d8d37e78e0.html#a2b299719d63c16971a4a96d8d37e78e0">01201</a> <span class="keywordtype">long</span> <a class="code" href="../../da/d3e/hunt_8c_a2b299719d63c16971a4a96d8d37e78e0.html#a2b299719d63c16971a4a96d8d37e78e0" title="Imports game settings from environment.">var_env_init</a>(<span class="keywordtype">long</span> enter_status_in) {
+<a name="l01202"></a>01202 
+<a name="l01203"></a>01203         <span class="keywordtype">long</span> enter_status = enter_status_in; <span class="comment">/* Hosts the value to return. [PSR] */</span>
+<a name="l01204"></a>01204 
+<a name="l01205"></a>01205         <span class="keywordtype">int</span> i;
+<a name="l01206"></a>01206 
+<a name="l01207"></a>01207         <span class="keywordtype">char</span> *envp; <span class="comment">/* This string contains setting options. [PSR] */</span>
+<a name="l01208"></a>01208         <span class="keywordtype">char</span> *envname; <span class="comment">/* Temporarely stores configured player name. [PSR] */</span>
+<a name="l01209"></a>01209         <span class="keywordtype">char</span> *s;
+<a name="l01210"></a>01210 
+<a name="l01211"></a>01211         <span class="comment">/*</span>
+<a name="l01212"></a>01212 <span class="comment">         * Generates a map for extended ASCII conversion.</span>
+<a name="l01213"></a>01213 <span class="comment">         * [PSR]</span>
+<a name="l01214"></a>01214 <span class="comment">         */</span>
+<a name="l01215"></a>01215         <span class="keywordflow">for</span> (i = 0; i &lt; 256; i++) {
+<a name="l01216"></a>01216                 <a class="code" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271" title="What to map keys to.">map_key</a>[i] = (char) i;
+<a name="l01217"></a>01217         }
+<a name="l01218"></a>01218 
+<a name="l01219"></a>01219         envname = NULL; <span class="comment">/* Verified null pointer safety. [PSR] */</span>
+<a name="l01220"></a>01220 
+<a name="l01221"></a>01221         <span class="keywordflow">if</span> ((envp = getenv(<span class="stringliteral">&quot;HUNT&quot;</span>)) != NULL) {
+<a name="l01222"></a>01222                 <span class="keywordflow">while</span> ((s = strpbrk(envp, <span class="stringliteral">&quot;=,&quot;</span>)) != NULL) {
+<a name="l01223"></a>01223                         <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;cloak,&quot;</span>, s - envp + 1) == 0) { <span class="comment">/* Compare characters from the start of the conf string not yet analyzed till the first &#39;=&#39;. [PSR] */</span>
+<a name="l01224"></a>01224                                 enter_status = Q_CLOAK;
+<a name="l01225"></a>01225                                 envp = s + 1; <span class="comment">/* Deletes characters already considered. [PSR] */</span>
+<a name="l01226"></a>01226                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;scan,&quot;</span>, s - envp + 1) == 0) {
+<a name="l01227"></a>01227                                 enter_status = Q_SCAN;
 <a name="l01228"></a>01228                                 envp = s + 1;
-<a name="l01229"></a>01229                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;nobeep,&quot;</span>, s - envp + 1) == 0) {
-<a name="l01230"></a>01230                                 <a class="code" href="../../da/d3e/hunt_8c_a3bd306747807d95cebe18856fff82c71.html#a3bd306747807d95cebe18856fff82c71" title="If true turns off beeping when you reach the typeahead limit.">no_beep</a> = <span class="keyword">true</span>;
+<a name="l01229"></a>01229                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;fly,&quot;</span>, s - envp + 1) == 0) {
+<a name="l01230"></a>01230                                 enter_status = Q_FLY;
 <a name="l01231"></a>01231                                 envp = s + 1;
-<a name="l01232"></a>01232                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;name=&quot;</span>, s - envp + 1) == 0) {
-<a name="l01233"></a>01233                                 envname = s + 1;
-<a name="l01234"></a>01234                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
-<a name="l01235"></a>01235                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01236"></a>01236                                         strncpy(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, envname, NAMELEN);
-<a name="l01237"></a>01237                                         <span class="keywordflow">break</span>;
-<a name="l01238"></a>01238                                 }
-<a name="l01239"></a>01239                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01240"></a>01240                                 strncpy(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, envname, NAMELEN);
-<a name="l01241"></a>01241                                 envp = s + 1;
-<a name="l01242"></a>01242                         }
-<a name="l01243"></a>01243 <span class="preprocessor"># ifdef INTERNET</span>
-<a name="l01244"></a>01244 <span class="preprocessor"></span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;port=&quot;</span>, s - envp + 1) == 0) {
-<a name="l01245"></a>01245                                 use_port = s + 1;
-<a name="l01246"></a>01246                                 Test_port = atoi(use_port);
-<a name="l01247"></a>01247                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
-<a name="l01248"></a>01248                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01249"></a>01249                                         <span class="keywordflow">break</span>;
-<a name="l01250"></a>01250                                 }
-<a name="l01251"></a>01251                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01252"></a>01252                                 envp = s + 1;
-<a name="l01253"></a>01253                         }
-<a name="l01254"></a>01254                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;host=&quot;</span>, s - envp + 1) == 0) {
-<a name="l01255"></a>01255                                 Sock_host = s + 1;
-<a name="l01256"></a>01256                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
-<a name="l01257"></a>01257                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01258"></a>01258                                         <span class="keywordflow">break</span>;
-<a name="l01259"></a>01259                                 }
-<a name="l01260"></a>01260                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01261"></a>01261                                 envp = s + 1;
-<a name="l01262"></a>01262                         }
-<a name="l01263"></a>01263                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;message=&quot;</span>, s - envp + 1) == 0) {
-<a name="l01264"></a>01264                                 Send_message = s + 1;
-<a name="l01265"></a>01265                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
-<a name="l01266"></a>01266                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01267"></a>01267                                         <span class="keywordflow">break</span>;
-<a name="l01268"></a>01268                                 }
-<a name="l01269"></a>01269                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01270"></a>01270                                 envp = s + 1;
-<a name="l01271"></a>01271                         }
-<a name="l01272"></a>01272 <span class="preprocessor"># endif</span>
-<a name="l01273"></a>01273 <span class="preprocessor"></span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;team=&quot;</span>, s - envp + 1) == 0) {
-<a name="l01274"></a>01274                                 <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> = *(s + 1);
-<a name="l01275"></a>01275                                 <span class="keywordflow">if</span> (!isdigit((<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>)<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>))
-<a name="l01276"></a>01276                                         team = <span class="charliteral">&#39; &#39;</span>;
-<a name="l01277"></a>01277                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
-<a name="l01278"></a>01278                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01279"></a>01279                                         <span class="keywordflow">break</span>;
-<a name="l01280"></a>01280                                 }
-<a name="l01281"></a>01281                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01282"></a>01282                                 envp = s + 1;
-<a name="l01283"></a>01283                         } <span class="comment">/* must be last option */</span>
-<a name="l01284"></a>01284                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;mapkey=&quot;</span>, s - envp + 1) == 0) {
-<a name="l01285"></a>01285                                 <span class="keywordflow">for</span> (s = s + 1; *s != <span class="charliteral">&#39;\0&#39;</span>; s += 2) {
-<a name="l01286"></a>01286                                         <a class="code" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271" title="What to map keys to.">map_key</a>[(<span class="keywordtype">unsigned</span> int) *s] = *(s + 1);
-<a name="l01287"></a>01287                                         <span class="keywordflow">if</span> (*(s + 1) == <span class="charliteral">&#39;\0&#39;</span>) {
-<a name="l01288"></a>01288                                                 <span class="keywordflow">break</span>;
-<a name="l01289"></a>01289                                         }
-<a name="l01290"></a>01290                                 }
-<a name="l01291"></a>01291                                 *envp = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01292"></a>01292                                 <span class="keywordflow">break</span>;
-<a name="l01293"></a>01293                         } <span class="keywordflow">else</span> {
-<a name="l01294"></a>01294                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01295"></a>01295                                 printf(<span class="stringliteral">&quot;unknown option %s\n&quot;</span>, envp);
-<a name="l01296"></a>01296                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
-<a name="l01297"></a>01297                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01298"></a>01298                                         <span class="keywordflow">break</span>;
-<a name="l01299"></a>01299                                 }
-<a name="l01300"></a>01300                                 envp = s + 1;
-<a name="l01301"></a>01301                         }
-<a name="l01302"></a>01302                 }
-<a name="l01303"></a>01303                 <span class="keywordflow">if</span> (*envp != <span class="charliteral">&#39;\0&#39;</span>) {
-<a name="l01304"></a>01304                         <span class="keywordflow">if</span> (envname == NULL) {
-<a name="l01305"></a>01305                                 strncpy(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, envp, NAMELEN);
-<a name="l01306"></a>01306                         } <span class="keywordflow">else</span> {
-<a name="l01307"></a>01307                                 printf(<span class="stringliteral">&quot;unknown option %s\n&quot;</span>, envp);
-<a name="l01308"></a>01308                         }
-<a name="l01309"></a>01309                 }
-<a name="l01310"></a>01310         }
-<a name="l01311"></a>01311         <span class="keywordflow">return</span> enter_status;
-<a name="l01312"></a>01312 }
-<a name="l01313"></a>01313 
-<a name="l01320"></a><a class="code" href="../../da/d3e/hunt_8c_adfa8fd1522d2dcd0dc1e514ac0194b59.html#adfa8fd1522d2dcd0dc1e514ac0194b59">01320</a> <span class="keywordtype">long</span> <a class="code" href="../../da/d3e/hunt_8c_adfa8fd1522d2dcd0dc1e514ac0194b59.html#adfa8fd1522d2dcd0dc1e514ac0194b59" title="Counts the number of characters of all the lines in a file.">fchars_in_line</a>(FILE* f) {
-<a name="l01321"></a>01321         <span class="keywordtype">long</span> counter = 0;
-<a name="l01322"></a>01322         <span class="keywordtype">char</span> in;
-<a name="l01323"></a>01323         <span class="keywordtype">int</span> read;
-<a name="l01324"></a>01324         read = fscanf(f, <span class="stringliteral">&quot;%c&quot;</span>, &amp;in);
-<a name="l01325"></a>01325         <span class="keywordflow">while</span> (!feof(f)) {
-<a name="l01326"></a>01326                 <span class="comment">/*</span>
-<a name="l01327"></a>01327 <span class="comment">                 * Avoids infinite loop in case of fscanf failure.</span>
-<a name="l01328"></a>01328 <span class="comment">                 * [PSR]</span>
-<a name="l01329"></a>01329 <span class="comment">                 */</span>
-<a name="l01330"></a>01330                 <span class="keywordflow">if</span> (!read) {
-<a name="l01331"></a>01331                         <span class="keywordflow">break</span>;
-<a name="l01332"></a>01332                 }
-<a name="l01333"></a>01333                 <span class="keywordflow">if</span> (in == <span class="charliteral">&#39;\n&#39;</span>) {
+<a name="l01232"></a>01232                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;nobeep,&quot;</span>, s - envp + 1) == 0) {
+<a name="l01233"></a>01233                                 <a class="code" href="../../da/d3e/hunt_8c_a3bd306747807d95cebe18856fff82c71.html#a3bd306747807d95cebe18856fff82c71" title="If true turns off beeping when you reach the typeahead limit.">no_beep</a> = <span class="keyword">true</span>;
+<a name="l01234"></a>01234                                 envp = s + 1;
+<a name="l01235"></a>01235                         } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;name=&quot;</span>, s - envp + 1) == 0) {
+<a name="l01236"></a>01236                                 envname = s + 1;
+<a name="l01237"></a>01237                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
+<a name="l01238"></a>01238                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01239"></a>01239                                         strncpy(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, envname, NAMELEN);
+<a name="l01240"></a>01240                                         <span class="keywordflow">break</span>;
+<a name="l01241"></a>01241                                 }
+<a name="l01242"></a>01242                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01243"></a>01243                                 strncpy(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, envname, NAMELEN);
+<a name="l01244"></a>01244                                 envp = s + 1;
+<a name="l01245"></a>01245                         }
+<a name="l01246"></a>01246 <span class="preprocessor"># ifdef INTERNET</span>
+<a name="l01247"></a>01247 <span class="preprocessor"></span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;port=&quot;</span>, s - envp + 1) == 0) {
+<a name="l01248"></a>01248                                 use_port = s + 1;
+<a name="l01249"></a>01249                                 Test_port = atoi(use_port);
+<a name="l01250"></a>01250                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
+<a name="l01251"></a>01251                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01252"></a>01252                                         <span class="keywordflow">break</span>;
+<a name="l01253"></a>01253                                 }
+<a name="l01254"></a>01254                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01255"></a>01255                                 envp = s + 1;
+<a name="l01256"></a>01256                         }
+<a name="l01257"></a>01257                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;host=&quot;</span>, s - envp + 1) == 0) {
+<a name="l01258"></a>01258                                 Sock_host = s + 1;
+<a name="l01259"></a>01259                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
+<a name="l01260"></a>01260                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01261"></a>01261                                         <span class="keywordflow">break</span>;
+<a name="l01262"></a>01262                                 }
+<a name="l01263"></a>01263                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01264"></a>01264                                 envp = s + 1;
+<a name="l01265"></a>01265                         }
+<a name="l01266"></a>01266                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;message=&quot;</span>, s - envp + 1) == 0) {
+<a name="l01267"></a>01267                                 Send_message = s + 1;
+<a name="l01268"></a>01268                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
+<a name="l01269"></a>01269                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01270"></a>01270                                         <span class="keywordflow">break</span>;
+<a name="l01271"></a>01271                                 }
+<a name="l01272"></a>01272                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01273"></a>01273                                 envp = s + 1;
+<a name="l01274"></a>01274                         }
+<a name="l01275"></a>01275 <span class="preprocessor"># endif</span>
+<a name="l01276"></a>01276 <span class="preprocessor"></span>                        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;team=&quot;</span>, s - envp + 1) == 0) {
+<a name="l01277"></a>01277                                 <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> = *(s + 1);
+<a name="l01278"></a>01278                                 <span class="keywordflow">if</span> (!isdigit((<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>)<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>))
+<a name="l01279"></a>01279                                         team = <span class="charliteral">&#39; &#39;</span>;
+<a name="l01280"></a>01280                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
+<a name="l01281"></a>01281                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01282"></a>01282                                         <span class="keywordflow">break</span>;
+<a name="l01283"></a>01283                                 }
+<a name="l01284"></a>01284                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01285"></a>01285                                 envp = s + 1;
+<a name="l01286"></a>01286                         } <span class="comment">/* must be last option */</span>
+<a name="l01287"></a>01287                         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strncmp(envp, <span class="stringliteral">&quot;mapkey=&quot;</span>, s - envp + 1) == 0) {
+<a name="l01288"></a>01288                                 <span class="keywordflow">for</span> (s = s + 1; *s != <span class="charliteral">&#39;\0&#39;</span>; s += 2) {
+<a name="l01289"></a>01289                                         <a class="code" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271" title="What to map keys to.">map_key</a>[(<span class="keywordtype">unsigned</span> int) *s] = *(s + 1);
+<a name="l01290"></a>01290                                         <span class="keywordflow">if</span> (*(s + 1) == <span class="charliteral">&#39;\0&#39;</span>) {
+<a name="l01291"></a>01291                                                 <span class="keywordflow">break</span>;
+<a name="l01292"></a>01292                                         }
+<a name="l01293"></a>01293                                 }
+<a name="l01294"></a>01294                                 *envp = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01295"></a>01295                                 <span class="keywordflow">break</span>;
+<a name="l01296"></a>01296                         } <span class="keywordflow">else</span> {
+<a name="l01297"></a>01297                                 *s = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01298"></a>01298                                 printf(<span class="stringliteral">&quot;unknown option %s\n&quot;</span>, envp);
+<a name="l01299"></a>01299                                 <span class="keywordflow">if</span> ((s = strchr(envp, <span class="charliteral">&#39;,&#39;</span>)) == NULL) {
+<a name="l01300"></a>01300                                         *envp = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01301"></a>01301                                         <span class="keywordflow">break</span>;
+<a name="l01302"></a>01302                                 }
+<a name="l01303"></a>01303                                 envp = s + 1;
+<a name="l01304"></a>01304                         }
+<a name="l01305"></a>01305                 }
+<a name="l01306"></a>01306                 <span class="keywordflow">if</span> (*envp != <span class="charliteral">&#39;\0&#39;</span>) {
+<a name="l01307"></a>01307                         <span class="keywordflow">if</span> (envname == NULL) {
+<a name="l01308"></a>01308                                 strncpy(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, envp, NAMELEN);
+<a name="l01309"></a>01309                         } <span class="keywordflow">else</span> {
+<a name="l01310"></a>01310                                 printf(<span class="stringliteral">&quot;unknown option %s\n&quot;</span>, envp);
+<a name="l01311"></a>01311                         }
+<a name="l01312"></a>01312                 }
+<a name="l01313"></a>01313         }
+<a name="l01314"></a>01314         <span class="keywordflow">return</span> enter_status;
+<a name="l01315"></a>01315 }
+<a name="l01316"></a>01316 
+<a name="l01323"></a><a class="code" href="../../da/d3e/hunt_8c_adfa8fd1522d2dcd0dc1e514ac0194b59.html#adfa8fd1522d2dcd0dc1e514ac0194b59">01323</a> <span class="keywordtype">long</span> <a class="code" href="../../da/d3e/hunt_8c_adfa8fd1522d2dcd0dc1e514ac0194b59.html#adfa8fd1522d2dcd0dc1e514ac0194b59" title="Counts the number of characters of all the lines in a file.">fchars_in_line</a>(FILE* f) {
+<a name="l01324"></a>01324         <span class="keywordtype">long</span> counter = 0;
+<a name="l01325"></a>01325         <span class="keywordtype">char</span> in;
+<a name="l01326"></a>01326         <span class="keywordtype">int</span> read;
+<a name="l01327"></a>01327         read = fscanf(f, <span class="stringliteral">&quot;%c&quot;</span>, &amp;in);
+<a name="l01328"></a>01328         <span class="keywordflow">while</span> (!feof(f)) {
+<a name="l01329"></a>01329                 <span class="comment">/*</span>
+<a name="l01330"></a>01330 <span class="comment">                 * Avoids infinite loop in case of fscanf failure.</span>
+<a name="l01331"></a>01331 <span class="comment">                 * [PSR]</span>
+<a name="l01332"></a>01332 <span class="comment">                 */</span>
+<a name="l01333"></a>01333                 <span class="keywordflow">if</span> (!read) {
 <a name="l01334"></a>01334                         <span class="keywordflow">break</span>;
-<a name="l01335"></a>01335                 } <span class="keywordflow">else</span> {
-<a name="l01336"></a>01336                         counter++;
-<a name="l01337"></a>01337                         read = fscanf(f, <span class="stringliteral">&quot;%c&quot;</span>, &amp;in);
-<a name="l01338"></a>01338                 }
-<a name="l01339"></a>01339         }
-<a name="l01340"></a>01340         <span class="keywordflow">return</span> counter;
-<a name="l01341"></a>01341 }
-<a name="l01342"></a>01342 
-<a name="l01347"></a><a class="code" href="../../da/d3e/hunt_8c_a7f688452740436573a2d601bdf900caa.html#a7f688452740436573a2d601bdf900caa">01347</a> <span class="keywordtype">void</span> <a class="code" href="../../da/d3e/hunt_8c_a7f688452740436573a2d601bdf900caa.html#a7f688452740436573a2d601bdf900caa" title="Fills the name and team fields.">fill_in_blanks</a>() {
-<a name="l01348"></a>01348         <span class="keywordtype">int</span> i;
-<a name="l01349"></a>01349         <span class="keywordtype">char</span> *cp;
-<a name="l01350"></a>01350         <span class="keywordtype">bool</span> must_continue;
-<a name="l01351"></a>01351 
-<a name="l01352"></a>01352         must_continue = FALSE;
-<a name="l01353"></a>01353         <span class="keywordflow">while</span> (TRUE) {
-<a name="l01354"></a>01354                 <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] != <span class="charliteral">&#39;\0&#39;</span>) {
-<a name="l01355"></a>01355                         printf(<span class="stringliteral">&quot;Entering as &#39;%s&#39;&quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>);
-<a name="l01356"></a>01356                         <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> != <span class="charliteral">&#39; &#39;</span>) {
-<a name="l01357"></a>01357                                 printf(<span class="stringliteral">&quot; on team %c.\n&quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>);
-<a name="l01358"></a>01358                         } <span class="keywordflow">else</span> {
-<a name="l01359"></a>01359                                 putchar(<span class="charliteral">&#39;\n&#39;</span>);
-<a name="l01360"></a>01360                         }
-<a name="l01361"></a>01361                 } <span class="keywordflow">else</span> {
-<a name="l01362"></a>01362                         printf(<span class="stringliteral">&quot;Enter your code name: &quot;</span>);
-<a name="l01363"></a>01363                         <span class="keywordflow">if</span> (fgets(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, NAMELEN, stdin) == NULL) {
-<a name="l01364"></a>01364                                 exit(1);
-<a name="l01365"></a>01365                         }
-<a name="l01366"></a>01366                 }
-<a name="l01367"></a>01367                 <a class="code" href="../../da/d3e/hunt_8c_a68f0150439f5ea82a3badfacb933da20.html#a68f0150439f5ea82a3badfacb933da20" title="Remove a &amp;#39; &amp;#39; at the end of a string if there is one.">rmnl</a>(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>);
-<a name="l01368"></a>01368                 <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] == <span class="charliteral">&#39;\0&#39;</span>) {
-<a name="l01369"></a>01369                         <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01370"></a>01370                         printf(<span class="stringliteral">&quot;You have to have a code name!\n&quot;</span>);
-<a name="l01371"></a>01371                         <span class="keywordflow">continue</span>;
-<a name="l01372"></a>01372                 }
-<a name="l01373"></a>01373                 <span class="keywordflow">for</span> (cp = <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>; *cp != <span class="charliteral">&#39;\0&#39;</span>; cp++) {
-<a name="l01374"></a>01374                         <span class="keywordflow">if</span> (!isprint((<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>)*cp)) {
-<a name="l01375"></a>01375                                 <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l01376"></a>01376                                 printf(<span class="stringliteral">&quot;Illegal character in your code name.\n&quot;</span>);
-<a name="l01377"></a>01377                                 must_continue = TRUE;
-<a name="l01378"></a>01378                                 <span class="keywordflow">break</span>;
-<a name="l01379"></a>01379                         }
-<a name="l01380"></a>01380                 }
-<a name="l01381"></a>01381                 <span class="keywordflow">if</span> (must_continue) {
-<a name="l01382"></a>01382                         <span class="keywordflow">continue</span>;
-<a name="l01383"></a>01383                 } <span class="keywordflow">else</span> {
-<a name="l01384"></a>01384                         <span class="keywordflow">break</span>;
-<a name="l01385"></a>01385                 }
-<a name="l01386"></a>01386         }
-<a name="l01387"></a>01387 
-<a name="l01388"></a>01388         <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> == <span class="charliteral">&#39; &#39;</span>) {
-<a name="l01389"></a>01389                 printf(<span class="stringliteral">&quot;Enter your team (0-9 or nothing): &quot;</span>);
-<a name="l01390"></a>01390                 i = getchar();
-<a name="l01391"></a>01391                 <span class="keywordflow">if</span> (isdigit(i)) {
-<a name="l01392"></a>01392                         <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> = i;
-<a name="l01393"></a>01393                 }
-<a name="l01394"></a>01394                 <span class="keywordflow">while</span> (i != <span class="charliteral">&#39;\n&#39;</span> &amp;&amp; i != EOF) {
-<a name="l01395"></a>01395                         i = getchar();
+<a name="l01335"></a>01335                 }
+<a name="l01336"></a>01336                 <span class="keywordflow">if</span> (in == <span class="charliteral">&#39;\n&#39;</span>) {
+<a name="l01337"></a>01337                         <span class="keywordflow">break</span>;
+<a name="l01338"></a>01338                 } <span class="keywordflow">else</span> {
+<a name="l01339"></a>01339                         counter++;
+<a name="l01340"></a>01340                         read = fscanf(f, <span class="stringliteral">&quot;%c&quot;</span>, &amp;in);
+<a name="l01341"></a>01341                 }
+<a name="l01342"></a>01342         }
+<a name="l01343"></a>01343         <span class="keywordflow">return</span> counter;
+<a name="l01344"></a>01344 }
+<a name="l01345"></a>01345 
+<a name="l01350"></a><a class="code" href="../../da/d3e/hunt_8c_a7f688452740436573a2d601bdf900caa.html#a7f688452740436573a2d601bdf900caa">01350</a> <span class="keywordtype">void</span> <a class="code" href="../../da/d3e/hunt_8c_a7f688452740436573a2d601bdf900caa.html#a7f688452740436573a2d601bdf900caa" title="Fills the name and team fields.">fill_in_blanks</a>() {
+<a name="l01351"></a>01351         <span class="keywordtype">int</span> i;
+<a name="l01352"></a>01352         <span class="keywordtype">char</span> *cp;
+<a name="l01353"></a>01353         <span class="keywordtype">bool</span> must_continue;
+<a name="l01354"></a>01354 
+<a name="l01355"></a>01355         must_continue = FALSE;
+<a name="l01356"></a>01356         <span class="keywordflow">while</span> (TRUE) {
+<a name="l01357"></a>01357                 <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] != <span class="charliteral">&#39;\0&#39;</span>) {
+<a name="l01358"></a>01358                         printf(<span class="stringliteral">&quot;Entering as &#39;%s&#39;&quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>);
+<a name="l01359"></a>01359                         <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> != <span class="charliteral">&#39; &#39;</span>) {
+<a name="l01360"></a>01360                                 printf(<span class="stringliteral">&quot; on team %c.\n&quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>);
+<a name="l01361"></a>01361                         } <span class="keywordflow">else</span> {
+<a name="l01362"></a>01362                                 putchar(<span class="charliteral">&#39;\n&#39;</span>);
+<a name="l01363"></a>01363                         }
+<a name="l01364"></a>01364                 } <span class="keywordflow">else</span> {
+<a name="l01365"></a>01365                         printf(<span class="stringliteral">&quot;Enter your code name: &quot;</span>);
+<a name="l01366"></a>01366                         <span class="keywordflow">if</span> (fgets(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, NAMELEN, stdin) == NULL) {
+<a name="l01367"></a>01367                                 exit(1);
+<a name="l01368"></a>01368                         }
+<a name="l01369"></a>01369                 }
+<a name="l01370"></a>01370                 <a class="code" href="../../da/d3e/hunt_8c_a68f0150439f5ea82a3badfacb933da20.html#a68f0150439f5ea82a3badfacb933da20" title="Remove a &amp;#39; &amp;#39; at the end of a string if there is one.">rmnl</a>(<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>);
+<a name="l01371"></a>01371                 <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] == <span class="charliteral">&#39;\0&#39;</span>) {
+<a name="l01372"></a>01372                         <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01373"></a>01373                         printf(<span class="stringliteral">&quot;You have to have a code name!\n&quot;</span>);
+<a name="l01374"></a>01374                         <span class="keywordflow">continue</span>;
+<a name="l01375"></a>01375                 }
+<a name="l01376"></a>01376                 <span class="keywordflow">for</span> (cp = <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>; *cp != <span class="charliteral">&#39;\0&#39;</span>; cp++) {
+<a name="l01377"></a>01377                         <span class="keywordflow">if</span> (!isprint((<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>)*cp)) {
+<a name="l01378"></a>01378                                 <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l01379"></a>01379                                 printf(<span class="stringliteral">&quot;Illegal character in your code name.\n&quot;</span>);
+<a name="l01380"></a>01380                                 must_continue = TRUE;
+<a name="l01381"></a>01381                                 <span class="keywordflow">break</span>;
+<a name="l01382"></a>01382                         }
+<a name="l01383"></a>01383                 }
+<a name="l01384"></a>01384                 <span class="keywordflow">if</span> (must_continue) {
+<a name="l01385"></a>01385                         <span class="keywordflow">continue</span>;
+<a name="l01386"></a>01386                 } <span class="keywordflow">else</span> {
+<a name="l01387"></a>01387                         <span class="keywordflow">break</span>;
+<a name="l01388"></a>01388                 }
+<a name="l01389"></a>01389         }
+<a name="l01390"></a>01390 
+<a name="l01391"></a>01391         <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> == <span class="charliteral">&#39; &#39;</span>) {
+<a name="l01392"></a>01392                 printf(<span class="stringliteral">&quot;Enter your team (0-9 or nothing): &quot;</span>);
+<a name="l01393"></a>01393                 i = getchar();
+<a name="l01394"></a>01394                 <span class="keywordflow">if</span> (isdigit(i)) {
+<a name="l01395"></a>01395                         <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> = i;
 <a name="l01396"></a>01396                 }
-<a name="l01397"></a>01397         }
-<a name="l01398"></a>01398 }
+<a name="l01397"></a>01397                 <span class="keywordflow">while</span> (i != <span class="charliteral">&#39;\n&#39;</span> &amp;&amp; i != EOF) {
+<a name="l01398"></a>01398                         i = getchar();
+<a name="l01399"></a>01399                 }
+<a name="l01400"></a>01400         }
+<a name="l01401"></a>01401 }
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/d3e/hunt_8c.html">hunt.c</a>      </li>
-      <li class="footer">Generated on Tue Jul 10 2012 12:37:16 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Tue Jul 10 2012 15:52:47 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

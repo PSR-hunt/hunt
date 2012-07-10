@@ -207,6 +207,9 @@ function toggleVisibility(linkObj) {
 <a name="l00092"></a>00092 <span class="preprocessor">#ifdef INTERNET</span>
 <a name="l00093"></a>00093 <span class="preprocessor"></span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> msg; <span class="comment">/* Changed from u_short. [PSR] */</span>
 <a name="l00094"></a>00094         <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> reply; <span class="comment">/* Changed from u_short. [PSR] */</span>
+<a name="l00095"></a>00095         <span class="comment">/*</span>
+<a name="l00096"></a>00096 <span class="comment">         Edited namelen declaration type in order to match recvfrom() parameter. [PSR]</span>
+<a name="l00097"></a>00097 <span class="comment">         */</span>
 <a name="l00098"></a>00098         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> namelen; <span class="comment">/* Changed from int. [PSR] */</span>
 <a name="l00099"></a>00099         SOCKET test;
 <a name="l00100"></a>00100 <span class="preprocessor"># endif</span>
@@ -392,8 +395,10 @@ function toggleVisibility(linkObj) {
 <a name="l00287"></a>00287 <span class="preprocessor"># ifdef SO_USELOOPBACK</span>
 <a name="l00288"></a>00288 <span class="preprocessor"></span>        <span class="keywordtype">int</span> msg;
 <a name="l00289"></a>00289 <span class="preprocessor"># endif</span>
-<a name="l00290"></a>00290 <span class="preprocessor"></span>
-<a name="l00293"></a>00293         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> len; 
+<a name="l00290"></a>00290 <span class="preprocessor"></span>        <span class="comment">/*</span>
+<a name="l00291"></a>00291 <span class="comment">          Edited len declaration type in order to match getsockname() parameter. [PSR]</span>
+<a name="l00292"></a>00292 <span class="comment">         */</span>
+<a name="l00293"></a>00293         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> len; <span class="comment">/* Changed from int. */</span>
 <a name="l00294"></a>00294 <span class="preprocessor"># endif</span>
 <a name="l00295"></a>00295 <span class="preprocessor"></span>
 <a name="l00296"></a>00296 <span class="preprocessor"># ifndef DEBUG</span>
@@ -408,16 +413,16 @@ function toggleVisibility(linkObj) {
 <a name="l00305"></a>00305         <span class="keywordflow">if</span> (setsid() == -1) {
 <a name="l00306"></a>00306                 err(1, <span class="stringliteral">&quot;setsid&quot;</span>);
 <a name="l00307"></a>00307         }
-<a name="l00308"></a>00308         (void) signal(SIGHUP, SIG_IGN);
-<a name="l00309"></a>00309         (void) signal(SIGINT, SIG_IGN);
-<a name="l00310"></a>00310         (void) signal(SIGQUIT, SIG_IGN);
+<a name="l00308"></a>00308         (void) signal(SIGHUP, SIG_IGN); <span class="comment">/* Ignore signal. [PSR]*/</span>
+<a name="l00309"></a>00309         (void) signal(SIGINT, SIG_IGN); <span class="comment">/* Ignore signal. [PSR]*/</span>
+<a name="l00310"></a>00310         (void) signal(SIGQUIT, SIG_IGN); <span class="comment">/* Ignore signal. [PSR]*/</span>
 <a name="l00311"></a>00311         (void) signal(SIGTERM, <a class="code" href="../../d1/d56/driver_8c_a4b091a83b7f22e8eef5cbc508dc42c3c.html#a4b091a83b7f22e8eef5cbc508dc42c3c" title="Exit with the given value, cleaning up any droppings lying around.">cleanup</a>);
 <a name="l00312"></a>00312 <span class="preprocessor"># endif</span>
 <a name="l00313"></a>00313 <span class="preprocessor"></span>
 <a name="l00314"></a>00314         dbg_chdir(<span class="stringliteral">&quot;/var/tmp&quot;</span>);
 <a name="l00315"></a>00315         <span class="comment">/* just in case it core dumps */</span>
 <a name="l00316"></a>00316         (void) umask(0); <span class="comment">/* No privacy at all! */</span>
-<a name="l00317"></a>00317         (void) signal(SIGPIPE, SIG_IGN);
+<a name="l00317"></a>00317         (void) signal(SIGPIPE, SIG_IGN); <span class="comment">/* Ignore signal. [PSR]*/</span>
 <a name="l00318"></a>00318 
 <a name="l00319"></a>00319 <span class="preprocessor"># ifdef LOG</span>
 <a name="l00320"></a>00320 <span class="preprocessor"></span><span class="preprocessor"># ifdef SYSLOG_43</span>
@@ -1090,7 +1095,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d1/d56/driver_8c.html">driver.c</a>      </li>
-      <li class="footer">Generated on Tue Jul 10 2012 12:37:16 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Tue Jul 10 2012 15:52:48 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

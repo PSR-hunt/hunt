@@ -30,6 +30,6 @@
 
 hunt/hunt/hunt		connect.o hunt.o otto.o playit.o \
 	hunt/huntd/pathname.o
-hunt/huntd/huntd	answer.o ctl.o ctl_transact.o draw.o driver.o \
-	execute.o expl.o extern.o faketalk.o get_names.o makemaze.o \
+hunt/huntd/huntd	answer.o draw.o driver.o \
+	execute.o expl.o extern.o faketalk.o makemaze.o \
 	pathname.o shots.o terminal.o utils.o
