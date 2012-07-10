@@ -135,17 +135,17 @@ function toggleVisibility(linkObj) {
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_a3252b359359dea1efa45bb87c4499acd.html#a3252b359359dea1efa45bb87c4499acd">FREAD</a>&#160;&#160;&#160;1</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined but not used in this file.  <a href="#a3252b359359dea1efa45bb87c4499acd"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Never used.  <a href="#a3252b359359dea1efa45bb87c4499acd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc">beep</a>()&#160;&#160;&#160;(void) putchar(CTRL('G'))</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the character c, cast to an unsigned char, to stream.  <a href="#afb18a040145c97df5956c1bba0cbb6bc"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines <a class="el" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep()</a> that writes the character G, cast to an unsigned char, to stream.  <a href="#afb18a040145c97df5956c1bba0cbb6bc"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad">refresh</a>()&#160;&#160;&#160;(void) fflush(stdout);</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Flushes a stream.  <a href="#a79af28443525d4cccad45d58d60911ad"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines <a class="el" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh()</a> that flushes stdout stream.  <a href="#a79af28443525d4cccad45d58d60911ad"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_a69354e346054827a67a3b04ed73f6bab.html#a69354e346054827a67a3b04ed73f6bab">MAX_SEND</a>&#160;&#160;&#160;5</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of characters to send.  <a href="#a69354e346054827a67a3b04ed73f6bab"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b">STDIN</a>&#160;&#160;&#160;0</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">File descriptor.  <a href="#ac00bfb46347d26fdc58568fe1ab5fa5b"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">File descriptor for stdin.  <a href="#ac00bfb46347d26fdc58568fe1ab5fa5b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea">GETCHR</a>()&#160;&#160;&#160;(--<a class="el" href="../../da/db5/playit_8c_a4eef614f6c1f8389f3567f9be3fc327d.html#a4eef614f6c1f8389f3567f9be3fc327d">icnt</a> &lt; 0 ? getchr() : *<a class="el" href="../../da/db5/playit_8c_a23fb0c146a3f5882387dec0ffd48c7d9.html#a23fb0c146a3f5882387dec0ffd48c7d9">iptr</a>++)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements a getchr or increments iptr, basing on icnt value.  <a href="#ad6b37210d516ba4255b11899f1b395ea"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads from input if there are no things to read in ibuf, reads the first character otherwise.  <a href="#ad6b37210d516ba4255b11899f1b395ea"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_ae6e5d80ba9f194c607bb07aefae58e3f.html#ae6e5d80ba9f194c607bb07aefae58e3f">__RCSID</a> (&quot;$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $&quot;)</td></tr>
@@ -176,7 +176,7 @@ Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_a7a408709449b438da352accfc424150b.html#a7a408709449b438da352accfc424150b">screen</a> [SCREEN_HEIGHT][SCREEN_WIDTH2]</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The game area.  <a href="#a7a408709449b438da352accfc424150b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5">blanks</a> [SCREEN_WIDTH]</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO Temporary buffer.  <a href="#ad563e4e01e375e9b457bc0ec31823ce5"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains elements that will be copied.  <a href="#ad563e4e01e375e9b457bc0ec31823ce5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394">cur_row</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates the current row.  <a href="#a8f895a4d3103f4d5068a192327271394"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62">cur_col</a></td></tr>
@@ -184,16 +184,16 @@ Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_a4eef614f6c1f8389f3567f9be3fc327d.html#a4eef614f6c1f8389f3567f9be3fc327d">icnt</a> = 0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of read characters.  <a href="#a4eef614f6c1f8389f3567f9be3fc327d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa">ibuf</a> [256]</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The input buffer used for the stream from the driver.  <a href="#a490f0a60b7c20ab4039004cf96b0fdaa"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The read buffer (ibuf is the input buffer used for the stream from the driver.).  <a href="#a490f0a60b7c20ab4039004cf96b0fdaa"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/db5/playit_8c_a23fb0c146a3f5882387dec0ffd48c7d9.html#a23fb0c146a3f5882387dec0ffd48c7d9">iptr</a> = <a class="el" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa">ibuf</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Points to ibuf.  <a href="#a23fb0c146a3f5882387dec0ffd48c7d9"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">ibuf first position pointer.  <a href="#a23fb0c146a3f5882387dec0ffd48c7d9"></a><br/></td></tr>
 </table>
 </div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/db5/playit_8c.html">playit.c</a>      </li>
-      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Tue Jul 10 2012 12:37:16 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

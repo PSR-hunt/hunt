@@ -66,15 +66,15 @@ static struct termios saved_tty;
  * Some old versions of curses don't have these defined
  */
 # if !defined(cbreak) && (!defined(BSD_RELEASE) || BSD_RELEASE < 44)
-# define	cbreak()	crmode() /**< Turn the terminal CBREAK mode on or off. [PSR] */
+# define	cbreak()	crmode() /**< Defines cbreak() as an alias of crmode() ; turn the terminal CBREAK mode on or off. [PSR] */
 # endif
 
 # if !defined(USE_CURSES) || !defined(TERMINFO)
-# define	beep()		(void) putchar(CTRL('G')) /**< Writes the character c, cast to an unsigned char, to stream. [PSR] */
+# define	beep()		(void) putchar(CTRL('G')) /**< Defines beep() that writes the character G, cast to an unsigned char, to stream. [PSR] */
 # endif
 # if !defined(USE_CURSES)
 # undef		refresh
-# define	refresh()	(void) fflush(stdout); /**< Flushes a stream. [PSR] */
+# define	refresh()	(void) fflush(stdout); /**< Defines refresh() that flushes stdout stream. [PSR] */
 # endif
 # ifdef USE_CURSES
 # define	clear_eol()	clrtoeol()
@@ -85,12 +85,12 @@ static struct termios saved_tty;
 #define MAXHOSTNAMELEN 256 /**< Defines the maximum length of an host name. [PSR] */
 #endif
 
-bool Last_player = false; /**< Defines if a player is the last one or no. [PSR] */
+bool Last_player = false; /**< Indicates if a player is the last one or no. [PSR] */
 # ifdef MONITOR
 bool Am_monitor = false;
 # endif
 
-char Buf[BUFSIZ]; /**< General scribbling buffer. Defined but not used in this file. [PSR] */
+char Buf[BUFSIZ]; /**< General scribbling buffer. [PSR] */
 
 int Socket; /**< Main socket. [PSR] */
 # ifdef INTERNET
@@ -101,18 +101,18 @@ char *Send_message = NULL;
 bool Show_scores = false;
 # endif
 
-SOCKET Daemon; /**< The daemon socket. [PSR] */
+SOCKET Daemon; /**< Contains the address of the local daemon. [PSR] */
 # ifdef	INTERNET
 # define	DAEMON_SIZE	(sizeof Daemon)
 # else
-# define	DAEMON_SIZE	(sizeof Daemon - 1) /**< Defines the daemon size in case we are not in INTERNET mode. [PSR] */
+# define	DAEMON_SIZE	(sizeof Daemon - 1) /**< Defines the dimension of the daemon. [PSR] */
 # endif
 
-char map_key[256]; /**< what to map keys to */
+char map_key[256]; /**< What to map keys to. */
 bool no_beep; /**< If true turns off beeping when you reach the typeahead limit. [PSR] */
 
 static char name[NAMELEN]; /**< Indicates the name of a player. [PSR] */
-static char team = ' '; /**< Indicates the belonging team of a player. [PSR] */
+static char team = ' '; /**< Indicates the team the player belongs to. [PSR] */
 
 static int in_visual; /**< Indicates whether the configurations are correct. TODO [PSR] */
 
@@ -970,9 +970,9 @@ void leave(int eval, const char *mesg) {
 	fincurs();
 	errno = serrno;
 	/*
-	 * Introduced errno parameter in err() in order to display it on standard error.
-	 * [PSR]
-	 */
+	 Introduced errno parameter in err() in order to display it on standard error.
+	 [PSR]
+	*/
 	err(eval, (mesg ? mesg : ""), errno);
 }
 

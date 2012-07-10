@@ -42,7 +42,7 @@ __RCSID("$NetBSD: terminal.c,v 1.4 2003/06/11 12:00:23 wiz Exp $");
 
 /**
  * Move the cursor to the given position on the given player's terminal.
- * @param[in] pp A player on which terminal will be moved the position. TODO
+ * @param[in,out] pp A player on which terminal will be moved the position.
  * @param[in] y A coordinate.
  * @param[in] x A coordinate.
  */
@@ -58,7 +58,7 @@ void cgoto(PLAYER *pp, int y, int x) {
 /**
  *  Put out a single character.
  *  Uniformed to prototype in hunt.h. [PSR]
- *  @param[in] pp A player on which terminal will be displayed the character. TODO
+ *  @param[in,out] pp A player on which terminal will be displayed the character.
  *  @param[in] ch The character to put out.
  */
 void outch(PLAYER *pp, int ch) {
@@ -71,7 +71,7 @@ void outch(PLAYER *pp, int ch) {
 
 /**
  * Put out a string of the given length.
- * @param[in] pp A player on which terminal will be displayed the string. TODO
+ * @param[in,out] pp A player on which terminal will be displayed the string.
  * @param[in] str The string to put out.
  * @param[in] len The string length.
  */
@@ -85,8 +85,8 @@ void outstr(PLAYER *pp, const char *str, int len) {
 }
 
 /**
- * Clear the screen, and reset the current position on the screen. TODO
- * @param[in] pp The player which screen will be cleared.
+ * Clear the screen, and reset the current position on the screen.
+ * @param[in,out] pp The player which screen will be cleared.
  */
 void clrscr(PLAYER *pp) {
 	sendcom(pp, CLEAR);
@@ -114,7 +114,7 @@ void  ref(PLAYER * pp){
 
 /**
  * Send a command to the given user.
- * @param[in] pp A player on which terminal the command will be sent. TODO
+ * @param[in] pp A player on which terminal the command will be sent.
  * @param[in] command A command.
  */
 void sendcom(PLAYER *pp, int command, ...) {

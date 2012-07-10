@@ -60,7 +60,7 @@ __RCSID("$NetBSD: ctl_transact.c,v 1.6 2003/06/11 12:00:22 wiz Exp $");
  * @param[in] target The daemon INET address.
  * @param[in] msg The message.
  * @param[in] type The type of a message.
- * @param[in] rp A pointer to the acknowledge message. TODO
+ * @param[out] rp A pointer to the acknowledge message.
  */
 void ctl_transact(struct in_addr target,CTL_MSG msg,int type,CTL_RESPONSE *rp) {
 	struct pollfd set[1];

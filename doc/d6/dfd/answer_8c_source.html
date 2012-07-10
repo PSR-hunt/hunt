@@ -170,7 +170,7 @@ function toggleVisibility(linkObj) {
 <a name="l00058"></a>00058         <span class="keywordtype">int</span> newsock;
 <a name="l00059"></a>00059         <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> mode; <span class="comment">/* Changed from u_long. [PSR] */</span>
 <a name="l00060"></a>00060         <span class="keyword">static</span> <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[NAMELEN];
-<a name="l00061"></a>00061         <span class="keyword">static</span> <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>;
+<a name="l00061"></a>00061         <span class="keyword">static</span> <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>;
 <a name="l00062"></a>00062         <span class="keyword">static</span> <span class="keywordtype">int</span> enter_status;
 <a name="l00063"></a>00063         <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> socklen; <span class="comment">/* Edited from static int in order to match accept() parameter. [PSR] */</span>
 <a name="l00064"></a>00064         <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> machine; <span class="comment">/* Edited from u_long in order to match accept() parameter. [PSR] */</span>
@@ -212,10 +212,10 @@ function toggleVisibility(linkObj) {
 <a name="l00100"></a>00100         dbg_read(newsock, (<span class="keywordtype">char</span> *) &amp;uid, LONGLEN);
 <a name="l00101"></a>00101         uid = ntohl((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) uid);
 <a name="l00102"></a>00102         dbg_read(newsock, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, NAMELEN);
-<a name="l00103"></a>00103         dbg_read(newsock, &amp;<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>, 1);
+<a name="l00103"></a>00103         dbg_read(newsock, &amp;<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>, 1);
 <a name="l00104"></a>00104         dbg_read(newsock, (<span class="keywordtype">char</span> *) &amp;enter_status, LONGLEN);
 <a name="l00105"></a>00105         enter_status = ntohl((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) enter_status);
-<a name="l00106"></a>00106         dbg_read(newsock, <a class="code" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc" title="TODO [PSR].">Ttyname</a>, NAMELEN);
+<a name="l00106"></a>00106         dbg_read(newsock, <a class="code" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc" title="Name of the terminal in which we are playing.">Ttyname</a>, NAMELEN);
 <a name="l00107"></a>00107         dbg_read(newsock, (<span class="keywordtype">char</span> *) &amp;mode, <span class="keyword">sizeof</span> mode);
 <a name="l00108"></a>00108         mode = ntohl(mode);
 <a name="l00109"></a>00109 
@@ -244,11 +244,11 @@ function toggleVisibility(linkObj) {
 <a name="l00132"></a>00132                 <span class="keywordtype">char</span> buf[BUFSIZ + 1];
 <a name="l00133"></a>00133                 <span class="keywordtype">int</span> n;
 <a name="l00134"></a>00134 
-<a name="l00135"></a>00135                 <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a> == <span class="charliteral">&#39; &#39;</span>) {
+<a name="l00135"></a>00135                 <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> == <span class="charliteral">&#39; &#39;</span>) {
 <a name="l00136"></a>00136                         (void) sprintf(buf, <span class="stringliteral">&quot;%s: &quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>);
 <a name="l00137"></a>00137                 }
 <a name="l00138"></a>00138                 <span class="keywordflow">else</span> {
-<a name="l00139"></a>00139                         (void) sprintf(buf, <span class="stringliteral">&quot;%s[%c]: &quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>);
+<a name="l00139"></a>00139                         (void) sprintf(buf, <span class="stringliteral">&quot;%s[%c]: &quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>);
 <a name="l00140"></a>00140                 }
 <a name="l00141"></a>00141                 n = strlen(buf);
 <a name="l00142"></a>00142                 <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++) {
@@ -295,11 +295,11 @@ function toggleVisibility(linkObj) {
 <a name="l00183"></a>00183         }
 <a name="l00184"></a>00184 
 <a name="l00185"></a>00185 <span class="preprocessor">#ifdef MONITOR</span>
-<a name="l00186"></a>00186 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (mode == C_MONITOR &amp;&amp; <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a> == <span class="charliteral">&#39; &#39;</span>) {
-<a name="l00187"></a>00187                 <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a> = <span class="charliteral">&#39;*&#39;</span>;
+<a name="l00186"></a>00186 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (mode == C_MONITOR &amp;&amp; <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> == <span class="charliteral">&#39; &#39;</span>) {
+<a name="l00187"></a>00187                 <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> = <span class="charliteral">&#39;*&#39;</span>;
 <a name="l00188"></a>00188         }
 <a name="l00189"></a>00189 <span class="preprocessor">#endif</span>
-<a name="l00190"></a>00190 <span class="preprocessor"></span>        pp-&gt;p_ident = <a class="code" href="../../d6/dfd/answer_8c_a6139dfd9d0773795e9e247c62d909288.html#a6139dfd9d0773795e9e247c62d909288" title="Get the score structure of a player.">get_ident</a>(machine, uid, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>);
+<a name="l00190"></a>00190 <span class="preprocessor"></span>        pp-&gt;p_ident = <a class="code" href="../../d6/dfd/answer_8c_a6139dfd9d0773795e9e247c62d909288.html#a6139dfd9d0773795e9e247c62d909288" title="Get the score structure of a player.">get_ident</a>(machine, uid, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>);
 <a name="l00191"></a>00191         pp-&gt;p_output = fdopen(newsock, <span class="stringliteral">&quot;w&quot;</span>);
 <a name="l00192"></a>00192         pp-&gt;p_death[0] = <span class="charliteral">&#39;\0&#39;</span>;
 <a name="l00193"></a>00193         pp-&gt;p_fd = newsock;
@@ -492,7 +492,7 @@ function toggleVisibility(linkObj) {
 <a name="l00394"></a>00394 }
 <a name="l00395"></a>00395 
 <a name="l00404"></a><a class="code" href="../../d6/dfd/answer_8c_a6139dfd9d0773795e9e247c62d909288.html#a6139dfd9d0773795e9e247c62d909288">00404</a> IDENT * <a class="code" href="../../d6/dfd/answer_8c_a6139dfd9d0773795e9e247c62d909288.html#a6139dfd9d0773795e9e247c62d909288" title="Get the score structure of a player.">get_ident</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> machine, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> uid, <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>,
-<a name="l00405"></a>00405                 <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>) {
+<a name="l00405"></a>00405                 <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>) {
 <a name="l00406"></a>00406         IDENT *ip;
 <a name="l00407"></a>00407         <span class="keyword">static</span> IDENT punt;
 <a name="l00408"></a>00408 
@@ -505,10 +505,10 @@ function toggleVisibility(linkObj) {
 <a name="l00415"></a>00415         }
 <a name="l00416"></a>00416 
 <a name="l00417"></a>00417         <span class="keywordflow">if</span> (ip != NULL) {
-<a name="l00418"></a>00418                 <span class="keywordflow">if</span> (ip-&gt;i_entries &lt; <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="TODO [PSR].">SCOREDECAY</a>) {
+<a name="l00418"></a>00418                 <span class="keywordflow">if</span> (ip-&gt;i_entries &lt; <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="Is the number of entries upper bound.">SCOREDECAY</a>) {
 <a name="l00419"></a>00419                         ip-&gt;i_entries++;
 <a name="l00420"></a>00420                 } <span class="keywordflow">else</span> {
-<a name="l00421"></a>00421                         ip-&gt;i_kills = (ip-&gt;i_kills * (<a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="TODO [PSR].">SCOREDECAY</a> - 1)) / <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="TODO [PSR].">SCOREDECAY</a>;
+<a name="l00421"></a>00421                         ip-&gt;i_kills = (ip-&gt;i_kills * (<a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="Is the number of entries upper bound.">SCOREDECAY</a> - 1)) / <a class="code" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140" title="Is the number of entries upper bound.">SCOREDECAY</a>;
 <a name="l00422"></a>00422                 }
 <a name="l00423"></a>00423                 ip-&gt;i_score = ip-&gt;i_kills / (double) ip-&gt;i_entries;
 <a name="l00424"></a>00424         } <span class="keywordflow">else</span> {
@@ -518,7 +518,7 @@ function toggleVisibility(linkObj) {
 <a name="l00428"></a>00428                         ip = &amp;punt;
 <a name="l00429"></a>00429                 }
 <a name="l00430"></a>00430                 ip-&gt;i_machine = machine;
-<a name="l00431"></a>00431                 ip-&gt;i_team = <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>;
+<a name="l00431"></a>00431                 ip-&gt;i_team = <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>;
 <a name="l00432"></a>00432                 ip-&gt;i_uid = uid;
 <a name="l00433"></a>00433                 strncpy(ip-&gt;i_name, name, NAMELEN);
 <a name="l00434"></a>00434                 ip-&gt;i_kills = 0;
@@ -544,7 +544,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d6/dfd/answer_8c.html">answer.c</a>      </li>
-      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Tue Jul 10 2012 12:37:16 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

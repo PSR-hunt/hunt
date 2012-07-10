@@ -44,9 +44,9 @@ __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 # include	<unistd.h>
 # include	<sys/time.h>
 
-# define	SCOREDECAY	15 /**< TODO [PSR] */
+# define	SCOREDECAY	15 /**< Is the number of entries upper bound. [PSR] */
 
-static char Ttyname[NAMELEN]; /**< TODO [PSR] */
+static char Ttyname[NAMELEN]; /**< Name of the terminal in which we are playing. [PSR] */
 
 /**
  * Manages the messages submission.
@@ -210,7 +210,7 @@ int answer() {
 # ifdef MONITOR
 /**
  * Initialize the terminal of a player.
- * @param[in] pp A player. TODO
+ * @param[in] pp A player.
  * [PSR]
  */
 void stmonitor(PLAYER *pp) {
@@ -241,7 +241,7 @@ void stmonitor(PLAYER *pp) {
 
 /**
  * Initializes a player status.
- * @param[in] newpp The new player to initialize. TODO
+ * @param[out] newpp The new player to initialize. TODO
  * @param[in] enter_status The enter mode of a player.
  * [PSR]
  */

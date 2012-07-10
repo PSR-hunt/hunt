@@ -170,9 +170,9 @@ function toggleVisibility(linkObj) {
 <div class="fragment"><pre class="fragment">                                              {
         PLAYER *pp;
 <span class="preprocessor">#ifdef INTERNET</span>
-<span class="preprocessor"></span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> msg; 
-        <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> reply; 
-        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> namelen; 
+<span class="preprocessor"></span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> msg; <span class="comment">/* Changed from u_short. [PSR] */</span>
+        <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> reply; <span class="comment">/* Changed from u_short. [PSR] */</span>
+        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> namelen; <span class="comment">/* Changed from int. [PSR] */</span>
         SOCKET test;
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span>        <span class="keyword">static</span> <span class="keywordtype">bool</span> first = <span class="keyword">true</span>;
@@ -225,7 +225,7 @@ function toggleVisibility(linkObj) {
                         }
 <span class="preprocessor"># ifdef INTERNET</span>
 <span class="preprocessor"></span>                        <span class="keywordflow">if</span> (<a class="code" href="../../dc/d2c/extern_8c_a11af15344ece6eeb20ac37e1ce97cbc8.html#a11af15344ece6eeb20ac37e1ce97cbc8" title="A set of file descriptors.">fdset</a>[2].revents &amp; POLLIN) {
-                                namelen = <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>;
+                                namelen = <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>;
                                 htons(sock_port);
                                 (void) recvfrom(Test_socket, (<span class="keywordtype">char</span> *) &amp;msg, <span class="keyword">sizeof</span> msg,
                                                 0, (<span class="keyword">struct </span>sockaddr *) &amp;test, &amp;namelen);
@@ -237,13 +237,13 @@ function toggleVisibility(linkObj) {
                                         reply = htons((<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>) <a class="code" href="../../dc/d2c/extern_8c_a7694030219c7458ab55ba6dd800ceea3.html#a7694030219c7458ab55ba6dd800ceea3" title="Number of players.">Nplayer</a>);
                                         (void) sendto(Test_socket, (<span class="keywordtype">char</span> *) &amp;reply,
                                                         <span class="keyword">sizeof</span> reply, 0,
-                                                        (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>);
+                                                        (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>);
                                         <span class="keywordflow">break</span>;
                                         <span class="keywordflow">case</span> C_SCORES:
                                         reply = htons(stat_port);
                                         (void) sendto(Test_socket, (<span class="keywordtype">char</span> *) &amp;reply,
                                                         <span class="keyword">sizeof</span> reply, 0,
-                                                        (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>);
+                                                        (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>);
                                         <span class="keywordflow">break</span>;
                                         <span class="keywordflow">case</span> C_PLAYER:
                                         <span class="keywordflow">case</span> C_MONITOR:
@@ -253,7 +253,7 @@ function toggleVisibility(linkObj) {
                                         reply = htons(sock_port);
                                         (void) sendto(Test_socket, (<span class="keywordtype">char</span> *) &amp;reply,
                                                         <span class="keyword">sizeof</span> reply, 0,
-                                                        (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>);
+                                                        (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>);
                                         <span class="keywordflow">break</span>;
                                 }
                         }
@@ -292,7 +292,7 @@ function toggleVisibility(linkObj) {
                                 <span class="keywordflow">if</span> (<a class="code" href="../../d6/dfd/answer_8c_ad9d4798f47a390f33923cfc52ad74e2d.html#ad9d4798f47a390f33923cfc52ad74e2d" title="Manages the messages submission.">answer</a>()) {
 <span class="preprocessor"># ifdef INTERNET</span>
 <span class="preprocessor"></span>                                        <span class="keywordflow">if</span> (first &amp;&amp; standard_port) {
-                                                <a class="code" href="../../d0/d3e/faketalk_8c_a276404056071774aa4e3697fdd4d4be1.html#a276404056071774aa4e3697fdd4d4be1">faketalk</a>();
+                                                <a class="code" href="../../d0/d3e/faketalk_8c_a276404056071774aa4e3697fdd4d4be1.html#a276404056071774aa4e3697fdd4d4be1" title="Query the local SMTP daemon to expand the RENDEZVOUS mailing list and fake a talk request to each add...">faketalk</a>();
                                         }
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span>                                        first = <span class="keyword">false</span>;
@@ -355,7 +355,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d1/d56/driver_8c.html">driver.c</a>      </li>
-      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Tue Jul 10 2012 12:37:16 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

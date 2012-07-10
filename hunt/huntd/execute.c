@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/**< #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
 #ifndef lint
 __RCSID("$NetBSD: execute.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -184,7 +184,7 @@ void execute(PLAYER *pp){
 
 /**
  * Execute a move in the given direction.
- * @param[in] pp The player who wants to move. TODO
+ * @param[in,out] pp The player who wants to move.
  * @param[in] dir The direction the player wants to go on.
  */
 static void move_player(PLAYER *pp,int dir){
@@ -329,7 +329,7 @@ static void move_player(PLAYER *pp,int dir){
 
 /**
  * Change the direction the player is facing.
- * @param[in] pp The player we want to change the direction. TODO
+ * @param[in,out] pp The player we want to change the direction.
  * @param[in] dir The new direction.
  */
 static void face(PLAYER *pp,int dir){
@@ -341,7 +341,7 @@ static void face(PLAYER *pp,int dir){
 
 /**
  * Fire a shot of the given type in the given direction.
- * @param[in] pp The player who want to fire a shot. TODO
+ * @param[in,out] pp The player who want to fire a shot.
  * @param[in] req_index the type of the shot.
  */
 static void fire(PLAYER *pp,int req_index){
@@ -393,7 +393,7 @@ static void fire(PLAYER *pp,int req_index){
 # ifdef	OOZE
 /**
  * Fire a slime shot in the given direction.
- * @param[in] pp The player who want to fire a slime. TODO
+ * @param[in,out] pp The player who want to fire a slime.
  * @param[in] req_index the type of the slime.
  */
 static void fire_slime(PLAYER *pp,int req_index){
@@ -531,7 +531,7 @@ BULLET * create_shot(int type,int y,int x,char face,int charge,int size,PLAYER *
 
 /**
  * Turn on or increase length of a cloak.
- * @param[in] pp A player. TODO
+ * @param[in,out] pp A player.
  */
 static void cloak(PLAYER *pp){
 	if (pp->p_ammo <= 0) {
@@ -559,7 +559,7 @@ static void cloak(PLAYER *pp){
 
 /**
  * Turn on or increase length of a scan.
- * @param[in] pp A player. TODO
+ * @param[in,out] pp A player.
  */
 static void scan(PLAYER *pp){
 	if (pp->p_ammo <= 0) {
@@ -581,7 +581,7 @@ static void scan(PLAYER *pp){
 
 /**
  * Check whether the object blew up or whether he picked it up.
- * @param[in] pp A player. TODO
+ * @param[out] pp A player.
  * @param[in] y A coordinate.
  * @param[in] x A coordinate.
  * @param[in] prob An indicative value, with which decide if an object is good (a shot to add) or evil (a shot that attacks the player).

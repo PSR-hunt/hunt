@@ -174,7 +174,7 @@ function toggleVisibility(linkObj) {
 <a name="l00055"></a>00055 <span class="preprocessor"></span><span class="preprocessor"># endif</span>
 <a name="l00056"></a>00056 <span class="preprocessor"></span>
 <a name="l00057"></a><a class="code" href="../../d1/d56/driver_8c_a70289ec91e5e8f962999b12669dd5d34.html#a70289ec91e5e8f962999b12669dd5d34">00057</a> <span class="keywordtype">int</span> <a class="code" href="../../d1/d56/driver_8c_a70289ec91e5e8f962999b12669dd5d34.html#a70289ec91e5e8f962999b12669dd5d34" title="A random number.">Seed</a> = 0; 
-<a name="l00059"></a><a class="code" href="../../d1/d56/driver_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4">00059</a> SOCKET <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="The daemon socket.">Daemon</a>; 
+<a name="l00059"></a><a class="code" href="../../d1/d56/driver_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4">00059</a> SOCKET <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="Contains the address of the local daemon.">Daemon</a>; 
 <a name="l00060"></a><a class="code" href="../../d1/d56/driver_8c_a04a99c9869cd27c25c13214e72692243.html#a04a99c9869cd27c25c13214e72692243">00060</a> <span class="keywordtype">char</span> *<a class="code" href="../../d1/d56/driver_8c_a04a99c9869cd27c25c13214e72692243.html#a04a99c9869cd27c25c13214e72692243" title="Pointer to argv[0].">First_arg</a>; 
 <a name="l00061"></a><a class="code" href="../../d1/d56/driver_8c_aa884cf292c6811a6c80193e99dccb564.html#aa884cf292c6811a6c80193e99dccb564">00061</a> <span class="keywordtype">char</span> *<a class="code" href="../../d1/d56/driver_8c_aa884cf292c6811a6c80193e99dccb564.html#aa884cf292c6811a6c80193e99dccb564" title="Pointer to end of argv/environ.">Last_arg</a>; 
 <a name="l00062"></a>00062 <span class="preprocessor"># ifdef INTERNET</span>
@@ -205,9 +205,9 @@ function toggleVisibility(linkObj) {
 <a name="l00090"></a><a class="code" href="../../d1/d56/driver_8c_a7f567e72b4713406998c6192bb2a10e7.html#a7f567e72b4713406998c6192bb2a10e7">00090</a> <span class="keywordtype">int</span> <a class="code" href="../../d1/d56/driver_8c_a7f567e72b4713406998c6192bb2a10e7.html#a7f567e72b4713406998c6192bb2a10e7" title="The main program.">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[], <span class="keywordtype">char</span>* env[]) {
 <a name="l00091"></a>00091         PLAYER *pp;
 <a name="l00092"></a>00092 <span class="preprocessor">#ifdef INTERNET</span>
-<a name="l00093"></a>00093 <span class="preprocessor"></span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> msg; 
-<a name="l00094"></a>00094         <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> reply; 
-<a name="l00098"></a>00098         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> namelen; 
+<a name="l00093"></a>00093 <span class="preprocessor"></span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> msg; <span class="comment">/* Changed from u_short. [PSR] */</span>
+<a name="l00094"></a>00094         <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> reply; <span class="comment">/* Changed from u_short. [PSR] */</span>
+<a name="l00098"></a>00098         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> namelen; <span class="comment">/* Changed from int. [PSR] */</span>
 <a name="l00099"></a>00099         SOCKET test;
 <a name="l00100"></a>00100 <span class="preprocessor"># endif</span>
 <a name="l00101"></a>00101 <span class="preprocessor"></span>        <span class="keyword">static</span> <span class="keywordtype">bool</span> first = <span class="keyword">true</span>;
@@ -260,7 +260,7 @@ function toggleVisibility(linkObj) {
 <a name="l00148"></a>00148                         }
 <a name="l00149"></a>00149 <span class="preprocessor"># ifdef INTERNET</span>
 <a name="l00150"></a>00150 <span class="preprocessor"></span>                        <span class="keywordflow">if</span> (<a class="code" href="../../dc/d2c/extern_8c_a11af15344ece6eeb20ac37e1ce97cbc8.html#a11af15344ece6eeb20ac37e1ce97cbc8" title="A set of file descriptors.">fdset</a>[2].revents &amp; POLLIN) {
-<a name="l00151"></a>00151                                 namelen = <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>;
+<a name="l00151"></a>00151                                 namelen = <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>;
 <a name="l00152"></a>00152                                 htons(sock_port);
 <a name="l00153"></a>00153                                 (void) recvfrom(Test_socket, (<span class="keywordtype">char</span> *) &amp;msg, <span class="keyword">sizeof</span> msg,
 <a name="l00154"></a>00154                                                 0, (<span class="keyword">struct </span>sockaddr *) &amp;test, &amp;namelen);
@@ -272,13 +272,13 @@ function toggleVisibility(linkObj) {
 <a name="l00160"></a>00160                                         reply = htons((<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>) <a class="code" href="../../dc/d2c/extern_8c_a7694030219c7458ab55ba6dd800ceea3.html#a7694030219c7458ab55ba6dd800ceea3" title="Number of players.">Nplayer</a>);
 <a name="l00161"></a>00161                                         (void) sendto(Test_socket, (<span class="keywordtype">char</span> *) &amp;reply,
 <a name="l00162"></a>00162                                                         <span class="keyword">sizeof</span> reply, 0,
-<a name="l00163"></a>00163                                                         (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>);
+<a name="l00163"></a>00163                                                         (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>);
 <a name="l00164"></a>00164                                         <span class="keywordflow">break</span>;
 <a name="l00165"></a>00165                                         <span class="keywordflow">case</span> C_SCORES:
 <a name="l00166"></a>00166                                         reply = htons(stat_port);
 <a name="l00167"></a>00167                                         (void) sendto(Test_socket, (<span class="keywordtype">char</span> *) &amp;reply,
 <a name="l00168"></a>00168                                                         <span class="keyword">sizeof</span> reply, 0,
-<a name="l00169"></a>00169                                                         (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>);
+<a name="l00169"></a>00169                                                         (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>);
 <a name="l00170"></a>00170                                         <span class="keywordflow">break</span>;
 <a name="l00171"></a>00171                                         <span class="keywordflow">case</span> C_PLAYER:
 <a name="l00172"></a>00172                                         <span class="keywordflow">case</span> C_MONITOR:
@@ -288,7 +288,7 @@ function toggleVisibility(linkObj) {
 <a name="l00176"></a>00176                                         reply = htons(sock_port);
 <a name="l00177"></a>00177                                         (void) sendto(Test_socket, (<span class="keywordtype">char</span> *) &amp;reply,
 <a name="l00178"></a>00178                                                         <span class="keyword">sizeof</span> reply, 0,
-<a name="l00179"></a>00179                                                         (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>);
+<a name="l00179"></a>00179                                                         (<span class="keyword">struct </span>sockaddr *) &amp;test, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>);
 <a name="l00180"></a>00180                                         <span class="keywordflow">break</span>;
 <a name="l00181"></a>00181                                 }
 <a name="l00182"></a>00182                         }
@@ -327,7 +327,7 @@ function toggleVisibility(linkObj) {
 <a name="l00215"></a>00215                                 <span class="keywordflow">if</span> (<a class="code" href="../../d6/dfd/answer_8c_ad9d4798f47a390f33923cfc52ad74e2d.html#ad9d4798f47a390f33923cfc52ad74e2d" title="Manages the messages submission.">answer</a>()) {
 <a name="l00216"></a>00216 <span class="preprocessor"># ifdef INTERNET</span>
 <a name="l00217"></a>00217 <span class="preprocessor"></span>                                        <span class="keywordflow">if</span> (first &amp;&amp; standard_port) {
-<a name="l00218"></a>00218                                                 <a class="code" href="../../d0/d3e/faketalk_8c_a276404056071774aa4e3697fdd4d4be1.html#a276404056071774aa4e3697fdd4d4be1">faketalk</a>();
+<a name="l00218"></a>00218                                                 <a class="code" href="../../d0/d3e/faketalk_8c_a276404056071774aa4e3697fdd4d4be1.html#a276404056071774aa4e3697fdd4d4be1" title="Query the local SMTP daemon to expand the RENDEZVOUS mailing list and fake a talk request to each add...">faketalk</a>();
 <a name="l00219"></a>00219                                         }
 <a name="l00220"></a>00220 <span class="preprocessor"># endif</span>
 <a name="l00221"></a>00221 <span class="preprocessor"></span>                                        first = <span class="keyword">false</span>;
@@ -432,16 +432,16 @@ function toggleVisibility(linkObj) {
 <a name="l00329"></a>00329 <span class="comment">         * Initialize statistics socket</span>
 <a name="l00330"></a>00330 <span class="comment">         */</span>
 <a name="l00331"></a>00331 <span class="preprocessor"># ifdef INTERNET</span>
-<a name="l00332"></a>00332 <span class="preprocessor"></span>        <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="The daemon socket.">Daemon</a>.sin_family = SOCK_FAMILY;
-<a name="l00333"></a>00333         <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="The daemon socket.">Daemon</a>.sin_addr.s_addr = INADDR_ANY;
-<a name="l00334"></a>00334         <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="The daemon socket.">Daemon</a>.sin_port = 0;
+<a name="l00332"></a>00332 <span class="preprocessor"></span>        <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="Contains the address of the local daemon.">Daemon</a>.sin_family = SOCK_FAMILY;
+<a name="l00333"></a>00333         <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="Contains the address of the local daemon.">Daemon</a>.sin_addr.s_addr = INADDR_ANY;
+<a name="l00334"></a>00334         <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="Contains the address of the local daemon.">Daemon</a>.sin_port = 0;
 <a name="l00335"></a>00335 <span class="preprocessor"># else</span>
-<a name="l00336"></a>00336 <span class="preprocessor"></span>        <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="The daemon socket.">Daemon</a>.sun_family = SOCK_FAMILY;
-<a name="l00337"></a>00337         (void) strcpy(<a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="The daemon socket.">Daemon</a>.sun_path, <a class="code" href="../../d9/d97/pathname_8c_a3b16bd3e8c3d2081bd7e9cfde7856f43.html#a3b16bd3e8c3d2081bd7e9cfde7856f43" title="TODO [PSR].">Stat_name</a>);
+<a name="l00336"></a>00336 <span class="preprocessor"></span>        <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="Contains the address of the local daemon.">Daemon</a>.sun_family = SOCK_FAMILY;
+<a name="l00337"></a>00337         (void) strcpy(<a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="Contains the address of the local daemon.">Daemon</a>.sun_path, <a class="code" href="../../d9/d97/pathname_8c_a3b16bd3e8c3d2081bd7e9cfde7856f43.html#a3b16bd3e8c3d2081bd7e9cfde7856f43" title="Identifies the file in which are contained hunt stats.">Stat_name</a>);
 <a name="l00338"></a>00338 <span class="preprocessor"># endif</span>
 <a name="l00339"></a>00339 <span class="preprocessor"></span>
 <a name="l00340"></a>00340         <a class="code" href="../../dc/d2c/extern_8c_ae58c2415cf1178457fa1254234c3f017.html#ae58c2415cf1178457fa1254234c3f017" title="Stat socket.">Status</a> = socket(SOCK_FAMILY, SOCK_STREAM, 0);
-<a name="l00341"></a>00341         <span class="keywordflow">if</span> (bind(<a class="code" href="../../dc/d2c/extern_8c_ae58c2415cf1178457fa1254234c3f017.html#ae58c2415cf1178457fa1254234c3f017" title="Stat socket.">Status</a>, (<span class="keyword">struct</span> sockaddr *) &amp;<a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="The daemon socket.">Daemon</a>, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>) &lt; 0) {
+<a name="l00341"></a>00341         <span class="keywordflow">if</span> (bind(<a class="code" href="../../dc/d2c/extern_8c_ae58c2415cf1178457fa1254234c3f017.html#ae58c2415cf1178457fa1254234c3f017" title="Stat socket.">Status</a>, (<span class="keyword">struct</span> sockaddr *) &amp;<a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="Contains the address of the local daemon.">Daemon</a>, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>) &lt; 0) {
 <a name="l00342"></a>00342                 <span class="keywordflow">if</span> (errno == EADDRINUSE) {
 <a name="l00343"></a>00343                         exit(0);
 <a name="l00344"></a>00344                 } <span class="keywordflow">else</span> {
@@ -457,7 +457,7 @@ function toggleVisibility(linkObj) {
 <a name="l00354"></a>00354 
 <a name="l00355"></a>00355 <span class="preprocessor"># ifdef INTERNET</span>
 <a name="l00356"></a>00356 <span class="preprocessor"></span>        len = <span class="keyword">sizeof</span> (SOCKET);
-<a name="l00357"></a>00357         <span class="keywordflow">if</span> (getsockname(<a class="code" href="../../dc/d2c/extern_8c_ae58c2415cf1178457fa1254234c3f017.html#ae58c2415cf1178457fa1254234c3f017" title="Stat socket.">Status</a>, (<span class="keyword">struct</span> sockaddr *) &amp;<a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="The daemon socket.">Daemon</a>, &amp;len) &lt; 0) {
+<a name="l00357"></a>00357         <span class="keywordflow">if</span> (getsockname(<a class="code" href="../../dc/d2c/extern_8c_ae58c2415cf1178457fa1254234c3f017.html#ae58c2415cf1178457fa1254234c3f017" title="Stat socket.">Status</a>, (<span class="keyword">struct</span> sockaddr *) &amp;<a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="Contains the address of the local daemon.">Daemon</a>, &amp;len) &lt; 0) {
 <a name="l00358"></a>00358 <span class="preprocessor"># ifdef LOG</span>
 <a name="l00359"></a>00359 <span class="preprocessor"></span>                <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_ERR, <span class="stringliteral">&quot;getsockname: %m&quot;</span>);
 <a name="l00360"></a>00360 <span class="preprocessor"># else</span>
@@ -492,7 +492,7 @@ function toggleVisibility(linkObj) {
 <a name="l00389"></a>00389 <span class="preprocessor"># endif</span>
 <a name="l00390"></a>00390 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
 <a name="l00391"></a>00391 <span class="preprocessor"></span><span class="preprocessor"># endif</span>
-<a name="l00392"></a>00392 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (bind(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keyword">struct</span> sockaddr *) &amp;Daemon, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>) &lt; 0) {
+<a name="l00392"></a>00392 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (bind(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keyword">struct</span> sockaddr *) &amp;Daemon, <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>) &lt; 0) {
 <a name="l00393"></a>00393                 <span class="keywordflow">if</span> (errno == EADDRINUSE) {
 <a name="l00394"></a>00394                         exit(0);
 <a name="l00395"></a>00395                 } <span class="keywordflow">else</span> {
@@ -508,7 +508,7 @@ function toggleVisibility(linkObj) {
 <a name="l00405"></a>00405 
 <a name="l00406"></a>00406 <span class="preprocessor"># ifdef INTERNET</span>
 <a name="l00407"></a>00407 <span class="preprocessor"></span>        len = <span class="keyword">sizeof</span> (SOCKET);
-<a name="l00408"></a>00408         <span class="keywordflow">if</span> (getsockname(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keyword">struct</span> sockaddr *) &amp;<a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="The daemon socket.">Daemon</a>, &amp;len) &lt; 0) {
+<a name="l00408"></a>00408         <span class="keywordflow">if</span> (getsockname(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keyword">struct</span> sockaddr *) &amp;<a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="Contains the address of the local daemon.">Daemon</a>, &amp;len) &lt; 0) {
 <a name="l00409"></a>00409 <span class="preprocessor"># ifdef LOG</span>
 <a name="l00410"></a>00410 <span class="preprocessor"></span>                <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_ERR, <span class="stringliteral">&quot;getsockname: %m&quot;</span>);
 <a name="l00411"></a>00411 <span class="preprocessor"># else</span>
@@ -538,12 +538,12 @@ function toggleVisibility(linkObj) {
 <a name="l00435"></a>00435                         Test_port = ntohs(test_port.sin_port);
 <a name="l00436"></a>00436                 }
 <a name="l00437"></a>00437         } <span class="keywordflow">else</span> {
-<a name="l00438"></a>00438                 test_port = <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="The daemon socket.">Daemon</a>;
+<a name="l00438"></a>00438                 test_port = <a class="code" href="../../da/d3e/hunt_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4" title="Contains the address of the local daemon.">Daemon</a>;
 <a name="l00439"></a>00439                 test_port.sin_port = htons((<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>) Test_port);
 <a name="l00440"></a>00440 
 <a name="l00441"></a>00441                 Test_socket = socket(SOCK_FAMILY, SOCK_DGRAM, 0);
 <a name="l00442"></a>00442                 <span class="keywordflow">if</span> (bind(Test_socket, (<span class="keyword">struct</span> sockaddr *) &amp;test_port,
-<a name="l00443"></a>00443                                                 <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="TODO [PSR].">DAEMON_SIZE</a>) &lt; 0) {
+<a name="l00443"></a>00443                                                 <a class="code" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea" title="Defines the dimension of the daemon.">DAEMON_SIZE</a>) &lt; 0) {
 <a name="l00444"></a>00444 <span class="preprocessor"># ifdef LOG</span>
 <a name="l00445"></a>00445 <span class="preprocessor"></span>                        <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_ERR, <span class="stringliteral">&quot;bind: %m&quot;</span>);
 <a name="l00446"></a>00446 <span class="preprocessor"># else</span>
@@ -729,7 +729,7 @@ function toggleVisibility(linkObj) {
 <a name="l00642"></a>00642         BULLET *bp;
 <a name="l00643"></a>00643         PLAYER *np;
 <a name="l00644"></a>00644         <span class="keywordtype">int</span> x, y;
-<a name="l00645"></a>00645 <span class="comment">//      int savefd; /**&lt; For future use. [PSR]*/</span>
+<a name="l00645"></a>00645 <span class="comment">/*      int savefd;  For future use. [PSR] */</span>
 <a name="l00646"></a>00646 
 <a name="l00647"></a>00647         <span class="keywordflow">if</span> (was_player) {
 <a name="l00648"></a>00648                 <span class="keywordflow">if</span> (pp-&gt;p_undershot) {
@@ -754,7 +754,7 @@ function toggleVisibility(linkObj) {
 <a name="l00667"></a>00667         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, pp-&gt;p_death, len);
 <a name="l00668"></a>00668         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, HEIGHT, 0);
 <a name="l00669"></a>00669 
-<a name="l00670"></a>00670 <span class="comment">//      savefd = pp-&gt;p_fd;</span>
+<a name="l00670"></a>00670 <span class="comment">/*      savefd = pp-&gt;p_fd; */</span>
 <a name="l00671"></a>00671 
 <a name="l00672"></a>00672 <span class="preprocessor"># ifdef MONITOR</span>
 <a name="l00673"></a>00673 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (was_player) {
@@ -1090,7 +1090,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d1/d56/driver_8c.html">driver.c</a>      </li>
-      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Tue Jul 10 2012 12:37:16 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

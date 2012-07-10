@@ -63,7 +63,7 @@ const char	*Driver =	HUNTD; /**< Defines the path to reach the folder which cont
 unsigned short	Test_port =	('h' << 8) | 't'; /* Changed from u_short. [PSR] */
 #  else
 char	*Sock_name =	"/tmp/hunt"; /**< Identifies the socket name. [PSR] */
-char	*Stat_name =	"/tmp/hunt.stats"; /**< TODO [PSR] */
+char	*Stat_name =	"/tmp/hunt.stats"; /**< Identifies the file in which are contained hunt stats. [PSR] */
 #  endif
 
 # endif

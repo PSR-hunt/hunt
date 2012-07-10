@@ -51,15 +51,15 @@ __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 # endif
 
 # ifndef FREAD
-# define	FREAD	1 /**< Defined but not used in this file. [PSR] */
+# define	FREAD	1 /**< Never used. [PSR] */
 # endif
 
 # if !defined(USE_CURSES) || !defined(TERMINFO)
-# define	beep()		(void) putchar(CTRL('G')) /**< Writes the character c, cast to an unsigned char, to stream. [PSR] */
+# define	beep()		(void) putchar(CTRL('G')) /**< Defines beep() that writes the character G, cast to an unsigned char, to stream. [PSR] */
 # endif
 # if !defined(USE_CURSES)
 # undef		refresh
-# define	refresh()	(void) fflush(stdout); /**< Flushes a stream. [PSR] */
+# define	refresh()	(void) fflush(stdout); /**< Defines refresh() that flushes stdout stream. [PSR] */
 # endif
 # ifdef USE_CURSES
 # define	clear_eol()	clrtoeol()
@@ -70,7 +70,7 @@ __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 static int nchar_send; /**< Number of sent characters. [PSR] */
 # ifndef USE_CURSES
 char screen[SCREEN_HEIGHT][SCREEN_WIDTH2]; /**< The game area. [PSR] */
-char blanks[SCREEN_WIDTH]; /**< TODO Temporary buffer. [PSR] */
+char blanks[SCREEN_WIDTH]; /**< Contains elements that will be copied. [PSR] */
 int cur_row; /**< Indicates the current row. [PSR] */
 int cur_col; /**< Indicates the current column. [PSR] */
 # endif
@@ -82,7 +82,7 @@ static char otto_face;
 # endif
 
 # define	MAX_SEND	5 /**< Maximum number of characters to send. [PSR] */
-# define	STDIN		0 /**< File descriptor. [PSR] */
+# define	STDIN		0 /**< File descriptor for stdin. [PSR] */
 
 /*
  * ibuf is the input buffer used for the stream from the driver.
@@ -90,10 +90,10 @@ static char otto_face;
  * are characters in the input buffer.
  */
 static int icnt = 0; /**< Number of read characters. [PSR] */
-static unsigned char ibuf[256]; /**< The input buffer used for the stream from the driver. [PSR] */
-static unsigned char *iptr = ibuf; /**< Points to ibuf. [PSR] */
+static unsigned char ibuf[256]; /**< The read buffer (ibuf is the input buffer used for the stream from the driver.). [PSR] */
+static unsigned char *iptr = ibuf; /**< ibuf first position pointer. [PSR] */
 
-#define	GETCHR()	(--icnt < 0 ? getchr() : *iptr++) /**< Implements a getchr or increments iptr, basing on icnt value. [PSR] */
+#define	GETCHR()	(--icnt < 0 ? getchr() : *iptr++) /**< Reads from input if there are no things to read in ibuf, reads the first character otherwise. [PSR] */
 
 /*Seems to be unused [PSR]
 #if !defined(BSD_RELEASE) || BSD_RELEASE < 44

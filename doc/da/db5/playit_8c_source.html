@@ -189,7 +189,7 @@ function toggleVisibility(linkObj) {
 <a name="l00070"></a><a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa">00070</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a>; 
 <a name="l00071"></a>00071 <span class="preprocessor"># ifndef USE_CURSES</span>
 <a name="l00072"></a><a class="code" href="../../da/db5/playit_8c_a7a408709449b438da352accfc424150b.html#a7a408709449b438da352accfc424150b">00072</a> <span class="preprocessor"></span><span class="keywordtype">char</span> <a class="code" href="../../da/db5/playit_8c_a7a408709449b438da352accfc424150b.html#a7a408709449b438da352accfc424150b" title="The game area.">screen</a>[SCREEN_HEIGHT][SCREEN_WIDTH2]; 
-<a name="l00073"></a><a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5">00073</a> <span class="keywordtype">char</span> <a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="TODO Temporary buffer.">blanks</a>[SCREEN_WIDTH]; 
+<a name="l00073"></a><a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5">00073</a> <span class="keywordtype">char</span> <a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="Contains elements that will be copied.">blanks</a>[SCREEN_WIDTH]; 
 <a name="l00074"></a><a class="code" href="../../da/db5/playit_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394">00074</a> <span class="keywordtype">int</span> <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>; 
 <a name="l00075"></a><a class="code" href="../../da/db5/playit_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62">00075</a> <span class="keywordtype">int</span> <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>; 
 <a name="l00076"></a>00076 <span class="preprocessor"># endif</span>
@@ -208,8 +208,8 @@ function toggleVisibility(linkObj) {
 <a name="l00090"></a>00090 <span class="comment"> * are characters in the input buffer.</span>
 <a name="l00091"></a>00091 <span class="comment"> */</span>
 <a name="l00092"></a><a class="code" href="../../da/db5/playit_8c_a4eef614f6c1f8389f3567f9be3fc327d.html#a4eef614f6c1f8389f3567f9be3fc327d">00092</a> <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="../../da/db5/playit_8c_a4eef614f6c1f8389f3567f9be3fc327d.html#a4eef614f6c1f8389f3567f9be3fc327d" title="Number of read characters.">icnt</a> = 0; 
-<a name="l00093"></a><a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa">00093</a> <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa" title="The input buffer used for the stream from the driver.">ibuf</a>[256]; 
-<a name="l00094"></a><a class="code" href="../../da/db5/playit_8c_a23fb0c146a3f5882387dec0ffd48c7d9.html#a23fb0c146a3f5882387dec0ffd48c7d9">00094</a> <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *<a class="code" href="../../da/db5/playit_8c_a23fb0c146a3f5882387dec0ffd48c7d9.html#a23fb0c146a3f5882387dec0ffd48c7d9" title="Points to ibuf.">iptr</a> = <a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa" title="The input buffer used for the stream from the driver.">ibuf</a>; 
+<a name="l00093"></a><a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa">00093</a> <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa" title="The read buffer (ibuf is the input buffer used for the stream from the driver.).">ibuf</a>[256]; 
+<a name="l00094"></a><a class="code" href="../../da/db5/playit_8c_a23fb0c146a3f5882387dec0ffd48c7d9.html#a23fb0c146a3f5882387dec0ffd48c7d9">00094</a> <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *<a class="code" href="../../da/db5/playit_8c_a23fb0c146a3f5882387dec0ffd48c7d9.html#a23fb0c146a3f5882387dec0ffd48c7d9" title="ibuf first position pointer.">iptr</a> = <a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa" title="The read buffer (ibuf is the input buffer used for the stream from the driver.).">ibuf</a>; 
 <a name="l00096"></a><a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea">00096</a> <span class="preprocessor">#define GETCHR()        (--icnt &lt; 0 ? getchr() : *iptr++) </span>
 <a name="l00098"></a>00098 <span class="preprocessor"></span><span class="comment">/*Seems to be unused [PSR]</span>
 <a name="l00099"></a>00099 <span class="comment">#if !defined(BSD_RELEASE) || BSD_RELEASE &lt; 44</span>
@@ -238,14 +238,14 @@ function toggleVisibility(linkObj) {
 <a name="l00126"></a>00126 <span class="preprocessor"></span>        Otto_count = 0;
 <a name="l00127"></a>00127 <span class="preprocessor"># endif</span>
 <a name="l00128"></a>00128 <span class="preprocessor"></span>        <a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a> = <a class="code" href="../../da/db5/playit_8c_a69354e346054827a67a3b04ed73f6bab.html#a69354e346054827a67a3b04ed73f6bab" title="Maximum number of characters to send.">MAX_SEND</a>;
-<a name="l00129"></a>00129         <span class="keywordflow">while</span> ((ch = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Implements a getchr or increments iptr, basing on icnt value.">GETCHR</a>()) != EOF) {
+<a name="l00129"></a>00129         <span class="keywordflow">while</span> ((ch = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Reads from input if there are no things to read in ibuf, reads the first character otherwise...">GETCHR</a>()) != EOF) {
 <a name="l00130"></a>00130 <span class="preprocessor"># ifdef DEBUG</span>
 <a name="l00131"></a>00131 <span class="preprocessor"></span>                fputc(ch, stderr);
 <a name="l00132"></a>00132 <span class="preprocessor"># endif</span>
 <a name="l00133"></a>00133 <span class="preprocessor"></span>                <span class="keywordflow">switch</span> (ch &amp; 0377) {
 <a name="l00134"></a>00134                 <span class="keywordflow">case</span> MOVE:
-<a name="l00135"></a>00135                         y = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Implements a getchr or increments iptr, basing on icnt value.">GETCHR</a>();
-<a name="l00136"></a>00136                         x = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Implements a getchr or increments iptr, basing on icnt value.">GETCHR</a>();
+<a name="l00135"></a>00135                         y = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Reads from input if there are no things to read in ibuf, reads the first character otherwise...">GETCHR</a>();
+<a name="l00136"></a>00136                         x = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Reads from input if there are no things to read in ibuf, reads the first character otherwise...">GETCHR</a>();
 <a name="l00137"></a>00137 <span class="preprocessor"># ifdef USE_CURSES</span>
 <a name="l00138"></a>00138 <span class="preprocessor"></span>                        move(y, x);
 <a name="l00139"></a>00139 <span class="preprocessor"># else</span>
@@ -255,7 +255,7 @@ function toggleVisibility(linkObj) {
 <a name="l00143"></a>00143 <span class="preprocessor"># endif</span>
 <a name="l00144"></a>00144 <span class="preprocessor"></span>                        <span class="keywordflow">break</span>;
 <a name="l00145"></a>00145                 <span class="keywordflow">case</span> ADDCH:
-<a name="l00146"></a>00146                         ch = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Implements a getchr or increments iptr, basing on icnt value.">GETCHR</a>();
+<a name="l00146"></a>00146                         ch = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Reads from input if there are no things to read in ibuf, reads the first character otherwise...">GETCHR</a>();
 <a name="l00147"></a>00147 <span class="preprocessor"># ifdef OTTO</span>
 <a name="l00148"></a>00148 <span class="preprocessor"></span>                        <span class="keywordflow">switch</span> (ch) {
 <a name="l00149"></a>00149 
@@ -282,43 +282,43 @@ function toggleVisibility(linkObj) {
 <a name="l00170"></a>00170                         <a class="code" href="../../da/db5/playit_8c_a341ec71e82162fe8c170c3fe0d26f043.html#a341ec71e82162fe8c170c3fe0d26f043" title="Cleans the screen.">clear_the_screen</a>();
 <a name="l00171"></a>00171                         <span class="keywordflow">break</span>;
 <a name="l00172"></a>00172                 <span class="keywordflow">case</span> REFRESH:
-<a name="l00173"></a>00173                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>()
+<a name="l00173"></a>00173                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>()
 <a name="l00174"></a>00174                         ;
 <a name="l00175"></a>00175                         <span class="keywordflow">break</span>;
 <a name="l00176"></a>00176                 <span class="keywordflow">case</span> REDRAW:
 <a name="l00177"></a>00177                         <a class="code" href="../../da/db5/playit_8c_a82c285fd87da5a5cef6e9c18276dc689.html#a82c285fd87da5a5cef6e9c18276dc689" title="Repaints the screen.">redraw_screen</a>();
-<a name="l00178"></a>00178                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>()
+<a name="l00178"></a>00178                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>()
 <a name="l00179"></a>00179                         ;
 <a name="l00180"></a>00180                         <span class="keywordflow">break</span>;
 <a name="l00181"></a>00181                 <span class="keywordflow">case</span> ENDWIN:
-<a name="l00182"></a>00182                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>()
+<a name="l00182"></a>00182                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>()
 <a name="l00183"></a>00183                         ;
-<a name="l00184"></a>00184                         <span class="keywordflow">if</span> ((ch = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Implements a getchr or increments iptr, basing on icnt value.">GETCHR</a>()) == LAST_PLAYER)
-<a name="l00185"></a>00185                                 <a class="code" href="../../da/d3e/hunt_8c_af01fe333f6b6a1321297106ced4cc3cd.html#af01fe333f6b6a1321297106ced4cc3cd" title="Defines if a player is the last one or no.">Last_player</a> = <span class="keyword">true</span>;
+<a name="l00184"></a>00184                         <span class="keywordflow">if</span> ((ch = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Reads from input if there are no things to read in ibuf, reads the first character otherwise...">GETCHR</a>()) == LAST_PLAYER)
+<a name="l00185"></a>00185                                 <a class="code" href="../../da/d3e/hunt_8c_af01fe333f6b6a1321297106ced4cc3cd.html#af01fe333f6b6a1321297106ced4cc3cd" title="Indicates if a player is the last one or no.">Last_player</a> = <span class="keyword">true</span>;
 <a name="l00186"></a>00186                         ch = EOF;
 <a name="l00187"></a>00187                         (void) close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
 <a name="l00188"></a>00188                         <span class="keywordflow">return</span>;
 <a name="l00189"></a>00189                 <span class="keywordflow">case</span> BELL:
-<a name="l00190"></a>00190                         <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Writes the character c, cast to an unsigned char, to stream.">beep</a>();
+<a name="l00190"></a>00190                         <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep</a>();
 <a name="l00191"></a>00191                         <span class="keywordflow">break</span>;
 <a name="l00192"></a>00192                 <span class="keywordflow">case</span> READY:
-<a name="l00193"></a>00193                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>()
+<a name="l00193"></a>00193                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>()
 <a name="l00194"></a>00194                         ;
 <a name="l00195"></a>00195                         <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a> &lt; 0)
 <a name="l00196"></a>00196 <span class="preprocessor"># if defined(HPUX) || (defined(BSD_RELEASE) &amp;&amp; BSD_RELEASE &gt;= 44)</span>
-<a name="l00197"></a>00197 <span class="preprocessor"></span>                                tcflush(<a class="code" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b" title="File descriptor.">STDIN</a>, TCIFLUSH);
+<a name="l00197"></a>00197 <span class="preprocessor"></span>                                tcflush(<a class="code" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b" title="File descriptor for stdin.">STDIN</a>, TCIFLUSH);
 <a name="l00198"></a>00198 <span class="preprocessor"># else</span>
 <a name="l00199"></a>00199 <span class="preprocessor"></span><span class="preprocessor"># ifndef TCFLSH</span>
-<a name="l00200"></a>00200 <span class="preprocessor"></span>                                (void) ioctl(<a class="code" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b" title="File descriptor.">STDIN</a>, TIOCFLUSH, &amp;in);
+<a name="l00200"></a>00200 <span class="preprocessor"></span>                                (void) ioctl(<a class="code" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b" title="File descriptor for stdin.">STDIN</a>, TIOCFLUSH, &amp;in);
 <a name="l00201"></a>00201 <span class="preprocessor"># else</span>
-<a name="l00202"></a>00202 <span class="preprocessor"></span>                                (void) ioctl(<a class="code" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b" title="File descriptor.">STDIN</a>, TCFLSH, 0);
+<a name="l00202"></a>00202 <span class="preprocessor"></span>                                (void) ioctl(<a class="code" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b" title="File descriptor for stdin.">STDIN</a>, TCFLSH, 0);
 <a name="l00203"></a>00203 <span class="preprocessor"># endif</span>
 <a name="l00204"></a>00204 <span class="preprocessor"></span><span class="preprocessor"># endif</span>
 <a name="l00205"></a>00205 <span class="preprocessor"></span>                        <a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a> = <a class="code" href="../../da/db5/playit_8c_a69354e346054827a67a3b04ed73f6bab.html#a69354e346054827a67a3b04ed73f6bab" title="Maximum number of characters to send.">MAX_SEND</a>;
 <a name="l00206"></a>00206 <span class="preprocessor"># ifndef OTTO</span>
-<a name="l00207"></a>00207 <span class="preprocessor"></span>                        (void) <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Implements a getchr or increments iptr, basing on icnt value.">GETCHR</a>();
+<a name="l00207"></a>00207 <span class="preprocessor"></span>                        (void) <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Reads from input if there are no things to read in ibuf, reads the first character otherwise...">GETCHR</a>();
 <a name="l00208"></a>00208 <span class="preprocessor"># else</span>
-<a name="l00209"></a>00209 <span class="preprocessor"></span>                        Otto_count -= (<a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Implements a getchr or increments iptr, basing on icnt value.">GETCHR</a>() &amp; 0xff);
+<a name="l00209"></a>00209 <span class="preprocessor"></span>                        Otto_count -= (<a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Reads from input if there are no things to read in ibuf, reads the first character otherwise...">GETCHR</a>() &amp; 0xff);
 <a name="l00210"></a>00210                         <span class="keywordflow">if</span> (!Am_monitor) {
 <a name="l00211"></a>00211 <span class="preprocessor"># ifdef DEBUG</span>
 <a name="l00212"></a>00212 <span class="preprocessor"></span>                                fputc(<span class="charliteral">&#39;0&#39;</span> + Otto_count, stderr);
@@ -360,7 +360,7 @@ function toggleVisibility(linkObj) {
 <a name="l00255"></a>00255 
 <a name="l00256"></a>00256         <span class="keyword">set</span>[0].fd = <a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>;
 <a name="l00257"></a>00257         <span class="keyword">set</span>[0].events = POLLIN;
-<a name="l00258"></a>00258         <span class="keyword">set</span>[1].fd = <a class="code" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b" title="File descriptor.">STDIN</a>;
+<a name="l00258"></a>00258         <span class="keyword">set</span>[1].fd = <a class="code" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b" title="File descriptor for stdin.">STDIN</a>;
 <a name="l00259"></a>00259         <span class="keyword">set</span>[1].events = POLLIN;
 <a name="l00260"></a>00260 
 <a name="l00261"></a>00261         <span class="keywordflow">while</span> (1) {
@@ -375,7 +375,7 @@ function toggleVisibility(linkObj) {
 <a name="l00270"></a>00270                 <span class="keywordflow">if</span> (!(<span class="keyword">set</span>[0].revents &amp; POLLIN)){
 <a name="l00271"></a>00271                         <span class="keywordflow">continue</span>;
 <a name="l00272"></a>00272                 }
-<a name="l00273"></a>00273                 <a class="code" href="../../da/db5/playit_8c_a4eef614f6c1f8389f3567f9be3fc327d.html#a4eef614f6c1f8389f3567f9be3fc327d" title="Number of read characters.">icnt</a> = read(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, <a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa" title="The input buffer used for the stream from the driver.">ibuf</a>, <span class="keyword">sizeof</span> <a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa" title="The input buffer used for the stream from the driver.">ibuf</a>);
+<a name="l00273"></a>00273                 <a class="code" href="../../da/db5/playit_8c_a4eef614f6c1f8389f3567f9be3fc327d.html#a4eef614f6c1f8389f3567f9be3fc327d" title="Number of read characters.">icnt</a> = read(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, <a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa" title="The read buffer (ibuf is the input buffer used for the stream from the driver.).">ibuf</a>, <span class="keyword">sizeof</span> <a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa" title="The read buffer (ibuf is the input buffer used for the stream from the driver.).">ibuf</a>);
 <a name="l00274"></a>00274                 <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_a4eef614f6c1f8389f3567f9be3fc327d.html#a4eef614f6c1f8389f3567f9be3fc327d" title="Number of read characters.">icnt</a> &lt; 0) {
 <a name="l00275"></a>00275                         <a class="code" href="../../da/d3e/hunt_8c_a736d391a6f8ca21613d4a45cf3268572.html#a736d391a6f8ca21613d4a45cf3268572" title="We had a bad connection.">bad_con</a>();
 <a name="l00276"></a>00276                         <span class="comment">/* NOTREACHED */</span>
@@ -383,9 +383,9 @@ function toggleVisibility(linkObj) {
 <a name="l00278"></a>00278                 <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_a4eef614f6c1f8389f3567f9be3fc327d.html#a4eef614f6c1f8389f3567f9be3fc327d" title="Number of read characters.">icnt</a> == 0){
 <a name="l00279"></a>00279                         <span class="keywordflow">continue</span>;
 <a name="l00280"></a>00280                 }
-<a name="l00281"></a>00281                 <a class="code" href="../../da/db5/playit_8c_a23fb0c146a3f5882387dec0ffd48c7d9.html#a23fb0c146a3f5882387dec0ffd48c7d9" title="Points to ibuf.">iptr</a> = <a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa" title="The input buffer used for the stream from the driver.">ibuf</a>;
+<a name="l00281"></a>00281                 <a class="code" href="../../da/db5/playit_8c_a23fb0c146a3f5882387dec0ffd48c7d9.html#a23fb0c146a3f5882387dec0ffd48c7d9" title="ibuf first position pointer.">iptr</a> = <a class="code" href="../../da/db5/playit_8c_a490f0a60b7c20ab4039004cf96b0fdaa.html#a490f0a60b7c20ab4039004cf96b0fdaa" title="The read buffer (ibuf is the input buffer used for the stream from the driver.).">ibuf</a>;
 <a name="l00282"></a>00282                 <a class="code" href="../../da/db5/playit_8c_a4eef614f6c1f8389f3567f9be3fc327d.html#a4eef614f6c1f8389f3567f9be3fc327d" title="Number of read characters.">icnt</a>--;
-<a name="l00283"></a>00283                 <span class="keywordflow">return</span> *<a class="code" href="../../da/db5/playit_8c_a23fb0c146a3f5882387dec0ffd48c7d9.html#a23fb0c146a3f5882387dec0ffd48c7d9" title="Points to ibuf.">iptr</a>++;
+<a name="l00283"></a>00283                 <span class="keywordflow">return</span> *<a class="code" href="../../da/db5/playit_8c_a23fb0c146a3f5882387dec0ffd48c7d9.html#a23fb0c146a3f5882387dec0ffd48c7d9" title="ibuf first position pointer.">iptr</a>++;
 <a name="l00284"></a>00284         }
 <a name="l00285"></a>00285         <span class="comment">/* This point should never be reached. [PSR] */</span>
 <a name="l00286"></a>00286         <span class="keywordflow">return</span> -1;
@@ -396,7 +396,7 @@ function toggleVisibility(linkObj) {
 <a name="l00294"></a>00294         <span class="keywordtype">char</span> *sp, *nsp;
 <a name="l00295"></a>00295         <span class="keyword">static</span> <span class="keywordtype">char</span> inp[<span class="keyword">sizeof</span> <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>];
 <a name="l00296"></a>00296 
-<a name="l00297"></a>00297         count = read(<a class="code" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b" title="File descriptor.">STDIN</a>, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, <span class="keyword">sizeof</span> <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>);
+<a name="l00297"></a>00297         count = read(<a class="code" href="../../da/db5/playit_8c_ac00bfb46347d26fdc58568fe1ab5fa5b.html#ac00bfb46347d26fdc58568fe1ab5fa5b" title="File descriptor for stdin.">STDIN</a>, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, <span class="keyword">sizeof</span> <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>);
 <a name="l00298"></a>00298         <span class="keywordflow">if</span> (count &lt;= 0){
 <a name="l00299"></a>00299                 <span class="keywordflow">return</span>;
 <a name="l00300"></a>00300         }
@@ -414,7 +414,7 @@ function toggleVisibility(linkObj) {
 <a name="l00312"></a>00312         <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>[count] = <span class="charliteral">&#39;\0&#39;</span>;
 <a name="l00313"></a>00313         nsp = inp;
 <a name="l00314"></a>00314         <span class="keywordflow">for</span> (sp = <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>; *sp != <span class="charliteral">&#39;\0&#39;</span>; sp++){
-<a name="l00315"></a>00315                 <span class="keywordflow">if</span> ((*nsp = <a class="code" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271" title="what to map keys to">map_key</a>[(<span class="keywordtype">int</span>) *sp]) == <span class="charliteral">&#39;q&#39;</span>){
+<a name="l00315"></a>00315                 <span class="keywordflow">if</span> ((*nsp = <a class="code" href="../../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271" title="What to map keys to.">map_key</a>[(<span class="keywordtype">int</span>) *sp]) == <span class="charliteral">&#39;q&#39;</span>){
 <a name="l00316"></a>00316                         <a class="code" href="../../da/d3e/hunt_8c_a1e6a84232880aca85d6cdc6267c9323e.html#a1e6a84232880aca85d6cdc6267c9323e" title="Handle a interrupt signal.">intr</a>(0);
 <a name="l00317"></a>00317                 }
 <a name="l00318"></a>00318                 <span class="keywordflow">else</span>{
@@ -437,7 +437,7 @@ function toggleVisibility(linkObj) {
 <a name="l00340"></a><a class="code" href="../../da/db5/playit_8c_a67e7805e731622dcade1b4066c07c5c2.html#a67e7805e731622dcade1b4066c07c5c2">00340</a> <span class="keywordtype">int</span> <a class="code" href="../../da/db5/playit_8c_a67e7805e731622dcade1b4066c07c5c2.html#a67e7805e731622dcade1b4066c07c5c2" title="Handle the end of the game when the player dies.">quit</a>(<span class="keywordtype">int</span> old_status) {
 <a name="l00341"></a>00341         <span class="keywordtype">int</span> explain, ch, second_ch;
 <a name="l00342"></a>00342 
-<a name="l00343"></a>00343         <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_af01fe333f6b6a1321297106ced4cc3cd.html#af01fe333f6b6a1321297106ced4cc3cd" title="Defines if a player is the last one or no.">Last_player</a>){
+<a name="l00343"></a>00343         <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_af01fe333f6b6a1321297106ced4cc3cd.html#af01fe333f6b6a1321297106ced4cc3cd" title="Indicates if a player is the last one or no.">Last_player</a>){
 <a name="l00344"></a>00344                 <span class="keywordflow">return</span> Q_QUIT;
 <a name="l00345"></a>00345         }
 <a name="l00346"></a>00346 <span class="preprocessor"># ifdef OTTO</span>
@@ -456,7 +456,7 @@ function toggleVisibility(linkObj) {
 <a name="l00359"></a>00359         <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
 <a name="l00360"></a>00360         explain = <span class="keyword">false</span>;
 <a name="l00361"></a>00361         <span class="keywordflow">for</span> (;;) {
-<a name="l00362"></a>00362                 <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>();
+<a name="l00362"></a>00362                 <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
 <a name="l00363"></a>00363                 <span class="keywordflow">if</span> (isupper(ch = getchar())) {
 <a name="l00364"></a>00364                         ch = tolower(ch);
 <a name="l00365"></a>00365                 }
@@ -480,7 +480,7 @@ function toggleVisibility(linkObj) {
 <a name="l00383"></a>00383 <span class="preprocessor"># endif</span>
 <a name="l00384"></a>00384 <span class="preprocessor"></span>                        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;Write a parting message [yn]? &quot;</span>);
 <a name="l00385"></a>00385                         <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
-<a name="l00386"></a>00386                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>();
+<a name="l00386"></a>00386                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
 <a name="l00387"></a>00387                         <span class="keywordflow">for</span> (;;) {
 <a name="l00388"></a>00388                                 <span class="keywordflow">if</span> (isupper(second_ch = getchar())) {
 <a name="l00389"></a>00389                                         second_ch = tolower(ch);
@@ -508,10 +508,10 @@ function toggleVisibility(linkObj) {
 <a name="l00411"></a>00411 <span class="preprocessor"># endif</span>
 <a name="l00412"></a>00412 <span class="preprocessor"></span>                        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;Message: &quot;</span>);
 <a name="l00413"></a>00413                         <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
-<a name="l00414"></a>00414                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>();
+<a name="l00414"></a>00414                         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
 <a name="l00415"></a>00415                         cp = buf;
 <a name="l00416"></a>00416                         <span class="keywordflow">for</span> (;;) {
-<a name="l00417"></a>00417                                 <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>();
+<a name="l00417"></a>00417                                 <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
 <a name="l00418"></a>00418                                 <span class="keywordflow">if</span> ((ch = getchar()) == <span class="charliteral">&#39;\n&#39;</span> || ch == <span class="charliteral">&#39;\r&#39;</span>){
 <a name="l00419"></a>00419                                         <span class="keywordflow">break</span>;
 <a name="l00420"></a>00420                                 }
@@ -555,7 +555,7 @@ function toggleVisibility(linkObj) {
 <a name="l00458"></a>00458                                         <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
 <a name="l00459"></a>00459                                         <span class="keywordflow">continue</span>;
 <a name="l00460"></a>00460                                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!isprint(ch)) {
-<a name="l00461"></a>00461                                         <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Writes the character c, cast to an unsigned char, to stream.">beep</a>();
+<a name="l00461"></a>00461                                         <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep</a>();
 <a name="l00462"></a>00462                                         <span class="keywordflow">continue</span>;
 <a name="l00463"></a>00463                                 }
 <a name="l00464"></a>00464                                 <a class="code" href="../../da/db5/playit_8c_a9ce333415c8fc71b49876b6f89ffe8b6.html#a9ce333415c8fc71b49876b6f89ffe8b6" title="Puts a given character in a point of the screen.">put_ch</a>(ch);
@@ -569,7 +569,7 @@ function toggleVisibility(linkObj) {
 <a name="l00472"></a>00472                         <span class="keywordflow">return</span> (c == <span class="charliteral">&#39;w&#39;</span>) ? old_status : Q_MESSAGE;
 <a name="l00473"></a>00473                 }
 <a name="l00474"></a>00474 <span class="preprocessor"># endif</span>
-<a name="l00475"></a>00475 <span class="preprocessor"></span>                <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Writes the character c, cast to an unsigned char, to stream.">beep</a>();
+<a name="l00475"></a>00475 <span class="preprocessor"></span>                <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep</a>();
 <a name="l00476"></a>00476                 <span class="keywordflow">if</span> (!explain) {
 <a name="l00477"></a>00477                         <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;(Yes, No, Write message, or Options) &quot;</span>);
 <a name="l00478"></a>00478                         explain = <span class="keyword">true</span>;
@@ -589,7 +589,7 @@ function toggleVisibility(linkObj) {
 <a name="l00492"></a>00492 <span class="preprocessor"></span>        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;Scan, Cloak, or Quit? &quot;</span>);
 <a name="l00493"></a>00493 <span class="preprocessor"># endif</span>
 <a name="l00494"></a>00494 <span class="preprocessor"></span>        <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
-<a name="l00495"></a>00495         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>();
+<a name="l00495"></a>00495         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
 <a name="l00496"></a>00496         explain = <span class="keyword">false</span>;
 <a name="l00497"></a>00497         <span class="keywordflow">for</span> (;;) {
 <a name="l00498"></a>00498                 <span class="keywordflow">if</span> (isupper(ch = getchar())){
@@ -609,7 +609,7 @@ function toggleVisibility(linkObj) {
 <a name="l00512"></a>00512 <span class="preprocessor"></span>                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;q&#39;</span>){
 <a name="l00513"></a>00513                         <span class="keywordflow">return</span> Q_QUIT;
 <a name="l00514"></a>00514                 }
-<a name="l00515"></a>00515                 <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Writes the character c, cast to an unsigned char, to stream.">beep</a>();
+<a name="l00515"></a>00515                 <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep</a>();
 <a name="l00516"></a>00516                 <span class="keywordflow">if</span> (!explain) {
 <a name="l00517"></a>00517 <span class="preprocessor"># ifdef FLY</span>
 <a name="l00518"></a>00518 <span class="preprocessor"></span>                        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;[SCFQ] &quot;</span>);
@@ -618,7 +618,7 @@ function toggleVisibility(linkObj) {
 <a name="l00521"></a>00521 <span class="preprocessor"># endif</span>
 <a name="l00522"></a>00522 <span class="preprocessor"></span>                        explain = <span class="keyword">true</span>;
 <a name="l00523"></a>00523                 }
-<a name="l00524"></a>00524                 <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>();
+<a name="l00524"></a>00524                 <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
 <a name="l00525"></a>00525         }
 <a name="l00526"></a>00526         <span class="comment">/* This point should never be reached [PSR] */</span>
 <a name="l00527"></a>00527         <span class="keywordflow">return</span> -1;
@@ -659,13 +659,13 @@ function toggleVisibility(linkObj) {
 <a name="l00575"></a>00575 <span class="preprocessor"># ifdef USE_CURSES</span>
 <a name="l00576"></a>00576 <span class="preprocessor"></span>        clear();
 <a name="l00577"></a>00577         move(0, 0);
-<a name="l00578"></a>00578         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Flushes a stream.">refresh</a>();
+<a name="l00578"></a>00578         <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
 <a name="l00579"></a>00579 <span class="preprocessor"># else</span>
 <a name="l00580"></a>00580 <span class="preprocessor"></span>        <span class="keywordtype">int</span> i;
 <a name="l00581"></a>00581 
-<a name="l00582"></a>00582         <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="TODO Temporary buffer.">blanks</a>[0] == <span class="charliteral">&#39;\0&#39;</span>)
+<a name="l00582"></a>00582         <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="Contains elements that will be copied.">blanks</a>[0] == <span class="charliteral">&#39;\0&#39;</span>)
 <a name="l00583"></a>00583                 <span class="keywordflow">for</span> (i = 0; i &lt; SCREEN_WIDTH; i++){
-<a name="l00584"></a>00584                         <a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="TODO Temporary buffer.">blanks</a>[i] = <span class="charliteral">&#39; &#39;</span>;
+<a name="l00584"></a>00584                         <a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="Contains elements that will be copied.">blanks</a>[i] = <span class="charliteral">&#39; &#39;</span>;
 <a name="l00585"></a>00585                 }
 <a name="l00586"></a>00586 <span class="preprocessor">#ifdef CL</span>
 <a name="l00587"></a>00587 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (CL != NULL) {
@@ -675,7 +675,7 @@ function toggleVisibility(linkObj) {
 <a name="l00591"></a>00591 <span class="preprocessor"></span>                tputs(CL, LINES, __cputchar);
 <a name="l00592"></a>00592 <span class="preprocessor">#endif</span>
 <a name="l00593"></a>00593 <span class="preprocessor"></span>                <span class="keywordflow">for</span> (i = 0; i &lt; SCREEN_HEIGHT; i++){
-<a name="l00594"></a>00594                         memcpy(<a class="code" href="../../da/db5/playit_8c_a7a408709449b438da352accfc424150b.html#a7a408709449b438da352accfc424150b" title="The game area.">screen</a>[i], <a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="TODO Temporary buffer.">blanks</a>, SCREEN_WIDTH);
+<a name="l00594"></a>00594                         memcpy(<a class="code" href="../../da/db5/playit_8c_a7a408709449b438da352accfc424150b.html#a7a408709449b438da352accfc424150b" title="The game area.">screen</a>[i], <a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="Contains elements that will be copied.">blanks</a>, SCREEN_WIDTH);
 <a name="l00595"></a>00595                 }
 <a name="l00596"></a>00596         } <span class="keywordflow">else</span>
 <a name="l00597"></a>00597 <span class="preprocessor">#else</span>
@@ -705,7 +705,7 @@ function toggleVisibility(linkObj) {
 <a name="l00623"></a>00623 <span class="preprocessor"></span>        tputs(CE, 1, __cputchar);
 <a name="l00624"></a>00624 <span class="preprocessor">#endif</span>
 <a name="l00625"></a>00625 <span class="preprocessor"></span>        <span class="keywordflow">else</span> {
-<a name="l00626"></a>00626                 fwrite(<a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="TODO Temporary buffer.">blanks</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">char</span>), SCREEN_WIDTH - <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, stdout);
+<a name="l00626"></a>00626                 fwrite(<a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="Contains elements that will be copied.">blanks</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">char</span>), SCREEN_WIDTH - <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, stdout);
 <a name="l00627"></a>00627                 <span class="keywordflow">if</span> (COLS != SCREEN_WIDTH){
 <a name="l00628"></a>00628                         mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, SCREEN_WIDTH, <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>);
 <a name="l00629"></a>00629                 }
@@ -716,7 +716,7 @@ function toggleVisibility(linkObj) {
 <a name="l00634"></a>00634                         mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, SCREEN_WIDTH - 1, <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>);
 <a name="l00635"></a>00635                 }
 <a name="l00636"></a>00636         }
-<a name="l00637"></a>00637         memcpy(&amp;<a class="code" href="../../da/db5/playit_8c_a7a408709449b438da352accfc424150b.html#a7a408709449b438da352accfc424150b" title="The game area.">screen</a>[<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>][<a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>], <a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="TODO Temporary buffer.">blanks</a>, SCREEN_WIDTH - cur_col);
+<a name="l00637"></a>00637         memcpy(&amp;<a class="code" href="../../da/db5/playit_8c_a7a408709449b438da352accfc424150b.html#a7a408709449b438da352accfc424150b" title="The game area.">screen</a>[<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>][<a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>], <a class="code" href="../../da/db5/playit_8c_ad563e4e01e375e9b457bc0ec31823ce5.html#ad563e4e01e375e9b457bc0ec31823ce5" title="Contains elements that will be copied.">blanks</a>, SCREEN_WIDTH - cur_col);
 <a name="l00638"></a>00638 <span class="preprocessor">#else</span>
 <a name="l00639"></a>00639 <span class="preprocessor"></span>errx(1,<span class="stringliteral">&quot;Missing necessary configuration entries.\nHunt will quit.\n&quot;</span>);
 <a name="l00640"></a>00640 <span class="preprocessor">#endif</span>
@@ -802,7 +802,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/db5/playit_8c.html">playit.c</a>      </li>
-      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Tue Jul 10 2012 12:37:16 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

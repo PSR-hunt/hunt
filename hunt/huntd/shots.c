@@ -196,7 +196,7 @@ void moveshots() {
 
 /**
  * Move a normal shot along its trajectory.
- * @param[in] bp A bullet. TODO
+ * @param[in,out] bp A bullet.
  * \return True if the shot has destroied something, false otherwise.
  */
 static int move_normal_shot(BULLET *bp) {
@@ -596,7 +596,7 @@ static void save_bullet(BULLET *bp) {
 #ifdef FLY
 /**
  * Update the position of a player in flight.
- * @param[in] pp A player. TODO
+ * @param[in,out] pp A player.
  */
 static void move_flyer(PLAYER *pp) {
 	int x, y;
@@ -690,8 +690,8 @@ static void move_flyer(PLAYER *pp) {
 
 /**
  * Handle explosions.
- * @param[in] bp A bullet. TODO
- * @param[in] next A bullet at the next iteration. TODO
+ * @param[in,out] bp A bullet.
+ * @param[in] next A bullet at the next iteration.
  */
 static void chkshot(BULLET *bp, BULLET* next) {
 	int y, x;
@@ -783,8 +783,8 @@ static void chkshot(BULLET *bp, BULLET* next) {
 # ifdef	OOZE
 /**
  * Handle slime shot exploding.
- * @param[in] bp A bullet. TODO
- * @param[in] next A bullet at the next iteration. TODO
+ * @param[in,out] bp A bullet.
+ * @param[in] next A bullet at the next iteration.
  */
 static void chkslime(BULLET *bp,BULLET *next) {
 	BULLET *nbp;
@@ -1052,7 +1052,7 @@ static int iswall(int y,int x) {
 /**
  * Take a shot out of the air.
  * @param[in] blist A bullet.
- * @param[in] obp The bullet at the next iteration. TODO
+ * @param[in] obp The bullet at the next iteration.
  */
 static void zapshot(BULLET *blist, BULLET *obp) {
 	BULLET *bp;
@@ -1169,7 +1169,7 @@ void fixshots(int y, int x, char over) {
 /**
  * Find the underlying character for a bullet when it lands on another bullet.
  * @param[in] blist A bullet.
- * @param[in] bp Another bullet, maybe on its trajectory. TODO
+ * @param[in,out] bp Another bullet, maybe on its trajectory.
  */
 static void find_under(BULLET *blist, BULLET *bp) {
 	BULLET *nbp;

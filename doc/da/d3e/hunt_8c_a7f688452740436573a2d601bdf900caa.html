@@ -166,7 +166,7 @@ function toggleVisibility(linkObj) {
 <p>Fills the name and team fields. </p>
 <p>[PSR] </p>
 
-<p>Definition at line <a class="el" href="../../da/d3e/hunt_8c_source.html#l01350">1350</a> of file <a class="el" href="../../da/d3e/hunt_8c_source.html">hunt.c</a>.</p>
+<p>Definition at line <a class="el" href="../../da/d3e/hunt_8c_source.html#l01347">1347</a> of file <a class="el" href="../../da/d3e/hunt_8c_source.html">hunt.c</a>.</p>
 <div class="fragment"><pre class="fragment">                      {
         <span class="keywordtype">int</span> i;
         <span class="keywordtype">char</span> *cp;
@@ -176,8 +176,8 @@ function toggleVisibility(linkObj) {
         <span class="keywordflow">while</span> (TRUE) {
                 <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] != <span class="charliteral">&#39;\0&#39;</span>) {
                         printf(<span class="stringliteral">&quot;Entering as &#39;%s&#39;&quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>);
-                        <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a> != <span class="charliteral">&#39; &#39;</span>) {
-                                printf(<span class="stringliteral">&quot; on team %c.\n&quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a>);
+                        <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> != <span class="charliteral">&#39; &#39;</span>) {
+                                printf(<span class="stringliteral">&quot; on team %c.\n&quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>);
                         } <span class="keywordflow">else</span> {
                                 putchar(<span class="charliteral">&#39;\n&#39;</span>);
                         }
@@ -208,11 +208,11 @@ function toggleVisibility(linkObj) {
                 }
         }
 
-        <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a> == <span class="charliteral">&#39; &#39;</span>) {
+        <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> == <span class="charliteral">&#39; &#39;</span>) {
                 printf(<span class="stringliteral">&quot;Enter your team (0-9 or nothing): &quot;</span>);
                 i = getchar();
                 <span class="keywordflow">if</span> (isdigit(i)) {
-                        <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the belonging team of a player.">team</a> = i;
+                        <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> = i;
                 }
                 <span class="keywordflow">while</span> (i != <span class="charliteral">&#39;\n&#39;</span> &amp;&amp; i != EOF) {
                         i = getchar();
@@ -230,7 +230,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/d3e/hunt_8c.html">hunt.c</a>      </li>
-      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Tue Jul 10 2012 12:37:16 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

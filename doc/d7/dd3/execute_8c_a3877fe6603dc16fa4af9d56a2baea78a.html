@@ -154,22 +154,25 @@ function toggleVisibility(linkObj) {
 <p>Fire a shot of the given type in the given direction. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pp</td><td>The player who want to fire a shot. TODO </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pp</td><td>The player who want to fire a shot. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">req_index</td><td>the type of the shot. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="../../d7/dd3/execute_8c_source.html#l00346">346</a> of file <a class="el" href="../../d7/dd3/execute_8c_source.html">execute.c</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/dd3/execute_8c_source.html#l00347">347</a> of file <a class="el" href="../../d7/dd3/execute_8c_source.html">execute.c</a>.</p>
 <div class="fragment"><pre class="fragment">                                          {
-        <span class="keywordflow">if</span> (pp == NULL)
+        <span class="keywordflow">if</span> (pp == NULL){
                 <span class="keywordflow">return</span>;
+        }
 <span class="preprocessor"># ifdef DEBUG</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (req_index &lt; 0 || req_index &gt;= MAXBOMB)
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (req_index &lt; 0 || req_index &gt;= MAXBOMB){
                 <a class="code" href="../../d6/dd9/draw_8c_a0a72206b1623ee3117d4c7d129f7c48b.html#a0a72206b1623ee3117d4c7d129f7c48b" title="Prints messages on the terminal of a given player (under the maze).">message</a>(pp, <span class="stringliteral">&quot;What you do?&quot;</span>);
+        }
 <span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>        <span class="keywordflow">while</span> (req_index &gt;= 0 &amp;&amp; pp-&gt;p_ammo &lt; <a class="code" href="../../dc/d2c/extern_8c_a081025baa5e842c14fc22ec3b04a670c.html#a081025baa5e842c14fc22ec3b04a670c" title="The possible shot requests.">shot_req</a>[req_index])
+<span class="preprocessor"></span>        <span class="keywordflow">while</span> (req_index &gt;= 0 &amp;&amp; pp-&gt;p_ammo &lt; <a class="code" href="../../dc/d2c/extern_8c_a081025baa5e842c14fc22ec3b04a670c.html#a081025baa5e842c14fc22ec3b04a670c" title="The possible shot requests.">shot_req</a>[req_index]){
                 req_index--;
+        }
         <span class="keywordflow">if</span> (req_index &lt; 0) {
                 <a class="code" href="../../d6/dd9/draw_8c_a0a72206b1623ee3117d4c7d129f7c48b.html#a0a72206b1623ee3117d4c7d129f7c48b" title="Prints messages on the terminal of a given player (under the maze).">message</a>(pp, <span class="stringliteral">&quot;Not enough charges.&quot;</span>);
                 <span class="keywordflow">return</span>;
@@ -214,7 +217,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d7/dd3/execute_8c.html">execute.c</a>      </li>
-      <li class="footer">Generated on Mon Jul 9 2012 19:12:11 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Tue Jul 10 2012 12:37:16 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

@@ -152,14 +152,16 @@ void rollexpl(){
 
 /* There's about 700 walls in the initial maze.  So we pick a number
  * that keeps the maze relatively full. */
-# define MAXREMOVE	40 /**< TODO [PSR] */
+# define MAXREMOVE	40 /**< Maximum number of removed walls. [PSR] */
 
-static	REGEN	removed[MAXREMOVE]; /**< TODO [PSR] */
-static	REGEN	*rem_index = removed; /**< TODO [PSR] */
+static	REGEN	removed[MAXREMOVE]; /**< Removed walls container. [PSR] */
+static	REGEN	*rem_index = removed; /**< Pointer to the firts element of removed. [PSR] */
 
 /**
  *  remove_wall - add a location where the wall was blown away.
  *	If there is no space left over, put the a wall at the location currently pointed at.
+ *	@param[in] y A coordinate
+ *	@param[in] x A coordinate
  */
 static void remove_wall(int y,int x){
 	REGEN	*r;

@@ -250,6 +250,10 @@ static void do_announce(char *s) {
 	}
 }
 #else
+/**
+ * Query the local SMTP daemon to expand the RENDEZVOUS mailing
+ * list and fake a talk request to each address thus found.
+ */
 void faketalk() {
 	return;
 }
