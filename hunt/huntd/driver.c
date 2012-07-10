@@ -92,8 +92,8 @@ int main(int argc, char* argv[], char* env[]) {
 #ifdef INTERNET
 	unsigned short msg; /* Changed from u_short. [PSR] */
 	unsigned short reply; /* Changed from u_short. [PSR] */
-	/**
-	 * Edited namelen declaration type in order to match recvfrom() parameter. [PSR]
+	/*
+	 Edited namelen declaration type in order to match recvfrom() parameter. [PSR]
 	 */
 	unsigned int namelen; /* Changed from int. [PSR] */
 	SOCKET test;
@@ -287,10 +287,10 @@ static void init() {
 # ifdef SO_USELOOPBACK
 	int msg;
 # endif
-	/**
-	 * Edited len declaration type in order to match getsockname() parameter.
+	/*
+	  Edited len declaration type in order to match getsockname() parameter. [PSR]
 	 */
-	unsigned int len; /**< Changed from int. */
+	unsigned int len; /* Changed from int. */
 # endif
 
 # ifndef DEBUG
@@ -305,16 +305,16 @@ static void init() {
 	if (setsid() == -1) {
 		err(1, "setsid");
 	}
-	(void) signal(SIGHUP, SIG_IGN);
-	(void) signal(SIGINT, SIG_IGN);
-	(void) signal(SIGQUIT, SIG_IGN);
+	(void) signal(SIGHUP, SIG_IGN); /* Ignore signal. [PSR]*/
+	(void) signal(SIGINT, SIG_IGN); /* Ignore signal. [PSR]*/
+	(void) signal(SIGQUIT, SIG_IGN); /* Ignore signal. [PSR]*/
 	(void) signal(SIGTERM, cleanup);
 # endif
 
 	dbg_chdir("/var/tmp");
 	/* just in case it core dumps */
 	(void) umask(0); /* No privacy at all! */
-	(void) signal(SIGPIPE, SIG_IGN);
+	(void) signal(SIGPIPE, SIG_IGN); /* Ignore signal. [PSR]*/
 
 # ifdef LOG
 # ifdef	SYSLOG_43
