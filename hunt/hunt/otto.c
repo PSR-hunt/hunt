@@ -212,13 +212,13 @@ void otto(int y,int x,char face) {
 	/* find something to do */
 	look_around();
 
-	done=FALSE;
+	done=false;
 
 	for (i = 0; i < NUMDIRECTIONS; i++) {
 		if (strchr(OPPONENT, flbr[i].what) != NULL) {
 			attack(i, &flbr[i]);
 			memset(been_there, 0, sizeof been_there);
-			done=TRUE;
+			done=true;
 			break;
 		}
 	}
@@ -362,12 +362,12 @@ STATIC void ottolook(int rel_dir,struct item *itemp) {
 			itemp->flags |= BEEN_SAME;
 		}
 
-		exit = FALSE;
+		exit = false;
 		for (r = row - 1; r >= 0 && !exit; r--) {
 			for (c = col - 1; (c < col + 2) && !exit; c++) {
 				ch = SCREEN(r, c);
 				if (stop_look(itemp, ch, row - r, c - col)) {
-					exit = TRUE;
+					exit = true;
 				} else {
 					if (c == col && !been_there[r][c]) {
 						itemp->flags &= ~BEEN;
@@ -389,12 +389,12 @@ STATIC void ottolook(int rel_dir,struct item *itemp) {
 		if (been_there[row + 1][col] & SOUTH) {
 			itemp->flags |= BEEN_SAME;
 		}
-		exit=FALSE;
+		exit=false;
 		for (r = row + 1; r < HEIGHT && !exit; r++) {
 			for (c = col - 1; (c < col + 2) && !exit; c++) {
 				ch = SCREEN(r, c);
 				if (stop_look(itemp, ch, r - row, col - c)) {
-					exit=TRUE;
+					exit=true;
 				} else {
 					if (c == col && !been_there[r][c]) {
 						itemp->flags &= ~BEEN;
@@ -416,12 +416,12 @@ STATIC void ottolook(int rel_dir,struct item *itemp) {
 		if (been_there[row][col - 1] & WEST) {
 			itemp->flags |= BEEN_SAME;
 		}
-		exit=FALSE;
+		exit=false;
 		for (c = col - 1; c >= 0 && !exit; c--) {
 			for (r = row - 1; r < (row + 2)&&!exit; r++) {
 				ch = SCREEN(r, c);
 				if (stop_look(itemp, ch, col - c, row - r)) {
-					exit=TRUE;
+					exit=true;
 				} else {
 					if (r == row && !been_there[r][c]) {
 						itemp->flags &= ~BEEN;
@@ -443,12 +443,12 @@ STATIC void ottolook(int rel_dir,struct item *itemp) {
 		if (been_there[row][col + 1] & EAST) {
 			itemp->flags |= BEEN_SAME;
 		}
-		exit=FALSE;
+		exit=false;
 		for (c = col + 1; c < WIDTH && !exit; c++) {
 			for (r = row - 1; r < (row + 2) && !exit; r++) {
 				ch = SCREEN(r, c);
 				if (stop_look(itemp, ch, c - col, r - row)) {
-					exit=TRUE;
+					exit=true;
 				} else {
 					if (r == row && !been_there[r][c]) {
 						itemp->flags &= ~BEEN;

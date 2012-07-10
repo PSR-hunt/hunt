@@ -395,26 +395,26 @@ static void move_drone(BULLET *bp) {
 	PLAYER *pp;
 
 	bool drone_move;
-	drone_move = FALSE;
+	drone_move = false;
 
 	/*
 	 * See if we can give someone a blast
 	 */
 	if ((is_player(Maze[bp->b_y][bp->b_x - 1])) && !drone_move) {
 		dir = WEST;
-		drone_move = TRUE;
+		drone_move = true;
 	}
 	else if ((is_player(Maze[bp->b_y - 1][bp->b_x])) && !drone_move) {
 		dir = NORTH;
-		drone_move = TRUE;
+		drone_move = true;
 	}
 	else if ((is_player(Maze[bp->b_y + 1][bp->b_x])) && !drone_move) {
 		dir = SOUTH;
-		drone_move = TRUE;
+		drone_move = true;
 	}
 	else if ((is_player(Maze[bp->b_y][bp->b_x + 1])) && !drone_move) {
 		dir = EAST;
-		drone_move = TRUE;
+		drone_move = true;
 	}
 
 	if (!drone_move) {
@@ -447,7 +447,7 @@ static void move_drone(BULLET *bp) {
 		 */
 		if (count == 1) {
 			dir = mask;
-			drone_move = TRUE;
+			drone_move = true;
 		}
 	}
 
@@ -1112,7 +1112,7 @@ PLAYER * play_at(int y, int x) {
 }
 
 /**
- * Return TRUE if the bullet direction faces the opposite direction of the player in the maze.
+ * Return true if the bullet direction faces the opposite direction of the player in the maze.
  * @param[in] face The direction of the player.
  * @param[in] dir The direction of the bullet.
  * \return True if the bullet direction faces the opposite direcrtion of the player, false otherwise.

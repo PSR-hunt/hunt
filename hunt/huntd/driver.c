@@ -875,7 +875,7 @@ int rand_num(int range) {
 
 /**
  * Check to see if we have any characters in the input queue;
- * if we do, read them, stash them away, and return TRUE; else return FALSE.
+ * if we do, read them, stash them away, and return true; else return false.
  * @param[in,out] pp A player.
  * @param[in] i An identifier.
  * \return True if there are any characters in the input queue, false otherwise.

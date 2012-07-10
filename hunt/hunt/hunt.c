@@ -319,7 +319,7 @@ int main(int argc, char* argv[]) {
 	(void) signal(SIGTSTP, tstp);
 #endif
 
-	exit_outer_loop = FALSE;
+	exit_outer_loop = false;
 	while (!exit_outer_loop) {
 # ifdef	INTERNET
 		find_driver(true);
@@ -363,7 +363,7 @@ int main(int argc, char* argv[]) {
 			if (Send_message != NULL) {
 				do_message();
 				if (enter_status == Q_MESSAGE) {
-					exit_outer_loop = TRUE;
+					exit_outer_loop = true;
 					break;
 				} else {
 					Send_message = NULL;
@@ -1352,8 +1352,8 @@ void fill_in_blanks() {
 	char *cp;
 	bool must_continue;
 
-	must_continue = FALSE;
-	while (TRUE) {
+	must_continue = false;
+	while (true) {
 		if (name[0] != '\0') {
 			printf("Entering as '%s'", name);
 			if (team != ' ') {
@@ -1377,7 +1377,7 @@ void fill_in_blanks() {
 			if (!isprint((unsigned char)*cp)) {
 				name[0] = '\0';
 				printf("Illegal character in your code name.\n");
-				must_continue = TRUE;
+				must_continue = true;
 				break;
 			}
 		}
