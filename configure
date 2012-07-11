@@ -652,9 +652,6 @@ distclean maintainer-clean:	clean
 	# Kills huntd. [PSR]
 	killall -9 huntd
 
-	# Kills hunt. [PSR]
-	killall -9 HUNT
-
 .PHONY:	install install-strip
 
 install:	$install_dependencies
