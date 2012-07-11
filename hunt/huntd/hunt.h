@@ -295,10 +295,9 @@ extern int slime_req[];
 # define	C_MONITOR			1
 # define	C_MESSAGE			2
 # define	C_SCORES			3
-# define	C_PASSWORD			4	/* Added as support for server password. [PSR] */
-# define	C_AUTH				5 //TODO
-# define	C_AUTH_SUCCESS		6 //TODO
-# define	C_REFUSE			7 //TODO
+# define	C_AUTH				4 /* Added as support for server password. [PSR] */
+# define	C_AUTH_SUCCESS		5 /* Added as support for server password. [PSR] */
+# define	C_REFUSE			6 /* Added as support for server password. [PSR] */
 
 # ifdef MONITOR
 # define	C_TESTMSG()	(Query_driver ? C_MESSAGE :\

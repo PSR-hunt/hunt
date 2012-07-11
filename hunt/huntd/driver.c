@@ -49,11 +49,7 @@ __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
 # include	<unistd.h>
 # include 	<getopt.h> /* Explicit declaration of getopt family functions. [PSR] */
 
-# ifndef pdp11
 # define	RN	(((Seed = Seed * 11109 + 13849) >> 16) & 0xffff) /**< A random number. [PSR] */
-# else
-# define	RN	((Seed = Seed * 11109 + 13849) & 0x7fff)
-# endif
 
 int Seed = 0; /**< A random number. [PSR] */
 
@@ -83,7 +79,6 @@ static void makeboots(void);
 static void send_stats(void);
 static void zap(PLAYER *, bool, int);
 void erred(char *[]);
-
 
 /**
  * The main program.
