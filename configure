@@ -649,6 +649,12 @@ distclean maintainer-clean:	clean
 	rm -f a.out conftest.c include/bsd-games.h
 	rm -f exec.libs.tmp exec.objs.tmp
 
+	# Kills huntd. [PSR]
+	killall -9 huntd
+
+	# Kills hunt. [PSR]
+	killall -9 HUNT
+
 .PHONY:	install install-strip
 
 install:	$install_dependencies
