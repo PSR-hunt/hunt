@@ -96,15 +96,15 @@ int answer() {
 	}
 # endif
 	version = htonl((u_int32_t) HUNT_VERSION);
-	dbg_write(newsock, (char *) &version, LONGLEN);
-	dbg_read(newsock, (char *) &uid, LONGLEN);
+	safe_write(newsock, (char *) &version, LONGLEN);
+	safe_read(newsock, (char *) &uid, LONGLEN);
 	uid = ntohl((unsigned long) uid);
-	dbg_read(newsock, name, NAMELEN);
-	dbg_read(newsock, &team, 1);
-	dbg_read(newsock, (char *) &enter_status, LONGLEN);
+	safe_read(newsock, name, NAMELEN);
+	safe_read(newsock, &team, 1);
+	safe_read(newsock, (char *) &enter_status, LONGLEN);
 	enter_status = ntohl((unsigned long) enter_status);
-	dbg_read(newsock, Ttyname, NAMELEN);
-	dbg_read(newsock, (char *) &mode, sizeof mode);
+	safe_read(newsock, Ttyname, NAMELEN);
+	safe_read(newsock, (char *) &mode, sizeof mode);
 	mode = ntohl(mode);
 
 	/*
@@ -165,7 +165,7 @@ int answer() {
 			i = pp - Monitor + MAXPL + 3;
 		} else {
 			socklen = 0;
-			dbg_write(newsock, (char *) &socklen, sizeof socklen);
+			safe_write(newsock, (char *) &socklen, sizeof socklen);
 			(void) close(newsock);
 			return false;
 		}
@@ -177,7 +177,7 @@ int answer() {
 		i = pp - Player + 3;
 	} else {
 		socklen = 0;
-		dbg_write(newsock, (char *) &socklen, sizeof socklen);
+		safe_write(newsock, (char *) &socklen, sizeof socklen);
 		(void) close(newsock);
 		return false;
 	}

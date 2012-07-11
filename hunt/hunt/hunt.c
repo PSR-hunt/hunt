@@ -754,7 +754,7 @@ void dump_scores(SOCKET host) {
 		err(1, "connect");
 	}
 	while ((cnt = read(s, buf, BUFSIZ)) > 0) {
-		dbg_write(fileno(stdout), buf, cnt);
+		safe_write(fileno(stdout), buf, cnt);
 	}
 	(void) close(s);
 }
@@ -904,7 +904,7 @@ void rmnl(char *s) {
 		}
 		if (ch == 'y') {
 			if (Socket != 0) {
-				dbg_write(Socket, "q", 1);
+				safe_write(Socket, "q", 1);
 				(void) close(Socket);
 			}
 			leavex(0, (char *) NULL);

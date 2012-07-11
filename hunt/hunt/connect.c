@@ -55,13 +55,13 @@ void do_connect(const char *name, char team, long enter_status) {
 	if (uid == 0) {
 		uid = htonl(getuid());
 	}
-	dbg_write(Socket, (char *) &uid, LONGLEN);
-	dbg_write(Socket, name, NAMELEN);
-	dbg_write(Socket, &team, 1);
+	safe_write(Socket, (char *) &uid, LONGLEN);
+	safe_write(Socket, name, NAMELEN);
+	safe_write(Socket, &team, 1);
 	enter_status = htonl(enter_status);
-	dbg_write(Socket, (char *) &enter_status, LONGLEN);
+	safe_write(Socket, (char *) &enter_status, LONGLEN);
 	(void) strcpy(Buf, ttyname(fileno(stderr)));
-	dbg_write(Socket, Buf, NAMELEN);
+	safe_write(Socket, Buf, NAMELEN);
 # ifdef INTERNET
 	if (Send_message != NULL) {
 		mode = C_MESSAGE;
@@ -76,5 +76,5 @@ void do_connect(const char *name, char team, long enter_status) {
 # endif
 	mode = C_PLAYER;
 	mode = htonl(mode);
-	dbg_write(Socket, (char *) &mode, sizeof mode);
+	safe_write(Socket, (char *) &mode, sizeof mode);
 }

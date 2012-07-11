@@ -172,7 +172,7 @@ function toggleVisibility(linkObj) {
                 <span class="keywordflow">return</span>;
         }
         <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a> &lt;= 0 &amp;&amp; !<a class="code" href="../../da/d3e/hunt_8c_a3bd306747807d95cebe18856fff82c71.html#a3bd306747807d95cebe18856fff82c71" title="If true turns off beeping when you reach the typeahead limit.">no_beep</a>) {
-                dbg_write(1, <span class="stringliteral">&quot;\7&quot;</span>, 1);
+                safe_write(1, <span class="stringliteral">&quot;\7&quot;</span>, 1);
                 <span class="comment">/* CTRL(&#39;G&#39;) */</span>
                 <span class="keywordflow">return</span>;
         }
@@ -201,7 +201,7 @@ function toggleVisibility(linkObj) {
                 <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a> &lt; 0){
                         count += <a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a>;
                 }
-                dbg_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, inp, count);
+                safe_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, inp, count);
         }
 }
 </pre></div>
@@ -215,7 +215,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/db5/playit_8c.html">playit.c</a>      </li>
-      <li class="footer">Generated on Wed Jul 11 2012 16:15:49 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Wed Jul 11 2012 21:40:25 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

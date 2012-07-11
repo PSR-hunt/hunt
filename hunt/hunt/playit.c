@@ -299,7 +299,7 @@ static void send_stuff() {
 		return;
 	}
 	if (nchar_send <= 0 && !no_beep) {
-		dbg_write(1, "\7", 1);
+		safe_write(1, "\7", 1);
 		/* CTRL('G') */
 		return;
 	}
@@ -328,7 +328,7 @@ static void send_stuff() {
 		if (nchar_send < 0){
 			count += nchar_send;
 		}
-		dbg_write(Socket, inp, count);
+		safe_write(Socket, inp, count);
 	}
 }
 

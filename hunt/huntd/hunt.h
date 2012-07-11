@@ -531,19 +531,19 @@ SIGNAL_TYPE tstp(int);
  * Wrapper for write function that prints on standard error stream in case of failure.
  * [PSR]
  */
-# define dbg_write(fd, buf, n) if(write(fd, buf, n)<0) fprintf(stderr, "Error calling write function\n");
+# define safe_write(fd, buf, n) if(write(fd, buf, n)<0) fprintf(stderr, "Error calling write function\n");
 
 /**
  * Wrapper for read function that prints on standard error stream in case of failure.
  * [PSR]
  */
-# define dbg_read(fd, buf, nbytes) if(read(fd, buf, nbytes)<0) fprintf(stderr, "Error calling read function\n");
+# define safe_read(fd, buf, nbytes) if(read(fd, buf, nbytes)<0) fprintf(stderr, "Error calling read function\n");
 
 /**
  * Wrapper for chdir function that prints on standard error stream in case of failure.
  * [PSR]
  */
-# define dbg_chdir(path) if(chdir(path)<0) fprintf(stderr, "Error calling chdir function\n");
+# define safe_chdir(path) if(chdir(path)<0) fprintf(stderr, "Error calling chdir function\n");
 
 #ifndef INFTIM
 #define INFTIM -1

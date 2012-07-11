@@ -310,7 +310,7 @@ static void init() {
 	(void) signal(SIGTERM, cleanup);
 # endif
 
-	dbg_chdir("/var/tmp");
+	safe_chdir("/var/tmp");
 	/* just in case it core dumps */
 	(void) umask(0); /* No privacy at all! */
 	(void) signal(SIGPIPE, SIG_IGN); /* Ignore signal. [PSR]*/
