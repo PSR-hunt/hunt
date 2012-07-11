@@ -401,7 +401,7 @@ int main(int argc, char* argv[]) {
 			start_driver();
 
 			do {
-				(void) close(Socket);
+				safe_close(Socket);
 				if ((Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0)) < 0) {
 					err(1, "socket");
 				}
@@ -652,7 +652,7 @@ SOCKET * list_drivers() {
 		listv[listc].sin_addr = local_address;
 		listv[listc].sin_port = htons(0);
 
-		(void) close(test_socket);
+		safe_close(test_socket);
 		initial = false;
 		return listv;
 	}
@@ -756,7 +756,7 @@ void dump_scores(SOCKET host) {
 	while ((cnt = read(s, buf, BUFSIZ)) > 0) {
 		safe_write(fileno(stdout), buf, cnt);
 	}
-	(void) close(s);
+	safe_close(s);
 }
 # endif
 # endif
@@ -798,7 +798,7 @@ void start_driver() {
 	if (procid == 0) {
 		(void) signal(SIGINT, SIG_IGN);
 # ifndef INTERNET
-		(void) close(Socket);
+		safe_close(Socket);
 # else
 		if (use_port == NULL)
 # endif
@@ -905,7 +905,7 @@ void rmnl(char *s) {
 		if (ch == 'y') {
 			if (Socket != 0) {
 				safe_write(Socket, "q", 1);
-				(void) close(Socket);
+				safe_close(Socket);
 			}
 			leavex(0, (char *) NULL);
 		} else if (ch == 'n') {

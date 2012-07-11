@@ -241,7 +241,7 @@ function toggleVisibility(linkObj) {
                         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, READY, 0);
                         (void) fflush(pp-&gt;p_output);
                 }
-                (void) close(newsock);
+                safe_close(newsock);
                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
         }
         <span class="keywordflow">else</span>
@@ -254,7 +254,7 @@ function toggleVisibility(linkObj) {
                 } <span class="keywordflow">else</span> {
                         socklen = 0;
                         safe_write(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen);
-                        (void) close(newsock);
+                        safe_close(newsock);
                         <span class="keywordflow">return</span> <span class="keyword">false</span>;
                 }
         }
@@ -266,7 +266,7 @@ function toggleVisibility(linkObj) {
         } <span class="keywordflow">else</span> {
                 socklen = 0;
                 safe_write(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen);
-                (void) close(newsock);
+                safe_close(newsock);
                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
         }
 
@@ -305,7 +305,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d6/dfd/answer_8c.html">answer.c</a>      </li>
-      <li class="footer">Generated on Wed Jul 11 2012 21:40:25 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Wed Jul 11 2012 22:00:10 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

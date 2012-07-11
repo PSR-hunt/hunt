@@ -922,7 +922,7 @@ static int havechar(PLAYER *pp, int i) {
 		(void) fclose(pp->p_output);
 	}
 # endif
-	(void) close(Socket);
+	safe_close(Socket);
 # ifdef AF_UNIX_HACK
 	(void) unlink(Sock_name);
 # endif
@@ -967,7 +967,7 @@ static void send_stats() {
 # else
 		warn("fdopen");
 # endif
-		(void) close(s);
+		safe_close(s);
 		return;
 	}
 

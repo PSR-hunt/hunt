@@ -153,7 +153,7 @@ int answer() {
 			sendcom(pp, READY, 0);
 			(void) fflush(pp->p_output);
 		}
-		(void) close(newsock);
+		safe_close(newsock);
 		return false;
 	}
 	else
@@ -166,7 +166,7 @@ int answer() {
 		} else {
 			socklen = 0;
 			safe_write(newsock, (char *) &socklen, sizeof socklen);
-			(void) close(newsock);
+			safe_close(newsock);
 			return false;
 		}
 	}
@@ -178,7 +178,7 @@ int answer() {
 	} else {
 		socklen = 0;
 		safe_write(newsock, (char *) &socklen, sizeof socklen);
-		(void) close(newsock);
+		safe_close(newsock);
 		return false;
 	}
 

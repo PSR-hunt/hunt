@@ -545,6 +545,12 @@ SIGNAL_TYPE tstp(int);
  */
 # define safe_chdir(path) if(chdir(path)<0) fprintf(stderr, "Error calling chdir function\n");
 
+/**
+ * Wrapper for close function that prints on standard error stream in case of failure.
+ * [PSR]
+ */
+#define safe_close(fd) if(close(fd)<0) fprintf(stderr, "Error calling close function\n");
+
 #ifndef INFTIM
 #define INFTIM -1
 #endif

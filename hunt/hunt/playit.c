@@ -184,7 +184,7 @@ void playit() {
 			if ((ch = GETCHR()) == LAST_PLAYER)
 				Last_player = true;
 			ch = EOF;
-			(void) close(Socket);
+			safe_close(Socket);
 			return;
 		case BELL:
 			beep();
@@ -239,7 +239,7 @@ void playit() {
 			break;
 		}
 	}
-	(void) close(Socket);
+	safe_close(Socket);
 }
 
 /**
@@ -720,5 +720,5 @@ void do_message() {
 		/* NOTREACHED */
 	}
 # endif
-	(void) close(Socket);
+	safe_close(Socket);
 }

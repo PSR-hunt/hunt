@@ -512,7 +512,7 @@ function toggleVisibility(linkObj) {
 <a name="l00401"></a>00401                         <a class="code" href="../../da/d3e/hunt_8c_afabea9c66d90a27ea049c6715ce08b42.html#afabea9c66d90a27ea049c6715ce08b42" title="Manages the game connection.">start_driver</a>();
 <a name="l00402"></a>00402 
 <a name="l00403"></a>00403                         <span class="keywordflow">do</span> {
-<a name="l00404"></a>00404                                 (void) close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
+<a name="l00404"></a>00404                                 safe_close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
 <a name="l00405"></a>00405                                 <span class="keywordflow">if</span> ((<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a> = socket(SOCK_FAMILY, SOCK_STREAM, 0)) &lt; 0) {
 <a name="l00406"></a>00406                                         err(1, <span class="stringliteral">&quot;socket&quot;</span>);
 <a name="l00407"></a>00407                                 }
@@ -748,7 +748,7 @@ function toggleVisibility(linkObj) {
 <a name="l00652"></a>00652                 listv[listc].sin_addr = local_address;
 <a name="l00653"></a>00653                 listv[listc].sin_port = htons(0);
 <a name="l00654"></a>00654 
-<a name="l00655"></a>00655                 (void) close(test_socket);
+<a name="l00655"></a>00655                 safe_close(test_socket);
 <a name="l00656"></a>00656                 initial = <span class="keyword">false</span>;
 <a name="l00657"></a>00657                 <span class="keywordflow">return</span> listv;
 <a name="l00658"></a>00658         }
@@ -843,7 +843,7 @@ function toggleVisibility(linkObj) {
 <a name="l00756"></a>00756         <span class="keywordflow">while</span> ((cnt = read(s, buf, BUFSIZ)) &gt; 0) {
 <a name="l00757"></a>00757                 safe_write(fileno(stdout), buf, cnt);
 <a name="l00758"></a>00758         }
-<a name="l00759"></a>00759         (void) close(s);
+<a name="l00759"></a>00759         safe_close(s);
 <a name="l00760"></a>00760 }
 <a name="l00761"></a>00761 <span class="preprocessor"># endif</span>
 <a name="l00762"></a>00762 <span class="preprocessor"></span><span class="preprocessor"># endif</span>
@@ -881,7 +881,7 @@ function toggleVisibility(linkObj) {
 <a name="l00798"></a>00798         <span class="keywordflow">if</span> (procid == 0) {
 <a name="l00799"></a>00799                 (void) signal(SIGINT, SIG_IGN);
 <a name="l00800"></a>00800 <span class="preprocessor"># ifndef INTERNET</span>
-<a name="l00801"></a>00801 <span class="preprocessor"></span>                (void) close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
+<a name="l00801"></a>00801 <span class="preprocessor"></span>                safe_close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
 <a name="l00802"></a>00802 <span class="preprocessor"># else</span>
 <a name="l00803"></a>00803 <span class="preprocessor"></span>                <span class="keywordflow">if</span> (use_port == NULL)
 <a name="l00804"></a>00804 <span class="preprocessor"># endif</span>
@@ -966,7 +966,7 @@ function toggleVisibility(linkObj) {
 <a name="l00905"></a>00905                 <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;y&#39;</span>) {
 <a name="l00906"></a>00906                         <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a> != 0) {
 <a name="l00907"></a>00907                                 safe_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, <span class="stringliteral">&quot;q&quot;</span>, 1);
-<a name="l00908"></a>00908                                 (void) close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
+<a name="l00908"></a>00908                                 safe_close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
 <a name="l00909"></a>00909                         }
 <a name="l00910"></a>00910                         <a class="code" href="../../da/d3e/hunt_8c_ad5bc8590e5cb02383be0d63a2052d461.html#ad5bc8590e5cb02383be0d63a2052d461" title="Leave the game somewhat gracefully, restoring all current tty stats.">leavex</a>(0, (<span class="keywordtype">char</span> *) NULL);
 <a name="l00911"></a>00911                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;n&#39;</span>) {
@@ -1423,7 +1423,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/d3e/hunt_8c.html">hunt.c</a>      </li>
-      <li class="footer">Generated on Wed Jul 11 2012 21:40:25 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Wed Jul 11 2012 22:00:10 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

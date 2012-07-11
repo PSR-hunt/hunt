@@ -1,10 +1,11 @@
 #include "hunt.h"
+#include <stdlib.h>
 #include <stdarg.h>
 
 /**
  * Reimplements the syslog function in order to avoid the use of %m.
  * @param[in] priority an integer that indicates the number of an error.
- * @param[in] format the error message. TODO
+ * @param[out] format the error message.
  * [PSR]
  */
 void iso_syslog(int priority, const char *format, ...) {
@@ -12,6 +13,11 @@ void iso_syslog(int priority, const char *format, ...) {
 	char *placeholder = NULL;
 	char *remaining = NULL;
 	char *iso_format = '\0';
+
+	remaining = (char *) malloc(sizeof(char) * strlen(format));
+	if(remaining == NULL){
+		exit(1);
+	}
 
 	strcpy(remaining, format);
 

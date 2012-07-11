@@ -118,40 +118,46 @@ function toggleVisibility(linkObj) {
 </div>
 <div class="contents">
 <a href="../../d3/d91/utils_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &quot;hunt.h&quot;</span>
-<a name="l00002"></a>00002 <span class="preprocessor">#include &lt;stdarg.h&gt;</span>
-<a name="l00003"></a>00003 
-<a name="l00010"></a><a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17">00010</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(<span class="keywordtype">int</span> priority, <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ...) {
-<a name="l00011"></a>00011         va_list args;
-<a name="l00012"></a>00012         <span class="keywordtype">char</span> *placeholder = NULL;
-<a name="l00013"></a>00013         <span class="keywordtype">char</span> *remaining = NULL;
-<a name="l00014"></a>00014         <span class="keywordtype">char</span> *iso_format = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l00015"></a>00015 
-<a name="l00016"></a>00016         strcpy(remaining, format);
-<a name="l00017"></a>00017 
-<a name="l00018"></a>00018         <span class="keywordflow">while</span> ((placeholder = strchr(remaining, <span class="charliteral">&#39;%&#39;</span>))) {
-<a name="l00019"></a>00019                 <span class="keywordflow">if</span> (*(placeholder + 1) == <span class="charliteral">&#39;m&#39;</span>) {
-<a name="l00020"></a>00020                         strncat(iso_format, remaining, placeholder - remaining);
-<a name="l00021"></a>00021                         strcat(iso_format, strerror(errno));
-<a name="l00022"></a>00022                         remaining = placeholder + 2;
-<a name="l00023"></a>00023                 }
-<a name="l00024"></a>00024         }
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026         strcat(iso_format, remaining);
-<a name="l00027"></a>00027 
-<a name="l00028"></a>00028         va_start(args, format);
-<a name="l00029"></a>00029 
-<a name="l00030"></a>00030         vsyslog(priority, iso_format, args);
+<a name="l00002"></a>00002 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
+<a name="l00003"></a>00003 <span class="preprocessor">#include &lt;stdarg.h&gt;</span>
+<a name="l00004"></a>00004 
+<a name="l00011"></a><a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17">00011</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(<span class="keywordtype">int</span> priority, <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ...) {
+<a name="l00012"></a>00012         va_list args;
+<a name="l00013"></a>00013         <span class="keywordtype">char</span> *placeholder = NULL;
+<a name="l00014"></a>00014         <span class="keywordtype">char</span> *remaining = NULL;
+<a name="l00015"></a>00015         <span class="keywordtype">char</span> *iso_format = <span class="charliteral">&#39;\0&#39;</span>;
+<a name="l00016"></a>00016 
+<a name="l00017"></a>00017         remaining = (<span class="keywordtype">char</span> *) malloc(<span class="keyword">sizeof</span>(<span class="keywordtype">char</span>) * strlen(format));
+<a name="l00018"></a>00018         <span class="keywordflow">if</span>(remaining == NULL){
+<a name="l00019"></a>00019                 exit(1);
+<a name="l00020"></a>00020         }
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022         strcpy(remaining, format);
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024         <span class="keywordflow">while</span> ((placeholder = strchr(remaining, <span class="charliteral">&#39;%&#39;</span>))) {
+<a name="l00025"></a>00025                 <span class="keywordflow">if</span> (*(placeholder + 1) == <span class="charliteral">&#39;m&#39;</span>) {
+<a name="l00026"></a>00026                         strncat(iso_format, remaining, placeholder - remaining);
+<a name="l00027"></a>00027                         strcat(iso_format, strerror(errno));
+<a name="l00028"></a>00028                         remaining = placeholder + 2;
+<a name="l00029"></a>00029                 }
+<a name="l00030"></a>00030         }
 <a name="l00031"></a>00031 
-<a name="l00032"></a>00032         va_end(args);
+<a name="l00032"></a>00032         strcat(iso_format, remaining);
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034         <span class="keywordflow">return</span>;
-<a name="l00035"></a>00035 }
+<a name="l00034"></a>00034         va_start(args, format);
+<a name="l00035"></a>00035 
+<a name="l00036"></a>00036         vsyslog(priority, iso_format, args);
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038         va_end(args);
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040         <span class="keywordflow">return</span>;
+<a name="l00041"></a>00041 }
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d3/d91/utils_8c.html">utils.c</a>      </li>
-      <li class="footer">Generated on Wed Jul 11 2012 16:15:49 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Wed Jul 11 2012 22:00:10 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
