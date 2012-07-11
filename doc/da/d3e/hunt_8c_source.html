@@ -430,7 +430,7 @@ function toggleVisibility(linkObj) {
 <a name="l00319"></a>00319 <span class="preprocessor"></span>        (void) signal(SIGTSTP, tstp);
 <a name="l00320"></a>00320 <span class="preprocessor">#endif</span>
 <a name="l00321"></a>00321 <span class="preprocessor"></span>
-<a name="l00322"></a>00322         exit_outer_loop = FALSE;
+<a name="l00322"></a>00322         exit_outer_loop = <span class="keyword">false</span>;
 <a name="l00323"></a>00323         <span class="keywordflow">while</span> (!exit_outer_loop) {
 <a name="l00324"></a>00324 <span class="preprocessor"># ifdef INTERNET</span>
 <a name="l00325"></a>00325 <span class="preprocessor"></span>                find_driver(<span class="keyword">true</span>);
@@ -474,7 +474,7 @@ function toggleVisibility(linkObj) {
 <a name="l00363"></a>00363                         <span class="keywordflow">if</span> (Send_message != NULL) {
 <a name="l00364"></a>00364                                 <a class="code" href="../../da/db5/playit_8c_ae1facc7d5518cf6c1b7f4b6e52cf7144.html#ae1facc7d5518cf6c1b7f4b6e52cf7144" title="Send a message to the driver and return.">do_message</a>();
 <a name="l00365"></a>00365                                 <span class="keywordflow">if</span> (enter_status == Q_MESSAGE) {
-<a name="l00366"></a>00366                                         exit_outer_loop = TRUE;
+<a name="l00366"></a>00366                                         exit_outer_loop = <span class="keyword">true</span>;
 <a name="l00367"></a>00367                                         <span class="keywordflow">break</span>;
 <a name="l00368"></a>00368                                 } <span class="keywordflow">else</span> {
 <a name="l00369"></a>00369                                         Send_message = NULL;
@@ -1371,8 +1371,8 @@ function toggleVisibility(linkObj) {
 <a name="l01352"></a>01352         <span class="keywordtype">char</span> *cp;
 <a name="l01353"></a>01353         <span class="keywordtype">bool</span> must_continue;
 <a name="l01354"></a>01354 
-<a name="l01355"></a>01355         must_continue = FALSE;
-<a name="l01356"></a>01356         <span class="keywordflow">while</span> (TRUE) {
+<a name="l01355"></a>01355         must_continue = <span class="keyword">false</span>;
+<a name="l01356"></a>01356         <span class="keywordflow">while</span> (<span class="keyword">true</span>) {
 <a name="l01357"></a>01357                 <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] != <span class="charliteral">&#39;\0&#39;</span>) {
 <a name="l01358"></a>01358                         printf(<span class="stringliteral">&quot;Entering as &#39;%s&#39;&quot;</span>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>);
 <a name="l01359"></a>01359                         <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a> != <span class="charliteral">&#39; &#39;</span>) {
@@ -1396,7 +1396,7 @@ function toggleVisibility(linkObj) {
 <a name="l01377"></a>01377                         <span class="keywordflow">if</span> (!isprint((<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>)*cp)) {
 <a name="l01378"></a>01378                                 <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>[0] = <span class="charliteral">&#39;\0&#39;</span>;
 <a name="l01379"></a>01379                                 printf(<span class="stringliteral">&quot;Illegal character in your code name.\n&quot;</span>);
-<a name="l01380"></a>01380                                 must_continue = TRUE;
+<a name="l01380"></a>01380                                 must_continue = <span class="keyword">true</span>;
 <a name="l01381"></a>01381                                 <span class="keywordflow">break</span>;
 <a name="l01382"></a>01382                         }
 <a name="l01383"></a>01383                 }
@@ -1423,7 +1423,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/d3e/hunt_8c.html">hunt.c</a>      </li>
-      <li class="footer">Generated on Tue Jul 10 2012 15:52:47 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Wed Jul 11 2012 10:05:50 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

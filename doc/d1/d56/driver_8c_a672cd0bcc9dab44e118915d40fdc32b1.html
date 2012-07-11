@@ -153,7 +153,7 @@ function toggleVisibility(linkObj) {
 <p><p>&lt; Edited declaration type in order to match accept() parameter.[PSR] </p>
 </p>
 
-<p>Definition at line <a class="el" href="../../d1/d56/driver_8c_source.html#l00938">938</a> of file <a class="el" href="../../d1/d56/driver_8c_source.html">driver.c</a>.</p>
+<p>Definition at line <a class="el" href="../../d1/d56/driver_8c_source.html#l00936">936</a> of file <a class="el" href="../../d1/d56/driver_8c_source.html">driver.c</a>.</p>
 <div class="fragment"><pre class="fragment">                         {
         IDENT *ip;
         FILE *fp;
@@ -170,7 +170,7 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span>        s = accept(<a class="code" href="../../dc/d2c/extern_8c_ae58c2415cf1178457fa1254234c3f017.html#ae58c2415cf1178457fa1254234c3f017" title="Stat socket.">Status</a>, (<span class="keyword">struct</span> sockaddr *) &amp;sockstruct, &amp;socklen);
         <span class="keywordflow">if</span> (s &lt; 0) {
-                <span class="keywordflow">if</span> (errno == EINTR){
+                <span class="keywordflow">if</span> (errno == EINTR) {
                         <span class="keywordflow">return</span>;
                 }
 <span class="preprocessor"># ifdef LOG</span>
@@ -199,7 +199,7 @@ function toggleVisibility(linkObj) {
                         fp);
         <span class="keywordflow">for</span> (ip = <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d" title="Score cache.">Scores</a>; ip != NULL; ip = ip-&gt;i_next) {
                 fprintf(fp, <span class="stringliteral">&quot;%s\t&quot;</span>, ip-&gt;i_name);
-                <span class="keywordflow">if</span> (strlen(ip-&gt;i_name) &lt; 8){
+                <span class="keywordflow">if</span> (strlen(ip-&gt;i_name) &lt; 8) {
                         putc(<span class="charliteral">&#39;\t&#39;</span>, fp);
                 }
                 fprintf(fp, <span class="stringliteral">&quot;%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n&quot;</span>, ip-&gt;i_score,
@@ -210,12 +210,12 @@ function toggleVisibility(linkObj) {
         <span class="keywordflow">for</span> (ip = <a class="code" href="../../dc/d2c/extern_8c_a7340585ede06c24762f1c2c3989c404d.html#a7340585ede06c24762f1c2c3989c404d" title="Score cache.">Scores</a>; ip != NULL; ip = ip-&gt;i_next) {
                 <span class="keywordflow">if</span> (ip-&gt;i_team == <span class="charliteral">&#39; &#39;</span>) {
                         fprintf(fp, <span class="stringliteral">&quot;%s\t&quot;</span>, ip-&gt;i_name);
-                        <span class="keywordflow">if</span> (strlen(ip-&gt;i_name) &lt; 8){
+                        <span class="keywordflow">if</span> (strlen(ip-&gt;i_name) &lt; 8) {
                                 putc(<span class="charliteral">&#39;\t&#39;</span>, fp);
                         }
                 } <span class="keywordflow">else</span> {
                         fprintf(fp, <span class="stringliteral">&quot;%s[%c]\t&quot;</span>, ip-&gt;i_name, ip-&gt;i_team);
-                        <span class="keywordflow">if</span> (strlen(ip-&gt;i_name) + 3 &lt; 8){
+                        <span class="keywordflow">if</span> (strlen(ip-&gt;i_name) + 3 &lt; 8) {
                                 putc(<span class="charliteral">&#39;\t&#39;</span>, fp);
                         }
                 }
@@ -236,7 +236,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d1/d56/driver_8c.html">driver.c</a>      </li>
-      <li class="footer">Generated on Tue Jul 10 2012 15:52:48 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Wed Jul 11 2012 10:05:51 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

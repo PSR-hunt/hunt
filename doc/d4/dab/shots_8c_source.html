@@ -429,7 +429,7 @@ function toggleVisibility(linkObj) {
 <a name="l00319"></a>00319 <span class="comment">                         */</span>
 <a name="l00320"></a>00320                         pp = <a class="code" href="../../d4/dab/shots_8c_a749ed4bef4ac93e4c67e171ae92c5a78.html#a749ed4bef4ac93e4c67e171ae92c5a78" title="Return a pointer to the player at the given location.">play_at</a>(y, x);
 <a name="l00321"></a>00321                         pp-&gt;p_ident-&gt;i_shot += bp-&gt;b_charge;
-<a name="l00322"></a>00322                         <span class="keywordflow">if</span> (<a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b" title="Return TRUE if the bullet direction faces the opposite direction of the player in the maze...">opposite</a>(bp-&gt;b_face, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x])) {
+<a name="l00322"></a>00322                         <span class="keywordflow">if</span> (<a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b" title="Return true if the bullet direction faces the opposite direction of the player in the maze...">opposite</a>(bp-&gt;b_face, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x])) {
 <a name="l00323"></a>00323                                 <span class="keywordflow">if</span> (<a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(100) &lt; 10) {
 <a name="l00324"></a>00324                                         <span class="keywordflow">if</span> (bp-&gt;b_owner != NULL) {
 <a name="l00325"></a>00325                                                 <a class="code" href="../../d6/dd9/draw_8c_a0a72206b1623ee3117d4c7d129f7c48b.html#a0a72206b1623ee3117d4c7d129f7c48b" title="Prints messages on the terminal of a given player (under the maze).">message</a>(bp-&gt;b_owner, <span class="stringliteral">&quot;Your charge was absorbed!&quot;</span>);
@@ -502,26 +502,26 @@ function toggleVisibility(linkObj) {
 <a name="l00395"></a>00395         PLAYER *pp;
 <a name="l00396"></a>00396 
 <a name="l00397"></a>00397         <span class="keywordtype">bool</span> drone_move;
-<a name="l00398"></a>00398         drone_move = FALSE;
+<a name="l00398"></a>00398         drone_move = <span class="keyword">false</span>;
 <a name="l00399"></a>00399 
 <a name="l00400"></a>00400         <span class="comment">/*</span>
 <a name="l00401"></a>00401 <span class="comment">         * See if we can give someone a blast</span>
 <a name="l00402"></a>00402 <span class="comment">         */</span>
 <a name="l00403"></a>00403         <span class="keywordflow">if</span> ((is_player(<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[bp-&gt;b_y][bp-&gt;b_x - 1])) &amp;&amp; !drone_move) {
 <a name="l00404"></a>00404                 dir = WEST;
-<a name="l00405"></a>00405                 drone_move = TRUE;
+<a name="l00405"></a>00405                 drone_move = <span class="keyword">true</span>;
 <a name="l00406"></a>00406         }
 <a name="l00407"></a>00407         <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((is_player(<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[bp-&gt;b_y - 1][bp-&gt;b_x])) &amp;&amp; !drone_move) {
 <a name="l00408"></a>00408                 dir = NORTH;
-<a name="l00409"></a>00409                 drone_move = TRUE;
+<a name="l00409"></a>00409                 drone_move = <span class="keyword">true</span>;
 <a name="l00410"></a>00410         }
 <a name="l00411"></a>00411         <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((is_player(<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[bp-&gt;b_y + 1][bp-&gt;b_x])) &amp;&amp; !drone_move) {
 <a name="l00412"></a>00412                 dir = SOUTH;
-<a name="l00413"></a>00413                 drone_move = TRUE;
+<a name="l00413"></a>00413                 drone_move = <span class="keyword">true</span>;
 <a name="l00414"></a>00414         }
 <a name="l00415"></a>00415         <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((is_player(<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[bp-&gt;b_y][bp-&gt;b_x + 1])) &amp;&amp; !drone_move) {
 <a name="l00416"></a>00416                 dir = EAST;
-<a name="l00417"></a>00417                 drone_move = TRUE;
+<a name="l00417"></a>00417                 drone_move = <span class="keyword">true</span>;
 <a name="l00418"></a>00418         }
 <a name="l00419"></a>00419 
 <a name="l00420"></a>00420         <span class="keywordflow">if</span> (!drone_move) {
@@ -554,7 +554,7 @@ function toggleVisibility(linkObj) {
 <a name="l00447"></a>00447 <span class="comment">                 */</span>
 <a name="l00448"></a>00448                 <span class="keywordflow">if</span> (count == 1) {
 <a name="l00449"></a>00449                         dir = mask;
-<a name="l00450"></a>00450                         drone_move = TRUE;
+<a name="l00450"></a>00450                         drone_move = <span class="keyword">true</span>;
 <a name="l00451"></a>00451                 }
 <a name="l00452"></a>00452         }
 <a name="l00453"></a>00453 
@@ -634,7 +634,7 @@ function toggleVisibility(linkObj) {
 <a name="l00527"></a>00527 <span class="comment">                 * drone if s/he is facing it</span>
 <a name="l00528"></a>00528 <span class="comment">                 */</span>
 <a name="l00529"></a>00529                 <span class="keywordflow">if</span> (<a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(100) &lt; 1 &amp;&amp;
-<a name="l00530"></a>00530                                 <a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b" title="Return TRUE if the bullet direction faces the opposite direction of the player in the maze...">opposite</a>(bp-&gt;b_face, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[bp-&gt;b_y][bp-&gt;b_x])) {
+<a name="l00530"></a>00530                                 <a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b" title="Return true if the bullet direction faces the opposite direction of the player in the maze...">opposite</a>(bp-&gt;b_face, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[bp-&gt;b_y][bp-&gt;b_x])) {
 <a name="l00531"></a>00531                         pp = <a class="code" href="../../d4/dab/shots_8c_a749ed4bef4ac93e4c67e171ae92c5a78.html#a749ed4bef4ac93e4c67e171ae92c5a78" title="Return a pointer to the player at the given location.">play_at</a>(bp-&gt;b_y, bp-&gt;b_x);
 <a name="l00532"></a>00532                         pp-&gt;p_ammo += bp-&gt;b_charge;
 <a name="l00533"></a>00533                         <a class="code" href="../../d6/dd9/draw_8c_a0a72206b1623ee3117d4c7d129f7c48b.html#a0a72206b1623ee3117d4c7d129f7c48b" title="Prints messages on the terminal of a given player (under the maze).">message</a>(pp, <span class="stringliteral">&quot;**** Absorbed drone ****&quot;</span>);
@@ -1173,7 +1173,7 @@ function toggleVisibility(linkObj) {
 <a name="l01111"></a>01111         <span class="comment">/* NOTREACHED */</span>
 <a name="l01112"></a>01112 }
 <a name="l01113"></a>01113 
-<a name="l01120"></a><a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b">01120</a> <span class="keywordtype">int</span> <a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b" title="Return TRUE if the bullet direction faces the opposite direction of the player in the maze...">opposite</a>(<span class="keywordtype">int</span> <a class="code" href="../../d7/dd3/execute_8c_a9720f425285cd353dbfb5c9d58420dbf.html#a9720f425285cd353dbfb5c9d58420dbf" title="Change the direction the player is facing.">face</a>, <span class="keywordtype">char</span> dir) {
+<a name="l01120"></a><a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b">01120</a> <span class="keywordtype">int</span> <a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b" title="Return true if the bullet direction faces the opposite direction of the player in the maze...">opposite</a>(<span class="keywordtype">int</span> <a class="code" href="../../d7/dd3/execute_8c_a9720f425285cd353dbfb5c9d58420dbf.html#a9720f425285cd353dbfb5c9d58420dbf" title="Change the direction the player is facing.">face</a>, <span class="keywordtype">char</span> dir) {
 <a name="l01121"></a>01121         <span class="keywordflow">switch</span> (face) {
 <a name="l01122"></a>01122         <span class="keywordflow">case</span> LEFTS:
 <a name="l01123"></a>01123                 <span class="keywordflow">return</span> (dir == RIGHT);
@@ -1249,7 +1249,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d4/dab/shots_8c.html">shots.c</a>      </li>
-      <li class="footer">Generated on Tue Jul 10 2012 15:52:48 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Wed Jul 11 2012 10:05:51 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

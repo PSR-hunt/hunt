@@ -276,7 +276,7 @@ function toggleVisibility(linkObj) {
 <span class="comment">                         */</span>
                         pp = <a class="code" href="../../d4/dab/shots_8c_a749ed4bef4ac93e4c67e171ae92c5a78.html#a749ed4bef4ac93e4c67e171ae92c5a78" title="Return a pointer to the player at the given location.">play_at</a>(y, x);
                         pp-&gt;p_ident-&gt;i_shot += bp-&gt;b_charge;
-                        <span class="keywordflow">if</span> (<a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b" title="Return TRUE if the bullet direction faces the opposite direction of the player in the maze...">opposite</a>(bp-&gt;b_face, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x])) {
+                        <span class="keywordflow">if</span> (<a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b" title="Return true if the bullet direction faces the opposite direction of the player in the maze...">opposite</a>(bp-&gt;b_face, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x])) {
                                 <span class="keywordflow">if</span> (<a class="code" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440" title="Return a random number in a given range.">rand_num</a>(100) &lt; 10) {
                                         <span class="keywordflow">if</span> (bp-&gt;b_owner != NULL) {
                                                 <a class="code" href="../../d6/dd9/draw_8c_a0a72206b1623ee3117d4c7d129f7c48b.html#a0a72206b1623ee3117d4c7d129f7c48b" title="Prints messages on the terminal of a given player (under the maze).">message</a>(bp-&gt;b_owner, <span class="stringliteral">&quot;Your charge was absorbed!&quot;</span>);
@@ -351,7 +351,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d4/dab/shots_8c.html">shots.c</a>      </li>
-      <li class="footer">Generated on Tue Jul 10 2012 15:52:48 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Wed Jul 11 2012 10:05:51 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

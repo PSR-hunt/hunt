@@ -83,7 +83,6 @@ static void send_stats(void);
 static void zap(PLAYER *, bool, int);
 void erred(char *[]);
 
-
 /**
  * The main program.
  */
@@ -112,7 +111,7 @@ int main(int argc, char* argv[], char* env[]) {
 	}
 	Last_arg = env[-1] + strlen(env[-1]);
 
-	while ((c = getopt(argc, argv, "sp:")) != -1) {
+	while ((c = getopt(argc, argv, "sp:P:")) != -1) {
 		switch (c) {
 		case 's':
 			server = true;
@@ -288,7 +287,7 @@ static void init() {
 	int msg;
 # endif
 	/*
-	  Edited len declaration type in order to match getsockname() parameter. [PSR]
+	 Edited len declaration type in order to match getsockname() parameter. [PSR]
 	 */
 	unsigned int len; /* Changed from int. */
 # endif
@@ -642,7 +641,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	BULLET *bp;
 	PLAYER *np;
 	int x, y;
-/*	int savefd;  For future use. [PSR] */
+	/*	int savefd;  For future use. [PSR] */
 
 	if (was_player) {
 		if (pp->p_undershot) {
@@ -667,7 +666,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	outstr(pp, pp->p_death, len);
 	cgoto(pp, HEIGHT, 0);
 
-/*	savefd = pp->p_fd; */
+	/*	savefd = pp->p_fd; */
 
 # ifdef MONITOR
 	if (was_player) {
@@ -882,17 +881,17 @@ int rand_num(int range) {
  */
 static int havechar(PLAYER *pp, int i) {
 
-	if (pp->p_ncount < pp->p_nchar){
+	if (pp->p_ncount < pp->p_nchar) {
 		return true;
 	}
-	if (!(fdset[i].revents & POLLIN)){
+	if (!(fdset[i].revents & POLLIN)) {
 		return false;
 	}
 	while (true) {
 		errno = 0;
 		if ((pp->p_nchar = read(pp->p_fd, pp->p_cbuf, sizeof pp->p_cbuf))
 				<= 0) {
-			if (errno == EINTR){
+			if (errno == EINTR) {
 				continue;
 			}
 			pp->p_cbuf[0] = 'q';
@@ -906,8 +905,7 @@ static int havechar(PLAYER *pp, int i) {
 /**
  * Exit with the given value, cleaning up any droppings lying around.
  * @param[in] eval The value to put as exit parameter.
- */
-SIGNAL_TYPE cleanup(int eval) {
+ */SIGNAL_TYPE cleanup(int eval) {
 	PLAYER *pp;
 
 	for (pp = Player; pp < End_player; pp++) {
@@ -952,7 +950,7 @@ static void send_stats() {
 # endif
 	s = accept(Status, (struct sockaddr *) &sockstruct, &socklen);
 	if (s < 0) {
-		if (errno == EINTR){
+		if (errno == EINTR) {
 			return;
 		}
 # ifdef LOG
@@ -981,7 +979,7 @@ static void send_stats() {
 			fp);
 	for (ip = Scores; ip != NULL; ip = ip->i_next) {
 		fprintf(fp, "%s\t", ip->i_name);
-		if (strlen(ip->i_name) < 8){
+		if (strlen(ip->i_name) < 8) {
 			putc('\t', fp);
 		}
 		fprintf(fp, "%.2f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", ip->i_score,
@@ -992,12 +990,12 @@ static void send_stats() {
 	for (ip = Scores; ip != NULL; ip = ip->i_next) {
 		if (ip->i_team == ' ') {
 			fprintf(fp, "%s\t", ip->i_name);
-			if (strlen(ip->i_name) < 8){
+			if (strlen(ip->i_name) < 8) {
 				putc('\t', fp);
 			}
 		} else {
 			fprintf(fp, "%s[%c]\t", ip->i_name, ip->i_team);
-			if (strlen(ip->i_name) + 3 < 8){
+			if (strlen(ip->i_name) + 3 < 8) {
 				putc('\t', fp);
 			}
 		}

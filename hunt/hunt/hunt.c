@@ -114,7 +114,7 @@ bool no_beep; /**< If true turns off beeping when you reach the typeahead limit.
 static char name[NAMELEN]; /**< Indicates the name of a player. [PSR] */
 static char team = ' '; /**< Indicates the team the player belongs to. [PSR] */
 
-static int in_visual; /**< Indicates whether the configurations are correct. TODO [PSR] */
+static int in_visual; /**< Indicates whether the configurations are correct. [PSR] */
 
 extern int cur_row; /**< Indicates the current row. [PSR] */
 extern int cur_col; /**< Indicates the current column. [PSR] */

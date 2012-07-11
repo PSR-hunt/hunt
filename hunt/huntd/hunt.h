@@ -45,7 +45,7 @@
  */
 
 # define 	_BSD_SOURCE /* Enables BSD library functions. [PSR]*/
-# define	_POSIX_C_SOURCE 1 /* [PSR] */ //TODO aggiungere altre informazioni.
+# define	_POSIX_C_SOURCE 1 /* [PSR] */
 # include "bsd.h"
 
 # ifndef TALK_MODE /* See above. [PSR] */

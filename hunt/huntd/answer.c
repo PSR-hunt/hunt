@@ -241,7 +241,7 @@ void stmonitor(PLAYER *pp) {
 
 /**
  * Initializes a player status.
- * @param[out] newpp The new player to initialize. TODO
+ * @param[out] newpp The new player to initialize.
  * @param[in] enter_status The enter mode of a player.
  * [PSR]
  */

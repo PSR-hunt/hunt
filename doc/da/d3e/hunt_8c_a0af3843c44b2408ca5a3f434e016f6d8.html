@@ -355,7 +355,7 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"></span>        (void) signal(SIGTSTP, tstp);
 <span class="preprocessor">#endif</span>
 <span class="preprocessor"></span>
-        exit_outer_loop = FALSE;
+        exit_outer_loop = <span class="keyword">false</span>;
         <span class="keywordflow">while</span> (!exit_outer_loop) {
 <span class="preprocessor"># ifdef INTERNET</span>
 <span class="preprocessor"></span>                find_driver(<span class="keyword">true</span>);
@@ -399,7 +399,7 @@ function toggleVisibility(linkObj) {
                         <span class="keywordflow">if</span> (Send_message != NULL) {
                                 <a class="code" href="../../da/db5/playit_8c_ae1facc7d5518cf6c1b7f4b6e52cf7144.html#ae1facc7d5518cf6c1b7f4b6e52cf7144" title="Send a message to the driver and return.">do_message</a>();
                                 <span class="keywordflow">if</span> (enter_status == Q_MESSAGE) {
-                                        exit_outer_loop = TRUE;
+                                        exit_outer_loop = <span class="keyword">true</span>;
                                         <span class="keywordflow">break</span>;
                                 } <span class="keywordflow">else</span> {
                                         Send_message = NULL;
@@ -468,7 +468,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/d3e/hunt_8c.html">hunt.c</a>      </li>
-      <li class="footer">Generated on Tue Jul 10 2012 15:52:48 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Wed Jul 11 2012 10:05:51 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
