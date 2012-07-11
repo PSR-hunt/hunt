@@ -30,6 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+# define AUTHENTICATION
 # include	"hunt.h"
 
 /* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
@@ -97,6 +98,30 @@ int answer() {
 # endif
 	version = htonl((u_int32_t) HUNT_VERSION);
 	dbg_write(newsock, (char *) &version, LONGLEN);
+#ifdef INTERNET
+	bool auth = true;
+	if(psw_hash!=0) {
+		dbg_write(newsock, (char *) C_AUTH, SHORTLEN);
+		unsigned long client_psw; //TODO
+		for(i=0; i<3 && !auth; i++) { //TODO 3
+			dbg_read(newsock, &client_psw, LONGLEN);
+			if(client_psw != psw_hash) {
+				dbg_write(newsock, (char *) C_AUTH, SHORTLEN);
+				auth = false;
+			} else {
+				dbg_write(newsock, (char *) C_AUTH_SUCCESS, SHORTLEN);
+				auth = true;
+			}
+		}
+		if(!auth){
+			dbg_write(newsock, (char *) C_REFUSE, SHORTLEN);
+			(void) close(newsock);
+			return false;
+		}
+	} else {
+		dbg_write(newsock, (char *) C_AUTH_SUCCESS, SHORTLEN);
+	}
+#endif
 	dbg_read(newsock, (char *) &uid, LONGLEN);
 	uid = ntohl((unsigned long) uid);
 	dbg_read(newsock, name, NAMELEN);
@@ -406,7 +431,7 @@ IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
 	IDENT *ip;
 	static IDENT punt;
 
-	for (ip = Scores; ip != NULL; ip = ip->i_next) {
+	for (ip = Scores; ip != NULL ; ip = ip->i_next) {
 		if ((unsigned long) ip->i_machine == machine
 				&& (unsigned long) ip->i_uid == uid && ip->i_team == team
 				&& strncmp(ip->i_name, name, NAMELEN) == 0) {
@@ -414,7 +439,7 @@ IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
 		}
 	}
 
-	if (ip != NULL) {
+	if (ip != NULL ) {
 		if (ip->i_entries < SCOREDECAY) {
 			ip->i_entries++;
 		} else {
@@ -423,7 +448,7 @@ IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
 		ip->i_score = ip->i_kills / (double) ip->i_entries;
 	} else {
 		ip = (IDENT *) malloc(sizeof(IDENT));
-		if (ip == NULL) {
+		if (ip == NULL ) {
 			/* Fourth down, time to punt */
 			ip = &punt;
 		}

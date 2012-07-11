@@ -118,7 +118,8 @@
 # endif
 
 /* decrement version number for each change in startup protocol */
-# define	HUNT_VERSION		(u_int32_t) -1 /* Added cast to u_int32_t. [PSR] */
+# define	HUNT_VERSION		(u_int32_t) -2 /* Added cast to u_int32_t. [PSR] */
+# define	PSW_MAXLEN			127 + 1
 
 # define	ADDCH		('a' | 0200)
 # define	MOVE		('m' | 0200)
@@ -290,10 +291,14 @@ extern int slime_req[];
 # define	Q_SCAN		3
 # define	Q_MESSAGE	4
 
-# define	C_PLAYER	0
-# define	C_MONITOR	1
-# define	C_MESSAGE	2
-# define	C_SCORES	3
+# define	C_PLAYER			0
+# define	C_MONITOR			1
+# define	C_MESSAGE			2
+# define	C_SCORES			3
+# define	C_PASSWORD			4	/* Added as support for server password. [PSR] */
+# define	C_AUTH				5 //TODO
+# define	C_AUTH_SUCCESS		6 //TODO
+# define	C_REFUSE			7 //TODO
 
 # ifdef MONITOR
 # define	C_TESTMSG()	(Query_driver ? C_MESSAGE :\
@@ -451,6 +456,11 @@ extern char *Send_message;
 extern char map_key[256];
 extern bool no_beep;
 
+
+# if defined(INTERNET) && defined(AUTHENTICATION)
+static unsigned long psw_hash = 0;
+# endif
+
 /*
  * function types
  */
@@ -481,6 +491,8 @@ void fixshots(int, int, char);
 IDENT *get_ident(unsigned long, unsigned long, const char *, char);
 void get_local_name(const char *);
 int get_remote_name(char *);
+unsigned long hash_srv(char *);
+unsigned long hash_cli(char *);
 BULLET *is_bullet(int, int);
 void iso_syslog(int, const char *, ...); /**< [PSR] */
 void look(PLAYER *);
