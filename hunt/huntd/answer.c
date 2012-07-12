@@ -97,32 +97,32 @@ int answer() {
 	}
 # endif
 	version = htonl((u_int32_t) HUNT_VERSION);
-	dbg_write(newsock, (char *) &version, LONGLEN);
+	safe_write(newsock, (char *) &version, LONGLEN);
 #ifdef INTERNET
 	bool auth = true;
 	if(psw_hash!=0) {
-		dbg_write(newsock, (char *) C_AUTH, SHORTLEN);
+		safe_write(newsock, (char *) C_AUTH, SHORTLEN);
 		unsigned long client_psw; //TODO
 		for(i=0; i<3 && !auth; i++) { //TODO 3
-			dbg_read(newsock, &client_psw, LONGLEN);
+			safe_read(newsock, &client_psw, LONGLEN);
 			if(client_psw != psw_hash) {
-				dbg_write(newsock, (char *) C_AUTH, SHORTLEN);
+				safe_write(newsock, (char *) C_AUTH, SHORTLEN);
 				auth = false;
 			} else {
-				dbg_write(newsock, (char *) C_AUTH_SUCCESS, SHORTLEN);
+				safe_write(newsock, (char *) C_AUTH_SUCCESS, SHORTLEN);
 				auth = true;
 			}
 		}
 		if(!auth){
-			dbg_write(newsock, (char *) C_REFUSE, SHORTLEN);
-			(void) close(newsock);
+			safe_write(newsock, (char *) C_REFUSE, SHORTLEN);
+			safe_close(newsock);
 			return false;
 		}
 	} else {
-		dbg_write(newsock, (char *) C_AUTH_SUCCESS, SHORTLEN);
+		safe_write(newsock, (char *) C_AUTH_SUCCESS, SHORTLEN);
 	}
 #endif
-	dbg_read(newsock, (char *) &uid, LONGLEN);
+	safe_read(newsock, (char *) &uid, LONGLEN);
 	uid = ntohl((unsigned long) uid);
 	safe_read(newsock, name, NAMELEN);
 	safe_read(newsock, &team, 1);

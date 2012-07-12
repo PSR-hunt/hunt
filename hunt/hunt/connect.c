@@ -63,7 +63,7 @@ void do_connect(const char *name, char team, long enter_status) {
 #ifdef INTERNET
 	unsigned short auth;
 	do {
-		dbg_read(Socket, &auth, SHORTLEN);
+		safe_read(Socket, &auth, SHORTLEN);
 		switch(auth) {
 			case C_AUTH:
 # ifdef USE_CURSES
@@ -92,7 +92,7 @@ void do_connect(const char *name, char team, long enter_status) {
 				getnstr(psw, PSW_MAXLEN);
 			}while(strlen(psw)==0);
 			unsigned long hash_psw = hash_cli(psw);
-			dbg_write(Socket, &hash_psw , LONGLEN);
+			safe_write(Socket, &hash_psw , LONGLEN);
 			auth_stage = true;
 			break;
 			case C_AUTH_SUCCESS:
@@ -138,30 +138,6 @@ void do_connect(const char *name, char team, long enter_status) {
 	mode = C_PLAYER;
 	mode = htonl(mode);
 	write_and_push(Socket, (char *) &mode, sizeof mode);
-}
-
-/**
- * TODO documentation
- */
-unsigned long hash_cli(char *psw) {
-	unsigned long hash = 5381;
-	int c;
-	while ((c = *psw++)) {
-		hash = ((hash << 5) + hash) + c;
-	}
-	return hash;
-}
-
-/**
- * TODO documentation
- */
-unsigned long hash_cli(char *psw) {
-	unsigned long hash = 5381;
-	int c;
-	while ((c = *psw++)) {
-		hash = ((hash << 5) + hash) + c;
-	}
-	return hash;
 }
 
 /**
