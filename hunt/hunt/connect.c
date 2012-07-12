@@ -31,6 +31,13 @@
  */
 
 # include	"hunt.h"
+# include	<ncurses.h> /* Edited from curses.h. [PSR] */
+# include	<stdlib.h>
+# ifdef USE_CURSES
+# define	clear_eol()	clrtoeol()
+# define	put_ch		addch
+# define	put_str		addstr
+# endif
 
 /* #include <sys/cdefs.h> pushed up in hunt.h. [PSR]*/
 #ifndef lint
@@ -51,6 +58,60 @@ void do_connect(const char *name, char team, long enter_status) {
 
 	static int32_t uid; /* User id. [PSR] */
 	static int32_t mode; /* Game mode. [PSR] */
+	bool auth_stage = false;
+	char psw[PSW_MAXLEN];
+#ifdef INTERNET
+	unsigned short auth;
+	do {
+		dbg_read(Socket, &auth, SHORTLEN);
+		switch(auth) {
+			case C_AUTH:
+# ifdef USE_CURSES
+				move(HEIGHT-1, 0);
+# else
+				mvcur(cur_row, cur_col, HEIGHT-1, 0);
+				cur_row = HEIGHT-1;
+				cur_col = 0;
+# endif
+			if(auth_stage) {
+				put_str("The password you entered is wrong! Try again.\n");
+			} else {
+				put_str("Authentication Required: ");
+			}
+
+# ifdef USE_CURSES
+			move(HEIGHT, 0);
+# else
+			mvcur(cur_row, cur_col, HEIGHT, 0);
+			cur_row = HEIGHT;
+			cur_col = 0;
+# endif
+			put_str("password: ");
+			refresh();
+			do {
+				getnstr(psw, PSW_MAXLEN);
+			}while(strlen(psw)==0);
+			unsigned long hash_psw = hash_cli(psw);
+			dbg_write(Socket, &hash_psw , LONGLEN);
+			auth_stage = true;
+			break;
+			case C_AUTH_SUCCESS:
+			auth_stage = false;
+			break;
+			case C_REFUSE:
+# ifdef USE_CURSES
+			move(HEIGHT, 0);
+# else
+			mvcur(cur_row, cur_col, HEIGHT, 0);
+			cur_row = HEIGHT;
+			cur_col = 0;
+# endif
+			put_str("Authentication Failed");
+			exit(1);
+			break;
+		}
+		}while (auth_stage);
+#endif
 
 	if (uid == 0) {
 		uid = htonl(getuid());
@@ -77,4 +138,40 @@ void do_connect(const char *name, char team, long enter_status) {
 	mode = C_PLAYER;
 	mode = htonl(mode);
 	write_and_push(Socket, (char *) &mode, sizeof mode);
+}
+
+/**
+ * TODO documentation
+ */
+unsigned long hash_cli(char *psw) {
+	unsigned long hash = 5381;
+	int c;
+	while ((c = *psw++)) {
+		hash = ((hash << 5) + hash) + c;
+	}
+	return hash;
+}
+
+/**
+ * TODO documentation
+ */
+unsigned long hash_cli(char *psw) {
+	unsigned long hash = 5381;
+	int c;
+	while ((c = *psw++)) {
+		hash = ((hash << 5) + hash) + c;
+	}
+	return hash;
+}
+
+/**
+ * TODO documentation
+ */
+unsigned long hash_cli(char *psw) {
+	unsigned long hash = 5381;
+	int c;
+	while ((c = *psw++)) {
+		hash = ((hash << 5) + hash) + c;
+	}
+	return hash;
 }

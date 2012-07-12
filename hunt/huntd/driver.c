@@ -30,6 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+# define AUTHENTICATION
 # include	"hunt.h"
 
 /* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
@@ -48,11 +49,7 @@ __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
 # include	<unistd.h>
 # include 	<getopt.h> /* Explicit declaration of getopt family functions. [PSR] */
 
-# ifndef pdp11
 # define	RN	(((Seed = Seed * 11109 + 13849) >> 16) & 0xffff) /**< A random number. [PSR] */
-# else
-# define	RN	((Seed = Seed * 11109 + 13849) & 0x7fff)
-# endif
 
 int Seed = 0; /**< A random number. [PSR] */
 
@@ -92,9 +89,11 @@ static bool logactive;
  */
 int main(int argc, char* argv[], char* env[]) {
 	PLAYER *pp;
+
 #ifdef INTERNET
 	unsigned short msg; /* Changed from u_short. [PSR] */
 	unsigned short reply; /* Changed from u_short. [PSR] */
+	char *password;
 	/*
 	 Edited namelen declaration type in order to match recvfrom() parameter. [PSR]
 	 */
@@ -107,7 +106,7 @@ int main(int argc, char* argv[], char* env[]) {
 	const int linger = 90 * 1000;
 
 	First_arg = argv[0];
-	if (env == NULL || *env == NULL) {
+	if (env == NULL || *env == NULL ) {
 		env = argv + argc;
 	}
 	while (*env) {
@@ -124,6 +123,19 @@ int main(int argc, char* argv[], char* env[]) {
 			case 'p':
 			standard_port = false;
 			Test_port = atoi(optarg);
+			break;
+			/**
+			 * Added option to insert server password. [PSR]
+			 * TODO
+			 */
+			case 'P':
+			password = malloc(sizeof(char)*strlen(optarg));
+			if (password == NULL) {
+				exit(1);
+			} else {
+				strcpy(password, optarg);
+				psw_hash = hash_srv(password);
+			}
 			break;
 # endif
 		default:
@@ -152,7 +164,7 @@ int main(int argc, char* argv[], char* env[]) {
 # ifdef INTERNET
 			if (fdset[2].revents & POLLIN) {
 				namelen = DAEMON_SIZE;
-				htons(sock_port);
+//				htons(sock_port); TODO probably useless
 				(void) recvfrom(Test_socket, (char *) &msg, sizeof msg,
 						0, (struct sockaddr *) &test, &namelen);
 				switch (ntohs(msg)) {
@@ -185,11 +197,12 @@ int main(int argc, char* argv[], char* env[]) {
 			}
 # endif
 			{
-				for (pp = Player, i = 0; pp < End_player; pp++, i++)
+				for (pp = Player, i = 0; pp < End_player; pp++, i++){
 					if (havechar(pp, i + 3)) {
 						execute(pp);
 						pp->p_nexec++;
 					}
+				}
 # ifdef MONITOR
 				for (pp = Monitor, i = 0; pp < End_monitor; pp++, i++)
 				if (havechar(pp, i + MAXPL + 3)) {
@@ -272,6 +285,18 @@ int main(int argc, char* argv[], char* env[]) {
 }
 
 /**
+ * TODO documentation
+ */
+unsigned long hash_srv(char *psw){
+	unsigned long hash = 5381;
+	int c;
+	while ((c = *psw++)){
+		hash = ((hash<<5) + hash) + c;
+	}
+	return hash;
+}
+
+/**
  * Prints on stderr the usage of the function.
  * [PSR]
  */
@@ -308,9 +333,9 @@ static void init() {
 	if (setsid() == -1) {
 		err(1, "setsid");
 	}
-	(void) signal(SIGHUP, SIG_IGN); /* Ignore signal. [PSR]*/
-	(void) signal(SIGINT, SIG_IGN); /* Ignore signal. [PSR]*/
-	(void) signal(SIGQUIT, SIG_IGN); /* Ignore signal. [PSR]*/
+	(void) signal(SIGHUP, SIG_IGN ); /* Ignore signal. [PSR]*/
+	(void) signal(SIGINT, SIG_IGN ); /* Ignore signal. [PSR]*/
+	(void) signal(SIGQUIT, SIG_IGN ); /* Ignore signal. [PSR]*/
 	(void) signal(SIGTERM, cleanup);
 # endif
 
@@ -455,7 +480,7 @@ static void init() {
 	fdset[2].fd = -1;
 # endif
 
-	Seed = getpid() + time((time_t *) NULL);
+	Seed = getpid() + time((time_t *) NULL );
 	makemaze();
 # ifdef BOOTS
 	makeboots();
@@ -576,7 +601,7 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 		break;
 # endif
 	}
-	if (credit == NULL) {
+	if (credit == NULL ) {
 		(void) sprintf(ouch->p_death, "| %s by %s |", cp,
 				(shot_type == MINE || shot_type == GMINE) ?
 						"a mine" : "act of God");
@@ -601,7 +626,7 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 	if (ouch->p_nchar == 0) {
 		ouch->p_ident->i_stillb++;
 	}
-	if (gotcha == NULL) {
+	if (gotcha == NULL ) {
 		return;
 	}
 	gotcha->p_damcap += STABDAM;
@@ -670,7 +695,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 # ifdef MONITOR
 	if (was_player) {
 # endif
-	for (bp = Bullets; bp != NULL; bp = bp->b_next) {
+	for (bp = Bullets; bp != NULL ; bp = bp->b_next) {
 		if (bp->b_owner == pp) {
 			bp->b_owner = NULL;
 		}
@@ -960,7 +985,7 @@ static void send_stats() {
 		return;
 	}
 	fp = fdopen(s, "w");
-	if (fp == NULL) {
+	if (fp == NULL ) {
 # ifdef LOG
 		iso_syslog(LOG_WARNING, "fdopen: %m");
 # else
@@ -976,7 +1001,7 @@ static void send_stats() {
 	fputs(
 			"Name\t\tScore\tDucked\tAbsorb\tFaced\tShot\tRobbed\tMissed\tSlimeK\n",
 			fp);
-	for (ip = Scores; ip != NULL; ip = ip->i_next) {
+	for (ip = Scores; ip != NULL ; ip = ip->i_next) {
 		fprintf(fp, "%s\t", ip->i_name);
 		if (strlen(ip->i_name) < 8) {
 			putc('\t', fp);
@@ -986,7 +1011,7 @@ static void send_stats() {
 				ip->i_robbed, ip->i_missed, ip->i_slime);
 	}
 	fputs("\n\nName\t\tEnemy\tFriend\tDeaths\tStill\tSaved\n", fp);
-	for (ip = Scores; ip != NULL; ip = ip->i_next) {
+	for (ip = Scores; ip != NULL ; ip = ip->i_next) {
 		if (ip->i_team == ' ') {
 			fprintf(fp, "%s\t", ip->i_name);
 			if (strlen(ip->i_name) < 8) {
@@ -1011,7 +1036,7 @@ static void send_stats() {
 static void clear_scores() {
 	IDENT *ip, *nextip;
 
-	for (ip = Scores; ip != NULL; ip = nextip) {
+	for (ip = Scores; ip != NULL ; ip = nextip) {
 		nextip = ip->i_next;
 		(void) free((char *) ip);
 	}
