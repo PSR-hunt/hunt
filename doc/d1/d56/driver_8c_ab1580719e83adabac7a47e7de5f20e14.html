@@ -120,6 +120,7 @@ function toggleVisibility(linkObj) {
           <tr><td class="navtab"><a class="qindex" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea">DAEMON_SIZE</a></td></tr>
           <tr><td class="navtab"><a class="qindex" href="../../d1/d56/driver_8c_a50a87a4c56e9a0d10f7958884a811d8c.html#a50a87a4c56e9a0d10f7958884a811d8c">erred</a></td></tr>
           <tr><td class="navtab"><a class="qindex" href="../../d1/d56/driver_8c_a04a99c9869cd27c25c13214e72692243.html#a04a99c9869cd27c25c13214e72692243">First_arg</a></td></tr>
+          <tr><td class="navtab"><a class="qindex" href="../../d1/d56/driver_8c_a247d1c70157185778c0972d73b6b166f.html#a247d1c70157185778c0972d73b6b166f">hash_srv</a></td></tr>
           <tr><td class="navtab"><a class="qindex" href="../../d1/d56/driver_8c_a6c56abdf0dfe0c8005721cb7789a1e18.html#a6c56abdf0dfe0c8005721cb7789a1e18">havechar</a></td></tr>
           <tr><td class="navtab"><a class="qindex" href="../../d1/d56/driver_8c_aedc913c139bb562646d3459b0ca28997.html#aedc913c139bb562646d3459b0ca28997">init</a></td></tr>
           <tr><td class="navtab"><a class="qindex" href="../../d1/d56/driver_8c_aa884cf292c6811a6c80193e99dccb564.html#aa884cf292c6811a6c80193e99dccb564">Last_arg</a></td></tr>
@@ -174,7 +175,7 @@ function toggleVisibility(linkObj) {
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="../../d1/d56/driver_8c_source.html#l00639">639</a> of file <a class="el" href="../../d1/d56/driver_8c_source.html">driver.c</a>.</p>
+<p>Definition at line <a class="el" href="../../d1/d56/driver_8c_source.html#l00666">666</a> of file <a class="el" href="../../d1/d56/driver_8c_source.html">driver.c</a>.</p>
 <div class="fragment"><pre class="fragment">                                                    {
         <span class="keywordtype">int</span> n, len;
         BULLET *bp;
@@ -210,7 +211,7 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"># ifdef MONITOR</span>
 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (was_player) {
 <span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>        <span class="keywordflow">for</span> (bp = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a>; bp != NULL; bp = bp-&gt;b_next) {
+<span class="preprocessor"></span>        <span class="keywordflow">for</span> (bp = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a>; bp != NULL ; bp = bp-&gt;b_next) {
                 <span class="keywordflow">if</span> (bp-&gt;b_owner == pp) {
                         bp-&gt;b_owner = NULL;
                 }
@@ -329,7 +330,7 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"></span>
         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, ENDWIN);
         (void) putc(<span class="charliteral">&#39; &#39;</span>, pp-&gt;p_output);
-        safe_fclose(pp-&gt;p_output);
+        <a class="code" href="../../d3/d91/utils_8c_a70df381aa97915e5715b7eb01465e176.html#a70df381aa97915e5715b7eb01465e176" title="Wrapper for fclose function that prints on standard error stream in case of failure.">safe_fclose</a>(pp-&gt;p_output);
 
         End_player--;
         <span class="keywordflow">if</span> (pp != End_player) {
@@ -367,7 +368,7 @@ function toggleVisibility(linkObj) {
 <span class="keywordflow">else</span> {
         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, ENDWIN);
         (void) putc(LAST_PLAYER, pp-&gt;p_output);
-        safe_fclose(pp-&gt;p_output);
+        <a class="code" href="../../d3/d91/utils_8c_a70df381aa97915e5715b7eb01465e176.html#a70df381aa97915e5715b7eb01465e176" title="Wrapper for fclose function that prints on standard error stream in case of failure.">safe_fclose</a>(pp-&gt;p_output);
 
         End_monitor--;
         <span class="keywordflow">if</span> (pp != End_monitor) {
@@ -412,7 +413,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d1/d56/driver_8c.html">driver.c</a>      </li>
-      <li class="footer">Generated on Thu Jul 12 2012 08:14:39 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Thu Jul 12 2012 12:18:56 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

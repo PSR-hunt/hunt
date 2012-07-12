@@ -296,7 +296,7 @@ function toggleVisibility(linkObj) {
 <a name="l00184"></a>00184                         <span class="keywordflow">if</span> ((ch = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Reads from input if there are no things to read in ibuf, reads the first character otherwise...">GETCHR</a>()) == LAST_PLAYER)
 <a name="l00185"></a>00185                                 <a class="code" href="../../da/d3e/hunt_8c_af01fe333f6b6a1321297106ced4cc3cd.html#af01fe333f6b6a1321297106ced4cc3cd" title="Indicates if a player is the last one or no.">Last_player</a> = <span class="keyword">true</span>;
 <a name="l00186"></a>00186                         ch = EOF;
-<a name="l00187"></a>00187                         safe_close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
+<a name="l00187"></a>00187                         <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on standard error stream in case of failure.">safe_close</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
 <a name="l00188"></a>00188                         <span class="keywordflow">return</span>;
 <a name="l00189"></a>00189                 <span class="keywordflow">case</span> BELL:
 <a name="l00190"></a>00190                         <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep</a>();
@@ -351,7 +351,7 @@ function toggleVisibility(linkObj) {
 <a name="l00239"></a>00239                         <span class="keywordflow">break</span>;
 <a name="l00240"></a>00240                 }
 <a name="l00241"></a>00241         }
-<a name="l00242"></a>00242         safe_close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
+<a name="l00242"></a>00242         <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on standard error stream in case of failure.">safe_close</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
 <a name="l00243"></a>00243 }
 <a name="l00244"></a>00244 
 <a name="l00252"></a><a class="code" href="../../da/db5/playit_8c_a1d743122f36952963bd897cfc88e5f16.html#a1d743122f36952963bd897cfc88e5f16">00252</a> <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="../../da/db5/playit_8c_a1d743122f36952963bd897cfc88e5f16.html#a1d743122f36952963bd897cfc88e5f16" title="Grab input and pass it along to the driver Return any characters from the driver When this routine is...">getchr</a>() {
@@ -401,7 +401,7 @@ function toggleVisibility(linkObj) {
 <a name="l00299"></a>00299                 <span class="keywordflow">return</span>;
 <a name="l00300"></a>00300         }
 <a name="l00301"></a>00301         <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a> &lt;= 0 &amp;&amp; !<a class="code" href="../../da/d3e/hunt_8c_a3bd306747807d95cebe18856fff82c71.html#a3bd306747807d95cebe18856fff82c71" title="If true turns off beeping when you reach the typeahead limit.">no_beep</a>) {
-<a name="l00302"></a>00302                 safe_write(1, <span class="stringliteral">&quot;\7&quot;</span>, 1);
+<a name="l00302"></a>00302                 <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on standard error stream in case of failure.">safe_write</a>(1, <span class="stringliteral">&quot;\7&quot;</span>, 1);
 <a name="l00303"></a>00303                 <span class="comment">/* CTRL(&#39;G&#39;) */</span>
 <a name="l00304"></a>00304                 <span class="keywordflow">return</span>;
 <a name="l00305"></a>00305         }
@@ -430,7 +430,7 @@ function toggleVisibility(linkObj) {
 <a name="l00328"></a>00328                 <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a> &lt; 0){
 <a name="l00329"></a>00329                         count += <a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a>;
 <a name="l00330"></a>00330                 }
-<a name="l00331"></a>00331                 safe_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, inp, count);
+<a name="l00331"></a>00331                 <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, inp, count);
 <a name="l00332"></a>00332         }
 <a name="l00333"></a>00333 }
 <a name="l00334"></a>00334 
@@ -795,14 +795,14 @@ function toggleVisibility(linkObj) {
 <a name="l00720"></a>00720                 <span class="comment">/* NOTREACHED */</span>
 <a name="l00721"></a>00721         }
 <a name="l00722"></a>00722 <span class="preprocessor"># endif</span>
-<a name="l00723"></a>00723 <span class="preprocessor"></span>        safe_close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
+<a name="l00723"></a>00723 <span class="preprocessor"></span>        <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on standard error stream in case of failure.">safe_close</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
 <a name="l00724"></a>00724 }
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/db5/playit_8c.html">playit.c</a>      </li>
-      <li class="footer">Generated on Wed Jul 11 2012 22:00:10 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Thu Jul 12 2012 12:18:56 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

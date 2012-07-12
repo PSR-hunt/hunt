@@ -150,52 +150,122 @@ function toggleVisibility(linkObj) {
 <a name="l00031"></a>00031 <span class="comment"> */</span>
 <a name="l00032"></a>00032 
 <a name="l00033"></a>00033 <span class="preprocessor"># include       &quot;hunt.h&quot;</span>
-<a name="l00034"></a>00034 
-<a name="l00035"></a>00035 <span class="comment">/* #include &lt;sys/cdefs.h&gt; pushed up in hunt.h. [PSR]*/</span>
-<a name="l00036"></a>00036 <span class="preprocessor">#ifndef lint</span>
-<a name="l00037"></a>00037 <span class="preprocessor"></span><a class="code" href="../../d0/dc3/connect_8c_a1b9b0345f811ff7769642745394c179f.html#a1b9b0345f811ff7769642745394c179f">__RCSID</a>(<span class="stringliteral">&quot;$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $&quot;</span>);
-<a name="l00038"></a>00038 <span class="preprocessor">#endif </span><span class="comment">/* not lint */</span>
-<a name="l00039"></a>00039 
-<a name="l00040"></a>00040 <span class="preprocessor"># include       &lt;signal.h&gt;</span>
-<a name="l00041"></a>00041 <span class="preprocessor"># include       &lt;unistd.h&gt;</span>
-<a name="l00042"></a>00042 
-<a name="l00050"></a><a class="code" href="../../d0/dc3/connect_8c_a72de8abbd2ecb729469dafbc6351007e.html#a72de8abbd2ecb729469dafbc6351007e">00050</a> <span class="keywordtype">void</span> <a class="code" href="../../d0/dc3/connect_8c_a72de8abbd2ecb729469dafbc6351007e.html#a72de8abbd2ecb729469dafbc6351007e" title="Manages the preliminary operations of connection of a player.">do_connect</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>, <span class="keywordtype">long</span> enter_status) {
-<a name="l00051"></a>00051 
-<a name="l00052"></a>00052         <span class="keyword">static</span> int32_t uid; <span class="comment">/* User id. [PSR] */</span>
-<a name="l00053"></a>00053         <span class="keyword">static</span> int32_t mode; <span class="comment">/* Game mode. [PSR] */</span>
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055         <span class="keywordflow">if</span> (uid == 0) {
-<a name="l00056"></a>00056                 uid = htonl(getuid());
-<a name="l00057"></a>00057         }
-<a name="l00058"></a>00058         safe_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;uid, LONGLEN);
-<a name="l00059"></a>00059         safe_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, name, NAMELEN);
-<a name="l00060"></a>00060         safe_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, &amp;team, 1);
-<a name="l00061"></a>00061         enter_status = htonl(enter_status);
-<a name="l00062"></a>00062         safe_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;enter_status, LONGLEN);
-<a name="l00063"></a>00063         (void) strcpy(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, ttyname(fileno(stderr)));
-<a name="l00064"></a>00064         safe_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, NAMELEN);
-<a name="l00065"></a>00065 <span class="preprocessor"># ifdef INTERNET</span>
-<a name="l00066"></a>00066 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (Send_message != NULL) {
-<a name="l00067"></a>00067                 mode = C_MESSAGE;
-<a name="l00068"></a>00068         }
-<a name="l00069"></a>00069         <span class="keywordflow">else</span>
-<a name="l00070"></a>00070 <span class="preprocessor"># endif</span>
-<a name="l00071"></a>00071 <span class="preprocessor"></span><span class="preprocessor"># ifdef MONITOR</span>
-<a name="l00072"></a>00072 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (Am_monitor) {
-<a name="l00073"></a>00073                 mode = C_MONITOR;
-<a name="l00074"></a>00074         }
-<a name="l00075"></a>00075         <span class="keywordflow">else</span>
-<a name="l00076"></a>00076 <span class="preprocessor"># endif</span>
-<a name="l00077"></a>00077 <span class="preprocessor"></span>        mode = C_PLAYER;
-<a name="l00078"></a>00078         mode = htonl(mode);
-<a name="l00079"></a>00079         safe_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;mode, <span class="keyword">sizeof</span> mode);
-<a name="l00080"></a>00080 }
+<a name="l00034"></a>00034 <span class="preprocessor"># include       &lt;ncurses.h&gt;</span> <span class="comment">/* Edited from curses.h. [PSR] */</span>
+<a name="l00035"></a>00035 <span class="preprocessor"># include       &lt;stdlib.h&gt;</span>
+<a name="l00036"></a>00036 <span class="preprocessor"># ifdef USE_CURSES</span>
+<a name="l00037"></a>00037 <span class="preprocessor"></span><span class="preprocessor"># define        clear_eol()     clrtoeol()</span>
+<a name="l00038"></a>00038 <span class="preprocessor"></span><span class="preprocessor"># define        put_ch          addch</span>
+<a name="l00039"></a>00039 <span class="preprocessor"></span><span class="preprocessor"># define        put_str         addstr</span>
+<a name="l00040"></a>00040 <span class="preprocessor"></span><span class="preprocessor"># endif</span>
+<a name="l00041"></a>00041 <span class="preprocessor"></span>
+<a name="l00042"></a>00042 <span class="comment">/* #include &lt;sys/cdefs.h&gt; pushed up in hunt.h. [PSR]*/</span>
+<a name="l00043"></a>00043 <span class="preprocessor">#ifndef lint</span>
+<a name="l00044"></a>00044 <span class="preprocessor"></span><a class="code" href="../../d0/dc3/connect_8c_a1b9b0345f811ff7769642745394c179f.html#a1b9b0345f811ff7769642745394c179f">__RCSID</a>(<span class="stringliteral">&quot;$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $&quot;</span>);
+<a name="l00045"></a>00045 <span class="preprocessor">#endif </span><span class="comment">/* not lint */</span>
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047 <span class="preprocessor"># include       &lt;signal.h&gt;</span>
+<a name="l00048"></a>00048 <span class="preprocessor"># include       &lt;unistd.h&gt;</span>
+<a name="l00049"></a>00049 
+<a name="l00057"></a><a class="code" href="../../d0/dc3/connect_8c_a72de8abbd2ecb729469dafbc6351007e.html#a72de8abbd2ecb729469dafbc6351007e">00057</a> <span class="keywordtype">void</span> <a class="code" href="../../d0/dc3/connect_8c_a72de8abbd2ecb729469dafbc6351007e.html#a72de8abbd2ecb729469dafbc6351007e" title="Manages the preliminary operations of connection of a player.">do_connect</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, <span class="keywordtype">char</span> <a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>, <span class="keywordtype">long</span> enter_status) {
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059         <span class="keyword">static</span> int32_t uid; <span class="comment">/* User id. [PSR] */</span>
+<a name="l00060"></a>00060         <span class="keyword">static</span> int32_t mode; <span class="comment">/* Game mode. [PSR] */</span>
+<a name="l00061"></a>00061         <span class="keywordtype">bool</span> auth_stage = <span class="keyword">false</span>;
+<a name="l00062"></a>00062         <span class="keywordtype">char</span> psw[PSW_MAXLEN];
+<a name="l00063"></a>00063 <span class="preprocessor">#ifdef INTERNET</span>
+<a name="l00064"></a>00064 <span class="preprocessor"></span>        <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> auth;
+<a name="l00065"></a>00065         <span class="keywordflow">do</span> {
+<a name="l00066"></a>00066                 <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on standard error stream in case of failure.">safe_read</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, &amp;auth, SHORTLEN);
+<a name="l00067"></a>00067                 <span class="keywordflow">switch</span>(auth) {
+<a name="l00068"></a>00068                         <span class="keywordflow">case</span> C_AUTH:
+<a name="l00069"></a>00069 <span class="preprocessor"># ifdef USE_CURSES</span>
+<a name="l00070"></a>00070 <span class="preprocessor"></span>                                move(HEIGHT-1, 0);
+<a name="l00071"></a>00071 <span class="preprocessor"># else</span>
+<a name="l00072"></a>00072 <span class="preprocessor"></span>                                mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, HEIGHT-1, 0);
+<a name="l00073"></a>00073                                 <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a> = HEIGHT-1;
+<a name="l00074"></a>00074                                 <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> = 0;
+<a name="l00075"></a>00075 <span class="preprocessor"># endif</span>
+<a name="l00076"></a>00076 <span class="preprocessor"></span>                        <span class="keywordflow">if</span>(auth_stage) {
+<a name="l00077"></a>00077                                 <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;The password you entered is wrong! Try again.\n&quot;</span>);
+<a name="l00078"></a>00078                         } <span class="keywordflow">else</span> {
+<a name="l00079"></a>00079                                 <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;Authentication Required: &quot;</span>);
+<a name="l00080"></a>00080                         }
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082 <span class="preprocessor"># ifdef USE_CURSES</span>
+<a name="l00083"></a>00083 <span class="preprocessor"></span>                        move(HEIGHT, 0);
+<a name="l00084"></a>00084 <span class="preprocessor"># else</span>
+<a name="l00085"></a>00085 <span class="preprocessor"></span>                        mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, HEIGHT, 0);
+<a name="l00086"></a>00086                         <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a> = HEIGHT;
+<a name="l00087"></a>00087                         <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> = 0;
+<a name="l00088"></a>00088 <span class="preprocessor"># endif</span>
+<a name="l00089"></a>00089 <span class="preprocessor"></span>                        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;password: &quot;</span>);
+<a name="l00090"></a>00090                         <a class="code" href="../../da/d3e/hunt_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
+<a name="l00091"></a>00091                         <span class="keywordflow">do</span> {
+<a name="l00092"></a>00092                                 getnstr(psw, PSW_MAXLEN);
+<a name="l00093"></a>00093                         }<span class="keywordflow">while</span>(strlen(psw)==0);
+<a name="l00094"></a>00094                         <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> hash_psw = <a class="code" href="../../d0/dc3/connect_8c_ad77224498eb85c43ca606769f160202c.html#ad77224498eb85c43ca606769f160202c" title="Calculates the hash value of the password.">hash_cli</a>(psw);
+<a name="l00095"></a>00095                         <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on standard error stream in case of failure.">safe_write</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, &amp;hash_psw , LONGLEN);
+<a name="l00096"></a>00096                         auth_stage = <span class="keyword">true</span>;
+<a name="l00097"></a>00097                         <span class="keywordflow">break</span>;
+<a name="l00098"></a>00098                         <span class="keywordflow">case</span> C_AUTH_SUCCESS:
+<a name="l00099"></a>00099                         auth_stage = <span class="keyword">false</span>;
+<a name="l00100"></a>00100                         <span class="keywordflow">break</span>;
+<a name="l00101"></a>00101                         <span class="keywordflow">case</span> C_REFUSE:
+<a name="l00102"></a>00102 <span class="preprocessor"># ifdef USE_CURSES</span>
+<a name="l00103"></a>00103 <span class="preprocessor"></span>                        move(HEIGHT, 0);
+<a name="l00104"></a>00104 <span class="preprocessor"># else</span>
+<a name="l00105"></a>00105 <span class="preprocessor"></span>                        mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, HEIGHT, 0);
+<a name="l00106"></a>00106                         <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a> = HEIGHT;
+<a name="l00107"></a>00107                         <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> = 0;
+<a name="l00108"></a>00108 <span class="preprocessor"># endif</span>
+<a name="l00109"></a>00109 <span class="preprocessor"></span>                        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;Authentication Failed&quot;</span>);
+<a name="l00110"></a>00110                         exit(1);
+<a name="l00111"></a>00111                         <span class="keywordflow">break</span>;
+<a name="l00112"></a>00112                 }
+<a name="l00113"></a>00113                 }<span class="keywordflow">while</span> (auth_stage);
+<a name="l00114"></a>00114 <span class="preprocessor">#endif</span>
+<a name="l00115"></a>00115 <span class="preprocessor"></span>
+<a name="l00116"></a>00116         <span class="keywordflow">if</span> (uid == 0) {
+<a name="l00117"></a>00117                 uid = htonl(getuid());
+<a name="l00118"></a>00118         }
+<a name="l00119"></a>00119         <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;uid, LONGLEN);
+<a name="l00120"></a>00120         <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, name, NAMELEN);
+<a name="l00121"></a>00121         <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, &amp;team, 1);
+<a name="l00122"></a>00122         enter_status = htonl(enter_status);
+<a name="l00123"></a>00123         <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;enter_status, LONGLEN);
+<a name="l00124"></a>00124         (void) strcpy(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, ttyname(fileno(stderr)));
+<a name="l00125"></a>00125         <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, NAMELEN);
+<a name="l00126"></a>00126 <span class="preprocessor"># ifdef INTERNET</span>
+<a name="l00127"></a>00127 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (Send_message != NULL) {
+<a name="l00128"></a>00128                 mode = C_MESSAGE;
+<a name="l00129"></a>00129         }
+<a name="l00130"></a>00130         <span class="keywordflow">else</span>
+<a name="l00131"></a>00131 <span class="preprocessor"># endif</span>
+<a name="l00132"></a>00132 <span class="preprocessor"></span><span class="preprocessor"># ifdef MONITOR</span>
+<a name="l00133"></a>00133 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (Am_monitor) {
+<a name="l00134"></a>00134                 mode = C_MONITOR;
+<a name="l00135"></a>00135         }
+<a name="l00136"></a>00136         <span class="keywordflow">else</span>
+<a name="l00137"></a>00137 <span class="preprocessor"># endif</span>
+<a name="l00138"></a>00138 <span class="preprocessor"></span>        mode = C_PLAYER;
+<a name="l00139"></a>00139         mode = htonl(mode);
+<a name="l00140"></a>00140         <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;mode, <span class="keyword">sizeof</span> mode);
+<a name="l00141"></a>00141 }
+<a name="l00142"></a>00142 
+<a name="l00150"></a><a class="code" href="../../d0/dc3/connect_8c_ad77224498eb85c43ca606769f160202c.html#ad77224498eb85c43ca606769f160202c">00150</a> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="../../d0/dc3/connect_8c_ad77224498eb85c43ca606769f160202c.html#ad77224498eb85c43ca606769f160202c" title="Calculates the hash value of the password.">hash_cli</a>(<span class="keywordtype">char</span> *psw) {
+<a name="l00151"></a>00151         <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> hash = 5381;
+<a name="l00152"></a>00152         <span class="keywordtype">int</span> c;
+<a name="l00153"></a>00153         <span class="keywordflow">while</span> ((c = *psw++)) {
+<a name="l00154"></a>00154                 hash = ((hash &lt;&lt; 5) + hash) + c;
+<a name="l00155"></a>00155         }
+<a name="l00156"></a>00156         <span class="keywordflow">return</span> hash;
+<a name="l00157"></a>00157 }
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d0/dc3/connect_8c.html">connect.c</a>      </li>
-      <li class="footer">Generated on Thu Jul 12 2012 08:14:39 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Thu Jul 12 2012 12:18:56 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

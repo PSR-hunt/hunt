@@ -184,15 +184,39 @@ function toggleVisibility(linkObj) {
         }
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span>        version = htonl((u_int32_t) HUNT_VERSION);
-        safe_write(newsock, (<span class="keywordtype">char</span> *) &amp;version, LONGLEN);
-        safe_read(newsock, (<span class="keywordtype">char</span> *) &amp;uid, LONGLEN);
+        <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on standard error stream in case of failure.">safe_write</a>(newsock, (<span class="keywordtype">char</span> *) &amp;version, LONGLEN);
+<span class="preprocessor">#ifdef INTERNET</span>
+<span class="preprocessor"></span>        <span class="keywordtype">bool</span> auth = <span class="keyword">true</span>;
+        <span class="keywordflow">if</span>(psw_hash!=0) {
+                <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on standard error stream in case of failure.">safe_write</a>(newsock, (<span class="keywordtype">char</span> *) C_AUTH, SHORTLEN);
+                <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> client_psw; <span class="comment">//TODO</span>
+                <span class="keywordflow">for</span>(i=0; i&lt;3 &amp;&amp; !auth; i++) { <span class="comment">//TODO 3</span>
+                        <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on standard error stream in case of failure.">safe_read</a>(newsock, &amp;client_psw, LONGLEN);
+                        <span class="keywordflow">if</span>(client_psw != psw_hash) {
+                                <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on standard error stream in case of failure.">safe_write</a>(newsock, (<span class="keywordtype">char</span> *) C_AUTH, SHORTLEN);
+                                auth = <span class="keyword">false</span>;
+                        } <span class="keywordflow">else</span> {
+                                <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on standard error stream in case of failure.">safe_write</a>(newsock, (<span class="keywordtype">char</span> *) C_AUTH_SUCCESS, SHORTLEN);
+                                auth = <span class="keyword">true</span>;
+                        }
+                }
+                <span class="keywordflow">if</span>(!auth){
+                        <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on standard error stream in case of failure.">safe_write</a>(newsock, (<span class="keywordtype">char</span> *) C_REFUSE, SHORTLEN);
+                        <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on standard error stream in case of failure.">safe_close</a>(newsock);
+                        <span class="keywordflow">return</span> <span class="keyword">false</span>;
+                }
+        } <span class="keywordflow">else</span> {
+                <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on standard error stream in case of failure.">safe_write</a>(newsock, (<span class="keywordtype">char</span> *) C_AUTH_SUCCESS, SHORTLEN);
+        }
+<span class="preprocessor">#endif</span>
+<span class="preprocessor"></span>        <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on standard error stream in case of failure.">safe_read</a>(newsock, (<span class="keywordtype">char</span> *) &amp;uid, LONGLEN);
         uid = ntohl((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) uid);
-        safe_read(newsock, name, NAMELEN);
-        safe_read(newsock, &amp;team, 1);
-        safe_read(newsock, (<span class="keywordtype">char</span> *) &amp;enter_status, LONGLEN);
+        <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on standard error stream in case of failure.">safe_read</a>(newsock, name, NAMELEN);
+        <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on standard error stream in case of failure.">safe_read</a>(newsock, &amp;team, 1);
+        <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on standard error stream in case of failure.">safe_read</a>(newsock, (<span class="keywordtype">char</span> *) &amp;enter_status, LONGLEN);
         enter_status = ntohl((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) enter_status);
-        safe_read(newsock, <a class="code" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc" title="Name of the terminal in which we are playing.">Ttyname</a>, NAMELEN);
-        safe_read(newsock, (<span class="keywordtype">char</span> *) &amp;mode, <span class="keyword">sizeof</span> mode);
+        <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on standard error stream in case of failure.">safe_read</a>(newsock, <a class="code" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc" title="Name of the terminal in which we are playing.">Ttyname</a>, NAMELEN);
+        <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on standard error stream in case of failure.">safe_read</a>(newsock, (<span class="keywordtype">char</span> *) &amp;mode, <span class="keyword">sizeof</span> mode);
         mode = ntohl(mode);
 
         <span class="comment">/*</span>
@@ -241,7 +265,7 @@ function toggleVisibility(linkObj) {
                         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, READY, 0);
                         (void) fflush(pp-&gt;p_output);
                 }
-                safe_close(newsock);
+                <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on standard error stream in case of failure.">safe_close</a>(newsock);
                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
         }
         <span class="keywordflow">else</span>
@@ -253,8 +277,8 @@ function toggleVisibility(linkObj) {
                         i = pp - Monitor + MAXPL + 3;
                 } <span class="keywordflow">else</span> {
                         socklen = 0;
-                        safe_write(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen);
-                        safe_close(newsock);
+                        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen);
+                        <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on standard error stream in case of failure.">safe_close</a>(newsock);
                         <span class="keywordflow">return</span> <span class="keyword">false</span>;
                 }
         }
@@ -265,8 +289,8 @@ function toggleVisibility(linkObj) {
                 i = pp - <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a> + 3;
         } <span class="keywordflow">else</span> {
                 socklen = 0;
-                safe_write(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen);
-                safe_close(newsock);
+                <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen);
+                <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on standard error stream in case of failure.">safe_close</a>(newsock);
                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
         }
 
@@ -305,7 +329,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d6/dfd/answer_8c.html">answer.c</a>      </li>
-      <li class="footer">Generated on Wed Jul 11 2012 22:00:10 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Thu Jul 12 2012 12:18:56 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

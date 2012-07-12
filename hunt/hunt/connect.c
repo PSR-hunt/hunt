@@ -141,7 +141,11 @@ void do_connect(const char *name, char team, long enter_status) {
 }
 
 /**
- * TODO documentation
+ * Calculates the hash value of the password.
+ * @param[in] psw The password.
+ * \return The hash value of psw.
+ * TODO substitute it with crypt function.
+ * [PSR]
  */
 unsigned long hash_cli(char *psw) {
 	unsigned long hash = 5381;

@@ -30,7 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-# define AUTHENTICATION
 # include	"hunt.h"
 
 /* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
@@ -124,9 +123,9 @@ int main(int argc, char* argv[], char* env[]) {
 			standard_port = false;
 			Test_port = atoi(optarg);
 			break;
-			/**
+			/*
 			 * Added option to insert server password. [PSR]
-			 * TODO
+			 * [PSR]
 			 */
 			case 'P':
 			password = malloc(sizeof(char)*strlen(optarg));
@@ -285,7 +284,11 @@ int main(int argc, char* argv[], char* env[]) {
 }
 
 /**
- * TODO documentation
+ * Calculates the hash value of the password.
+ * @param[in] psw The password.
+ * \return The hash value of psw.
+ * TODO substitute it with crypt function.
+ * [PSR]
  */
 unsigned long hash_srv(char *psw){
 	unsigned long hash = 5381;

@@ -7,7 +7,7 @@
 #define GENERIC_LOG_NAME "HUNTerrorlog"
 #endif
 
-static bool logactive = false;
+static bool logactive = false; /**< A flag that indicates whether the log is active or no. [PSR] */
 
 /**
  * Reimplements the syslog function in order to avoid the use of %m.

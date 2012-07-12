@@ -172,7 +172,7 @@ function toggleVisibility(linkObj) {
                 <span class="keywordflow">return</span>;
         }
         <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a> &lt;= 0 &amp;&amp; !<a class="code" href="../../da/d3e/hunt_8c_a3bd306747807d95cebe18856fff82c71.html#a3bd306747807d95cebe18856fff82c71" title="If true turns off beeping when you reach the typeahead limit.">no_beep</a>) {
-                safe_write(1, <span class="stringliteral">&quot;\7&quot;</span>, 1);
+                <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on standard error stream in case of failure.">safe_write</a>(1, <span class="stringliteral">&quot;\7&quot;</span>, 1);
                 <span class="comment">/* CTRL(&#39;G&#39;) */</span>
                 <span class="keywordflow">return</span>;
         }
@@ -201,7 +201,7 @@ function toggleVisibility(linkObj) {
                 <span class="keywordflow">if</span> (<a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a> &lt; 0){
                         count += <a class="code" href="../../da/db5/playit_8c_ae329bbe69bc01593f17572559fd83bfa.html#ae329bbe69bc01593f17572559fd83bfa" title="Number of sent characters.">nchar_send</a>;
                 }
-                safe_write(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, inp, count);
+                <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, inp, count);
         }
 }
 </pre></div>
@@ -215,7 +215,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/db5/playit_8c.html">playit.c</a>      </li>
-      <li class="footer">Generated on Thu Jul 12 2012 08:14:39 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Thu Jul 12 2012 12:18:56 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

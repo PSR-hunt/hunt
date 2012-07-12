@@ -30,7 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-# define AUTHENTICATION
 # include	"hunt.h"
 
 /* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
