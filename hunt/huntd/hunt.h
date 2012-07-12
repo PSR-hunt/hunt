@@ -454,7 +454,7 @@ extern char map_key[256];
 extern bool no_beep;
 
 
-# if defined(INTERNET) && defined(AUTHENTICATION)
+# if defined(INTERNET)
 static unsigned long psw_hash = 0;
 # endif
 
