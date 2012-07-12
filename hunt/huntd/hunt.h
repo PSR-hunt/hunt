@@ -551,6 +551,12 @@ SIGNAL_TYPE tstp(int);
  */
 #define safe_close(fd) if(close(fd)<0) fprintf(stderr, "Error calling close function\n");
 
+/**
+ * Wrapper for close function that prints on standard error stream in case of failure.
+ * [PSR]
+ */
+#define safe_fclose(fp) if(fclose(fp)!=0) fprintf(stderr, "Error calling fclose function\n");
+
 #ifndef INFTIM
 #define INFTIM -1
 #endif

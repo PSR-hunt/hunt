@@ -1178,14 +1178,14 @@ long env_init(long enter_status_in) {
 			 * Hard-wired FILE* c setting to NULL after file closure.
 			 * [PSR]
 			 */
-			fclose(c);
+			safe_fclose(c);
 			c = NULL;
 		}
 		/*
 		 * Hard-wired FILE* config setting to NULL after file closure.
 		 * [PSR]
 		 */
-		fclose(config);
+		safe_fclose(config);
 		config = NULL;
 	}
 	return enter_status;

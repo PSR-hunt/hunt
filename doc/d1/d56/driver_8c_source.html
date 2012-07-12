@@ -882,7 +882,7 @@ function toggleVisibility(linkObj) {
 <a name="l00790"></a>00790 <span class="preprocessor"></span>
 <a name="l00791"></a>00791         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, ENDWIN);
 <a name="l00792"></a>00792         (void) putc(<span class="charliteral">&#39; &#39;</span>, pp-&gt;p_output);
-<a name="l00793"></a>00793         (void) fclose(pp-&gt;p_output);
+<a name="l00793"></a>00793         safe_fclose(pp-&gt;p_output);
 <a name="l00794"></a>00794 
 <a name="l00795"></a>00795         <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>--;
 <a name="l00796"></a>00796         <span class="keywordflow">if</span> (pp != <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>) {
@@ -920,7 +920,7 @@ function toggleVisibility(linkObj) {
 <a name="l00828"></a>00828 <span class="keywordflow">else</span> {
 <a name="l00829"></a>00829         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, ENDWIN);
 <a name="l00830"></a>00830         (void) putc(LAST_PLAYER, pp-&gt;p_output);
-<a name="l00831"></a>00831         (void) fclose(pp-&gt;p_output);
+<a name="l00831"></a>00831         safe_fclose(pp-&gt;p_output);
 <a name="l00832"></a>00832 
 <a name="l00833"></a>00833         End_monitor--;
 <a name="l00834"></a>00834         <span class="keywordflow">if</span> (pp != End_monitor) {
@@ -988,14 +988,14 @@ function toggleVisibility(linkObj) {
 <a name="l00912"></a>00912                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, HEIGHT, 0);
 <a name="l00913"></a>00913                 <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, ENDWIN);
 <a name="l00914"></a>00914                 (void) putc(LAST_PLAYER, pp-&gt;p_output);
-<a name="l00915"></a>00915                 (void) fclose(pp-&gt;p_output);
+<a name="l00915"></a>00915                 safe_fclose(pp-&gt;p_output);
 <a name="l00916"></a>00916         }
 <a name="l00917"></a>00917 <span class="preprocessor"># ifdef MONITOR</span>
 <a name="l00918"></a>00918 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++) {
 <a name="l00919"></a>00919                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, HEIGHT, 0);
 <a name="l00920"></a>00920                 <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, ENDWIN);
 <a name="l00921"></a>00921                 (void) putc(LAST_PLAYER, pp-&gt;p_output);
-<a name="l00922"></a>00922                 (void) fclose(pp-&gt;p_output);
+<a name="l00922"></a>00922                 safe_fclose(pp-&gt;p_output);
 <a name="l00923"></a>00923         }
 <a name="l00924"></a>00924 <span class="preprocessor"># endif</span>
 <a name="l00925"></a>00925 <span class="preprocessor"></span>        safe_close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
@@ -1075,7 +1075,7 @@ function toggleVisibility(linkObj) {
 <a name="l01003"></a>01003                                 ip-&gt;i_deaths, ip-&gt;i_stillb, ip-&gt;i_saved);
 <a name="l01004"></a>01004         }
 <a name="l01005"></a>01005 
-<a name="l01006"></a>01006         (void) fclose(fp);
+<a name="l01006"></a>01006         safe_fclose(fp);
 <a name="l01007"></a>01007 }
 <a name="l01008"></a>01008 
 <a name="l01012"></a><a class="code" href="../../d1/d56/driver_8c_a6de5fcb80a9ac87307617c9ade91baca.html#a6de5fcb80a9ac87307617c9ade91baca">01012</a> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="../../d1/d56/driver_8c_a6de5fcb80a9ac87307617c9ade91baca.html#a6de5fcb80a9ac87307617c9ade91baca" title="Clear out the scores so the next session start clean.">clear_scores</a>() {
@@ -1093,7 +1093,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d1/d56/driver_8c.html">driver.c</a>      </li>
-      <li class="footer">Generated on Wed Jul 11 2012 22:00:10 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Thu Jul 12 2012 08:14:39 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

@@ -790,7 +790,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 
 	sendcom(pp, ENDWIN);
 	(void) putc(' ', pp->p_output);
-	(void) fclose(pp->p_output);
+	safe_fclose(pp->p_output);
 
 	End_player--;
 	if (pp != End_player) {
@@ -828,7 +828,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 else {
 	sendcom(pp, ENDWIN);
 	(void) putc(LAST_PLAYER, pp->p_output);
-	(void) fclose(pp->p_output);
+	safe_fclose(pp->p_output);
 
 	End_monitor--;
 	if (pp != End_monitor) {
@@ -912,14 +912,14 @@ static int havechar(PLAYER *pp, int i) {
 		cgoto(pp, HEIGHT, 0);
 		sendcom(pp, ENDWIN);
 		(void) putc(LAST_PLAYER, pp->p_output);
-		(void) fclose(pp->p_output);
+		safe_fclose(pp->p_output);
 	}
 # ifdef MONITOR
 	for (pp = Monitor; pp < End_monitor; pp++) {
 		cgoto(pp, HEIGHT, 0);
 		sendcom(pp, ENDWIN);
 		(void) putc(LAST_PLAYER, pp->p_output);
-		(void) fclose(pp->p_output);
+		safe_fclose(pp->p_output);
 	}
 # endif
 	safe_close(Socket);
@@ -1003,7 +1003,7 @@ static void send_stats() {
 				ip->i_deaths, ip->i_stillb, ip->i_saved);
 	}
 
-	(void) fclose(fp);
+	safe_fclose(fp);
 }
 
 /**
