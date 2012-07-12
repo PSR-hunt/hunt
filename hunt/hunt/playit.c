@@ -328,7 +328,7 @@ static void send_stuff() {
 		if (nchar_send < 0){
 			count += nchar_send;
 		}
-		safe_write(Socket, inp, count);
+		write_and_push(Socket, inp, count);
 	}
 }
 

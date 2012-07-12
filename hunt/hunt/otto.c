@@ -244,7 +244,7 @@ void otto(int y,int x,char face) {
 		}
 	}
 
-	safe_write(Socket, command, comlen);
+	write_and_push(Socket, command, comlen);
 	Otto_count += comlen;
 # ifdef	DEBUG
 	(void) fwrite(command, 1, comlen, debug);

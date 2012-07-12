@@ -83,6 +83,10 @@ static void send_stats(void);
 static void zap(PLAYER *, bool, int);
 void erred(char *[]);
 
+#ifdef LOG
+static bool logactive;
+#endif
+
 /**
  * The main program.
  */
@@ -157,13 +161,13 @@ int main(int argc, char* argv[], char* env[]) {
 						break;
 					}
 					reply = htons((unsigned short) Nplayer);
-					(void) sendto(Test_socket, (char *) &reply,
+					sendto_and_push(Test_socket, (char *) &reply,
 							sizeof reply, 0,
 							(struct sockaddr *) &test, DAEMON_SIZE);
 					break;
 					case C_SCORES:
 					reply = htons(stat_port);
-					(void) sendto(Test_socket, (char *) &reply,
+					sendto_and_push(Test_socket, (char *) &reply,
 							sizeof reply, 0,
 							(struct sockaddr *) &test, DAEMON_SIZE);
 					break;
@@ -173,7 +177,7 @@ int main(int argc, char* argv[], char* env[]) {
 						break;
 					}
 					reply = htons(sock_port);
-					(void) sendto(Test_socket, (char *) &reply,
+					sendto_and_push(Test_socket, (char *) &reply,
 							sizeof reply, 0,
 							(struct sockaddr *) &test, DAEMON_SIZE);
 					break;
@@ -314,15 +318,10 @@ static void init() {
 	/* just in case it core dumps */
 	(void) umask(0); /* No privacy at all! */
 	(void) signal(SIGPIPE, SIG_IGN); /* Ignore signal. [PSR]*/
-
-# ifdef LOG
-# ifdef	SYSLOG_43
-	openlog("huntd", LOG_PID, LOG_DAEMON);
-# endif
-# ifdef	SYSLOG_42
-	openlog("huntd", LOG_PID);
-# endif
-# endif
+#ifdef LOG
+	logactive = true;
+#endif
+	forcelogopen("huntd");
 
 	/*
 	 * Initialize statistics socket

@@ -96,7 +96,7 @@ int answer() {
 	}
 # endif
 	version = htonl((u_int32_t) HUNT_VERSION);
-	safe_write(newsock, (char *) &version, LONGLEN);
+	write_and_push(newsock, (char *) &version, LONGLEN);
 	safe_read(newsock, (char *) &uid, LONGLEN);
 	uid = ntohl((unsigned long) uid);
 	safe_read(newsock, name, NAMELEN);
@@ -165,7 +165,7 @@ int answer() {
 			i = pp - Monitor + MAXPL + 3;
 		} else {
 			socklen = 0;
-			safe_write(newsock, (char *) &socklen, sizeof socklen);
+			write_and_push(newsock, (char *) &socklen, sizeof socklen);
 			safe_close(newsock);
 			return false;
 		}
@@ -177,7 +177,7 @@ int answer() {
 		i = pp - Player + 3;
 	} else {
 		socklen = 0;
-		safe_write(newsock, (char *) &socklen, sizeof socklen);
+		write_and_push(newsock, (char *) &socklen, sizeof socklen);
 		safe_close(newsock);
 		return false;
 	}

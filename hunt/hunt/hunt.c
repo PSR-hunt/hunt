@@ -550,7 +550,7 @@ SOCKET * list_drivers() {
 		}
 		test.sin_addr = *((struct in_addr *) hp->h_addr);
 		msg = htons(C_TESTMSG());
-		(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
+		sendto_and_push(test_socket, (char *) &msg, sizeof msg, 0,
 				(struct sockaddr *) &test, DAEMON_SIZE);
 	} else {
 
@@ -558,7 +558,7 @@ SOCKET * list_drivers() {
 			/* favor host of previous session by broadcasting to it first */
 			test.sin_addr = Daemon.sin_addr;
 			msg = htons(C_PLAYER); /* Must be playing! */
-			(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
+			sendto_and_push(test_socket, (char *) &msg, sizeof msg, 0,
 					(struct sockaddr *) &test, DAEMON_SIZE);
 		}
 
@@ -586,6 +586,7 @@ SOCKET * list_drivers() {
 				leave(1, "sendto");
 				/* NOTREACHED */
 			}
+			fsync(test_socket);
 		}
 		test.sin_addr = local_address;
 		if (sendto(test_socket, (char *) &msg, sizeof msg, 0,
@@ -593,6 +594,7 @@ SOCKET * list_drivers() {
 			leave(1, "sendto");
 			/* NOTREACHED */
 		}
+		fsync(test_socket);
 # else /* !BROADCAST */
 		/* loop thru all hosts on local net and send msg to them. */
 		msg = htons(C_TESTMSG());
@@ -601,7 +603,7 @@ SOCKET * list_drivers() {
 		while (hp = gethostent()) {
 			if (local_net == inet_netof(* ((struct in_addr *) hp->h_addr))) {
 				test.sin_addr = * ((struct in_addr *) hp->h_addr);
-				(void) sendto(test_socket, (char *) &msg, sizeof msg, 0,
+				sendto_and_push(test_socket, (char *) &msg, sizeof msg, 0,
 						(struct sockaddr *) &test, DAEMON_SIZE);
 			}
 		}
@@ -904,7 +906,7 @@ void rmnl(char *s) {
 		}
 		if (ch == 'y') {
 			if (Socket != 0) {
-				safe_write(Socket, "q", 1);
+				write_and_push(Socket, "q", 1);
 				safe_close(Socket);
 			}
 			leavex(0, (char *) NULL);

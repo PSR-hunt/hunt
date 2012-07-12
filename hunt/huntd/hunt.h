@@ -50,9 +50,7 @@
 
 # ifndef TALK_MODE /* See above. [PSR] */
 # include	<errno.h>
-# ifdef LOG
 # include	<syslog.h>
-# endif
 # include	<sys/types.h>
 # endif
 
@@ -506,6 +504,13 @@ int rand_num(int);
 void redraw_screen(void);
 void rmnl(char *);
 void rollexpl(void);
+void forcelogopen(const char *);
+void safe_write(int fd, const void *buf,size_t count);
+void safe_sendto(int sockfd,const void *buf,size_t len,int flags,const struct sockaddr *destaddr, socklen_t addrlen);
+void safe_read(int fd,void *buf,size_t nbytes);
+void safe_chdir(const char *path);
+void safe_close(int fd);
+void safe_fclose(FILE *fp);
 void see(PLAYER *, int);
 void sendcom(PLAYER *, int, ...);
 void showexpl(int, int, char);
@@ -514,6 +519,8 @@ void start_driver(void);
 void stmonitor(PLAYER *);
 void stplayer(PLAYER *, int);
 char translate(char);
+void write_and_push(int fd, const void *buf,size_t count);
+void sendto_and_push(int sockfd,const void *buf,size_t len,int flags,const struct sockaddr *destaddr, socklen_t addrlen);
 
 #ifndef SIGNAL_TYPE
 #define SIGNAL_TYPE void
@@ -527,35 +534,6 @@ SIGNAL_TYPE sigterm(int) __attribute__((__noreturn__));
 SIGNAL_TYPE sigusr1(int) __attribute__((__noreturn__));
 SIGNAL_TYPE tstp(int);
 
-/**
- * Wrapper for write function that prints on standard error stream in case of failure.
- * [PSR]
- */
-# define safe_write(fd, buf, n) if(write(fd, buf, n)<0) fprintf(stderr, "Error calling write function\n");
-
-/**
- * Wrapper for read function that prints on standard error stream in case of failure.
- * [PSR]
- */
-# define safe_read(fd, buf, nbytes) if(read(fd, buf, nbytes)<0) fprintf(stderr, "Error calling read function\n");
-
-/**
- * Wrapper for chdir function that prints on standard error stream in case of failure.
- * [PSR]
- */
-# define safe_chdir(path) if(chdir(path)<0) fprintf(stderr, "Error calling chdir function\n");
-
-/**
- * Wrapper for close function that prints on standard error stream in case of failure.
- * [PSR]
- */
-#define safe_close(fd) if(close(fd)<0) fprintf(stderr, "Error calling close function\n");
-
-/**
- * Wrapper for close function that prints on standard error stream in case of failure.
- * [PSR]
- */
-#define safe_fclose(fp) if(fclose(fp)!=0) fprintf(stderr, "Error calling fclose function\n");
 
 #ifndef INFTIM
 #define INFTIM -1
