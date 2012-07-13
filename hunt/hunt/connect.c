@@ -86,10 +86,9 @@ void do_connect(const char *name, char team, long enter_status) {
 
 #ifdef INTERNET
 	/*Read auth [PSR]*/
-
 	unsigned short auth;
 	do {
-		safe_read(Socket, &auth, SHORTLEN);
+		safe_read(Socket, &auth, SHORTLEN); //TODO Qui si blocca perchè non gli arriva auth.
 		switch(auth) {
 			case C_AUTH:
 # ifdef USE_CURSES
@@ -136,7 +135,7 @@ void do_connect(const char *name, char team, long enter_status) {
 			exit(1);
 			break;
 		}
-		}while (auth_stage);
+		}while (!auth_stage); //TODO PRIMA ERA SENZA !
 #endif
 
 	if (uid == 0) {
