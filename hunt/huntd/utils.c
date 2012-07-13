@@ -71,7 +71,7 @@ void forcelogopen(const char *name){
 void safe_write(int fd, const void *buf,size_t count){
 	if(write(fd, buf, count)<0){
 		forcelogopen("HUNTerrorlog");
-		iso_syslog(LOG_USER, "Error calling write function: %m");
+//		iso_syslog(LOG_USER, "Error calling write function: %m");
 	}
 }
 
@@ -82,7 +82,7 @@ void safe_write(int fd, const void *buf,size_t count){
 void safe_sendto(int sockfd,const void *buf,size_t len,int flags,const struct sockaddr *destaddr, socklen_t addrlen){
 	if(sendto(sockfd, buf, len, flags, destaddr, addrlen)<0){
 		forcelogopen("HUNTerrorlog");
-		iso_syslog(LOG_USER, "Error calling sendto function: %m");
+//		iso_syslog(LOG_USER, "Error calling sendto function: %m");
 	}
 }
 
