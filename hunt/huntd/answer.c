@@ -73,6 +73,10 @@ int answer() {
 	u_int32_t version;
 	int i;
 
+	static unsigned short c_auth = C_AUTH;
+	static unsigned short c_auth_success = C_AUTH_SUCCESS;
+	static unsigned short c_refuse = C_REFUSE;
+
 # ifdef INTERNET
 	socklen = sizeof sockstruct;
 # else
@@ -105,27 +109,26 @@ int answer() {
 /* Password reading. [PSR] */
 #ifdef INTERNET
 	if(password_hash!=0) { /* A password has been set. [PSR] */
-		unsigned short authprovami = C_AUTH;
-		write_and_push(newsock, &authprovami, SHORTLEN);
+		write_and_push(newsock, &c_auth, SHORTLEN);
 
 		bool auth = false;
 		unsigned long client_psw;
 		for(i=0; i<3 && !auth; i++) { /* 3 password attempts. [PSR] */
 			safe_read(newsock, &client_psw, LONGLEN);
 			if(ntohl(client_psw) != password_hash) { /* Authentication failed. New request. [PSR] */
-				write_and_push(newsock, (unsigned short *) C_AUTH, SHORTLEN);
+				write_and_push(newsock, &c_auth, SHORTLEN);
 			} else { /* Authentication successful. [PSR]*/
-				write_and_push(newsock, (unsigned short *) C_AUTH_SUCCESS, SHORTLEN);
+				write_and_push(newsock, &c_auth_success, SHORTLEN);
 				auth = true;
 			}
 		}
 		if(!auth){
-			write_and_push(newsock, (unsigned short *) C_REFUSE, SHORTLEN);
+			write_and_push(newsock, &c_refuse, SHORTLEN);
 			safe_close(newsock);
 			return false;
 		}
 	} else { /* No authentication. [PSR] */
-		write_and_push(newsock, (unsigned short *) C_AUTH_SUCCESS, SHORTLEN);
+		write_and_push(newsock, &c_auth_success, SHORTLEN);
 	}
 #endif
 
