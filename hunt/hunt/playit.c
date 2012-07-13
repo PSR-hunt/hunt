@@ -111,16 +111,7 @@ static void send_stuff(void);
 void playit() {
 	int ch;
 	int y, x;
-	u_int32_t version;
 
-	if (read(Socket, (char *) &version, LONGLEN) != LONGLEN) {
-		bad_con();
-		/* NOTREACHED */
-	}
-	if (ntohl(version) != HUNT_VERSION) {
-		bad_ver();
-		/* NOTREACHED */
-	}
 	errno = 0;
 # ifdef OTTO
 	Otto_count = 0;

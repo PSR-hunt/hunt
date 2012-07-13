@@ -58,9 +58,35 @@ void do_connect(const char *name, char team, long enter_status) {
 
 	static int32_t uid; /* User id. [PSR] */
 	static int32_t mode; /* Game mode. [PSR] */
+
 	bool auth_stage = false;
 	char psw[PSW_MAXLEN];
+
+
+	/*Read version [PSR]*/
+
+	u_int32_t version;
+
+	int len = read(Socket, (char *) &version, LONGLEN);
+
+	if (len != LONGLEN) {
+		char msg[256];
+		sprintf(msg, "Error reading version; size read: %d, expected: %d", len, SHORTLEN);
+		leavex(1, msg);
+		/* NOTREACHED */
+	}
+
+	u_int32_t curr_version = ntohl(version);
+	if (curr_version != HUNT_VERSION) {
+		char *msg;
+		sprintf(msg, "Hunt version error: Client version: %d, Server version: %d", HUNT_VERSION, curr_version);
+		leavex(1, msg);
+		/* NOTREACHED */
+	}
+
 #ifdef INTERNET
+	/*Read auth [PSR]*/
+
 	unsigned short auth;
 	do {
 		safe_read(Socket, &auth, SHORTLEN);

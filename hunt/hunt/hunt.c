@@ -124,8 +124,7 @@ void dump_scores(SOCKET);
 long env_init(long);
 long var_env_init(long);
 void fill_in_blanks(void);
-void leave(int, const char *) __attribute__((__noreturn__));
-void leavex(int, const char *) __attribute__((__noreturn__));
+
 void fincurs(void);
 void usage(void);
 int main(int, char *[]);

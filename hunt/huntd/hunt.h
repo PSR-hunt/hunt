@@ -453,11 +453,6 @@ extern char *Send_message;
 extern char map_key[256];
 extern bool no_beep;
 
-
-# if defined(INTERNET)
-static unsigned long psw_hash = 0;
-# endif
-
 /*
  * function types
  */
@@ -493,6 +488,8 @@ unsigned long hash_cli(char *);
 BULLET *is_bullet(int, int);
 void iso_syslog(int, const char *, ...); /**< [PSR] */
 void look(PLAYER *);
+void leave(int, const char *) __attribute__((__noreturn__));
+void leavex(int, const char *) __attribute__((__noreturn__));
 void makemaze(void);
 void message(PLAYER *, const char *);
 void mon_execute(PLAYER *);

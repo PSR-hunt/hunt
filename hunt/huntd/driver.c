@@ -52,6 +52,10 @@ __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
 
 int Seed = 0; /**< A random number. [PSR] */
 
+#ifdef INTERNET
+unsigned long password_hash = 0;
+#endif
+
 SOCKET Daemon; /**< Contains the address of the local daemon. [PSR] */
 char *First_arg; /**< Pointer to argv[0] */
 char *Last_arg; /**< Pointer to end of argv/environ */
@@ -133,7 +137,7 @@ int main(int argc, char* argv[], char* env[]) {
 				exit(1);
 			} else {
 				strcpy(password, optarg);
-				psw_hash = hash_srv(password);
+				password_hash = hash_srv(password);
 			}
 			break;
 # endif
