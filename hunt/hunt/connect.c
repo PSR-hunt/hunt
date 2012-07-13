@@ -92,18 +92,17 @@ void do_connect(const char *name, char team, long enter_status) {
 		switch(auth) {
 			case C_AUTH:
 # ifdef USE_CURSES
-				move(HEIGHT-1, 0);
+			move(HEIGHT-1, 0);
 # else
-				mvcur(cur_row, cur_col, HEIGHT-1, 0);
-				cur_row = HEIGHT-1;
-				cur_col = 0;
+			mvcur(cur_row, cur_col, HEIGHT-1, 0);
+			cur_row = HEIGHT-1;
+			cur_col = 0;
 # endif
 			if(auth_stage) {
 				put_str("The password you entered is wrong! Try again.\n");
 			} else {
 				put_str("Authentication Required: ");
 			}
-
 # ifdef USE_CURSES
 			move(HEIGHT, 0);
 # else
@@ -117,7 +116,7 @@ void do_connect(const char *name, char team, long enter_status) {
 				getnstr(psw, PSW_MAXLEN);
 			}while(strlen(psw)==0);
 			unsigned long hash_psw = hash_cli(psw);
-			safe_write(Socket, &hash_psw , LONGLEN);
+			safe_write(Socket, &hash_psw , LONGLEN); //todo non è write and push?
 			auth_stage = true;
 			break;
 			case C_AUTH_SUCCESS:

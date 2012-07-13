@@ -21,7 +21,7 @@ void iso_syslog(int priority, const char *format, ...) {
 	char *remaining = NULL;
 	char *iso_format = '\0';
 
-	remaining = (char *) malloc(sizeof(char) * strlen(format));
+	remaining = malloc(sizeof(const char) * strlen(format));
 	if(remaining == NULL){
 		exit(1);
 	}
