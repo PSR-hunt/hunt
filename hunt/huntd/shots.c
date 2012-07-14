@@ -95,7 +95,7 @@ void moveshots() {
 			next = bp->b_next;
 			x = bp->b_x;
 			y = bp->b_y;
-			Maze[y][x] = bp->b_over;
+			maze[y][x] = bp->b_over;
 			for (pp = player; pp < end_player; pp++)
 				check(pp, y, x);
 # ifdef MONITOR
@@ -164,7 +164,7 @@ void moveshots() {
 		}
 
 		for (pp = player; pp < end_player; pp++){
-			Maze[pp->p_y][pp->p_x] = pp->p_face;
+			maze[pp->p_y][pp->p_x] = pp->p_face;
 		}
 	}
 
@@ -226,7 +226,7 @@ static int move_normal_shot(BULLET *bp) {
 			break;
 		}
 
-		switch (Maze[y][x]) {
+		switch (maze[y][x]) {
 		case SHOT:
 			if (rand_num(100) < 5) {
 				zapshot(Bullets, bp);
@@ -255,7 +255,7 @@ static int move_normal_shot(BULLET *bp) {
 				bp->b_face = LEFTS;
 				break;
 			}
-			Maze[y][x] = WALL5;
+			maze[y][x] = WALL5;
 # ifdef MONITOR
 			for (pp = Monitor; pp < end_monitor; pp++) {
 				check(pp, y, x);
@@ -277,7 +277,7 @@ static int move_normal_shot(BULLET *bp) {
 				bp->b_face = RIGHT;
 				break;
 			}
-			Maze[y][x] = WALL4;
+			maze[y][x] = WALL4;
 # ifdef MONITOR
 			for (pp = Monitor; pp < end_monitor; pp++) {
 				check(pp, y, x);
@@ -319,7 +319,7 @@ static int move_normal_shot(BULLET *bp) {
 			 */
 			pp = play_at(y, x);
 			pp->p_ident->i_shot += bp->b_charge;
-			if (opposite(bp->b_face, Maze[y][x])) {
+			if (opposite(bp->b_face, maze[y][x])) {
 				if (rand_num(100) < 10) {
 					if (bp->b_owner != NULL) {
 						message(bp->b_owner, "Your charge was absorbed!");
@@ -400,19 +400,19 @@ static void move_drone(BULLET *bp) {
 	/*
 	 * See if we can give someone a blast
 	 */
-	if ((is_player(Maze[bp->b_y][bp->b_x - 1])) && !drone_move) {
+	if ((is_player(maze[bp->b_y][bp->b_x - 1])) && !drone_move) {
 		dir = WEST;
 		drone_move = true;
 	}
-	else if ((is_player(Maze[bp->b_y - 1][bp->b_x])) && !drone_move) {
+	else if ((is_player(maze[bp->b_y - 1][bp->b_x])) && !drone_move) {
 		dir = NORTH;
 		drone_move = true;
 	}
-	else if ((is_player(Maze[bp->b_y + 1][bp->b_x])) && !drone_move) {
+	else if ((is_player(maze[bp->b_y + 1][bp->b_x])) && !drone_move) {
 		dir = SOUTH;
 		drone_move = true;
 	}
-	else if ((is_player(Maze[bp->b_y][bp->b_x + 1])) && !drone_move) {
+	else if ((is_player(maze[bp->b_y][bp->b_x + 1])) && !drone_move) {
 		dir = EAST;
 		drone_move = true;
 	}
@@ -517,7 +517,7 @@ static void move_drone(BULLET *bp) {
 		bp->b_face = BELOW;
 		break;
 	}
-	switch (Maze[bp->b_y][bp->b_x]) {
+	switch (maze[bp->b_y][bp->b_x]) {
 		case LEFTS:
 		case RIGHT:
 		case BELOW:
@@ -527,7 +527,7 @@ static void move_drone(BULLET *bp) {
 		 * drone if s/he is facing it
 		 */
 		if (rand_num(100) < 1 &&
-				opposite(bp->b_face, Maze[bp->b_y][bp->b_x])) {
+				opposite(bp->b_face, maze[bp->b_y][bp->b_x])) {
 			pp = play_at(bp->b_y, bp->b_x);
 			pp->p_ammo += bp->b_charge;
 			message(pp, "**** Absorbed drone ****");
@@ -549,7 +549,7 @@ static void move_drone(BULLET *bp) {
  * @param[in] bp A bullet.
  */
 static void save_bullet(BULLET *bp) {
-	bp->b_over = Maze[bp->b_y][bp->b_x];
+	bp->b_over = maze[bp->b_y][bp->b_x];
 	switch (bp->b_over) {
 	case SHOT:
 	case GRENADE:
@@ -585,7 +585,7 @@ static void save_bullet(BULLET *bp) {
 # endif
 
 	default:
-		Maze[bp->b_y][bp->b_x] = bp->b_type;
+		maze[bp->b_y][bp->b_x] = bp->b_type;
 		break;
 	}
 
@@ -606,7 +606,7 @@ static void move_flyer(PLAYER *pp) {
 		fixshots(pp->p_y, pp->p_x, pp->p_over);
 		pp->p_undershot = false;
 	}
-	Maze[pp->p_y][pp->p_x] = pp->p_over;
+	maze[pp->p_y][pp->p_x] = pp->p_over;
 	x = pp->p_x + pp->p_flyx;
 	y = pp->p_y + pp->p_flyy;
 	if (x < 1) {
@@ -624,7 +624,7 @@ static void move_flyer(PLAYER *pp) {
 		pp->p_flyy = -pp->p_flyy;
 	}
 	do {
-		switch (Maze[y][x]) {
+		switch (maze[y][x]) {
 			default:
 			switch (rand_num(4)) {
 				case 0:
@@ -675,15 +675,15 @@ static void move_flyer(PLAYER *pp) {
 # ifdef BOOTS
 		}
 		else {
-			if (Maze[y][x] == BOOT) {
+			if (maze[y][x] == BOOT) {
 				pp->p_face = BOOT_PAIR;
 			}
-			Maze[y][x] = SPACE;
+			maze[y][x] = SPACE;
 		}
 # endif
 	}
-	pp->p_over = Maze[y][x];
-	Maze[y][x] = pp->p_face;
+	pp->p_over = maze[y][x];
+	maze[y][x] = pp->p_face;
 	showexpl(y, x, pp->p_face);
 }
 #endif
@@ -748,7 +748,7 @@ static void chkshot(BULLET *bp, BULLET* next) {
 				expl = '*';
 			}
 			showexpl(y, x, expl);
-			switch (Maze[y][x]) {
+			switch (maze[y][x]) {
 			case LEFTS:
 			case RIGHT:
 			case ABOVE:
@@ -770,10 +770,10 @@ static void chkshot(BULLET *bp, BULLET* next) {
 				break;
 			case GMINE:
 			case MINE:
-				add_shot((Maze[y][x] == GMINE) ? GRENADE : SHOT, y, x, LEFTS,
-						(Maze[y][x] == GMINE) ? GRENREQ : BULREQ,
+				add_shot((maze[y][x] == GMINE) ? GRENADE : SHOT, y, x, LEFTS,
+						(maze[y][x] == GMINE) ? GRENREQ : BULREQ,
 						(PLAYER *) NULL, true, SPACE);
-				Maze[y][x] = SPACE;
+				maze[y][x] = SPACE;
 				break;
 			}
 		}
@@ -789,7 +789,7 @@ static void chkshot(BULLET *bp, BULLET* next) {
 static void chkslime(BULLET *bp,BULLET *next) {
 	BULLET *nbp;
 
-	switch (Maze[bp->b_y][bp->b_x]) {
+	switch (maze[bp->b_y][bp->b_x]) {
 		case WALL1:
 		case WALL2:
 		case WALL3:
@@ -859,7 +859,7 @@ static void move_slime(BULLET *bp,int speed,BULLET *next) {
 # else
 	showexpl(bp->b_y, bp->b_x, '*');
 # endif
-	switch (Maze[bp->b_y][bp->b_x]) {
+	switch (maze[bp->b_y][bp->b_x]) {
 		case LEFTS:
 		case RIGHT:
 		case ABOVE:
@@ -1026,7 +1026,7 @@ static int iswall(int y,int x) {
 	if (y < 0 || x < 0 || y >= HEIGHT || x >= WIDTH) {
 		return true;
 	}
-	switch (Maze[y][x]) {
+	switch (maze[y][x]) {
 		case WALL1:
 		case WALL2:
 		case WALL3:

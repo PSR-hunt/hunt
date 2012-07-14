@@ -92,7 +92,7 @@ void showexpl(int y,int x,char type){
 		outch(pp, type);
 	}
 # endif
-	switch (Maze[y][x]) {
+	switch (maze[y][x]) {
 	  case WALL1:
 	  case WALL2:
 	  case WALL3:
@@ -125,7 +125,7 @@ void rollexpl(){
 		y = ep->e_y;
 		x = ep->e_x;
 		if (y < UBOUND || y >= DBOUND || x < LBOUND || x >= RBOUND){
-			c = Maze[y][x];
+			c = maze[y][x];
 		}
 		else{
 			c = SPACE;
@@ -179,18 +179,18 @@ static void remove_wall(int y,int x){
 	r = rem_index;
 	while (r->r_y != 0) {
 # ifdef FLY
-		switch (Maze[r->r_y][r->r_x]) {
+		switch (maze[r->r_y][r->r_x]) {
 		  case SPACE:
 		  case LEFTS:
 		  case RIGHT:
 		  case ABOVE:
 		  case BELOW:
 		  case FLYER:
-			save_char = Maze[r->r_y][r->r_x];
+			save_char = maze[r->r_y][r->r_x];
 			found=1;
 		}
 # else
-		if (Maze[r->r_y][r->r_x] == SPACE ){
+		if (maze[r->r_y][r->r_x] == SPACE ){
 			break;
 		}
 # endif
@@ -203,7 +203,7 @@ static void remove_wall(int y,int x){
 		/* Slot being used, put back this wall */
 # ifdef FLY
 		if (save_char == SPACE){
-			Maze[r->r_y][r->r_x] = Orig_maze[r->r_y][r->r_x];
+			maze[r->r_y][r->r_x] = Orig_maze[r->r_y][r->r_x];
 		}
 		else {
 			pp = play_at(r->r_y, r->r_x);
@@ -217,20 +217,20 @@ static void remove_wall(int y,int x){
 			}
 			pp->p_over = Orig_maze[r->r_y][r->r_x];
 			pp->p_face = FLYER;
-			Maze[r->r_y][r->r_x] = FLYER;
+			maze[r->r_y][r->r_x] = FLYER;
 			showexpl(r->r_y, r->r_x, FLYER);
 		}
 # else
-		Maze[r->r_y][r->r_x] = Orig_maze[r->r_y][r->r_x];
+		maze[r->r_y][r->r_x] = Orig_maze[r->r_y][r->r_x];
 # endif
 # ifdef RANDOM
 		if (rand_num(100) == 0){
-			Maze[r->r_y][r->r_x] = DOOR;
+			maze[r->r_y][r->r_x] = DOOR;
 		}
 # endif
 # ifdef REFLECT
 		if (rand_num(100) == 0)	{	/* one percent of the time */
-			Maze[r->r_y][r->r_x] = WALL4;
+			maze[r->r_y][r->r_x] = WALL4;
 		}
 # endif
 # ifdef MONITOR
@@ -249,7 +249,7 @@ static void remove_wall(int y,int x){
 		rem_index = r;
 	}
 
-	Maze[y][x] = SPACE;
+	maze[y][x] = SPACE;
 # ifdef MONITOR
 	for (pp = Monitor; pp < end_monitor; pp++){
 		check(pp, y, x);

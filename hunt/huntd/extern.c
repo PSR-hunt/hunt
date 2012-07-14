@@ -42,7 +42,7 @@ bool am_monitor = false; /* current process is a monitor */
 # endif
 
 char gen_buf[BUFSIZ]; /**< General scribbling buffer */
-char Maze[HEIGHT][WIDTH2]; /**< The maze */
+char maze[HEIGHT][WIDTH2]; /**< The maze */
 char Orig_maze[HEIGHT][WIDTH2]; /**< The original maze */
 
 struct pollfd fdset[3 + MAXPL + MAXMON]; /**< A set of file descriptors. [PSR] */

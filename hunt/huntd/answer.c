@@ -253,7 +253,7 @@ void stmonitor(PLAYER *pp) {
 	int line;
 	PLAYER *npp;
 
-	memcpy(pp->p_maze, Maze, sizeof Maze);
+	memcpy(pp->p_maze, maze, sizeof maze);
 
 	drawmaze(pp);
 
@@ -289,30 +289,30 @@ void stplayer(PLAYER *newpp, int enter_status) {
 
 	for (y = 0; y < UBOUND; y++) {
 		for (x = 0; x < WIDTH; x++) {
-			newpp->p_maze[y][x] = Maze[y][x];
+			newpp->p_maze[y][x] = maze[y][x];
 		}
 	}
 	for (; y < DBOUND; y++) {
 		for (x = 0; x < LBOUND; x++) {
-			newpp->p_maze[y][x] = Maze[y][x];
+			newpp->p_maze[y][x] = maze[y][x];
 		}
 		for (; x < RBOUND; x++) {
 			newpp->p_maze[y][x] = SPACE;
 		}
 		for (; x < WIDTH; x++) {
-			newpp->p_maze[y][x] = Maze[y][x];
+			newpp->p_maze[y][x] = maze[y][x];
 		}
 	}
 	for (; y < HEIGHT; y++) {
 		for (x = 0; x < WIDTH; x++) {
-			newpp->p_maze[y][x] = Maze[y][x];
+			newpp->p_maze[y][x] = maze[y][x];
 		}
 	}
 
 	do {
 		x = rand_num(WIDTH - 1) + 1;
 		y = rand_num(HEIGHT - 1) + 1;
-	} while (Maze[y][x] != SPACE);
+	} while (maze[y][x] != SPACE);
 	newpp->p_over = SPACE;
 	newpp->p_x = x;
 	newpp->p_y = y;
@@ -354,8 +354,8 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	do {
 		x = rand_num(WIDTH - 1) + 1;
 		y = rand_num(HEIGHT - 1) + 1;
-	} while (Maze[y][x] != SPACE);
-	Maze[y][x] = GMINE;
+	} while (maze[y][x] != SPACE);
+	maze[y][x] = GMINE;
 # ifdef MONITOR
 	for (pp = Monitor; pp < end_monitor; pp++) {
 		check(pp, y, x);
@@ -365,8 +365,8 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	do {
 		x = rand_num(WIDTH - 1) + 1;
 		y = rand_num(HEIGHT - 1) + 1;
-	} while (Maze[y][x] != SPACE);
-	Maze[y][x] = MINE;
+	} while (maze[y][x] != SPACE);
+	maze[y][x] = MINE;
 # ifdef MONITOR
 	for (pp = Monitor; pp < end_monitor; pp++) {
 		check(pp, y, x);

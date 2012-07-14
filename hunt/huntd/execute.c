@@ -212,7 +212,7 @@ static void move_player(PLAYER *pp,int dir){
 	}
 
 	moved = false;
-	switch (Maze[y][x]) {
+	switch (maze[y][x]) {
 	  case SPACE:
 # ifdef RANDOM
 	  case DOOR:
@@ -230,15 +230,15 @@ static void move_player(PLAYER *pp,int dir){
 	  case MINE:
 	  case GMINE:
 		if (dir == pp->p_face){
-			pickup(pp, y, x, 2, Maze[y][x]);
+			pickup(pp, y, x, 2, maze[y][x]);
 		}
 		else if (opposite(dir, pp->p_face)){
-			pickup(pp, y, x, 95, Maze[y][x]);
+			pickup(pp, y, x, 95, maze[y][x]);
 		}
 		else{
-			pickup(pp, y, x, 50, Maze[y][x]);
+			pickup(pp, y, x, 50, maze[y][x]);
 		}
-		Maze[y][x] = SPACE;
+		maze[y][x] = SPACE;
 		moved = true;
 		break;
 	  case SHOT:
@@ -255,7 +255,7 @@ static void move_player(PLAYER *pp,int dir){
 		if (bp != NULL){
 			bp->b_expl = true;
 		}
-		Maze[y][x] = SPACE;
+		maze[y][x] = SPACE;
 		moved = true;
 		break;
 	  case LEFTS:
@@ -280,7 +280,7 @@ static void move_player(PLAYER *pp,int dir){
 # ifdef BOOTS
 	  case BOOT:
 	  case BOOT_PAIR:
-		if (Maze[y][x] == BOOT){
+		if (maze[y][x] == BOOT){
 			pp->p_nboots++;
 		}
 		else{
@@ -303,7 +303,7 @@ static void move_player(PLAYER *pp,int dir){
 		else{
 			message(pp, "You can hobble around on one boot.");
 		}
-		Maze[y][x] = SPACE;
+		maze[y][x] = SPACE;
 		moved = true;
 		break;
 # endif
@@ -320,7 +320,7 @@ static void move_player(PLAYER *pp,int dir){
 			pp->p_undershot = false;
 		}
 		drawplayer(pp, false);
-		pp->p_over = Maze[y][x];
+		pp->p_over = maze[y][x];
 		pp->p_y = y;
 		pp->p_x = x;
 		drawplayer(pp, true);

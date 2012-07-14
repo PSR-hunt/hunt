@@ -37,7 +37,7 @@
 __RCSID("$NetBSD: makemaze.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
 
-# define	ISCLEAR(y,x)	(Maze[y][x] == SPACE) /**< Checks if the character at the given coordinate is a space. [PSR] */
+# define	ISCLEAR(y,x)	(maze[y][x] == SPACE) /**< Checks if the character at the given coordinate is a space. [PSR] */
 # define	ODD(n)		((n) & 01) /**< Bitwise AND between n and 01 to verify if n is odd. [PSR] */
 
 /* static int candig(int, int); For future use. [PSR] */
@@ -55,8 +55,8 @@ void makemaze() {
 	/*
 	 * fill maze with walls
 	 */
-	sp = &Maze[0][0];
-	while (sp < &Maze[HEIGHT - 1][WIDTH]){
+	sp = &maze[0][0];
+	while (sp < &maze[HEIGHT - 1][WIDTH]){
 		*sp++ = DOOR;
 	}
 
@@ -92,7 +92,7 @@ static void dig(int y, int x) {
 	int ny, nx;
 	int *endp;
 
-	Maze[y][x] = SPACE; // Clear this spot
+	maze[y][x] = SPACE; // Clear this spot
 	dp = dirs[rand_num(NPERM)];
 	endp = &dp[NDIR];
 	while (dp < endp) {
@@ -165,7 +165,7 @@ void dig_maze(int x, int y) {
 #define	MWEST	0x8 /**< Associates the west direction with 8 in hex. [PSR] */
 
 	tx = ty = 0;
-	Maze[y][x] = SPACE;
+	maze[y][x] = SPACE;
 	order[0] = MNORTH;
 	for (i = 1; i < 4; i++) {
 		j = rand_num(i + 1);
@@ -194,10 +194,10 @@ void dig_maze(int x, int y) {
 		if (tx < 0 || ty < 0 || tx >= WIDTH || ty >= HEIGHT){
 			continue;
 		}
-		if (Maze[ty][tx] == SPACE){
+		if (maze[ty][tx] == SPACE){
 			continue;
 		}
-		Maze[(y + ty) / 2][(x + tx) / 2] = SPACE;
+		maze[(y + ty) / 2][(x + tx) / 2] = SPACE;
 		dig_maze(tx, ty);
 	}
 }
@@ -213,21 +213,21 @@ void remap() {
 
 	for (y = 0; y < HEIGHT; y++)
 		for (x = 0; x < WIDTH; x++) {
-			sp = &Maze[y][x];
+			sp = &maze[y][x];
 			if (*sp == SPACE){
 				continue;
 			}
 			stat = 0;
-			if (y - 1 >= 0 && Maze[y - 1][x] != SPACE){
+			if (y - 1 >= 0 && maze[y - 1][x] != SPACE){
 				stat |= NORTH;
 			}
-			if (y + 1 < HEIGHT && Maze[y + 1][x] != SPACE){
+			if (y + 1 < HEIGHT && maze[y + 1][x] != SPACE){
 				stat |= SOUTH;
 			}
-			if (x + 1 < WIDTH && Maze[y][x + 1] != SPACE){
+			if (x + 1 < WIDTH && maze[y][x + 1] != SPACE){
 				stat |= EAST;
 			}
-			if (x - 1 >= 0 && Maze[y][x - 1] != SPACE){
+			if (x - 1 >= 0 && maze[y][x - 1] != SPACE){
 				stat |= WEST;
 			}
 			switch (stat) {
@@ -254,5 +254,5 @@ void remap() {
 				break;
 			}
 		}
-	memcpy(Orig_maze, Maze, sizeof Maze);
+	memcpy(Orig_maze, maze, sizeof maze);
 }

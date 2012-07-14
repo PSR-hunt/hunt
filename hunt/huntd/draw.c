@@ -191,7 +191,7 @@ void see(PLAYER *pp,int face){
 
 	switch (face) {
 	  case LEFTS:
-		sp = &Maze[y][x];
+		sp = &maze[y][x];
 		for (i = 0; See_over[(int)*--sp]; i++){
 			continue;
 		}
@@ -220,7 +220,7 @@ void see(PLAYER *pp,int face){
 		}
 		break;
 	  case RIGHT:
-		sp = &Maze[y][++x];
+		sp = &maze[y][++x];
 		for (i = 0; See_over[(int)*sp++]; i++){
 			continue;
 		}
@@ -249,26 +249,26 @@ void see(PLAYER *pp,int face){
 		}
 		break;
 	  case ABOVE:
-		sp = &Maze[--y][x];
+		sp = &maze[--y][x];
 		if (!See_over[(int)*sp]){
 			break;
 		}
 		do {
 			--y;
-			sp -= sizeof Maze[0];
+			sp -= sizeof maze[0];
 			check(pp, y, x - 1);
 			check(pp, y, x    );
 			check(pp, y, x + 1);
 		} while (See_over[(int)*sp]);
 		break;
 	  case BELOW:
-		sp = &Maze[++y][x];
+		sp = &maze[++y][x];
 		if (!See_over[(int)*sp]){
 			break;
 		}
 		do {
 			y++;
-			sp += sizeof Maze[0];
+			sp += sizeof maze[0];
 			check(pp, y, x - 1);
 			check(pp, y, x    );
 			check(pp, y, x + 1);
@@ -289,8 +289,8 @@ void check(PLAYER *pp,int y,int x){
 	int	ch;
 	PLAYER	*rpp;
 
-	index = y * sizeof Maze[0] + x;
-	ch = ((char *) Maze)[index];
+	index = y * sizeof maze[0] + x;
+	ch = ((char *) maze)[index];
 	if (ch != ((char *) pp->p_maze)[index]) {
 		rpp = pp;
 		cgoto(rpp, y, x);
@@ -342,7 +342,7 @@ void drawplayer(PLAYER *pp,bool draw){
 
 	x = pp->p_x;
 	y = pp->p_y;
-	Maze[y][x] = draw ? pp->p_face : pp->p_over;
+	maze[y][x] = draw ? pp->p_face : pp->p_over;
 
 # ifdef MONITOR
 	for (newp = Monitor; newp < end_monitor; newp++){
@@ -418,7 +418,7 @@ int player_sym(const PLAYER *pp,int y,int x){
 
 	npp = play_at(y, x);
 	if (npp->p_ident->i_team == ' '){
-		return Maze[y][x];
+		return maze[y][x];
 	}
 #ifdef MONITOR
 	if (pp->p_ident->i_team == '*'){
@@ -426,7 +426,7 @@ int player_sym(const PLAYER *pp,int y,int x){
 	}
 #endif
 	if (pp->p_ident->i_team != npp->p_ident->i_team){
-		return Maze[y][x];
+		return maze[y][x];
 	}
 	return pp->p_ident->i_team;
 }

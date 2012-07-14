@@ -508,8 +508,8 @@ static void makeboots() {
 	do {
 		x = rand_num(WIDTH - 1) + 1;
 		y = rand_num(HEIGHT - 1) + 1;
-	}while (Maze[y][x] != SPACE);
-	Maze[y][x] = BOOT_PAIR;
+	}while (maze[y][x] != SPACE);
+	maze[y][x] = BOOT_PAIR;
 	for (pp = Boot; pp < &Boot[NBOOTS]; pp++)
 	pp->p_flying = -1;
 }
@@ -768,14 +768,14 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 # ifdef BOOTS
 	else if (pp->p_nboots > 0) {
 		if (pp->p_nboots == 2) {
-			Maze[pp->p_y][pp->p_x] = BOOT_PAIR;
+			maze[pp->p_y][pp->p_x] = BOOT_PAIR;
 		}
 		else {
-			Maze[pp->p_y][pp->p_x] = BOOT;
+			maze[pp->p_y][pp->p_x] = BOOT;
 		}
 		if (pp->p_undershot) {
 			fixshots(pp->p_y, pp->p_x,
-					Maze[pp->p_y][pp->p_x]);
+					maze[pp->p_y][pp->p_x]);
 		}
 	}
 # endif
@@ -786,7 +786,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 		do {
 			x = rand_num(WIDTH / 2) + WIDTH / 4;
 			y = rand_num(HEIGHT / 2) + HEIGHT / 4;
-		}while (Maze[y][x] != SPACE);
+		}while (maze[y][x] != SPACE);
 		(void) add_shot(LAVA, y, x, LEFTS, volcano,
 				(PLAYER *) NULL, true, SPACE);
 		for (np = player; np < end_player; np++) {
@@ -801,7 +801,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 		do {
 			x = rand_num(WIDTH / 2) + WIDTH / 4;
 			y = rand_num(HEIGHT / 2) + HEIGHT / 4;
-		}while (Maze[y][x] != SPACE);
+		}while (maze[y][x] != SPACE);
 		add_shot(DSHOT, y, x, rand_dir(),
 				shot_req[MINDSHOT +
 				rand_num(MAXBOMB - MINDSHOT)],
