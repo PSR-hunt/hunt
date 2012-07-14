@@ -50,16 +50,16 @@ __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
 #define _XOPEN_SOURCE /**< Enables cryptography library */
 # include	<crypt.h>
 
-# define	RN	(((Seed = Seed * 11109 + 13849) >> 16) & 0xffff) /**< A random number. [PSR] */
+# define	RN	(((seed = seed * 11109 + 13849) >> 16) & 0xffff) /**< A random number. [PSR] */
 
-int Seed = 0; /**< A random number. [PSR] */
+int seed = 0; /**< A random number. [PSR] */
 
 #ifdef INTERNET
 char *password_hash = NULL;
 #endif
 
 SOCKET daemon_address; /**< Contains the address of the local daemon. [PSR] */
-char *First_arg; /**< Pointer to argv[0] */
+char *first_arg; /**< Pointer to argv[0] */
 char *Last_arg; /**< Pointer to end of argv/environ */
 # ifdef	INTERNET
 int Test_socket; /* test socket to answer datagrams */
@@ -110,7 +110,7 @@ int main(int argc, char* argv[], char* env[]) {
 	int c, i;
 	const int linger = 90 * 1000;
 
-	First_arg = argv[0];
+	first_arg = argv[0];
 	if (env == NULL || *env == NULL ) {
 		env = argv + argc;
 	}
@@ -477,7 +477,7 @@ static void init() {
 	fdset[2].fd = -1;
 # endif
 
-	Seed = getpid() + time((time_t *) NULL );
+	seed = getpid() + time((time_t *) NULL );
 	makemaze();
 # ifdef BOOTS
 	makeboots();
