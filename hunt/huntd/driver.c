@@ -62,7 +62,7 @@ SOCKET daemon_address; /**< Contains the address of the local daemon. [PSR] */
 char *first_arg; /**< Pointer to argv[0] */
 char *last_arg; /**< Pointer to end of argv/environ */
 # ifdef	INTERNET
-int Test_socket; /* test socket to answer datagrams */
+int test_socket_glob; /* test socket to answer datagrams */
 bool inetd_spawned; /* invoked via inetd */
 bool standard_port = true; /* true if listening on standard port */
 /* port # of tcp listen socket */
@@ -174,7 +174,7 @@ int main(int argc, char* argv[], char* env[]) {
 # ifdef INTERNET
 			if (fdset[2].revents & POLLIN) {
 				namelen = DAEMON_SIZE;
-				(void) recvfrom(Test_socket, (char *) &msg, sizeof msg,
+				(void) recvfrom(test_socket_glob, (char *) &msg, sizeof msg,
 						0, (struct sockaddr *) &test, &namelen);
 				switch (ntohs(msg)) {
 					case C_MESSAGE:
@@ -182,13 +182,13 @@ int main(int argc, char* argv[], char* env[]) {
 						break;
 					}
 					reply = htons((unsigned short) Nplayer);
-					sendto_and_push(Test_socket, (char *) &reply,
+					sendto_and_push(test_socket_glob, (char *) &reply,
 							sizeof reply, 0,
 							(struct sockaddr *) &test, DAEMON_SIZE);
 					break;
 					case C_SCORES:
 					reply = htons(stat_port);
-					sendto_and_push(Test_socket, (char *) &reply,
+					sendto_and_push(test_socket_glob, (char *) &reply,
 							sizeof reply, 0,
 							(struct sockaddr *) &test, DAEMON_SIZE);
 					break;
@@ -198,7 +198,7 @@ int main(int argc, char* argv[], char* env[]) {
 						break;
 					}
 					reply = htons(sock_port);
-					sendto_and_push(Test_socket, (char *) &reply,
+					sendto_and_push(test_socket_glob, (char *) &reply,
 							sizeof reply, 0,
 							(struct sockaddr *) &test, DAEMON_SIZE);
 					break;
@@ -449,7 +449,7 @@ static void init() {
 	if (getsockname(0, (struct sockaddr *) &test_port, &len) >= 0
 			&& test_port.sin_family == AF_INET) {
 		inetd_spawned = true;
-		Test_socket = 0;
+		test_socket_glob = 0;
 		if (test_port.sin_port != htons((unsigned short) test_port_glob)) {
 			standard_port = false;
 			test_port_glob = ntohs(test_port.sin_port);
@@ -458,8 +458,8 @@ static void init() {
 		test_port = daemon_address;
 		test_port.sin_port = htons((unsigned short) test_port_glob);
 
-		Test_socket = socket(SOCK_FAMILY, SOCK_DGRAM, 0);
-		if (bind(Test_socket, (struct sockaddr *) &test_port,
+		test_socket_glob = socket(SOCK_FAMILY, SOCK_DGRAM, 0);
+		if (bind(test_socket_glob, (struct sockaddr *) &test_port,
 						DAEMON_SIZE) < 0) {
 # ifdef LOG
 			iso_syslog(LOG_ERR, "bind: %m");
@@ -468,10 +468,10 @@ static void init() {
 # endif
 			exit(1);
 		}
-		(void) listen(Test_socket, 5);
+		(void) listen(test_socket_glob, 5);
 	}
 
-	fdset[2].fd = Test_socket;
+	fdset[2].fd = test_socket_glob;
 	fdset[2].events = POLLIN;
 # else
 	fdset[2].fd = -1;
