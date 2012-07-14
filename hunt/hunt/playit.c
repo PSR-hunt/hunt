@@ -75,7 +75,7 @@ int cur_row; /**< Indicates the current row. [PSR] */
 int cur_col; /**< Indicates the current column. [PSR] */
 # endif
 # ifdef OTTO
-int Otto_count;
+int otto_count;
 int otto_mode;
 static int otto_y, otto_x;
 static char otto_face;
@@ -114,7 +114,7 @@ void playit() {
 
 	errno = 0;
 # ifdef OTTO
-	Otto_count = 0;
+	otto_count = 0;
 # endif
 	nchar_send = MAX_SEND;
 	while ((ch = GETCHR()) != EOF) {
@@ -197,12 +197,12 @@ void playit() {
 # ifndef OTTO
 			(void) GETCHR();
 # else
-			Otto_count -= (GETCHR() & 0xff);
+			otto_count -= (GETCHR() & 0xff);
 			if (!am_monitor) {
 # ifdef DEBUG
-				fputc('0' + Otto_count, stderr);
+				fputc('0' + otto_count, stderr);
 # endif
-				if (Otto_count == 0 && otto_mode) {
+				if (otto_count == 0 && otto_mode) {
 					otto(otto_y, otto_x, otto_face);
 				}
 			}
@@ -312,7 +312,7 @@ static void send_stuff() {
 	count = nsp - inp;
 	if (count) {
 # ifdef OTTO
-		Otto_count += count;
+		otto_count += count;
 # endif
 		nchar_send -= count;
 		if (nchar_send < 0) {

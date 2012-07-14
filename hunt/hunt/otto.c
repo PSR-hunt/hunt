@@ -153,7 +153,7 @@ STATIC int stop_look(struct item *, char, int, int);
 STATIC void wander(void);
 void empty_handler(int);
 
-extern int Otto_count;
+extern int otto_count;
 
 /**
  * Helper function created in order to manage signals.
@@ -245,7 +245,7 @@ void otto(int y,int x,char face) {
 	}
 
 	write_and_push(main_socket, command, comlen);
-	Otto_count += comlen;
+	otto_count += comlen;
 # ifdef	DEBUG
 	(void) fwrite(command, 1, comlen, debug);
 # endif
