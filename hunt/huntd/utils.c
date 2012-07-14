@@ -65,7 +65,7 @@ void forcelogopen(const char *name){
 }
 
 /**
- * Wrapper for write function that prints on standard error stream in case of failure.
+ * Wrapper for write function that prints on a log in case of failure.
  * [PSR]
  */
 void safe_write(int fd, const void *buf,size_t count){
@@ -76,7 +76,7 @@ void safe_write(int fd, const void *buf,size_t count){
 }
 
 /**
- * Wrapper for sendto function that prints on standard error stream in case of failure.
+ * Wrapper for sendto function that prints on a log in case of failure.
  * [PSR]
  */
 void safe_sendto(int sockfd,const void *buf,size_t len,int flags,const struct sockaddr *destaddr, socklen_t addrlen){
@@ -87,7 +87,7 @@ void safe_sendto(int sockfd,const void *buf,size_t len,int flags,const struct so
 }
 
 /**
- * Wrapper for read function that prints on standard error stream in case of failure.
+ * Wrapper for read function that prints on a log in case of failure.
  * [PSR]
  */
 void safe_read(int fd,void *buf,size_t nbytes){
@@ -98,7 +98,7 @@ void safe_read(int fd,void *buf,size_t nbytes){
 }
 
 /**
- * Wrapper for chdir function that prints on standard error stream in case of failure.
+ * Wrapper for chdir function that prints on a log in case of failure.
  * [PSR]
  */
 void safe_chdir(const char *path){
@@ -109,7 +109,7 @@ void safe_chdir(const char *path){
 }
 
 /**
- * Wrapper for close function that prints on standard error stream in case of failure.
+ * Wrapper for close function that prints on a log in case of failure.
  * [PSR]
  */
 void safe_close(int fd){
@@ -120,7 +120,7 @@ void safe_close(int fd){
 }
 
 /**
- * Wrapper for fclose function that prints on standard error stream in case of failure.
+ * Wrapper for fclose function that prints on a log in case of failure.
  * [PSR]
  */
 void safe_fclose(FILE *fp){

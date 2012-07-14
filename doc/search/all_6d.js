@@ -1,12 +1,11 @@
 var searchData=
 [
-  ['main',['main',['../da/d3e/hunt_8c_a0ddf1224851353fc92bfbff6f499fa97.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;hunt.c'],['../d1/d56/driver_8c_a7f567e72b4713406998c6192bb2a10e7.html#a7f567e72b4713406998c6192bb2a10e7',1,'main(int argc, char *argv[], char *env[]):&#160;driver.c']]],
+  ['main',['main',['../d1/d56/driver_8c_a7f567e72b4713406998c6192bb2a10e7.html#a7f567e72b4713406998c6192bb2a10e7',1,'driver.c']]],
   ['makemaze',['makemaze',['../dc/df0/makemaze_8c_a6b1f7f2491541c9a28669dcfd51151fc.html#a6b1f7f2491541c9a28669dcfd51151fc',1,'makemaze.c']]],
   ['makemaze_2ec',['makemaze.c',['../dc/df0/makemaze_8c.html',1,'']]],
   ['map_5fkey',['map_key',['../da/d3e/hunt_8c_a52777fdcc2ab4d0159bfb25c42ccc271.html#a52777fdcc2ab4d0159bfb25c42ccc271',1,'hunt.c']]],
   ['mark_5fplayer',['mark_player',['../d4/dab/shots_8c_a9566151b575c0fa17183cb54a0662426.html#a9566151b575c0fa17183cb54a0662426',1,'shots.c']]],
   ['max_5fsend',['MAX_SEND',['../da/db5/playit_8c_a69354e346054827a67a3b04ed73f6bab.html#a69354e346054827a67a3b04ed73f6bab',1,'playit.c']]],
-  ['maxattempt',['MAXATTEMPT',['../d6/dfd/answer_8c_a9a7fbdd1d69ada545eef1227c59842d6.html#a9a7fbdd1d69ada545eef1227c59842d6',1,'answer.c']]],
   ['maxhostnamelen',['MAXHOSTNAMELEN',['../da/d3e/hunt_8c_afd80ecbe3170ca4fc85b65cda8659f82.html#afd80ecbe3170ca4fc85b65cda8659f82',1,'hunt.c']]],
   ['maxremove',['MAXREMOVE',['../d4/d55/expl_8c_aac657e0191bdd031560aeb8f7a25c9ce.html#aac657e0191bdd031560aeb8f7a25c9ce',1,'expl.c']]],
   ['maze',['Maze',['../dc/d2c/extern_8c_a0a9e7f294ccd684d98a011bf134c2570.html#a0a9e7f294ccd684d98a011bf134c2570',1,'extern.c']]],

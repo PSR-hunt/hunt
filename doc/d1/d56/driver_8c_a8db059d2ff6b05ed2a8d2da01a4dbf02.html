@@ -110,27 +110,27 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="../../d1/d56/driver_8c_source.html#l00930">930</a> of file <a class="el" href="../../d1/d56/driver_8c_source.html">driver.c</a>.</p>
+<p>Definition at line <a class="el" href="../../d1/d56/driver_8c_source.html#l00906">906</a> of file <a class="el" href="../../d1/d56/driver_8c_source.html">driver.c</a>.</p>
 <div class="fragment"><pre class="fragment">                              {
         PLAYER *pp;
 
-        <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a1f6f80f44df780355318fcffdef66a58.html#a1f6f80f44df780355318fcffdef66a58" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++) {
+        <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a1f6f80f44df780355318fcffdef66a58.html#a1f6f80f44df780355318fcffdef66a58">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7">End_player</a>; pp++) {
                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&#39;s terminal.">cgoto</a>(pp, HEIGHT, 0);
                 <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, ENDWIN);
                 (void) putc(LAST_PLAYER, pp-&gt;p_output);
-                <a class="code" href="../../d3/d91/utils_8c_a70df381aa97915e5715b7eb01465e176.html#a70df381aa97915e5715b7eb01465e176" title="Wrapper for fclose function that prints on standard error stream in case of failure.">safe_fclose</a>(pp-&gt;p_output);
+                (void) fclose(pp-&gt;p_output);
         }
 <span class="preprocessor"># ifdef MONITOR</span>
 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++) {
                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&#39;s terminal.">cgoto</a>(pp, HEIGHT, 0);
                 <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, ENDWIN);
                 (void) putc(LAST_PLAYER, pp-&gt;p_output);
-                <a class="code" href="../../d3/d91/utils_8c_a70df381aa97915e5715b7eb01465e176.html#a70df381aa97915e5715b7eb01465e176" title="Wrapper for fclose function that prints on standard error stream in case of failure.">safe_fclose</a>(pp-&gt;p_output);
+                (void) fclose(pp-&gt;p_output);
         }
 <span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>        <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on standard error stream in case of failure.">safe_close</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
+<span class="preprocessor"></span>        (void) close(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d">Socket</a>);
 <span class="preprocessor"># ifdef AF_UNIX_HACK</span>
-<span class="preprocessor"></span>        (void) unlink(<a class="code" href="../../d9/d97/pathname_8c_ab19bda69bc4b43bdf202ff8f3429b1e5.html#ab19bda69bc4b43bdf202ff8f3429b1e5" title="Identifies the socket name.">Sock_name</a>);
+<span class="preprocessor"></span>        (void) unlink(<a class="code" href="../../d9/d97/pathname_8c_ab19bda69bc4b43bdf202ff8f3429b1e5.html#ab19bda69bc4b43bdf202ff8f3429b1e5">Sock_name</a>);
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span>
         exit(eval);
@@ -158,7 +158,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d1/d56/driver_8c.html">driver.c</a>      </li>
 
-    <li class="footer">Generated on Sat Jul 14 2012 10:44:29 for [PSR]Hunt by
+    <li class="footer">Generated on Sun Jul 8 2012 14:22:45 for [PSR]Hunt by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -1,7 +1,6 @@
 var searchData=
 [
   ['max_5fsend',['MAX_SEND',['../da/db5/playit_8c_a69354e346054827a67a3b04ed73f6bab.html#a69354e346054827a67a3b04ed73f6bab',1,'playit.c']]],
-  ['maxattempt',['MAXATTEMPT',['../d6/dfd/answer_8c_a9a7fbdd1d69ada545eef1227c59842d6.html#a9a7fbdd1d69ada545eef1227c59842d6',1,'answer.c']]],
   ['maxhostnamelen',['MAXHOSTNAMELEN',['../da/d3e/hunt_8c_afd80ecbe3170ca4fc85b65cda8659f82.html#afd80ecbe3170ca4fc85b65cda8659f82',1,'hunt.c']]],
   ['maxremove',['MAXREMOVE',['../d4/d55/expl_8c_aac657e0191bdd031560aeb8f7a25c9ce.html#aac657e0191bdd031560aeb8f7a25c9ce',1,'expl.c']]],
   ['meast',['MEAST',['../dc/df0/makemaze_8c_a33efa3207fda4bc743124d6a1a953d28.html#a33efa3207fda4bc743124d6a1a953d28',1,'makemaze.c']]],
