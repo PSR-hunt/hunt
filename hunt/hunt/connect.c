@@ -149,7 +149,7 @@ void do_connect(const char *name, char team, long enter_status) {
 	else
 # endif
 # ifdef MONITOR
-	if (Am_monitor) {
+	if (am_monitor) {
 		mode = C_MONITOR;
 	}
 	else

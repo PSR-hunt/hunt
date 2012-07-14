@@ -38,7 +38,7 @@ __RCSID("$NetBSD: extern.c,v 1.4 2003/06/11 12:00:22 wiz Exp $");
 #endif /* not lint */
 
 # ifdef MONITOR
-bool Am_monitor = false; /* current process is a monitor */
+bool am_monitor = false; /* current process is a monitor */
 # endif
 
 char Buf[BUFSIZ]; /**< General scribbling buffer */

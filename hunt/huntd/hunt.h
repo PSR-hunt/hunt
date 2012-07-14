@@ -300,7 +300,7 @@ extern int slime_req[];
 # ifdef MONITOR
 # define	C_TESTMSG()	(Query_driver ? C_MESSAGE :\
 				(Show_scores ? C_SCORES :\
-				(Am_monitor ? C_MONITOR :\
+				(am_monitor ? C_MONITOR :\
 				C_PLAYER)))
 # else
 # define	C_TESTMSG()	(Show_scores ? C_SCORES :\
@@ -442,7 +442,7 @@ extern PLAYER Boot[NBOOTS];
 # endif
 
 # ifdef MONITOR
-extern bool Am_monitor;
+extern bool am_monitor;
 extern PLAYER Monitor[MAXMON], *End_monitor;
 # endif
 

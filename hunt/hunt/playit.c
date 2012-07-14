@@ -198,7 +198,7 @@ void playit() {
 			(void) GETCHR();
 # else
 			Otto_count -= (GETCHR() & 0xff);
-			if (!Am_monitor) {
+			if (!am_monitor) {
 # ifdef DEBUG
 				fputc('0' + Otto_count, stderr);
 # endif

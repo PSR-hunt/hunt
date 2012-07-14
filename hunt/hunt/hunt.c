@@ -87,7 +87,7 @@ static struct termios saved_tty;
 
 bool Last_player = false; /**< Indicates if a player is the last one or no. [PSR] */
 # ifdef MONITOR
-bool Am_monitor = false;
+bool am_monitor = false;
 # endif
 
 char Buf[BUFSIZ]; /**< General scribbling buffer. [PSR] */
@@ -177,7 +177,7 @@ int main(int argc, char* argv[]) {
 			break;
 		case 'm':
 # ifdef MONITOR
-			Am_monitor = true;
+			am_monitor = true;
 # else
 			warnx("The monitor was not compiled in.");
 # endif
@@ -805,7 +805,7 @@ void start_driver() {
 	int procid;
 
 # ifdef MONITOR
-	if (Am_monitor) {
+	if (am_monitor) {
 		leavex(1, "No one playing.");
 		/* NOTREACHED */
 	}
