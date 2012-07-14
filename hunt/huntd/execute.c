@@ -384,7 +384,7 @@ static void fire(PLAYER *pp,int req_index){
 		sendcom(pp, REFRESH);
 	}
 # ifdef MONITOR
-	for (pp = Monitor; pp < End_monitor; pp++){
+	for (pp = Monitor; pp < end_monitor; pp++){
 		sendcom(pp, REFRESH);
 	}
 # endif
@@ -436,7 +436,7 @@ static void fire_slime(PLAYER *pp,int req_index){
 		sendcom(pp, REFRESH);
 	}
 # ifdef MONITOR
-	for (pp = Monitor; pp < End_monitor; pp++){
+	for (pp = Monitor; pp < end_monitor; pp++){
 		sendcom(pp, REFRESH);
 	}
 # endif

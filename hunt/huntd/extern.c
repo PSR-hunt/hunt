@@ -64,7 +64,7 @@ PLAYER Boot[NBOOTS]; /* all the boots */
 IDENT *Scores; /**< Score cache */
 # ifdef MONITOR
 PLAYER Monitor[MAXMON]; /* all the monitors */
-PLAYER *End_monitor = Monitor; /* last active monitor slot */
+PLAYER *end_monitor = Monitor; /* last active monitor slot */
 # endif
 
 # ifdef VOLCANO

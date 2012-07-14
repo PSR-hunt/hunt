@@ -117,7 +117,7 @@ void drawstatus(PLAYER *pp){
 # ifdef MONITOR
 	cgoto(pp, STAT_MON_ROW, STAT_LABEL_COL);
 	outstr(pp, "Monitor:", 8);
-	for (i = STAT_MON_ROW + 1, np = Monitor; np < End_monitor; np++) {
+	for (i = STAT_MON_ROW + 1, np = Monitor; np < end_monitor; np++) {
 		(void) sprintf(gen_buf, "%5.5s %-10.10s %c", " ",
 			np->p_ident->i_name, np->p_ident->i_team);
 		cgoto(pp, i++, STAT_NAME_COL);
@@ -319,7 +319,7 @@ void showstat(PLAYER *pp){
 	y = STAT_PLAY_ROW + 1 + (pp - Player);
 	c = stat_char(pp);
 # ifdef MONITOR
-	for (np = Monitor; np < End_monitor; np++) {
+	for (np = Monitor; np < end_monitor; np++) {
 		cgoto(np, y, STAT_SCAN_COL);
 		outch(np, c);
 	}
@@ -345,7 +345,7 @@ void drawplayer(PLAYER *pp,bool draw){
 	Maze[y][x] = draw ? pp->p_face : pp->p_over;
 
 # ifdef MONITOR
-	for (newp = Monitor; newp < End_monitor; newp++){
+	for (newp = Monitor; newp < end_monitor; newp++){
 		check(newp, y, x);
 	}
 # endif
