@@ -130,11 +130,14 @@ function toggleVisibility(linkObj) {
 <code>#include &lt;time.h&gt;</code><br/>
 <code>#include &lt;unistd.h&gt;</code><br/>
 <code>#include &lt;getopt.h&gt;</code><br/>
+<code>#include &lt;crypt.h&gt;</code><br/>
 </div>
 <p><a href="../../d1/d56/driver_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d56/driver_8c_a78c99ffd76a7bb3c8c74db76207e9ab4.html#a78c99ffd76a7bb3c8c74db76207e9ab4">_XOPEN_SOURCE</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables cryptography library.  <a href="#a78c99ffd76a7bb3c8c74db76207e9ab4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d56/driver_8c_acce0d4c4425d3def3d8448f8734aa370.html#acce0d4c4425d3def3d8448f8734aa370">RN</a>&#160;&#160;&#160;(((<a class="el" href="../../d1/d56/driver_8c_a70289ec91e5e8f962999b12669dd5d34.html#a70289ec91e5e8f962999b12669dd5d34">Seed</a> = <a class="el" href="../../d1/d56/driver_8c_a70289ec91e5e8f962999b12669dd5d34.html#a70289ec91e5e8f962999b12669dd5d34">Seed</a> * 11109 + 13849) &gt;&gt; 16) &amp; 0xffff)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A random number.  <a href="#acce0d4c4425d3def3d8448f8734aa370"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d56/driver_8c_a9361b98a81e3ec4dd27524d829a81cea.html#a9361b98a81e3ec4dd27524d829a81cea">DAEMON_SIZE</a>&#160;&#160;&#160;(sizeof <a class="el" href="../../d1/d56/driver_8c_aaf1dd5a96b4d9b41354d804b1291e1e4.html#aaf1dd5a96b4d9b41354d804b1291e1e4">Daemon</a> - 1)</td></tr>
@@ -156,8 +159,6 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Kill off a player and take him out of the game.  <a href="#ab1580719e83adabac7a47e7de5f20e14"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d56/driver_8c_a50a87a4c56e9a0d10f7958884a811d8c.html#a50a87a4c56e9a0d10f7958884a811d8c">erred</a> (char *argv[])</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints on stderr the usage of the function.  <a href="#a50a87a4c56e9a0d10f7958884a811d8c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d56/driver_8c_a247d1c70157185778c0972d73b6b166f.html#a247d1c70157185778c0972d73b6b166f">hash_srv</a> (char *psw)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the hash value of the password.  <a href="#a247d1c70157185778c0972d73b6b166f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d56/driver_8c_aae2e7e519abf813fe25bc007036ddda6.html#aae2e7e519abf813fe25bc007036ddda6">checkdam</a> (PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt, char <a class="el" href="../../dc/d2c/extern_8c_a4671d6af1c5f143dc5895e248860dc36.html#a4671d6af1c5f143dc5895e248860dc36">shot_type</a>)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the damage to the given player, and see if s/he is killed.  <a href="#aae2e7e519abf813fe25bc007036ddda6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d56/driver_8c_a3ceaa6a27b22d03cd0c0c5f2e6aea440.html#a3ceaa6a27b22d03cd0c0c5f2e6aea440">rand_num</a> (int range)</td></tr>
@@ -180,7 +181,7 @@ Variables</h2></td></tr>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d1/d56/driver_8c.html">driver.c</a>      </li>
-      <li class="footer">Generated on Thu Jul 12 2012 12:18:56 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Sat Jul 14 2012 09:50:27 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

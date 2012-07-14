@@ -159,21 +159,25 @@ function toggleVisibility(linkObj) {
 <p>Handle the end of the game when the player dies. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">old_status</td><td>An integer that represents the status of a player. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">old_status</td><td>An integer that represents the status of a player. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>A status to be mantained. </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The status of the player re-entering the game. </dd></dl>
 
-<p>Definition at line <a class="el" href="../../da/db5/playit_8c_source.html#l00340">340</a> of file <a class="el" href="../../da/db5/playit_8c_source.html">playit.c</a>.</p>
+<p>Definition at line <a class="el" href="../../da/db5/playit_8c_source.html#l00330">330</a> of file <a class="el" href="../../da/db5/playit_8c_source.html">playit.c</a>.</p>
 <div class="fragment"><pre class="fragment">                         {
-        <span class="keywordtype">int</span> explain, ch, second_ch;
+        <span class="keywordtype">int</span> explain, ch;
+        <span class="comment">/*</span>
+<span class="comment">         * Complete version. Deactivated due to authentication protocol conflict. [PSR]</span>
+<span class="comment">         */</span>
+<span class="comment">//      int second_ch;</span>
 
-        <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_af01fe333f6b6a1321297106ced4cc3cd.html#af01fe333f6b6a1321297106ced4cc3cd" title="Indicates if a player is the last one or no.">Last_player</a>){
+        <span class="keywordflow">if</span> (<a class="code" href="../../da/d3e/hunt_8c_af01fe333f6b6a1321297106ced4cc3cd.html#af01fe333f6b6a1321297106ced4cc3cd" title="Indicates if a player is the last one or no.">Last_player</a>) {
                 <span class="keywordflow">return</span> Q_QUIT;
         }
 <span class="preprocessor"># ifdef OTTO</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (Otto_mode){
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (Otto_mode) {
                 <span class="keywordflow">return</span> Q_CLOAK;
         }
 <span class="preprocessor"># endif</span>
@@ -184,126 +188,153 @@ function toggleVisibility(linkObj) {
         <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a> = HEIGHT;
         <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> = 0;
 <span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;Re-enter game [ynwo]? &quot;</span>);
+<span class="preprocessor"></span>        <span class="comment">/*</span>
+<span class="comment">         * Complete version. Deactivated due to authentication protocol conflict. [PSR]</span>
+<span class="comment">         */</span>
+<span class="comment">//      put_str(&quot;Re-enter game [ynwo]? &quot;);</span>
+        <span class="comment">/*</span>
+<span class="comment">         * Short version. Authentication protocol compliancy. [PSR]</span>
+<span class="comment">         */</span>
+        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;Start or connect to a new game [yn]? &quot;</span>);
+
         <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
         explain = <span class="keyword">false</span>;
         <span class="keywordflow">for</span> (;;) {
-                <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
+                <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>()
+                ;
                 <span class="keywordflow">if</span> (isupper(ch = getchar())) {
                         ch = tolower(ch);
                 }
 
-                <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;y&#39;</span>){
-                        <span class="keywordflow">return</span> old_status;
+                <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;y&#39;</span>) {
+                        <span class="keywordflow">return</span> old_status; <span class="comment">/* The player wants to re-enter the game with his last status. [PSR] */</span>
                 }
-                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;o&#39;</span>){
-                        <span class="keywordflow">break</span>;
-                }
-                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;n&#39;</span>) {
-<span class="preprocessor"># ifndef INTERNET</span>
-<span class="preprocessor"></span>                        <span class="keywordflow">return</span> Q_QUIT;
-<span class="preprocessor"># else</span>
-<span class="preprocessor"></span><span class="preprocessor"># ifdef USE_CURSES</span>
-<span class="preprocessor"></span>                        move(HEIGHT, 0);
-<span class="preprocessor"># else</span>
-<span class="preprocessor"></span>                        mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, HEIGHT, 0);
-                        <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a> = HEIGHT;
-                        <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> = 0;
-<span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>                        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;Write a parting message [yn]? &quot;</span>);
-                        <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
-                        <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
-                        <span class="keywordflow">for</span> (;;) {
-                                <span class="keywordflow">if</span> (isupper(second_ch = getchar())) {
-                                        second_ch = tolower(ch);
-                                }
-                                <span class="keywordflow">if</span> (second_ch == <span class="charliteral">&#39;y&#39;</span> || second_ch == <span class="charliteral">&#39;n&#39;</span>) {
-                                        <span class="keywordflow">break</span>;
-                                }
-                        }
-<span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>                }
-<span class="preprocessor"># ifdef INTERNET</span>
-<span class="preprocessor"></span>                <span class="keywordflow">if</span>( ch == <span class="charliteral">&#39;n&#39;</span> &amp;&amp; second_ch == <span class="charliteral">&#39;n&#39;</span>) {
-                        <span class="keywordflow">return</span> Q_QUIT;
-                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((ch == <span class="charliteral">&#39;n&#39;</span> &amp;&amp; second_ch == <span class="charliteral">&#39;y&#39;</span>) || ch == <span class="charliteral">&#39;w&#39;</span>) {
-                        <span class="keyword">static</span> <span class="keywordtype">char</span> buf[WIDTH + WIDTH % 2];
-                        <span class="keywordtype">char</span> *cp, c;
+                <span class="comment">/*</span>
+<span class="comment">                 * Complete version. Deactivated due to authentication protocol conflict. [PSR]</span>
+<span class="comment">                 */</span>
 
-                        c = ch; <span class="comment">/* save how we got here */</span>
-<span class="preprocessor"># ifdef USE_CURSES</span>
-<span class="preprocessor"></span>                        move(HEIGHT, 0);
-<span class="preprocessor"># else</span>
-<span class="preprocessor"></span>                        mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, HEIGHT, 0);
-                        <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a> = HEIGHT;
-                        <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> = 0;
-<span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>                        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;Message: &quot;</span>);
-                        <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
-                        <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
-                        cp = buf;
-                        <span class="keywordflow">for</span> (;;) {
-                                <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
-                                <span class="keywordflow">if</span> ((ch = getchar()) == <span class="charliteral">&#39;\n&#39;</span> || ch == <span class="charliteral">&#39;\r&#39;</span>){
-                                        <span class="keywordflow">break</span>;
-                                }
-<span class="preprocessor"># if defined(TERMINFO) || BSD_RELEASE &gt;= 44</span>
-<span class="preprocessor"></span>                                <span class="keywordflow">if</span> (ch == erasechar())
-<span class="preprocessor"># else</span>
-<span class="preprocessor"></span>                                <span class="keywordflow">if</span> (ch == _tty.sg_erase)
-<span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>                                {
-                                        <span class="keywordflow">if</span> (cp &gt; buf) {
-<span class="preprocessor"># ifdef USE_CURSES</span>
-<span class="preprocessor"></span>                                                <span class="keywordtype">int</span> y, x;
-                                                getyx(stdscr, y, x);
-                                                move(y, x - 1);
-<span class="preprocessor"># else</span>
-<span class="preprocessor"></span>                                                mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>,
-                                                                <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> - 1);
-                                                <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> -= 1;
-<span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>                                                cp -= 1;
-                                                <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
-                                        }
-                                        <span class="keywordflow">continue</span>;
-                                }
-<span class="preprocessor"># if defined(TERMINFO) || BSD_RELEASE &gt;= 44</span>
-<span class="preprocessor"></span>                                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == killchar())
-<span class="preprocessor"># else</span>
-<span class="preprocessor"></span>                                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == _tty.sg_kill)
-<span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>                                {
-<span class="preprocessor"># ifdef USE_CURSES</span>
-<span class="preprocessor"></span>                                        <span class="keywordtype">int</span> y, x;
-                                        getyx(stdscr, y, x);
-                                        move(y, x - (cp - buf));
-<span class="preprocessor"># else</span>
-<span class="preprocessor"></span>                                        mvcur(<a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>, <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a>, <a class="code" href="../../da/d3e/hunt_8c_a8f895a4d3103f4d5068a192327271394.html#a8f895a4d3103f4d5068a192327271394" title="Indicates the current row.">cur_row</a>,
-                                                        <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> - (cp - buf));
-                                        <a class="code" href="../../da/d3e/hunt_8c_a3c076895db516228380eb169dcaa7c62.html#a3c076895db516228380eb169dcaa7c62" title="Indicates the current column.">cur_col</a> -= cp - buf;
-<span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>                                        cp = buf;
-                                        <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
-                                        <span class="keywordflow">continue</span>;
-                                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!isprint(ch)) {
-                                        <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep</a>();
-                                        <span class="keywordflow">continue</span>;
-                                }
-                                <a class="code" href="../../da/db5/playit_8c_a9ce333415c8fc71b49876b6f89ffe8b6.html#a9ce333415c8fc71b49876b6f89ffe8b6" title="Puts a given character in a point of the screen.">put_ch</a>(ch);
-                                *cp++ = ch;
-                                <span class="keywordflow">if</span> (cp + 1 &gt;= buf + <span class="keyword">sizeof</span> buf){
-                                        <span class="keywordflow">break</span>;
-                                }
-                        }
-                        *cp = <span class="charliteral">&#39;\0&#39;</span>;
-                        Send_message = buf;
-                        <span class="keywordflow">return</span> (c == <span class="charliteral">&#39;w&#39;</span>) ? old_status : Q_MESSAGE;
+<span class="comment">//              else if (ch == &#39;o&#39;){</span>
+<span class="comment">//                      break; /* The player wants to re-enter the game but wants to change the play mode. [PSR] */</span>
+<span class="comment">//              }</span>
+                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;n&#39;</span>) {
+                        <span class="comment">/*</span>
+<span class="comment">                         * Complete version commented. Deactivated due to authentication protocol conflict. [PSR]</span>
+<span class="comment">                         */</span>
+<span class="comment">//# ifndef INTERNET</span>
+                        <span class="keywordflow">return</span> Q_QUIT; <span class="comment">/* The player wants to exit. [PSR] */</span>
+<span class="comment">//# else</span>
+<span class="comment">//# ifdef USE_CURSES</span>
+<span class="comment">//                      move(HEIGHT, 0);</span>
+<span class="comment">//# else</span>
+<span class="comment">//                      mvcur(cur_row, cur_col, HEIGHT, 0);</span>
+<span class="comment">//                      cur_row = HEIGHT;</span>
+<span class="comment">//                      cur_col = 0;</span>
+<span class="comment">//# endif</span>
+<span class="comment">//                      put_str(&quot;Write a parting message [yn]? &quot;);</span>
+<span class="comment">//                      clear_eol();</span>
+<span class="comment">//                      refresh();</span>
+<span class="comment">//                      for (;;) {</span>
+<span class="comment">//                              if (isupper(second_ch = getchar())) {</span>
+<span class="comment">//                                      second_ch = tolower(ch);</span>
+<span class="comment">//                              }</span>
+<span class="comment">//                              if (second_ch == &#39;y&#39; || second_ch == &#39;n&#39;) {</span>
+<span class="comment">//                                      break;</span>
+<span class="comment">//                              }</span>
+<span class="comment">//                      }</span>
+<span class="comment">//# endif</span>
                 }
-<span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>                <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep</a>();
+
+                <span class="comment">/*</span>
+<span class="comment">                 * Complete version. Deactivated due to authentication protocol conflict. [PSR]</span>
+<span class="comment">                 */</span>
+<span class="comment">//# ifdef INTERNET</span>
+<span class="comment">//              if( ch == &#39;n&#39; &amp;&amp; second_ch == &#39;n&#39;) {</span>
+<span class="comment">//                      return Q_QUIT; /* The player wants to leave the game without sending a message. [PSR] */</span>
+<span class="comment">//              } else if ((ch == &#39;n&#39; &amp;&amp; second_ch == &#39;y&#39;) || ch == &#39;w&#39;) {</span>
+<span class="comment">//                      static char buf[WIDTH + WIDTH % 2];</span>
+<span class="comment">//                      char *cp, c;</span>
+<span class="comment">//</span>
+<span class="comment">//                      c = ch; /* save how we got here */</span>
+<span class="comment">//# ifdef USE_CURSES</span>
+<span class="comment">//                      move(HEIGHT, 0);</span>
+<span class="comment">//# else</span>
+<span class="comment">//                      mvcur(cur_row, cur_col, HEIGHT, 0);</span>
+<span class="comment">//                      cur_row = HEIGHT;</span>
+<span class="comment">//                      cur_col = 0;</span>
+<span class="comment">//# endif</span>
+<span class="comment">//                      put_str(&quot;Message: &quot;);</span>
+<span class="comment">//                      clear_eol();</span>
+<span class="comment">//                      refresh();</span>
+<span class="comment">//                      cp = buf;</span>
+<span class="comment">//                      for (;;) { /* echoes user input while writing a message */</span>
+<span class="comment">//                              refresh();</span>
+<span class="comment">//                              if ((ch = getchar()) == &#39;\n&#39; || ch == &#39;\r&#39;) {</span>
+<span class="comment">//                                      break;</span>
+<span class="comment">//                              }</span>
+<span class="comment">//# if defined(TERMINFO) || BSD_RELEASE &gt;= 44</span>
+<span class="comment">//                              if (ch == erasechar())</span>
+<span class="comment">//# else</span>
+<span class="comment">//                              if (ch == _tty.sg_erase)</span>
+<span class="comment">//# endif</span>
+<span class="comment">//                              {</span>
+<span class="comment">//                                      if (cp &gt; buf) {</span>
+<span class="comment">//# ifdef USE_CURSES</span>
+<span class="comment">//                                              int y, x;</span>
+<span class="comment">//                                              getyx(stdscr, y, x);</span>
+<span class="comment">//                                              move(y, x - 1);</span>
+<span class="comment">//# else</span>
+<span class="comment">//                                              mvcur(cur_row, cur_col, cur_row,</span>
+<span class="comment">//                                                              cur_col - 1);</span>
+<span class="comment">//                                              cur_col -= 1;</span>
+<span class="comment">//# endif</span>
+<span class="comment">//                                              cp -= 1;</span>
+<span class="comment">//                                              clear_eol();</span>
+<span class="comment">//                                      }</span>
+<span class="comment">//                                      continue;</span>
+<span class="comment">//                              }</span>
+<span class="comment">//# if defined(TERMINFO) || BSD_RELEASE &gt;= 44</span>
+<span class="comment">//                              else if (ch == killchar())</span>
+<span class="comment">//# else</span>
+<span class="comment">//                              else if (ch == _tty.sg_kill)</span>
+<span class="comment">//# endif</span>
+<span class="comment">//                              {</span>
+<span class="comment">//# ifdef USE_CURSES</span>
+<span class="comment">//                                      int y, x;</span>
+<span class="comment">//                                      getyx(stdscr, y, x);</span>
+<span class="comment">//                                      move(y, x - (cp - buf));</span>
+<span class="comment">//# else</span>
+<span class="comment">//                                      mvcur(cur_row, cur_col, cur_row,</span>
+<span class="comment">//                                                      cur_col - (cp - buf));</span>
+<span class="comment">//                                      cur_col -= cp - buf;</span>
+<span class="comment">//# endif</span>
+<span class="comment">//                                      cp = buf;</span>
+<span class="comment">//                                      clear_eol();</span>
+<span class="comment">//                                      continue;</span>
+<span class="comment">//                              } else if (!isprint(ch)) {</span>
+<span class="comment">//                                      beep();</span>
+<span class="comment">//                                      continue;</span>
+<span class="comment">//                              }</span>
+<span class="comment">//                              put_ch(ch);</span>
+<span class="comment">//                              *cp++ = ch;</span>
+<span class="comment">//                              if (cp + 1 &gt;= buf + sizeof buf) {</span>
+<span class="comment">//                                      break;</span>
+<span class="comment">//                              }</span>
+<span class="comment">//                      }</span>
+<span class="comment">//                      *cp = &#39;\0&#39;;</span>
+<span class="comment">//                      Send_message = buf; /* stores the message into outgoing message */</span>
+<span class="comment">//                      return (c == &#39;w&#39;) ? old_status : Q_MESSAGE;</span>
+<span class="comment">//              }</span>
+<span class="comment">//# endif</span>
+                <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep</a>();
                 <span class="keywordflow">if</span> (!explain) {
-                        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;(Yes, No, Write message, or Options) &quot;</span>);
+                        <span class="comment">/*</span>
+<span class="comment">                         * Complete version. Deactivated due to authentication protocol conflict. [PSR]</span>
+<span class="comment">                         */</span>
+<span class="comment">//                      put_str(&quot;(Yes, No, Write message, or Options) &quot;);</span>
+                        <span class="comment">/*</span>
+<span class="comment">                         * Simple version. Authentication protocol compliancy. [PSR]</span>
+<span class="comment">                         */</span>
+                        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;(Yes or No)&quot;</span>);
                         explain = <span class="keyword">true</span>;
                 }
         }
@@ -321,24 +352,24 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"></span>        <a class="code" href="../../da/db5/playit_8c_a3ecf9b16276ee5974e10fdd937957bc9.html#a3ecf9b16276ee5974e10fdd937957bc9" title="Puts a given sequence of characters on the screen.">put_str</a>(<span class="stringliteral">&quot;Scan, Cloak, or Quit? &quot;</span>);
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span>        <a class="code" href="../../da/db5/playit_8c_a991124a079f7409ee8850cb1118bd4fe.html#a991124a079f7409ee8850cb1118bd4fe" title="Cleans the end of the line.">clear_eol</a>();
-        <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
+        <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>()
+        ;
         explain = <span class="keyword">false</span>;
         <span class="keywordflow">for</span> (;;) {
-                <span class="keywordflow">if</span> (isupper(ch = getchar())){
+                <span class="keywordflow">if</span> (isupper(ch = getchar())) {
                         ch = tolower(ch);
                 }
-                <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;s&#39;</span>){
+                <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;s&#39;</span>) {
                         <span class="keywordflow">return</span> Q_SCAN;
-                }
-                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;c&#39;</span>){
+                } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;c&#39;</span>) {
                         <span class="keywordflow">return</span> Q_CLOAK;
                 }
 <span class="preprocessor"># ifdef FLY</span>
-<span class="preprocessor"></span>                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;f&#39;</span>){
+<span class="preprocessor"></span>                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;f&#39;</span>) {
                         <span class="keywordflow">return</span> Q_FLY;
                 }
 <span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;q&#39;</span>){
+<span class="preprocessor"></span>                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;q&#39;</span>) {
                         <span class="keywordflow">return</span> Q_QUIT;
                 }
                 <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep</a>();
@@ -350,7 +381,8 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span>                        explain = <span class="keyword">true</span>;
                 }
-                <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>();
+                <a class="code" href="../../da/db5/playit_8c_a79af28443525d4cccad45d58d60911ad.html#a79af28443525d4cccad45d58d60911ad" title="Defines refresh() that flushes stdout stream.">refresh</a>()
+                ;
         }
         <span class="comment">/* This point should never be reached [PSR] */</span>
         <span class="keywordflow">return</span> -1;
@@ -366,7 +398,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/db5/playit_8c.html">playit.c</a>      </li>
-      <li class="footer">Generated on Thu Jul 12 2012 12:18:56 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Sat Jul 14 2012 09:50:27 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

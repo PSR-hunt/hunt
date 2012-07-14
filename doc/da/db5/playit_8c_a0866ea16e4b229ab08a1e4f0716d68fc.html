@@ -172,16 +172,7 @@ function toggleVisibility(linkObj) {
 <div class="fragment"><pre class="fragment">              {
         <span class="keywordtype">int</span> ch;
         <span class="keywordtype">int</span> y, x;
-        u_int32_t version;
 
-        <span class="keywordflow">if</span> (read(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;version, LONGLEN) != LONGLEN) {
-                <a class="code" href="../../da/d3e/hunt_8c_a736d391a6f8ca21613d4a45cf3268572.html#a736d391a6f8ca21613d4a45cf3268572" title="We had a bad connection.">bad_con</a>();
-                <span class="comment">/* NOTREACHED */</span>
-        }
-        <span class="keywordflow">if</span> (ntohl(version) != HUNT_VERSION) {
-                <a class="code" href="../../da/d3e/hunt_8c_a7d836fb517861396ee54931aefcf25a0.html#a7d836fb517861396ee54931aefcf25a0" title="Version number mismatch.">bad_ver</a>();
-                <span class="comment">/* NOTREACHED */</span>
-        }
         errno = 0;
 <span class="preprocessor"># ifdef OTTO</span>
 <span class="preprocessor"></span>        Otto_count = 0;
@@ -245,7 +236,7 @@ function toggleVisibility(linkObj) {
                         <span class="keywordflow">if</span> ((ch = <a class="code" href="../../da/db5/playit_8c_ad6b37210d516ba4255b11899f1b395ea.html#ad6b37210d516ba4255b11899f1b395ea" title="Reads from input if there are no things to read in ibuf, reads the first character otherwise...">GETCHR</a>()) == LAST_PLAYER)
                                 <a class="code" href="../../da/d3e/hunt_8c_af01fe333f6b6a1321297106ced4cc3cd.html#af01fe333f6b6a1321297106ced4cc3cd" title="Indicates if a player is the last one or no.">Last_player</a> = <span class="keyword">true</span>;
                         ch = EOF;
-                        <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on standard error stream in case of failure.">safe_close</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
+<span class="comment">//                      safe_close(Socket); Socket termination delegated to main routine.</span>
                         <span class="keywordflow">return</span>;
                 <span class="keywordflow">case</span> BELL:
                         <a class="code" href="../../da/db5/playit_8c_afb18a040145c97df5956c1bba0cbb6bc.html#afb18a040145c97df5956c1bba0cbb6bc" title="Defines beep() that writes the character G, cast to an unsigned char, to stream.">beep</a>();
@@ -272,7 +263,7 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"># ifdef DEBUG</span>
 <span class="preprocessor"></span>                                fputc(<span class="charliteral">&#39;0&#39;</span> + Otto_count, stderr);
 <span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>                                <span class="keywordflow">if</span> (Otto_count == 0 &amp;&amp; Otto_mode){
+<span class="preprocessor"></span>                                <span class="keywordflow">if</span> (Otto_count == 0 &amp;&amp; Otto_mode) {
                                         otto(otto_y, otto_x, otto_face);
                                 }
                         }
@@ -300,7 +291,7 @@ function toggleVisibility(linkObj) {
                         <span class="keywordflow">break</span>;
                 }
         }
-        <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on standard error stream in case of failure.">safe_close</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>);
+<span class="comment">//      safe_close(Socket); Socket termination delegated to main routine</span>
 }
 </pre></div>
 </div>
@@ -313,7 +304,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../da/db5/playit_8c.html">playit.c</a>      </li>
-      <li class="footer">Generated on Thu Jul 12 2012 12:18:56 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Sat Jul 14 2012 09:50:27 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
