@@ -134,10 +134,14 @@ int main(int argc, char* argv[], char* env[]) {
 			case 'P':
 			password = malloc(sizeof(char)*strlen(optarg));
 			if (password == NULL) {
+				free(password);
+				password = NULL;
 				exit(1);
 			} else {
 				strcpy(password, optarg);
 				password_hash = hash_srv(password);
+				free(password);
+				password = NULL;
 			}
 			break;
 # endif
@@ -936,7 +940,8 @@ static int havechar(PLAYER *pp, int i) {
 /**
  * Exit with the given value, cleaning up any droppings lying around.
  * @param[in] eval The value to put as exit parameter.
- */SIGNAL_TYPE cleanup(int eval) {
+ */
+SIGNAL_TYPE cleanup(int eval) {
 	PLAYER *pp;
 
 	for (pp = Player; pp < End_player; pp++) {

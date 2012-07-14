@@ -51,7 +51,7 @@ __RCSID("$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $");
  * Manages the preliminary operations of connection of a player.
  * @param[in] name Represents the name of a player.
  * @param[in] team Represents the team which the player belongs to.
- * @param[in] enter_status Represents the enter status of a player.
+ * @param[in] enter_status Represents the player initial game mode.
  * [PSR]
  */
 void do_connect(const char *name, char team, long enter_status) {
@@ -78,7 +78,7 @@ void do_connect(const char *name, char team, long enter_status) {
 
 	u_int32_t curr_version = ntohl(version);
 	if (curr_version != HUNT_VERSION) {
-		char *msg;
+		char msg[256] = "Hunt version mismatch!"; /* Default error message in case of sprintf failure. [PSR] */
 		sprintf(msg, "Hunt version error: Client version: %d, Server version: %d", HUNT_VERSION, curr_version);
 		leavex(1, msg);
 		/* NOTREACHED */
@@ -88,7 +88,7 @@ void do_connect(const char *name, char team, long enter_status) {
 	/*Read auth [PSR]*/
 	unsigned short auth;
 	do {
-		safe_read(Socket, &auth, SHORTLEN); //TODO Qui si blocca perchè non gli arriva auth.
+		safe_read(Socket, &auth, SHORTLEN);
 		switch(auth) {
 			case C_AUTH:
 # ifdef USE_CURSES
@@ -99,7 +99,7 @@ void do_connect(const char *name, char team, long enter_status) {
 			cur_col = 0;
 # endif
 			if(auth_stage) {
-				put_str("The password you entered is wrong! Try again.\n");
+				put_str("The password you entered is wrong! Try again.");
 			} else {
 				put_str("Authentication Required: ");
 			}
@@ -115,38 +115,30 @@ void do_connect(const char *name, char team, long enter_status) {
 			do {
 				getnstr(psw, PSW_MAXLEN);
 			}while(strlen(psw)==0);
-			unsigned long hash_psw = hash_cli(psw);
-			safe_write(Socket, &hash_psw , LONGLEN); //todo non è write and push?
+			unsigned long hash_psw = htonl(hash_cli(psw));
+			write_and_push(Socket, &hash_psw , LONGLEN);
 			auth_stage = true;
 			break;
 			case C_AUTH_SUCCESS:
 			auth_stage = false;
 			break;
 			case C_REFUSE:
-# ifdef USE_CURSES
-			move(HEIGHT, 0);
-# else
-			mvcur(cur_row, cur_col, HEIGHT, 0);
-			cur_row = HEIGHT;
-			cur_col = 0;
-# endif
-			put_str("Authentication Failed");
-			exit(1);
+				leavex(1, "Authentication Failed, too many wrong attempts.");
 			break;
 		}
-		}while (!auth_stage); //TODO PRIMA ERA SENZA !
+		}while (auth_stage);
 #endif
 
 	if (uid == 0) {
 		uid = htonl(getuid());
 	}
-	write_and_push(Socket, (char *) &uid, LONGLEN); //todo da verificare
-	write_and_push(Socket, name, NAMELEN); //todo da verificare
-	write_and_push(Socket, &team, 1); //todo da verificare
+	write_and_push(Socket, (char *) &uid, LONGLEN);
+	write_and_push(Socket, name, NAMELEN);
+	write_and_push(Socket, &team, 1);
 	enter_status = htonl(enter_status);
-	write_and_push(Socket, (char *) &enter_status, LONGLEN); //todo da verificare
+	write_and_push(Socket, (char *) &enter_status, LONGLEN);
 	(void) strcpy(Buf, ttyname(fileno(stderr)));
-	write_and_push(Socket, Buf, NAMELEN); //todo da verificare
+	write_and_push(Socket, Buf, NAMELEN);
 # ifdef INTERNET
 	if (Send_message != NULL) {
 		mode = C_MESSAGE;
@@ -161,7 +153,7 @@ void do_connect(const char *name, char team, long enter_status) {
 # endif
 	mode = C_PLAYER;
 	mode = htonl(mode);
-	write_and_push(Socket, (char *) &mode, sizeof mode); //todo da verificare
+	write_and_push(Socket, (char *) &mode, sizeof mode);
 }
 
 /**

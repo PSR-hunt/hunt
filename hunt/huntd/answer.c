@@ -52,6 +52,12 @@ extern unsigned long password_hash;
 
 static char Ttyname[NAMELEN]; /**< Name of the terminal in which we are playing. [PSR] */
 
+#ifdef INTERNET
+static unsigned short c_auth = C_AUTH;
+static unsigned short c_auth_success = C_AUTH_SUCCESS;
+static unsigned short c_refuse = C_REFUSE;
+#endif
+
 /**
  * Manages the messages submission.
  * \return True in case of success, false instead.
@@ -72,10 +78,6 @@ int answer() {
 	int flags;
 	u_int32_t version;
 	int i;
-
-	static unsigned short c_auth = C_AUTH;
-	static unsigned short c_auth_success = C_AUTH_SUCCESS;
-	static unsigned short c_refuse = C_REFUSE;
 
 # ifdef INTERNET
 	socklen = sizeof sockstruct;

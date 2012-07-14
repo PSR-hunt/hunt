@@ -32,7 +32,7 @@
 
 # include	"hunt.h"
 
-/* #include <sys/cdefs.h> pushed up in hunt.h. */
+/* #include <sys/cdefs.h> pushed up in hunt.h. [PSR] */
 #ifndef lint
 __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 #endif /* not lint */
@@ -40,8 +40,8 @@ __RCSID("$NetBSD: playit.c,v 1.8 2004/01/27 20:30:29 jsm Exp $");
 # include	<sys/file.h>
 # include	<sys/poll.h>
 # include	<err.h>
-/* # include	<errno.h> already present in hunt.h. */
-# include	<ncurses.h> /* Edited from curses.h. */
+/* # include	<errno.h> already present in hunt.h. [PSR] */
+# include	<ncurses.h> /* Edited from curses.h. [PSR] */
 # include	<ctype.h>
 # include	<signal.h>
 # include	<sys/time.h>
@@ -96,10 +96,10 @@ static unsigned char *iptr = ibuf; /**< ibuf first position pointer. [PSR] */
 #define	GETCHR()	(--icnt < 0 ? getchr() : *iptr++) /**< Reads from input if there are no things to read in ibuf, reads the first character otherwise. [PSR] */
 
 /*Seems to be unused [PSR]
-#if !defined(BSD_RELEASE) || BSD_RELEASE < 44
-extern int _putchar();
-#endif
-*/
+ #if !defined(BSD_RELEASE) || BSD_RELEASE < 44
+ extern int _putchar();
+ #endif
+ */
 
 static unsigned char getchr(void);
 static void send_stuff(void);
@@ -175,7 +175,7 @@ void playit() {
 			if ((ch = GETCHR()) == LAST_PLAYER)
 				Last_player = true;
 			ch = EOF;
-			safe_close(Socket);
+//			safe_close(Socket); Socket termination delegated to main routine.
 			return;
 		case BELL:
 			beep();
@@ -202,7 +202,7 @@ void playit() {
 # ifdef DEBUG
 				fputc('0' + Otto_count, stderr);
 # endif
-				if (Otto_count == 0 && Otto_mode){
+				if (Otto_count == 0 && Otto_mode) {
 					otto(otto_y, otto_x, otto_face);
 				}
 			}
@@ -230,7 +230,7 @@ void playit() {
 			break;
 		}
 	}
-	safe_close(Socket);
+//	safe_close(Socket); Socket termination delegated to main routine
 }
 
 /**
@@ -255,10 +255,10 @@ static unsigned char getchr() {
 			nfds = poll(set, 2, INFTIM);
 		} while (nfds <= 0 && errno == EINTR);
 
-		if (set[1].revents && POLLIN){
+		if (set[1].revents && POLLIN) {
 			send_stuff();
 		}
-		if (!(set[0].revents & POLLIN)){
+		if (!(set[0].revents & POLLIN)) {
 			continue;
 		}
 		icnt = read(Socket, ibuf, sizeof ibuf);
@@ -266,7 +266,7 @@ static unsigned char getchr() {
 			bad_con();
 			/* NOTREACHED */
 		}
-		if (icnt == 0){
+		if (icnt == 0) {
 			continue;
 		}
 		iptr = ibuf;
@@ -286,7 +286,7 @@ static void send_stuff() {
 	static char inp[sizeof Buf];
 
 	count = read(STDIN, Buf, sizeof Buf);
-	if (count <= 0){
+	if (count <= 0) {
 		return;
 	}
 	if (nchar_send <= 0 && !no_beep) {
@@ -302,11 +302,10 @@ static void send_stuff() {
 	 */
 	Buf[count] = '\0';
 	nsp = inp;
-	for (sp = Buf; *sp != '\0'; sp++){
-		if ((*nsp = map_key[(int) *sp]) == 'q'){
+	for (sp = Buf; *sp != '\0'; sp++) {
+		if ((*nsp = map_key[(int) *sp]) == 'q') {
 			intr(0);
-		}
-		else{
+		} else {
 			nsp++;
 		}
 	}
@@ -316,7 +315,7 @@ static void send_stuff() {
 		Otto_count += count;
 # endif
 		nchar_send -= count;
-		if (nchar_send < 0){
+		if (nchar_send < 0) {
 			count += nchar_send;
 		}
 		write_and_push(Socket, inp, count);
@@ -325,17 +324,21 @@ static void send_stuff() {
 
 /**
  * Handle the end of the game when the player dies.
- * @param old_status An integer that represents the status of a player.
- * \return A status to be mantained.
+ * @param[in] old_status An integer that represents the status of a player.
+ * \return The status of the player re-entering the game.
  */
 int quit(int old_status) {
-	int explain, ch, second_ch;
+	int explain, ch;
+	/*
+	 * Complete version. Deactivated due to authentication protocol conflict. [PSR]
+	 */
+//	int second_ch;
 
-	if (Last_player){
+	if (Last_player) {
 		return Q_QUIT;
 	}
 # ifdef OTTO
-	if (Otto_mode){
+	if (Otto_mode) {
 		return Q_CLOAK;
 	}
 # endif
@@ -346,126 +349,153 @@ int quit(int old_status) {
 	cur_row = HEIGHT;
 	cur_col = 0;
 # endif
-	put_str("Re-enter game [ynwo]? ");
+	/*
+	 * Complete version. Deactivated due to authentication protocol conflict. [PSR]
+	 */
+//	put_str("Re-enter game [ynwo]? ");
+	/*
+	 * Short version. Authentication protocol compliancy. [PSR]
+	 */
+	put_str("Start or connect to a new game [yn]? ");
+
 	clear_eol();
 	explain = false;
 	for (;;) {
-		refresh();
+		refresh()
+		;
 		if (isupper(ch = getchar())) {
 			ch = tolower(ch);
 		}
 
-		if (ch == 'y'){
-			return old_status;
+		if (ch == 'y') {
+			return old_status; /* The player wants to re-enter the game with his last status. [PSR] */
 		}
-		else if (ch == 'o'){
-			break;
-		}
-		else if (ch == 'n') {
-# ifndef INTERNET
-			return Q_QUIT;
-# else
-# ifdef USE_CURSES
-			move(HEIGHT, 0);
-# else
-			mvcur(cur_row, cur_col, HEIGHT, 0);
-			cur_row = HEIGHT;
-			cur_col = 0;
-# endif
-			put_str("Write a parting message [yn]? ");
-			clear_eol();
-			refresh();
-			for (;;) {
-				if (isupper(second_ch = getchar())) {
-					second_ch = tolower(ch);
-				}
-				if (second_ch == 'y' || second_ch == 'n') {
-					break;
-				}
-			}
-# endif
-		}
-# ifdef INTERNET
-		if( ch == 'n' && second_ch == 'n') {
-			return Q_QUIT;
-		} else if ((ch == 'n' && second_ch == 'y') || ch == 'w') {
-			static char buf[WIDTH + WIDTH % 2];
-			char *cp, c;
+		/*
+		 * Complete version. Deactivated due to authentication protocol conflict. [PSR]
+		 */
 
-			c = ch; /* save how we got here */
-# ifdef USE_CURSES
-			move(HEIGHT, 0);
-# else
-			mvcur(cur_row, cur_col, HEIGHT, 0);
-			cur_row = HEIGHT;
-			cur_col = 0;
-# endif
-			put_str("Message: ");
-			clear_eol();
-			refresh();
-			cp = buf;
-			for (;;) {
-				refresh();
-				if ((ch = getchar()) == '\n' || ch == '\r'){
-					break;
-				}
-# if defined(TERMINFO) || BSD_RELEASE >= 44
-				if (ch == erasechar())
-# else
-				if (ch == _tty.sg_erase)
-# endif
-				{
-					if (cp > buf) {
-# ifdef USE_CURSES
-						int y, x;
-						getyx(stdscr, y, x);
-						move(y, x - 1);
-# else
-						mvcur(cur_row, cur_col, cur_row,
-								cur_col - 1);
-						cur_col -= 1;
-# endif
-						cp -= 1;
-						clear_eol();
-					}
-					continue;
-				}
-# if defined(TERMINFO) || BSD_RELEASE >= 44
-				else if (ch == killchar())
-# else
-				else if (ch == _tty.sg_kill)
-# endif
-				{
-# ifdef USE_CURSES
-					int y, x;
-					getyx(stdscr, y, x);
-					move(y, x - (cp - buf));
-# else
-					mvcur(cur_row, cur_col, cur_row,
-							cur_col - (cp - buf));
-					cur_col -= cp - buf;
-# endif
-					cp = buf;
-					clear_eol();
-					continue;
-				} else if (!isprint(ch)) {
-					beep();
-					continue;
-				}
-				put_ch(ch);
-				*cp++ = ch;
-				if (cp + 1 >= buf + sizeof buf){
-					break;
-				}
-			}
-			*cp = '\0';
-			Send_message = buf;
-			return (c == 'w') ? old_status : Q_MESSAGE;
+//		else if (ch == 'o'){
+//			break; /* The player wants to re-enter the game but wants to change the play mode. [PSR] */
+//		}
+		else if (ch == 'n') {
+			/*
+			 * Complete version commented. Deactivated due to authentication protocol conflict. [PSR]
+			 */
+//# ifndef INTERNET
+			return Q_QUIT; /* The player wants to exit. [PSR] */
+//# else
+//# ifdef USE_CURSES
+//			move(HEIGHT, 0);
+//# else
+//			mvcur(cur_row, cur_col, HEIGHT, 0);
+//			cur_row = HEIGHT;
+//			cur_col = 0;
+//# endif
+//			put_str("Write a parting message [yn]? ");
+//			clear_eol();
+//			refresh();
+//			for (;;) {
+//				if (isupper(second_ch = getchar())) {
+//					second_ch = tolower(ch);
+//				}
+//				if (second_ch == 'y' || second_ch == 'n') {
+//					break;
+//				}
+//			}
+//# endif
 		}
-# endif
+
+		/*
+		 * Complete version. Deactivated due to authentication protocol conflict. [PSR]
+		 */
+//# ifdef INTERNET
+//		if( ch == 'n' && second_ch == 'n') {
+//			return Q_QUIT; /* The player wants to leave the game without sending a message. [PSR] */
+//		} else if ((ch == 'n' && second_ch == 'y') || ch == 'w') {
+//			static char buf[WIDTH + WIDTH % 2];
+//			char *cp, c;
+//
+//			c = ch; /* save how we got here */
+//# ifdef USE_CURSES
+//			move(HEIGHT, 0);
+//# else
+//			mvcur(cur_row, cur_col, HEIGHT, 0);
+//			cur_row = HEIGHT;
+//			cur_col = 0;
+//# endif
+//			put_str("Message: ");
+//			clear_eol();
+//			refresh();
+//			cp = buf;
+//			for (;;) { /* echoes user input while writing a message */
+//				refresh();
+//				if ((ch = getchar()) == '\n' || ch == '\r') {
+//					break;
+//				}
+//# if defined(TERMINFO) || BSD_RELEASE >= 44
+//				if (ch == erasechar())
+//# else
+//				if (ch == _tty.sg_erase)
+//# endif
+//				{
+//					if (cp > buf) {
+//# ifdef USE_CURSES
+//						int y, x;
+//						getyx(stdscr, y, x);
+//						move(y, x - 1);
+//# else
+//						mvcur(cur_row, cur_col, cur_row,
+//								cur_col - 1);
+//						cur_col -= 1;
+//# endif
+//						cp -= 1;
+//						clear_eol();
+//					}
+//					continue;
+//				}
+//# if defined(TERMINFO) || BSD_RELEASE >= 44
+//				else if (ch == killchar())
+//# else
+//				else if (ch == _tty.sg_kill)
+//# endif
+//				{
+//# ifdef USE_CURSES
+//					int y, x;
+//					getyx(stdscr, y, x);
+//					move(y, x - (cp - buf));
+//# else
+//					mvcur(cur_row, cur_col, cur_row,
+//							cur_col - (cp - buf));
+//					cur_col -= cp - buf;
+//# endif
+//					cp = buf;
+//					clear_eol();
+//					continue;
+//				} else if (!isprint(ch)) {
+//					beep();
+//					continue;
+//				}
+//				put_ch(ch);
+//				*cp++ = ch;
+//				if (cp + 1 >= buf + sizeof buf) {
+//					break;
+//				}
+//			}
+//			*cp = '\0';
+//			Send_message = buf; /* stores the message into outgoing message */
+//			return (c == 'w') ? old_status : Q_MESSAGE;
+//		}
+//# endif
 		beep();
 		if (!explain) {
-			put_str("(Yes, No, Write message, or Options) ");
+			/*
+			 * Complete version. Deactivated due to authentication protocol conflict. [PSR]
+			 */
+//			put_str("(Yes, No, Write message, or Options) ");
+			/*
+			 * Simple version. Authentication protocol compliancy. [PSR]
+			 */
+			put_str("(Yes or No)");
 			explain = true;
 		}
 	}
@@ -483,24 +513,24 @@ int quit(int old_status) {
 	put_str("Scan, Cloak, or Quit? ");
 # endif
 	clear_eol();
-	refresh();
+	refresh()
+	;
 	explain = false;
 	for (;;) {
-		if (isupper(ch = getchar())){
+		if (isupper(ch = getchar())) {
 			ch = tolower(ch);
 		}
-		if (ch == 's'){
+		if (ch == 's') {
 			return Q_SCAN;
-		}
-		else if (ch == 'c'){
+		} else if (ch == 'c') {
 			return Q_CLOAK;
 		}
 # ifdef FLY
-		else if (ch == 'f'){
+		else if (ch == 'f') {
 			return Q_FLY;
 		}
 # endif
-		else if (ch == 'q'){
+		else if (ch == 'q') {
 			return Q_QUIT;
 		}
 		beep();
@@ -512,7 +542,8 @@ int quit(int old_status) {
 # endif
 			explain = true;
 		}
-		refresh();
+		refresh()
+		;
 	}
 	/* This point should never be reached [PSR] */
 	return -1;
@@ -533,14 +564,14 @@ void put_ch(char ch) {
 	putchar(ch);
 	if (++cur_col >= COLS) {
 #if defined(AM) && defined(XN)
-		if (!AM || XN){
+		if (!AM || XN) {
 			putchar('\n');
 		}
 #else
-errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+		errx(1, "Missing necessary configuration entries.\nHunt will quit.\n");
 #endif
 		cur_col = 0;
-		if (++cur_row >= LINES){
+		if (++cur_row >= LINES) {
 			cur_row = LINES;
 		}
 	}
@@ -552,7 +583,7 @@ errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
  * [PSR]
  */
 void put_str(const char *s) {
-	while (*s){
+	while (*s) {
 		put_ch(*s++);
 	}
 }
@@ -571,7 +602,7 @@ void clear_the_screen() {
 	int i;
 
 	if (blanks[0] == '\0')
-		for (i = 0; i < SCREEN_WIDTH; i++){
+		for (i = 0; i < SCREEN_WIDTH; i++) {
 			blanks[i] = ' ';
 		}
 #ifdef CL
@@ -581,12 +612,12 @@ void clear_the_screen() {
 #else
 		tputs(CL, LINES, __cputchar);
 #endif
-		for (i = 0; i < SCREEN_HEIGHT; i++){
+		for (i = 0; i < SCREEN_HEIGHT; i++) {
 			memcpy(screen[i], blanks, SCREEN_WIDTH);
 		}
 	} else
 #else
-errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+	errx(1, "Missing necessary configuration entries.\nHunt will quit.\n");
 #endif
 	{
 		for (i = 0; i < SCREEN_HEIGHT; i++) {
@@ -609,25 +640,25 @@ void clear_eol() {
 #ifdef CE
 	if (CE != NULL)
 #if !defined(BSD_RELEASE) || BSD_RELEASE < 44
-		tputs(CE, 1, _putchar);
+	tputs(CE, 1, _putchar);
 #else
 	tputs(CE, 1, __cputchar);
 #endif
 	else {
 		fwrite(blanks, sizeof(char), SCREEN_WIDTH - cur_col, stdout);
-		if (COLS != SCREEN_WIDTH){
+		if (COLS != SCREEN_WIDTH) {
 			mvcur(cur_row, SCREEN_WIDTH, cur_row, cur_col);
 		}
-		else if (AM){
+		else if (AM) {
 			mvcur(cur_row + 1, 0, cur_row, cur_col);
 		}
-		else{
+		else {
 			mvcur(cur_row, SCREEN_WIDTH - 1, cur_row, cur_col);
 		}
 	}
 	memcpy(&screen[cur_row][cur_col], blanks, SCREEN_WIDTH - cur_col);
 #else
-errx(1,"Missing necessary configuration entries.\nHunt will quit.\n");
+	errx(1, "Missing necessary configuration entries.\nHunt will quit.\n");
 #endif
 }
 # endif
@@ -647,23 +678,23 @@ void redraw_screen() {
 
 	if (first) {
 		curscr = newwin(SCREEN_HEIGHT, SCREEN_WIDTH, 0, 0);
-		if (curscr == NULL){
+		if (curscr == NULL ) {
 			errx(1, "Can't create curscr");
 		}
 
-/*Uncomment only for BSD legacy compatibility [PSR]
-# if !defined(BSD_RELEASE) || BSD_RELEASE < 44
-		for (i = 0; i < SCREEN_HEIGHT; i++)
-			curscr->_y[i] = screen[i];
- * # endif
- */
+		/*Uncomment only for BSD legacy compatibility [PSR]
+		 # if !defined(BSD_RELEASE) || BSD_RELEASE < 44
+		 for (i = 0; i < SCREEN_HEIGHT; i++)
+		 curscr->_y[i] = screen[i];
+		 * # endif
+		 */
 		first = 0;
 	}
 # if defined(BSD_RELEASE) && BSD_RELEASE >= 44
 	for (i = 0; i < SCREEN_HEIGHT; i++) {
 		int j;
 
-		for (j = 0; j < SCREEN_WIDTH; j++){
+		for (j = 0; j < SCREEN_WIDTH; j++) {
 			curscr->lines[i]->line[j].ch = screen[i][j];
 		}
 	}
@@ -680,7 +711,7 @@ void redraw_screen() {
 	mvcur(cur_row, cur_col, 0, 0);
 	for (i = 0; i < SCREEN_HEIGHT - 1; i++) {
 		fwrite(screen[i], sizeof (char), SCREEN_WIDTH, stdout);
-		if (COLS > SCREEN_WIDTH || (COLS == SCREEN_WIDTH && !AM)){
+		if (COLS > SCREEN_WIDTH || (COLS == SCREEN_WIDTH && !AM)) {
 			putchar('\n');
 		}
 	}
@@ -711,5 +742,5 @@ void do_message() {
 		/* NOTREACHED */
 	}
 # endif
-	safe_close(Socket);
+//	safe_close(Socket); Socket termination delegated to main routine
 }

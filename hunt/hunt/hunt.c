@@ -272,7 +272,7 @@ int main(int argc, char* argv[]) {
 	}
 # endif
 # ifdef OTTO
-	if (Otto_mode){
+	if (Otto_mode) {
 		(void) strncpy(name, "otto", NAMELEN);
 	}
 	else
@@ -280,7 +280,7 @@ int main(int argc, char* argv[]) {
 	fill_in_blanks();
 
 	(void) fflush(stdout);
-	if (!isatty(0) || (term = getenv("TERM")) == NULL) {
+	if (!isatty(0) || (term = getenv("TERM")) == NULL ) {
 		errx(1, "no terminal type");
 	}
 # ifdef USE_CURSES
@@ -313,7 +313,7 @@ int main(int argc, char* argv[]) {
 	(void) signal(SIGINT, intr);
 	(void) signal(SIGTERM, sigterm);
 	(void) signal(SIGUSR1, sigusr1);
-	(void) signal(SIGPIPE, SIG_IGN);
+	(void) signal(SIGPIPE, SIG_IGN );
 #if !defined(USE_CURSES) && defined(SIGTSTP)
 	(void) signal(SIGTSTP, tstp);
 #endif
@@ -361,19 +361,10 @@ int main(int argc, char* argv[]) {
 
 			if (Send_message != NULL) {
 				do_message();
-				if (enter_status == Q_MESSAGE) {
-					exit_outer_loop = true;
-					break;
-				} else {
-					Send_message = NULL;
-				}
+				Send_message = NULL;
 			} else {
 				break;
 			}
-		}
-
-		if(exit_outer_loop) {
-			break;
 		}
 
 # else /* !INTERNET */
@@ -412,11 +403,55 @@ int main(int argc, char* argv[]) {
 # endif
 
 		playit();
-		if ((enter_status = quit(enter_status)) == Q_QUIT) {
+		enter_status = quit(enter_status);
+
+		/*
+		 * TODO La chiusura del socket di gioco è stata spostata nel
+		 * main dopo lo switch per permettere l'invio del messaggio
+		 * di uscita o rientro in gioco prima di chiudere la
+		 * connessione.
+		 * Il problema è che il huntd termina automaticamente la
+		 * connessione quando un giocatore muore (cosa buona per
+		 * evitare che il giocatore resti illecitamente attaccato
+		 * al gioco). Per questo problema di conflitto, che complica
+		 * anche la riautenticazione tramite password. Disabilito la
+		 * funzionalità di rientro in gioco.
+		 *
+		 * Nel caso in cui questa funzionalità volesse essere
+		 * riabilitata è necessario individuare il punto esatto in
+		 * cui il server chiude la connessione in caso di morte del
+		 * giocatore, e disabilitare tale chiusura.
+		 *
+		 * Bisogna poi implementare un messaggio di quit da inviare
+		 * al server per comunicargli di chiudere il socket in caso
+		 * non si voglia inviare nessun messaggio.
+		 *
+		 * La modalità messaggio invece chiude automaticamente il
+		 * socket lato server, quindi non è necessaria alcuna
+		 * modifica in questo caso.
+		 *
+		 * Andrea D.
+		 */
+
+		switch (enter_status) {
+		case Q_MESSAGE: // TODO La modalità è stata disattivata direttamente da quit, non serve toglierla anche da qui.
+#ifdef INTERNET
+			do_message();
+			Send_message = NULL;
+			/* no break */
+#endif
+		case Q_QUIT:
+			exit_outer_loop = true;
+			break;
+		}
+
+		safe_close(Socket);
+
+		if (exit_outer_loop) {
 			break;
 		}
 	}
-	leavex(0, (char *) NULL);
+	leavex(0, (char *) NULL );
 	/* NOTREACHED */
 	return (0);
 }
@@ -791,19 +826,20 @@ void start_driver() {
 	cur_col = 0;
 # endif
 	put_str("Starting...");
-	refresh();
+	refresh()
+	;
 	procid = fork();
 	if (procid == -1) {
 		leave(1, "fork failed.");
 	}
 	if (procid == 0) {
-		(void) signal(SIGINT, SIG_IGN);
+		(void) signal(SIGINT, SIG_IGN );
 # ifndef INTERNET
 		safe_close(Socket);
 # else
 		if (use_port == NULL)
 # endif
-		execl(Driver, "huntd", (char *) NULL);
+		execl(Driver, "huntd", (char *) NULL );
 # ifdef INTERNET
 		else
 		execl(Driver, "huntd", "-p", use_port, (char *) NULL);
@@ -820,7 +856,8 @@ void start_driver() {
 	cur_col = 0;
 # endif
 	put_str("Connecting...");
-	refresh();
+	refresh()
+	;
 }
 
 /**
@@ -843,7 +880,7 @@ void bad_ver() {
 /**
  * Handle a terminate signal.
  */SIGNAL_TYPE sigterm(int dummy __attribute__((__unused__))) {
-	leavex(0, (char *) NULL);
+	leavex(0, (char *) NULL );
 	/* NOTREACHED */
 }
 
@@ -871,7 +908,7 @@ void rmnl(char *s) {
 	char *cp;
 
 	cp = strrchr(s, '\n');
-	if (cp != NULL) {
+	if (cp != NULL ) {
 		*cp = '\0';
 	}
 }
@@ -883,7 +920,7 @@ void rmnl(char *s) {
 	int explained;
 	int y, x;
 
-	(void) signal(SIGINT, SIG_IGN);
+	(void) signal(SIGINT, SIG_IGN );
 # ifdef USE_CURSES
 	getyx(stdscr, y, x);
 	move(HEIGHT, 0);
@@ -896,7 +933,8 @@ void rmnl(char *s) {
 # endif
 	put_str("Really quit? ");
 	clear_eol();
-	refresh();
+	refresh()
+	;
 	explained = false;
 	for (;;) {
 		ch = getchar();
@@ -908,7 +946,7 @@ void rmnl(char *s) {
 				write_and_push(Socket, "q", 1);
 				safe_close(Socket);
 			}
-			leavex(0, (char *) NULL);
+			leavex(0, (char *) NULL );
 		} else if (ch == 'n') {
 			(void) signal(SIGINT, intr);
 # ifdef USE_CURSES
@@ -918,21 +956,24 @@ void rmnl(char *s) {
 			cur_row = y;
 			cur_col = x;
 # endif
-			refresh();
+			refresh()
+			;
 			return;
 		}
 		if (!explained) {
 			put_str("(Yes or No) ");
-			refresh();
+			refresh()
+			;
 			explained = true;
 		}
 		beep();
-		refresh();
+		refresh()
+		;
 	}
 }
 
 /**
- * Verifies configuration entries.
+ * Resets terminal standard mode after [n]curses library use.
  * [PSR]
  */
 void fincurs() {
@@ -973,7 +1014,7 @@ void leave(int eval, const char *mesg) {
 	/*
 	 Introduced errno parameter in err() in order to display it on standard error.
 	 [PSR]
-	*/
+	 */
 	err(eval, (mesg ? mesg : ""), errno);
 }
 
@@ -988,7 +1029,7 @@ void leavex(int eval, const char *mesg) {
 	 * Introduced a NULL parameter in errx() since the routine shows a generic error message.
 	 * [PSR]
 	 */
-	errx(eval, (mesg ? mesg : ""), NULL);
+	errx(eval, (mesg ? mesg : ""), NULL );
 }
 
 #if !defined(USE_CURSES) && defined(SIGTSTP)
@@ -1117,11 +1158,11 @@ long env_init(long enter_status_in) {
 			 * Avoids infinite loop in case of fgets failure.
 			 * [PSR]
 			 */
-			if (read == NULL) {
+			if (read == NULL ) {
 				break;
 			}
 			equal = strpbrk(input_row, "=");
-			input_value = (equal != NULL) ? equal + 1 : input_row + input_len;
+			input_value = (equal != NULL ) ? equal + 1 : input_row + input_len;
 			tag_len = input_value - input_row;
 			if (strncmp(input_row, "cloak", tag_len) == 0) {
 				enter_status = Q_CLOAK;
@@ -1219,8 +1260,8 @@ long var_env_init(long enter_status_in) {
 
 	envname = NULL; /* Verified null pointer safety. [PSR] */
 
-	if ((envp = getenv("HUNT")) != NULL) {
-		while ((s = strpbrk(envp, "=,")) != NULL) {
+	if ((envp = getenv("HUNT")) != NULL ) {
+		while ((s = strpbrk(envp, "=,")) != NULL ) {
 			if (strncmp(envp, "cloak,", s - envp + 1) == 0) { /* Compare characters from the start of the conf string not yet analyzed till the first '='. [PSR] */
 				enter_status = Q_CLOAK;
 				envp = s + 1; /* Deletes characters already considered. [PSR] */
@@ -1235,7 +1276,7 @@ long var_env_init(long enter_status_in) {
 				envp = s + 1;
 			} else if (strncmp(envp, "name=", s - envp + 1) == 0) {
 				envname = s + 1;
-				if ((s = strchr(envp, ',')) == NULL) {
+				if ((s = strchr(envp, ',')) == NULL ) {
 					*envp = '\0';
 					strncpy(name, envname, NAMELEN);
 					break;
@@ -1278,7 +1319,7 @@ long var_env_init(long enter_status_in) {
 				team = *(s + 1);
 				if (!isdigit((unsigned char)team))
 					team = ' ';
-				if ((s = strchr(envp, ',')) == NULL) {
+				if ((s = strchr(envp, ',')) == NULL ) {
 					*envp = '\0';
 					break;
 				}
@@ -1297,7 +1338,7 @@ long var_env_init(long enter_status_in) {
 			} else {
 				*s = '\0';
 				printf("unknown option %s\n", envp);
-				if ((s = strchr(envp, ',')) == NULL) {
+				if ((s = strchr(envp, ',')) == NULL ) {
 					*envp = '\0';
 					break;
 				}
@@ -1305,7 +1346,7 @@ long var_env_init(long enter_status_in) {
 			}
 		}
 		if (*envp != '\0') {
-			if (envname == NULL) {
+			if (envname == NULL ) {
 				strncpy(name, envp, NAMELEN);
 			} else {
 				printf("unknown option %s\n", envp);
@@ -1364,7 +1405,7 @@ void fill_in_blanks() {
 			}
 		} else {
 			printf("Enter your code name: ");
-			if (fgets(name, NAMELEN, stdin) == NULL) {
+			if (fgets(name, NAMELEN, stdin) == NULL ) {
 				exit(1);
 			}
 		}
