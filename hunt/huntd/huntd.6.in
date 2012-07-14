@@ -38,6 +38,7 @@
 .Nd hunt daemon, back-end for hunt game
 .Sh SYNOPSIS
 .Nm
+.Op Fl P Ar password
 .Op Fl s
 .Op Fl p Ar port
 .Sh DESCRIPTION
@@ -70,6 +71,13 @@ process and thus allows for private games of hunt.
 This option turns off the notification of players on the
 .Em hunt-players
 mailing list.
+.Pp
+The
+.Fl P
+option instead, allows
+.Xr huntd 6
+to be protected by a password that every player willing to connect, 
+will have to enter before entering the game.
 .Ss INETD
 To run
 .Nm

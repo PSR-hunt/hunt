@@ -551,8 +551,8 @@ int quit(int old_status) {
 
 # ifndef USE_CURSES
 /**
- * Puts a given character in a point of the screen.
- * @param[in] char A character.
+ * Puts a given character in the point of the screen at the current cursor position.
+ * @param[in] ch A character.
  * [PSR]
  */
 void put_ch(char ch) {

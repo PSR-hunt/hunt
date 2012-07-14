@@ -612,8 +612,8 @@ done <exec.objs.tmp
 
 rm -f exec.libs.tmp exec.objs.tmp
 
-clean_dependencies=
-install_dependencies=
+clean_dependencies= 
+install_dependencies= 
 
 for dir in $make_dirs; do
     udir=$(slashdot_to_under $dir)
@@ -638,10 +638,16 @@ EOF
 done
 
 cat >>GNUmakefile <<EOF
-.PHONY:	clean mostlyclean distclean maintainer-clean
-clean mostlyclean:	$clean_dependencies
+.PHONY: stopall
+# Kills hunt and huntd if running. [PSR]
+stopall:
+	- killall -9 hunt
+	- killall -9 huntd
 
-distclean maintainer-clean:	clean
+.PHONY:	clean mostlyclean distclean maintainer-clean
+clean mostlyclean:	stopall $clean_dependencies
+
+distclean maintainer-clean:	clean 
 	rm -f subst.sed subst.rules
 	rm -f test.out
 	rm -f \`cat substfiles substfiles2 |sed '/^#/d'\`
@@ -649,14 +655,11 @@ distclean maintainer-clean:	clean
 	rm -f a.out conftest.c include/bsd-games.h
 	rm -f exec.libs.tmp exec.objs.tmp
 
-	# Kills huntd. [PSR]
-	killall -9 huntd
-
 .PHONY:	install install-strip
 
-install:	$install_dependencies
+install:	stopall $install_dependencies
 
-install-strip:
+install-strip: stopall
 	\$(MAKE) install \$(DEFS_TO_PASS_STRIP)
 
 .PHONY: check test

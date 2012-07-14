@@ -113,14 +113,6 @@ you start up.
 It is most often used to say
 .Dq eat slime death - NickD's coming in .
 .Pp
-When you die and are asked if you wish to re-enter the game,
-there are other answers than just yes or no.
-You can also reply with a
-.Ic w
-for write a message before continuing or
-.Ic o
-to change how you enter the game (cloaked, scanning, or flying).
-.Pp
 To be notified automatically when a
 .Nm
 starts up, add your login to the
@@ -143,18 +135,16 @@ The rest of the screen is taken up by your map of the maze.
 The 24th line is used for longer messages that don't fit in the status area.
 .Pp
 .Nm
-uses the same keys to move as
-.Xr vi 1
-does, i.e.,
-.Ic h ,
-.Ic j ,
-.Ic k ,
+uses the usual keys to move, i.e.,
+.Ic a ,
+.Ic s ,
+.Ic w ,
 and
-.Ic l
+.Ic d
 for left, down, up, right respectively.
 To change which direction you're facing in the maze,
 use the upper case version of the movement key (i.e.,
-.Ic HJKL ) .
+.Ic ASWD ) .
 You can only fire or throw things in the direction you're facing.
 .Bl -tag -width xxxxxxx
 Other commands are:
@@ -188,7 +178,7 @@ Throw big slime (Takes 10 charges)
 Throw bigger slime (Takes 15 charges)
 .It Ic P
 Throw biggest slime (Takes 20 charges)
-.It Ic s
+.It Ic z
 Scan (show where other players are) (Takes 1 charge)
 .It Ic c
 Cloak (hide from scanners) (Takes 1 charge)
