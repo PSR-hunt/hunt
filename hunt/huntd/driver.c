@@ -58,7 +58,7 @@ int Seed = 0; /**< A random number. [PSR] */
 char *password_hash = NULL;
 #endif
 
-SOCKET Daemon; /**< Contains the address of the local daemon. [PSR] */
+SOCKET daemon_address; /**< Contains the address of the local daemon. [PSR] */
 char *First_arg; /**< Pointer to argv[0] */
 char *Last_arg; /**< Pointer to end of argv/environ */
 # ifdef	INTERNET
@@ -69,9 +69,9 @@ bool standard_port = true; /* true if listening on standard port */
 unsigned short sock_port; /* Changed from u_short. [PSR] */
 /* port # of statistics tcp socket */
 unsigned short stat_port; /* Changed from u_short. [PSR] */
-# define	DAEMON_SIZE	(sizeof Daemon)
+# define	DAEMON_SIZE	(sizeof daemon_address)
 # else
-# define	DAEMON_SIZE	(sizeof Daemon - 1) /**< Defines the dimension of the daemon. [PSR] */
+# define	DAEMON_SIZE	(sizeof daemon_address - 1) /**< Defines the dimension of the daemon. [PSR] */
 # endif
 
 static void clear_scores(void);
@@ -349,16 +349,16 @@ static void init() {
 	 * Initialize statistics socket
 	 */
 # ifdef	INTERNET
-	Daemon.sin_family = SOCK_FAMILY;
-	Daemon.sin_addr.s_addr = INADDR_ANY;
-	Daemon.sin_port = 0;
+	daemon_address.sin_family = SOCK_FAMILY;
+	daemon_address.sin_addr.s_addr = INADDR_ANY;
+	daemon_address.sin_port = 0;
 # else
-	Daemon.sun_family = SOCK_FAMILY;
-	(void) strcpy(Daemon.sun_path, Stat_name);
+	daemon_address.sun_family = SOCK_FAMILY;
+	(void) strcpy(daemon_address.sun_path, Stat_name);
 # endif
 
 	Status = socket(SOCK_FAMILY, SOCK_STREAM, 0);
-	if (bind(Status, (struct sockaddr *) &Daemon, DAEMON_SIZE) < 0) {
+	if (bind(Status, (struct sockaddr *) &daemon_address, DAEMON_SIZE) < 0) {
 		if (errno == EADDRINUSE) {
 			exit(0);
 		} else {
@@ -374,7 +374,7 @@ static void init() {
 
 # ifdef INTERNET
 	len = sizeof (SOCKET);
-	if (getsockname(Status, (struct sockaddr *) &Daemon, &len) < 0) {
+	if (getsockname(Status, (struct sockaddr *) &daemon_address, &len) < 0) {
 # ifdef LOG
 		iso_syslog(LOG_ERR, "getsockname: %m");
 # else
@@ -382,19 +382,19 @@ static void init() {
 # endif
 		exit(1);
 	}
-	stat_port = ntohs(Daemon.sin_port);
+	stat_port = ntohs(daemon_address.sin_port);
 # endif
 
 	/*
 	 * Initialize main socket
 	 */
 # ifdef	INTERNET
-	Daemon.sin_family = SOCK_FAMILY;
-	Daemon.sin_addr.s_addr = INADDR_ANY;
-	Daemon.sin_port = 0;
+	daemon_address.sin_family = SOCK_FAMILY;
+	daemon_address.sin_addr.s_addr = INADDR_ANY;
+	daemon_address.sin_port = 0;
 # else
-	Daemon.sun_family = SOCK_FAMILY;
-	(void) strcpy(Daemon.sun_path, Sock_name);
+	daemon_address.sun_family = SOCK_FAMILY;
+	(void) strcpy(daemon_address.sun_path, Sock_name);
 # endif
 
 	main_socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
@@ -409,7 +409,7 @@ static void init() {
 # endif
 #endif
 # endif
-	if (bind(main_socket, (struct sockaddr *) &Daemon, DAEMON_SIZE) < 0) {
+	if (bind(main_socket, (struct sockaddr *) &daemon_address, DAEMON_SIZE) < 0) {
 		if (errno == EADDRINUSE) {
 			exit(0);
 		} else {
@@ -425,7 +425,7 @@ static void init() {
 
 # ifdef INTERNET
 	len = sizeof (SOCKET);
-	if (getsockname(main_socket, (struct sockaddr *) &Daemon, &len) < 0) {
+	if (getsockname(main_socket, (struct sockaddr *) &daemon_address, &len) < 0) {
 # ifdef LOG
 		iso_syslog(LOG_ERR, "getsockname: %m");
 # else
@@ -433,7 +433,7 @@ static void init() {
 # endif
 		exit(1);
 	}
-	sock_port = ntohs(Daemon.sin_port);
+	sock_port = ntohs(daemon_address.sin_port);
 # endif
 
 	/*
@@ -455,7 +455,7 @@ static void init() {
 			Test_port = ntohs(test_port.sin_port);
 		}
 	} else {
-		test_port = Daemon;
+		test_port = daemon_address;
 		test_port.sin_port = htons((unsigned short) Test_port);
 
 		Test_socket = socket(SOCK_FAMILY, SOCK_DGRAM, 0);

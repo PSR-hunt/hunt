@@ -101,11 +101,11 @@ char *send_message = NULL;
 bool Show_scores = false;
 # endif
 
-SOCKET Daemon; /**< Contains the address of the local daemon. [PSR] */
+SOCKET daemon_address; /**< Contains the address of the local daemon. [PSR] */
 # ifdef	INTERNET
-# define	DAEMON_SIZE	(sizeof Daemon)
+# define	DAEMON_SIZE	(sizeof daemon_address)
 # else
-# define	DAEMON_SIZE	(sizeof Daemon - 1) /**< Defines the dimension of the daemon. [PSR] */
+# define	DAEMON_SIZE	(sizeof daemon_address - 1) /**< Defines the dimension of the daemon. [PSR] */
 # endif
 
 char map_key[256]; /**< What to map keys to. */
@@ -323,7 +323,7 @@ int main(int argc, char* argv[]) {
 # ifdef	INTERNET
 		find_driver(true);
 
-		if (Daemon.sin_port == 0) {
+		if (daemon_address.sin_port == 0) {
 			leavex(1, "Game not found, try again");
 		}
 
@@ -346,7 +346,7 @@ int main(int argc, char* argv[]) {
 				}
 #endif
 				errno = 0;
-				if (connect(main_socket, (struct sockaddr *) &Daemon,
+				if (connect(main_socket, (struct sockaddr *) &daemon_address,
 								DAEMON_SIZE) < 0) {
 					if (errno != ECONNREFUSED) {
 						leave(1, "connect");
@@ -382,9 +382,9 @@ int main(int argc, char* argv[]) {
 		 * up the driver.
 		 */
 
-		Daemon.sun_family = SOCK_FAMILY;
-		(void) strcpy(Daemon.sun_path, Sock_name);
-		if (connect(main_socket, &Daemon, DAEMON_SIZE) < 0) {
+		daemon_address.sun_family = SOCK_FAMILY;
+		(void) strcpy(daemon_address.sun_path, Sock_name);
+		if (connect(main_socket, &daemon_address, DAEMON_SIZE) < 0) {
 			if (errno != ENOENT) {
 				leavex(1, "connect2");
 			}
@@ -396,7 +396,7 @@ int main(int argc, char* argv[]) {
 					err(1, "socket");
 				}
 				sleep(2);
-			} while (connect(main_socket, &Daemon, DAEMON_SIZE) < 0);
+			} while (connect(main_socket, &daemon_address, DAEMON_SIZE) < 0);
 		}
 
 		do_connect(name, team, enter_status);
@@ -590,7 +590,7 @@ SOCKET * list_drivers() {
 
 		if (!initial) {
 			/* favor host of previous session by broadcasting to it first */
-			test.sin_addr = Daemon.sin_addr;
+			test.sin_addr = daemon_address.sin_addr;
 			msg = htons(C_PLAYER); /* Must be playing! */
 			sendto_and_push(test_socket, (char *) &msg, sizeof msg, 0,
 					(struct sockaddr *) &test, DAEMON_SIZE);
@@ -708,7 +708,7 @@ void find_driver(bool do_startup) {
 		int i, c;
 
 		if (hosts[1].sin_port == htons(0)) {
-			Daemon = hosts[0];
+			daemon_address = hosts[0];
 			return;
 		}
 		/* go thru list and return host that matches daemon */
@@ -753,7 +753,7 @@ void find_driver(bool do_startup) {
 			beep();
 			refresh();
 		}
-		Daemon = hosts[c];
+		daemon_address = hosts[c];
 		clear_the_screen();
 		return;
 	}
