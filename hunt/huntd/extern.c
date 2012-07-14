@@ -59,7 +59,7 @@ EXPL *Last_expl; /**< Last explosion on Expl[0] */
 PLAYER player[MAXPL]; /**< All the players */
 PLAYER *end_player = player; /**< Last active player slot */
 # ifdef BOOTS
-PLAYER Boot[NBOOTS]; /* all the boots */
+PLAYER boot[NBOOTS]; /* all the boots */
 # endif
 IDENT *scores; /**< Score cache */
 # ifdef MONITOR

@@ -169,7 +169,7 @@ void moveshots() {
 	}
 
 # ifdef BOOTS
-	for (pp = Boot; pp < &Boot[NBOOTS]; pp++){
+	for (pp = boot; pp < &boot[NBOOTS]; pp++){
 		if (pp->p_flying >= 0){
 			move_flyer(pp);
 		}
@@ -1205,7 +1205,7 @@ static void mark_player(BULLET *bp) {
 static void mark_boot(BULLET *bp) {
 	PLAYER *pp;
 
-	for (pp = Boot; pp < &Boot[NBOOTS]; pp++) {
+	for (pp = boot; pp < &boot[NBOOTS]; pp++) {
 		if (pp->p_y == bp->b_y && pp->p_x == bp->b_x) {
 			pp->p_undershot = true;
 			break;

@@ -438,7 +438,7 @@ extern IDENT *scores;
 
 extern PLAYER player[MAXPL], *end_player;
 # ifdef BOOTS
-extern PLAYER Boot[NBOOTS];
+extern PLAYER boot[NBOOTS];
 # endif
 
 # ifdef MONITOR

@@ -286,7 +286,7 @@ static void move_player(PLAYER *pp,int dir){
 		else{
 			pp->p_nboots += 2;
 		}
-		for (newp = Boot; newp < &Boot[NBOOTS]; newp++) {
+		for (newp = boot; newp < &boot[NBOOTS]; newp++) {
 			if (newp->p_flying < 0){
 				continue;
 			}

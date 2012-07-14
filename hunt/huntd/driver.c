@@ -510,7 +510,7 @@ static void makeboots() {
 		y = rand_num(HEIGHT - 1) + 1;
 	}while (maze[y][x] != SPACE);
 	maze[y][x] = BOOT_PAIR;
-	for (pp = Boot; pp < &Boot[NBOOTS]; pp++)
+	for (pp = boot; pp < &boot[NBOOTS]; pp++)
 	pp->p_flying = -1;
 }
 # endif
@@ -745,12 +745,12 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 # endif
 # ifdef BOOTS
 		while (pp->p_nboots-- > 0) {
-			for (np = Boot; np < &Boot[NBOOTS]; np++) {
+			for (np = boot; np < &boot[NBOOTS]; np++) {
 				if (np->p_flying < 0) {
 					break;
 				}
 			}
-			if (np >= &Boot[NBOOTS]) {
+			if (np >= &boot[NBOOTS]) {
 				err(1, "Too many boots");
 			}
 			np->p_undershot = false;
