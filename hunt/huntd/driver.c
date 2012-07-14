@@ -357,8 +357,8 @@ static void init() {
 	(void) strcpy(daemon_address.sun_path, Stat_name);
 # endif
 
-	Status = socket(SOCK_FAMILY, SOCK_STREAM, 0);
-	if (bind(Status, (struct sockaddr *) &daemon_address, DAEMON_SIZE) < 0) {
+	status = socket(SOCK_FAMILY, SOCK_STREAM, 0);
+	if (bind(status, (struct sockaddr *) &daemon_address, DAEMON_SIZE) < 0) {
 		if (errno == EADDRINUSE) {
 			exit(0);
 		} else {
@@ -370,11 +370,11 @@ static void init() {
 			cleanup(1);
 		}
 	}
-	(void) listen(Status, 5);
+	(void) listen(status, 5);
 
 # ifdef INTERNET
 	len = sizeof (SOCKET);
-	if (getsockname(Status, (struct sockaddr *) &daemon_address, &len) < 0) {
+	if (getsockname(status, (struct sockaddr *) &daemon_address, &len) < 0) {
 # ifdef LOG
 		iso_syslog(LOG_ERR, "getsockname: %m");
 # else
@@ -441,7 +441,7 @@ static void init() {
 	 */
 	fdset[0].fd = main_socket;
 	fdset[0].events = POLLIN;
-	fdset[1].fd = Status;
+	fdset[1].fd = status;
 	fdset[1].events = POLLIN;
 
 # ifdef INTERNET
@@ -970,7 +970,7 @@ static void send_stats() {
 # else
 	socklen = sizeof sockstruct - 1;
 # endif
-	s = accept(Status, (struct sockaddr *) &sockstruct, &socklen);
+	s = accept(status, (struct sockaddr *) &sockstruct, &socklen);
 	if (s < 0) {
 		if (errno == EINTR) {
 			return;

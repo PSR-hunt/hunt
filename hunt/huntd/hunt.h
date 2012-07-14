@@ -414,7 +414,7 @@ extern char gen_buf[BUFSIZ], maze[HEIGHT][WIDTH2], Orig_maze[HEIGHT][WIDTH2];
 
 extern const char *Driver;
 
-extern int nplayer, main_socket, Status;
+extern int nplayer, main_socket, status;
 extern struct pollfd fdset[];
 
 # ifdef INTERNET
