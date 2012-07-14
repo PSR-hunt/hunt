@@ -97,7 +97,7 @@ int main_socket; /**< Main socket. [PSR] */
 char *Sock_host;
 char *use_port;
 bool Query_driver = false;
-char *Send_message = NULL;
+char *send_message = NULL;
 bool Show_scores = false;
 # endif
 
@@ -190,7 +190,7 @@ int main(int argc, char* argv[]) {
 			Query_driver = true;
 			break;
 			case 'w':
-			Send_message = optarg;
+			send_message = optarg;
 			break;
 			case 'h':
 			Sock_host = optarg;
@@ -359,9 +359,9 @@ int main(int argc, char* argv[]) {
 
 			do_connect(name, team, enter_status);
 
-			if (Send_message != NULL) {
+			if (send_message != NULL) {
 				do_message();
-				Send_message = NULL;
+				send_message = NULL;
 			} else {
 				break;
 			}
@@ -437,7 +437,7 @@ int main(int argc, char* argv[]) {
 		case Q_MESSAGE: // XXX La modalità è stata disattivata direttamente da quit, non serve toglierla anche da qui.
 #ifdef INTERNET
 			do_message();
-			Send_message = NULL;
+			send_message = NULL;
 			/* no break */
 #endif
 		case Q_QUIT:
@@ -1184,7 +1184,7 @@ long env_init(long enter_status_in) {
 				Sock_host = input_value;
 			}
 			else if (strncmp(input_row, "message=", tag_len) == 0) {
-				Send_message = input_value;
+				send_message = input_value;
 			}
 # endif
 			else if (strncmp(input_row, "team=", tag_len) == 0) {
@@ -1306,7 +1306,7 @@ long var_env_init(long enter_status_in) {
 				envp = s + 1;
 			}
 			else if (strncmp(envp, "message=", s - envp + 1) == 0) {
-				Send_message = s + 1;
+				send_message = s + 1;
 				if ((s = strchr(envp, ',')) == NULL) {
 					*envp = '\0';
 					break;

@@ -447,7 +447,7 @@ extern PLAYER Monitor[MAXMON], *End_monitor;
 # endif
 
 # ifdef INTERNET
-extern char *Send_message;
+extern char *send_message;
 # endif
 
 extern char map_key[256];

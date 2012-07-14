@@ -143,7 +143,7 @@ void do_connect(const char *name, char team, long enter_status) {
 	(void) strcpy(Buf, ttyname(fileno(stderr)));
 	write_and_push(main_socket, Buf, NAMELEN);
 # ifdef INTERNET
-	if (Send_message != NULL) {
+	if (send_message != NULL) {
 		mode = C_MESSAGE;
 	}
 	else

@@ -482,7 +482,7 @@ int quit(int old_status) {
 //				}
 //			}
 //			*cp = '\0';
-//			Send_message = buf; /* stores the message into outgoing message */
+//			send_message = buf; /* stores the message into outgoing message */
 //			return (c == 'w') ? old_status : Q_MESSAGE;
 //		}
 //# endif
@@ -737,7 +737,7 @@ void do_message() {
 		/* NOTREACHED */
 	}
 # ifdef INTERNET
-	if (write(main_socket, Send_message, strlen(Send_message)) < 0) {
+	if (write(main_socket, send_message, strlen(send_message)) < 0) {
 		bad_con();
 		/* NOTREACHED */
 	}
