@@ -408,7 +408,7 @@ struct regen_def {
  * external variables
  */
 
-extern bool Last_player;
+extern bool last_player;
 
 extern char gen_buf[BUFSIZ], Maze[HEIGHT][WIDTH2], Orig_maze[HEIGHT][WIDTH2];
 

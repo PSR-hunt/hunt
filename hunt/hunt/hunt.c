@@ -85,7 +85,7 @@ static struct termios saved_tty;
 #define MAXHOSTNAMELEN 256 /**< Defines the maximum length of an host name. [PSR] */
 #endif
 
-bool Last_player = false; /**< Indicates if a player is the last one or no. [PSR] */
+bool last_player = false; /**< Indicates if a player is the last one or no. [PSR] */
 # ifdef MONITOR
 bool am_monitor = false;
 # endif

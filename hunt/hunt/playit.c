@@ -173,7 +173,7 @@ void playit() {
 			refresh()
 			;
 			if ((ch = GETCHR()) == LAST_PLAYER)
-				Last_player = true;
+				last_player = true;
 			ch = EOF;
 //			safe_close(main_socket); Socket termination delegated to main routine.
 			return;
@@ -334,7 +334,7 @@ int quit(int old_status) {
 	 */
 //	int second_ch;
 
-	if (Last_player) {
+	if (last_player) {
 		return Q_QUIT;
 	}
 # ifdef OTTO
