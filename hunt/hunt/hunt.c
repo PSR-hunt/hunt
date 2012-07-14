@@ -94,7 +94,7 @@ char gen_buf[BUFSIZ]; /**< General scribbling buffer. [PSR] */
 
 int main_socket; /**< Main socket. [PSR] */
 # ifdef INTERNET
-char *Sock_host;
+char *sock_host;
 char *use_port;
 bool Query_driver = false;
 char *send_message = NULL;
@@ -193,7 +193,7 @@ int main(int argc, char* argv[]) {
 			send_message = optarg;
 			break;
 			case 'h':
-			Sock_host = optarg;
+			sock_host = optarg;
 			break;
 			case 'p':
 			use_port = optarg;
@@ -236,7 +236,7 @@ int main(int argc, char* argv[]) {
 		usage();
 	}
 	else if (optind + 1 == argc) {
-		Sock_host = argv[argc - 1];
+		sock_host = argv[argc - 1];
 	}
 # else
 	if (optind > argc) {
@@ -564,7 +564,7 @@ SOCKET * list_drivers() {
 		if (listv == NULL) {
 			leave(1, "Out of memory!");
 		}
-	} else if (Sock_host != NULL) {
+	} else if (sock_host != NULL) {
 		return listv; /* address already valid */
 	}
 
@@ -577,8 +577,8 @@ SOCKET * list_drivers() {
 	test.sin_port = htons(Test_port);
 	listc = 0;
 
-	if (Sock_host != NULL) { /* explicit host given */
-		if ((hp = gethostbyname(Sock_host)) == NULL) {
+	if (sock_host != NULL) { /* explicit host given */
+		if ((hp = gethostbyname(sock_host)) == NULL) {
 			leavex(1, "Unknown host");
 			/* NOTREACHED */
 		}
@@ -812,7 +812,7 @@ void start_driver() {
 # endif
 
 # ifdef INTERNET
-	if (Sock_host != NULL) {
+	if (sock_host != NULL) {
 		sleep(3);
 		return;
 	}
@@ -1181,7 +1181,7 @@ long env_init(long enter_status_in) {
 				Test_port = atoi(use_port);
 			}
 			else if (strncmp(input_row, "host=", tag_len) == 0) {
-				Sock_host = input_value;
+				sock_host = input_value;
 			}
 			else if (strncmp(input_row, "message=", tag_len) == 0) {
 				send_message = input_value;
@@ -1297,7 +1297,7 @@ long var_env_init(long enter_status_in) {
 				envp = s + 1;
 			}
 			else if (strncmp(envp, "host=", s - envp + 1) == 0) {
-				Sock_host = s + 1;
+				sock_host = s + 1;
 				if ((s = strchr(envp, ',')) == NULL) {
 					*envp = '\0';
 					break;
