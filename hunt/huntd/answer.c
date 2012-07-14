@@ -45,11 +45,12 @@ __RCSID("$NetBSD: answer.c,v 1.7 2004/11/05 21:30:32 dsl Exp $");
 # include	<sys/time.h>
 
 #ifdef INTERNET
-extern unsigned long password_hash;
+extern char *password_hash;
+char client_psw[13 + 1];
 #endif
 
 # define	SCOREDECAY	15 /**< Is the number of entries upper bound. [PSR] */
-
+# define	MAXATTEMPT	3  /**< Maximum number of failed authentication attempts. [PSR] */
 static char Ttyname[NAMELEN]; /**< Name of the terminal in which we are playing. [PSR] */
 
 #ifdef INTERNET
@@ -108,16 +109,14 @@ int answer() {
 	version = htonl((u_int32_t) HUNT_VERSION);
 	write_and_push(newsock, (char *) &version, LONGLEN);
 
-/* Password reading. [PSR] */
+/* Authentication. [PSR] */
 #ifdef INTERNET
-	if(password_hash!=0) { /* A password has been set. [PSR] */
+	if(strlen(password_hash)>0) { /* A password has been set. [PSR] */
 		write_and_push(newsock, &c_auth, SHORTLEN);
-
 		bool auth = false;
-		unsigned long client_psw;
-		for(i=0; i<3 && !auth; i++) { /* 3 password attempts. [PSR] */
-			safe_read(newsock, &client_psw, LONGLEN);
-			if(ntohl(client_psw) != password_hash) { /* Authentication failed. New request. [PSR] */
+		for(i=0; i<MAXATTEMPT && !auth; i++) { /* 3 password attempts. [PSR] */
+			safe_read(newsock, &client_psw, (13 + 1) * sizeof(char));
+			if(strcmp(client_psw, password_hash)!=0) { /* Authentication failed. New request. [PSR] */
 				write_and_push(newsock, &c_auth, SHORTLEN);
 			} else { /* Authentication successful. [PSR]*/
 				write_and_push(newsock, &c_auth_success, SHORTLEN);

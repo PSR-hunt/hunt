@@ -308,7 +308,7 @@ openssl_includes=
 subst_vars="$subst_vars openssl_lib openssl_includes"
 
 ask "Other CFLAGS" other_cflags '-ansi -std=c99'
-ask "Other LDFLAGS" other_ldflags ''
+ask "Other LDFLAGS" other_ldflags '-lcrypt'
 
 # Check for functions - not in glibc 2.1.1, but could be added later.
 echo "#ifndef LINUX_BSD_GAMES_H" >include/bsd-games.h
@@ -605,7 +605,7 @@ include $deps_to_inc
 endif
 
 $exec:	$nobjs
-	\$($ccvar) \$(LDFLAGS) \$^ $libs \$(BASE_LIBS) -o \$@
+	\$($ccvar) \$^ $libs \$(BASE_LIBS) \$(LDFLAGS) -o \$@
 
 EOF
 done <exec.objs.tmp

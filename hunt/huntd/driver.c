@@ -46,14 +46,16 @@ __RCSID("$NetBSD: driver.c,v 1.10 2004/01/27 20:30:29 jsm Exp $");
 # include	<stdlib.h>
 # include	<time.h>
 # include	<unistd.h>
-# include 	<getopt.h> /* Explicit declaration of getopt family functions. [PSR] */
+# include 	<getopt.h> /* Explicit inclusion of getopt family functions. [PSR] */
+#define _XOPEN_SOURCE /**< Enables cryptography library */
+# include	<crypt.h>
 
 # define	RN	(((Seed = Seed * 11109 + 13849) >> 16) & 0xffff) /**< A random number. [PSR] */
 
 int Seed = 0; /**< A random number. [PSR] */
 
 #ifdef INTERNET
-unsigned long password_hash = 0;
+char *password_hash;
 #endif
 
 SOCKET Daemon; /**< Contains the address of the local daemon. [PSR] */
@@ -139,7 +141,8 @@ int main(int argc, char* argv[], char* env[]) {
 				exit(1);
 			} else {
 				strcpy(password, optarg);
-				password_hash = hash_srv(password);
+				password_hash = crypt(password,"AC");
+				password_hash[13] = '\0';
 				free(password);
 				password = NULL;
 			}
@@ -171,7 +174,6 @@ int main(int argc, char* argv[], char* env[]) {
 # ifdef INTERNET
 			if (fdset[2].revents & POLLIN) {
 				namelen = DAEMON_SIZE;
-//				htons(sock_port); TODO probably useless
 				(void) recvfrom(Test_socket, (char *) &msg, sizeof msg,
 						0, (struct sockaddr *) &test, &namelen);
 				switch (ntohs(msg)) {
@@ -292,27 +294,11 @@ int main(int argc, char* argv[], char* env[]) {
 }
 
 /**
- * Calculates the hash value of the password.
- * @param[in] psw The password.
- * \return The hash value of psw.
- * TODO substitute it with crypt function.
- * [PSR]
- */
-unsigned long hash_srv(char *psw){
-	unsigned long hash = 5381;
-	int c;
-	while ((c = *psw++)){
-		hash = ((hash<<5) + hash) + c;
-	}
-	return hash;
-}
-
-/**
  * Prints on stderr the usage of the function.
  * [PSR]
  */
 void erred(char* argv[]) {
-	fprintf(stderr, "Usage: %s [-s] [-p port]\n", argv[0]);
+	fprintf(stderr, "Usage: %s [-P password] [-s] [-p port]\n", argv[0]);
 	exit(1);
 }
 

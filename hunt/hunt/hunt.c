@@ -406,7 +406,7 @@ int main(int argc, char* argv[]) {
 		enter_status = quit(enter_status);
 
 		/*
-		 * TODO La chiusura del socket di gioco è stata spostata nel
+		 * XXX La chiusura del socket di gioco è stata spostata nel
 		 * main dopo lo switch per permettere l'invio del messaggio
 		 * di uscita o rientro in gioco prima di chiudere la
 		 * connessione.
@@ -434,7 +434,7 @@ int main(int argc, char* argv[]) {
 		 */
 
 		switch (enter_status) {
-		case Q_MESSAGE: // TODO La modalità è stata disattivata direttamente da quit, non serve toglierla anche da qui.
+		case Q_MESSAGE: // XXX La modalità è stata disattivata direttamente da quit, non serve toglierla anche da qui.
 #ifdef INTERNET
 			do_message();
 			Send_message = NULL;

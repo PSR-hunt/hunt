@@ -102,7 +102,7 @@ void ce(PLAYER *pp) {
 	sendcom(pp, CLRTOEOL);
 }
 
-#if 0		/* XXX lukem*/
+#if 0
 /**
  * Refresh the screen
  * @param[in] pp The player which screen will be refreshed.

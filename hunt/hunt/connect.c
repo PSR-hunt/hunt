@@ -46,6 +46,7 @@ __RCSID("$NetBSD: connect.c,v 1.5 2003/06/11 12:00:21 wiz Exp $");
 
 # include	<signal.h>
 # include	<unistd.h>
+# include	<crypt.h>
 
 /**
  * Manages the preliminary operations of connection of a player.
@@ -61,6 +62,7 @@ void do_connect(const char *name, char team, long enter_status) {
 
 	bool auth_stage = false;
 	char psw[PSW_MAXLEN];
+	char *password_hash;
 
 
 	/*Read version [PSR]*/
@@ -115,8 +117,9 @@ void do_connect(const char *name, char team, long enter_status) {
 			do {
 				getnstr(psw, PSW_MAXLEN);
 			}while(strlen(psw)==0);
-			unsigned long hash_psw = htonl(hash_cli(psw));
-			write_and_push(Socket, &hash_psw , LONGLEN);
+			password_hash = crypt(psw,"AC");
+			password_hash[13]='\0';
+			write_and_push(Socket, password_hash , (13+1)*sizeof(char));
 			auth_stage = true;
 			break;
 			case C_AUTH_SUCCESS:
@@ -154,20 +157,4 @@ void do_connect(const char *name, char team, long enter_status) {
 	mode = C_PLAYER;
 	mode = htonl(mode);
 	write_and_push(Socket, (char *) &mode, sizeof mode);
-}
-
-/**
- * Calculates the hash value of the password.
- * @param[in] psw The password.
- * \return The hash value of psw.
- * TODO substitute it with crypt function.
- * [PSR]
- */
-unsigned long hash_cli(char *psw) {
-	unsigned long hash = 5381;
-	int c;
-	while ((c = *psw++)) {
-		hash = ((hash << 5) + hash) + c;
-	}
-	return hash;
 }
