@@ -51,7 +51,7 @@ char client_psw[13 + 1];
 
 # define	SCOREDECAY	15 /**< Is the number of entries upper bound. [PSR] */
 # define	MAXATTEMPT	3  /**< Maximum number of failed authentication attempts. [PSR] */
-static char Ttyname[NAMELEN]; /**< Name of the terminal in which we are playing. [PSR] */
+static char ttyname_glob[NAMELEN]; /**< Name of the terminal in which we are playing. [PSR] */
 
 #ifdef INTERNET
 static unsigned short c_auth = C_AUTH;
@@ -139,7 +139,7 @@ int answer() {
 	safe_read(newsock, &team, 1);
 	safe_read(newsock, (char *) &enter_status, LONGLEN);
 	enter_status = ntohl((unsigned long) enter_status);
-	safe_read(newsock, Ttyname, NAMELEN);
+	safe_read(newsock, ttyname_glob, NAMELEN);
 	safe_read(newsock, (char *) &mode, sizeof mode);
 	mode = ntohl(mode);
 
