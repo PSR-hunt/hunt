@@ -1,5 +1,6 @@
 var answer_8c =
 [
+    [ "MAXATTEMPT", "d6/dfd/answer_8c_a9a7fbdd1d69ada545eef1227c59842d6.html#a9a7fbdd1d69ada545eef1227c59842d6", null ],
     [ "SCOREDECAY", "d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140", null ],
     [ "__RCSID", "d6/dfd/answer_8c_a5f94f4959f0c7e15cc87bc15cc4f8502.html#a5f94f4959f0c7e15cc87bc15cc4f8502", null ],
     [ "answer", "d6/dfd/answer_8c_ad9d4798f47a390f33923cfc52ad74e2d.html#ad9d4798f47a390f33923cfc52ad74e2d", null ],

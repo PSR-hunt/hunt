@@ -1,11 +1,18 @@
 var searchData=
 [
+  ['safe_5fchdir',['safe_chdir',['../d3/d91/utils_8c_a2e46a9bc63249d4d1146c8bbe955a383.html#a2e46a9bc63249d4d1146c8bbe955a383',1,'utils.c']]],
+  ['safe_5fclose',['safe_close',['../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2',1,'utils.c']]],
+  ['safe_5ffclose',['safe_fclose',['../d3/d91/utils_8c_a70df381aa97915e5715b7eb01465e176.html#a70df381aa97915e5715b7eb01465e176',1,'utils.c']]],
+  ['safe_5fread',['safe_read',['../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab',1,'utils.c']]],
+  ['safe_5fsendto',['safe_sendto',['../d3/d91/utils_8c_a9029091af48493711256a4c9d89e2878.html#a9029091af48493711256a4c9d89e2878',1,'utils.c']]],
+  ['safe_5fwrite',['safe_write',['../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d',1,'utils.c']]],
   ['save_5fbullet',['save_bullet',['../d4/dab/shots_8c_a09f0894ba14d708d3891d1b905fbee04.html#a09f0894ba14d708d3891d1b905fbee04',1,'shots.c']]],
   ['scan',['scan',['../d7/dd3/execute_8c_a201831e6fcb2be2903e940d45dedeab1.html#a201831e6fcb2be2903e940d45dedeab1',1,'execute.c']]],
   ['see',['see',['../d6/dd9/draw_8c_ab2bc30d13f7409dea528c4bfbc0c5368.html#ab2bc30d13f7409dea528c4bfbc0c5368',1,'draw.c']]],
   ['send_5fstats',['send_stats',['../d1/d56/driver_8c_a672cd0bcc9dab44e118915d40fdc32b1.html#a672cd0bcc9dab44e118915d40fdc32b1',1,'driver.c']]],
   ['send_5fstuff',['send_stuff',['../da/db5/playit_8c_a4898c557bd7bae36d07f3255252c77f4.html#a4898c557bd7bae36d07f3255252c77f4',1,'playit.c']]],
   ['sendcom',['sendcom',['../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737',1,'terminal.c']]],
+  ['sendto_5fand_5fpush',['sendto_and_push',['../d3/d91/utils_8c_a217c40f6d1e7a89e9157fe2ea937ea12.html#a217c40f6d1e7a89e9157fe2ea937ea12',1,'utils.c']]],
   ['showexpl',['showexpl',['../d4/d55/expl_8c_ab254b1eddcf486fa71e40576ca6d28fb.html#ab254b1eddcf486fa71e40576ca6d28fb',1,'expl.c']]],
   ['showstat',['showstat',['../d6/dd9/draw_8c_a43f6e22eecec561b6cacdbdf14336ead.html#a43f6e22eecec561b6cacdbdf14336ead',1,'draw.c']]],
   ['sigterm',['sigterm',['../da/d3e/hunt_8c_af2f0fd86c6dc9b6a392a1e48930e7a46.html#af2f0fd86c6dc9b6a392a1e48930e7a46',1,'hunt.c']]],
