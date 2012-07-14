@@ -56,8 +56,8 @@ BULLET *Bullets = NULL; /**< Linked list of bullets */
 EXPL *Expl[EXPLEN]; /**< Explosion lists */
 EXPL *Last_expl; /**< Last explosion on Expl[0] */
 
-PLAYER Player[MAXPL]; /**< All the players */
-PLAYER *end_player = Player; /**< Last active player slot */
+PLAYER player[MAXPL]; /**< All the players */
+PLAYER *end_player = player; /**< Last active player slot */
 # ifdef BOOTS
 PLAYER Boot[NBOOTS]; /* all the boots */
 # endif

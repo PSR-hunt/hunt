@@ -380,7 +380,7 @@ static void fire(PLAYER *pp,int req_index){
 	 * Show the object to everyone
 	 */
 	showexpl(pp->p_y, pp->p_x, shot_type[req_index]);
-	for (pp = Player; pp < end_player; pp++){
+	for (pp = player; pp < end_player; pp++){
 		sendcom(pp, REFRESH);
 	}
 # ifdef MONITOR
@@ -432,7 +432,7 @@ static void fire_slime(PLAYER *pp,int req_index){
 	 * Show the object to everyone
 	 */
 	showexpl(pp->p_y, pp->p_x, SLIME);
-	for (pp = Player; pp < end_player; pp++){
+	for (pp = player; pp < end_player; pp++){
 		sendcom(pp, REFRESH);
 	}
 # ifdef MONITOR

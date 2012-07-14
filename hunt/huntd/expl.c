@@ -74,7 +74,7 @@ void showexpl(int y,int x,char type){
 		Last_expl->e_next = ep;
 	}
 	Last_expl = ep;
-	for (pp = Player; pp < end_player; pp++) {
+	for (pp = player; pp < end_player; pp++) {
 		if (pp->p_maze[y][x] == type){
 			continue;
 		}
@@ -130,7 +130,7 @@ void rollexpl(){
 		else{
 			c = SPACE;
 		}
-		for (pp = Player; pp < end_player; pp++){
+		for (pp = player; pp < end_player; pp++){
 			if (pp->p_maze[y][x] == ep->e_char) {
 				pp->p_maze[y][x] = c;
 				cgoto(pp, y, x);

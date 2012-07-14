@@ -436,7 +436,7 @@ extern EXPL *Last_expl;
 
 extern IDENT *Scores;
 
-extern PLAYER Player[MAXPL], *end_player;
+extern PLAYER player[MAXPL], *end_player;
 # ifdef BOOTS
 extern PLAYER Boot[NBOOTS];
 # endif
