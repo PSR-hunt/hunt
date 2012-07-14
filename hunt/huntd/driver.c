@@ -547,9 +547,9 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 # endif
 	ouch->p_damage += amt;
 	if (ouch->p_damage <= ouch->p_damcap) {
-		(void) sprintf(Buf, "%2d", ouch->p_damage);
+		(void) sprintf(gen_buf, "%2d", ouch->p_damage);
 		cgoto(ouch, STAT_DAM_ROW, STAT_VALUE_COL);
-		outstr(ouch, Buf, 2);
+		outstr(ouch, gen_buf, 2);
 		return;
 	}
 
@@ -631,22 +631,22 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 	if (gotcha->p_damage < 0) {
 		gotcha->p_damage = 0;
 	}
-	(void) sprintf(Buf, "%2d/%2d", gotcha->p_damage, gotcha->p_damcap);
+	(void) sprintf(gen_buf, "%2d/%2d", gotcha->p_damage, gotcha->p_damcap);
 	cgoto(gotcha, STAT_DAM_ROW, STAT_VALUE_COL);
-	outstr(gotcha, Buf, 5);
-	(void) sprintf(Buf, "%3d", (gotcha->p_damcap - MAXDAM) / 2);
+	outstr(gotcha, gen_buf, 5);
+	(void) sprintf(gen_buf, "%3d", (gotcha->p_damcap - MAXDAM) / 2);
 	cgoto(gotcha, STAT_KILL_ROW, STAT_VALUE_COL);
-	outstr(gotcha, Buf, 3);
-	(void) sprintf(Buf, "%5.2f", gotcha->p_ident->i_score);
+	outstr(gotcha, gen_buf, 3);
+	(void) sprintf(gen_buf, "%5.2f", gotcha->p_ident->i_score);
 	for (ouch = Player; ouch < End_player; ouch++) {
 		cgoto(ouch, STAT_PLAY_ROW + 1 + (gotcha - Player), STAT_NAME_COL);
-		outstr(ouch, Buf, 5);
+		outstr(ouch, gen_buf, 5);
 	}
 # ifdef MONITOR
 	for (ouch = Monitor; ouch < End_monitor; ouch++) {
 		cgoto(ouch, STAT_PLAY_ROW + 1 + (gotcha - Player),
 				STAT_NAME_COL);
-		outstr(ouch, Buf, 5);
+		outstr(ouch, gen_buf, 5);
 	}
 # endif
 }
@@ -734,13 +734,13 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	if (x > 0) {
 		(void) add_shot(len, pp->p_y, pp->p_x, pp->p_face, x, (PLAYER *) NULL,
 				true, SPACE);
-		(void) sprintf(Buf, "%s detonated.", pp->p_ident->i_name);
+		(void) sprintf(gen_buf, "%s detonated.", pp->p_ident->i_name);
 		for (np = Player; np < End_player; np++) {
-			message(np, Buf);
+			message(np, gen_buf);
 		}
 # ifdef MONITOR
 		for (np = Monitor; np < End_monitor; np++) {
-			message(np, Buf);
+			message(np, gen_buf);
 		}
 # endif
 # ifdef BOOTS
@@ -818,17 +818,17 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 		memcpy(pp, End_player, sizeof(PLAYER));
 		fdset[i] = fdset[End_player - Player + 3];
 		fdset[End_player - Player + 3].fd = -1;
-		(void) sprintf(Buf, "%5.2f%c%-10.10s %c", pp->p_ident->i_score,
+		(void) sprintf(gen_buf, "%5.2f%c%-10.10s %c", pp->p_ident->i_score,
 				stat_char(pp), pp->p_ident->i_name, pp->p_ident->i_team);
 		n = STAT_PLAY_ROW + 1 + (pp - Player);
 		for (np = Player; np < End_player; np++) {
 			cgoto(np, n, STAT_NAME_COL);
-			outstr(np, Buf, STAT_NAME_LEN);
+			outstr(np, gen_buf, STAT_NAME_LEN);
 		}
 # ifdef MONITOR
 		for (np = Monitor; np < End_monitor; np++) {
 			cgoto(np, n, STAT_NAME_COL);
-			outstr(np, Buf, STAT_NAME_LEN);
+			outstr(np, gen_buf, STAT_NAME_LEN);
 		}
 # endif
 	} else
@@ -856,16 +856,16 @@ else {
 		memcpy(pp, End_monitor, sizeof (PLAYER));
 		fdset[i] = fdset[End_monitor - Monitor + MAXPL + 3];
 		fdset[End_monitor - Monitor + MAXPL + 3].fd = -1;
-		(void) sprintf(Buf, "%5.5s %-10.10s %c", " ",
+		(void) sprintf(gen_buf, "%5.5s %-10.10s %c", " ",
 				pp->p_ident->i_name, pp->p_ident->i_team);
 		n = STAT_MON_ROW + 1 + (pp - Player);
 		for (np = Player; np < End_player; np++) {
 			cgoto(np, n, STAT_NAME_COL);
-			outstr(np, Buf, STAT_NAME_LEN);
+			outstr(np, gen_buf, STAT_NAME_LEN);
 		}
 		for (np = Monitor; np < End_monitor; np++) {
 			cgoto(np, n, STAT_NAME_COL);
-			outstr(np, Buf, STAT_NAME_LEN);
+			outstr(np, gen_buf, STAT_NAME_LEN);
 		}
 	} else
 	fdset[i].fd = -1;

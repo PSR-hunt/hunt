@@ -410,7 +410,7 @@ struct regen_def {
 
 extern bool Last_player;
 
-extern char Buf[BUFSIZ], Maze[HEIGHT][WIDTH2], Orig_maze[HEIGHT][WIDTH2];
+extern char gen_buf[BUFSIZ], Maze[HEIGHT][WIDTH2], Orig_maze[HEIGHT][WIDTH2];
 
 extern const char *Driver;
 

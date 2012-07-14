@@ -90,7 +90,7 @@ bool Last_player = false; /**< Indicates if a player is the last one or no. [PSR
 bool am_monitor = false;
 # endif
 
-char Buf[BUFSIZ]; /**< General scribbling buffer. [PSR] */
+char gen_buf[BUFSIZ]; /**< General scribbling buffer. [PSR] */
 
 int main_socket; /**< Main socket. [PSR] */
 # ifdef INTERNET

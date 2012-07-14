@@ -140,8 +140,8 @@ void do_connect(const char *name, char team, long enter_status) {
 	write_and_push(main_socket, &team, 1);
 	enter_status = htonl(enter_status);
 	write_and_push(main_socket, (char *) &enter_status, LONGLEN);
-	(void) strcpy(Buf, ttyname(fileno(stderr)));
-	write_and_push(main_socket, Buf, NAMELEN);
+	(void) strcpy(gen_buf, ttyname(fileno(stderr)));
+	write_and_push(main_socket, gen_buf, NAMELEN);
 # ifdef INTERNET
 	if (send_message != NULL) {
 		mode = C_MESSAGE;

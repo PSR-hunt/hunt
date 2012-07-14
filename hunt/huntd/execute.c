@@ -368,9 +368,9 @@ static void fire(PLAYER *pp,int req_index){
 		outstr(pp, "   ", 3);
 	}
 	pp->p_ammo -= shot_req[req_index];
-	(void) sprintf(Buf, "%3d", pp->p_ammo);
+	(void) sprintf(gen_buf, "%3d", pp->p_ammo);
 	cgoto(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-	outstr(pp, Buf, 3);
+	outstr(pp, gen_buf, 3);
 
 	add_shot(shot_type[req_index], pp->p_y, pp->p_x, pp->p_face,
 		shot_req[req_index], pp, false, pp->p_face);
@@ -420,9 +420,9 @@ static void fire_slime(PLAYER *pp,int req_index){
 		outstr(pp, "   ", 3);
 	}
 	pp->p_ammo -= slime_req[req_index];
-	(void) sprintf(Buf, "%3d", pp->p_ammo);
+	(void) sprintf(gen_buf, "%3d", pp->p_ammo);
 	cgoto(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-	outstr(pp, Buf, 3);
+	outstr(pp, gen_buf, 3);
 
 	add_shot(SLIME, pp->p_y, pp->p_x, pp->p_face,
 		slime_req[req_index] * SLIME_FACTOR, pp, false, pp->p_face);
@@ -544,9 +544,9 @@ static void cloak(PLAYER *pp){
 		return;
 	}
 # endif
-	(void) sprintf(Buf, "%3d", --pp->p_ammo);
+	(void) sprintf(gen_buf, "%3d", --pp->p_ammo);
 	cgoto(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-	outstr(pp, Buf, 3);
+	outstr(pp, gen_buf, 3);
 
 	pp->p_cloak += CLOAKLEN;
 
@@ -566,9 +566,9 @@ static void scan(PLAYER *pp){
 		message(pp, "No more charges");
 		return;
 	}
-	(void) sprintf(Buf, "%3d", --pp->p_ammo);
+	(void) sprintf(gen_buf, "%3d", --pp->p_ammo);
 	cgoto(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-	outstr(pp, Buf, 3);
+	outstr(pp, gen_buf, 3);
 
 	pp->p_scan += SCANLEN;
 
@@ -606,8 +606,8 @@ void pickup(PLAYER *pp,int y,int x,int prob,int obj){
 	}
 	else {
 		pp->p_ammo += req;
-		(void) sprintf(Buf, "%3d", pp->p_ammo);
+		(void) sprintf(gen_buf, "%3d", pp->p_ammo);
 		cgoto(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-		outstr(pp, Buf, 3);
+		outstr(pp, gen_buf, 3);
 	}
 }

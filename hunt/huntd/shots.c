@@ -334,9 +334,9 @@ static int move_normal_shot(BULLET *bp) {
 					message(pp, "Absorbed charge (good shield!)");
 					pp->p_ident->i_absorbed += bp->b_charge;
 					free((char *) bp);
-					(void) sprintf(Buf, "%3d", pp->p_ammo);
+					(void) sprintf(gen_buf, "%3d", pp->p_ammo);
 					cgoto(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-					outstr(pp, Buf, 3);
+					outstr(pp, gen_buf, 3);
 					return false;
 				}
 				pp->p_ident->i_faced += bp->b_charge;
@@ -532,9 +532,9 @@ static void move_drone(BULLET *bp) {
 			pp->p_ammo += bp->b_charge;
 			message(pp, "**** Absorbed drone ****");
 			free((char *) bp);
-			(void) sprintf(Buf, "%3d", pp->p_ammo);
+			(void) sprintf(gen_buf, "%3d", pp->p_ammo);
 			cgoto(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-			outstr(pp, Buf, 3);
+			outstr(pp, gen_buf, 3);
 			return false;
 		}
 		bp->b_expl = true;

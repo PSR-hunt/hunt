@@ -257,16 +257,16 @@ void stmonitor(PLAYER *pp) {
 
 	drawmaze(pp);
 
-	(void) sprintf(Buf, "%5.5s%c%-10.10s %c", " ", stat_char(pp),
+	(void) sprintf(gen_buf, "%5.5s%c%-10.10s %c", " ", stat_char(pp),
 			pp->p_ident->i_name, pp->p_ident->i_team);
 	line = STAT_MON_ROW + 1 + (pp - Monitor);
 	for (npp = Player; npp < End_player; npp++) {
 		cgoto(npp, line, STAT_NAME_COL);
-		outstr(npp, Buf, STAT_NAME_LEN);
+		outstr(npp, gen_buf, STAT_NAME_LEN);
 	}
 	for (npp = Monitor; npp < End_monitor; npp++) {
 		cgoto(npp, line, STAT_NAME_COL);
-		outstr(npp, Buf, STAT_NAME_LEN);
+		outstr(npp, gen_buf, STAT_NAME_LEN);
 	}
 
 	sendcom(pp, REFRESH);
@@ -373,7 +373,7 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	}
 # endif
 
-	(void) sprintf(Buf, "%5.2f%c%-10.10s %c", newpp->p_ident->i_score,
+	(void) sprintf(gen_buf, "%5.2f%c%-10.10s %c", newpp->p_ident->i_score,
 			stat_char(newpp), newpp->p_ident->i_name, newpp->p_ident->i_team);
 	y = STAT_PLAY_ROW + 1 + (newpp - Player);
 	for (pp = Player; pp < End_player; pp++) {
@@ -383,7 +383,7 @@ void stplayer(PLAYER *newpp, int enter_status) {
 			pp->p_ammo += NSHOTS;
 			newpp->p_ammo += NSHOTS;
 			cgoto(pp, y, STAT_NAME_COL);
-			outstr(pp, Buf, STAT_NAME_LEN);
+			outstr(pp, gen_buf, STAT_NAME_LEN);
 			(void) sprintf(smallbuf, "%3d", pp->p_ammo);
 			cgoto(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
 			outstr(pp, smallbuf, 3);
@@ -392,7 +392,7 @@ void stplayer(PLAYER *newpp, int enter_status) {
 # ifdef MONITOR
 	for (pp = Monitor; pp < End_monitor; pp++) {
 		cgoto(pp, y, STAT_NAME_COL);
-		outstr(pp, Buf, STAT_NAME_LEN);
+		outstr(pp, gen_buf, STAT_NAME_LEN);
 	}
 # endif
 

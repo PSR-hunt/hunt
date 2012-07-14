@@ -41,7 +41,7 @@ __RCSID("$NetBSD: extern.c,v 1.4 2003/06/11 12:00:22 wiz Exp $");
 bool am_monitor = false; /* current process is a monitor */
 # endif
 
-char Buf[BUFSIZ]; /**< General scribbling buffer */
+char gen_buf[BUFSIZ]; /**< General scribbling buffer */
 char Maze[HEIGHT][WIDTH2]; /**< The maze */
 char Orig_maze[HEIGHT][WIDTH2]; /**< The original maze */
 

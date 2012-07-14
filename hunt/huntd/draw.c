@@ -83,9 +83,9 @@ void drawstatus(PLAYER *pp){
 
 	cgoto(pp, STAT_AMMO_ROW, STAT_LABEL_COL);
 	outstr(pp, "Ammo:", 5);
-	(void) sprintf(Buf, "%3d", pp->p_ammo);
+	(void) sprintf(gen_buf, "%3d", pp->p_ammo);
 	cgoto(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-	outstr(pp, Buf, 3);
+	outstr(pp, gen_buf, 3);
 
 	cgoto(pp, STAT_GUN_ROW, STAT_LABEL_COL);
 	outstr(pp, "Gun:", 4);
@@ -94,34 +94,34 @@ void drawstatus(PLAYER *pp){
 
 	cgoto(pp, STAT_DAM_ROW, STAT_LABEL_COL);
 	outstr(pp, "Damage:", 7);
-	(void) sprintf(Buf, "%2d/%2d", pp->p_damage, pp->p_damcap);
+	(void) sprintf(gen_buf, "%2d/%2d", pp->p_damage, pp->p_damcap);
 	cgoto(pp, STAT_DAM_ROW, STAT_VALUE_COL);
-	outstr(pp, Buf, 5);
+	outstr(pp, gen_buf, 5);
 
 	cgoto(pp, STAT_KILL_ROW, STAT_LABEL_COL);
 	outstr(pp, "Kills:", 6);
-	(void) sprintf(Buf, "%3d", (pp->p_damcap - MAXDAM) / 2);
+	(void) sprintf(gen_buf, "%3d", (pp->p_damcap - MAXDAM) / 2);
 	cgoto(pp, STAT_KILL_ROW, STAT_VALUE_COL);
-	outstr(pp, Buf, 3);
+	outstr(pp, gen_buf, 3);
 
 	cgoto(pp, STAT_PLAY_ROW, STAT_LABEL_COL);
 	outstr(pp, "Player:", 7);
 	for (i = STAT_PLAY_ROW + 1, np = Player; np < End_player; np++) {
-		(void) sprintf(Buf, "%5.2f%c%-10.10s %c", np->p_ident->i_score,
+		(void) sprintf(gen_buf, "%5.2f%c%-10.10s %c", np->p_ident->i_score,
 			stat_char(np), np->p_ident->i_name,
 			np->p_ident->i_team);
 		cgoto(pp, i++, STAT_NAME_COL);
-		outstr(pp, Buf, STAT_NAME_LEN);
+		outstr(pp, gen_buf, STAT_NAME_LEN);
 	}
 
 # ifdef MONITOR
 	cgoto(pp, STAT_MON_ROW, STAT_LABEL_COL);
 	outstr(pp, "Monitor:", 8);
 	for (i = STAT_MON_ROW + 1, np = Monitor; np < End_monitor; np++) {
-		(void) sprintf(Buf, "%5.5s %-10.10s %c", " ",
+		(void) sprintf(gen_buf, "%5.5s %-10.10s %c", " ",
 			np->p_ident->i_name, np->p_ident->i_team);
 		cgoto(pp, i++, STAT_NAME_COL);
-		outstr(pp, Buf, STAT_NAME_LEN);
+		outstr(pp, gen_buf, STAT_NAME_LEN);
 	}
 # endif
 }

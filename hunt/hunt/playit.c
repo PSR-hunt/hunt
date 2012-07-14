@@ -283,9 +283,9 @@ static unsigned char getchr() {
 static void send_stuff() {
 	int count;
 	char *sp, *nsp;
-	static char inp[sizeof Buf];
+	static char inp[sizeof gen_buf];
 
-	count = read(STDIN, Buf, sizeof Buf);
+	count = read(STDIN, gen_buf, sizeof gen_buf);
 	if (count <= 0) {
 		return;
 	}
@@ -300,9 +300,9 @@ static void send_stuff() {
 	 * confirm it.  If it is not confirmed, strip
 	 * it out of the input
 	 */
-	Buf[count] = '\0';
+	gen_buf[count] = '\0';
 	nsp = inp;
-	for (sp = Buf; *sp != '\0'; sp++) {
+	for (sp = gen_buf; *sp != '\0'; sp++) {
 		if ((*nsp = map_key[(int) *sp]) == 'q') {
 			intr(0);
 		} else {
