@@ -299,11 +299,11 @@ extern int slime_req[];
 
 # ifdef MONITOR
 # define	C_TESTMSG()	(query_driver ? C_MESSAGE :\
-				(Show_scores ? C_SCORES :\
+				(show_scores ? C_SCORES :\
 				(am_monitor ? C_MONITOR :\
 				C_PLAYER)))
 # else
-# define	C_TESTMSG()	(Show_scores ? C_SCORES :\
+# define	C_TESTMSG()	(show_scores ? C_SCORES :\
 				(query_driver ? C_MESSAGE :\
 				C_PLAYER))
 # endif

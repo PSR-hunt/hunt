@@ -98,7 +98,7 @@ char *sock_host;
 char *use_port;
 bool query_driver = false;
 char *send_message = NULL;
-bool Show_scores = false;
+bool show_scores = false;
 # endif
 
 SOCKET daemon_address; /**< Contains the address of the local daemon. [PSR] */
@@ -184,7 +184,7 @@ int main(int argc, char* argv[]) {
 			break;
 # ifdef INTERNET
 			case 'S':
-			Show_scores = true;
+			show_scores = true;
 			break;
 			case 'q': /* query whether hunt is running */
 			query_driver = true;
@@ -245,7 +245,7 @@ int main(int argc, char* argv[]) {
 # endif
 
 # ifdef INTERNET
-	if (Show_scores) {
+	if (show_scores) {
 		SOCKET *hosts;
 
 		for (hosts = list_drivers(); hosts->sin_port != 0; hosts += 1) {
