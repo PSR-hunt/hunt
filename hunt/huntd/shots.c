@@ -99,7 +99,7 @@ void moveshots() {
 			for (pp = player; pp < end_player; pp++)
 				check(pp, y, x);
 # ifdef MONITOR
-			for (pp = Monitor; pp < end_monitor; pp++)
+			for (pp = monitor; pp < end_monitor; pp++)
 			check(pp, y, x);
 # endif
 
@@ -143,7 +143,7 @@ void moveshots() {
 			if (!bp->b_expl) {
 				save_bullet(bp);
 # ifdef MONITOR
-				for (pp = Monitor; pp < end_monitor; pp++){
+				for (pp = monitor; pp < end_monitor; pp++){
 					check(pp, bp->b_y, bp->b_x);
 				}
 # endif
@@ -186,7 +186,7 @@ void moveshots() {
 		sendcom(pp, REFRESH);
 	}
 # ifdef MONITOR
-	for (pp = Monitor; pp < end_monitor; pp++){
+	for (pp = monitor; pp < end_monitor; pp++){
 		sendcom(pp, REFRESH);
 	}
 # endif
@@ -257,7 +257,7 @@ static int move_normal_shot(BULLET *bp) {
 			}
 			maze[y][x] = WALL5;
 # ifdef MONITOR
-			for (pp = Monitor; pp < end_monitor; pp++) {
+			for (pp = monitor; pp < end_monitor; pp++) {
 				check(pp, y, x);
 			}
 # endif
@@ -279,7 +279,7 @@ static int move_normal_shot(BULLET *bp) {
 			}
 			maze[y][x] = WALL4;
 # ifdef MONITOR
-			for (pp = Monitor; pp < end_monitor; pp++) {
+			for (pp = monitor; pp < end_monitor; pp++) {
 				check(pp, y, x);
 			}
 # endif

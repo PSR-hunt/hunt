@@ -213,7 +213,7 @@ int main(int argc, char* argv[], char* env[]) {
 					}
 				}
 # ifdef MONITOR
-				for (pp = Monitor, i = 0; pp < end_monitor; pp++, i++)
+				for (pp = monitor, i = 0; pp < end_monitor; pp++, i++)
 				if (havechar(pp, i + MAXPL + 3)) {
 					mon_execute(pp);
 					pp->p_nexec++;
@@ -227,7 +227,7 @@ int main(int argc, char* argv[], char* env[]) {
 						pp++, i++;
 					}
 # ifdef MONITOR
-				for (pp = Monitor, i = 0; pp < end_monitor; )
+				for (pp = monitor, i = 0; pp < end_monitor; )
 				if (pp->p_death[0] != '\0') {
 					zap(pp, false, i + MAXPL + 3);
 				}
@@ -257,7 +257,7 @@ int main(int argc, char* argv[], char* env[]) {
 				(void) fflush(pp->p_output);
 			}
 # ifdef MONITOR
-			for (pp = Monitor, i = 0; pp < end_monitor; pp++, i++) {
+			for (pp = monitor, i = 0; pp < end_monitor; pp++, i++) {
 				if (fdset[i + MAXPL + 3].revents & POLLIN) {
 					sendcom(pp, READY, pp->p_nexec);
 				}
@@ -284,7 +284,7 @@ int main(int argc, char* argv[], char* env[]) {
 	}
 
 # ifdef MONITOR
-	for (pp = Monitor, i = 0; pp < end_monitor; i++) {
+	for (pp = monitor, i = 0; pp < end_monitor; i++) {
 		zap(pp, false, i + MAXPL + 3);
 	}
 # endif
@@ -643,7 +643,7 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 		outstr(ouch, gen_buf, 5);
 	}
 # ifdef MONITOR
-	for (ouch = Monitor; ouch < end_monitor; ouch++) {
+	for (ouch = monitor; ouch < end_monitor; ouch++) {
 		cgoto(ouch, STAT_PLAY_ROW + 1 + (gotcha - player),
 				STAT_NAME_COL);
 		outstr(ouch, gen_buf, 5);
@@ -739,7 +739,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 			message(np, gen_buf);
 		}
 # ifdef MONITOR
-		for (np = Monitor; np < end_monitor; np++) {
+		for (np = monitor; np < end_monitor; np++) {
 			message(np, gen_buf);
 		}
 # endif
@@ -826,7 +826,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 			outstr(np, gen_buf, STAT_NAME_LEN);
 		}
 # ifdef MONITOR
-		for (np = Monitor; np < end_monitor; np++) {
+		for (np = monitor; np < end_monitor; np++) {
 			cgoto(np, n, STAT_NAME_COL);
 			outstr(np, gen_buf, STAT_NAME_LEN);
 		}
@@ -841,7 +841,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 		ce(np);
 	}
 # ifdef MONITOR
-	for (np = Monitor; np < end_monitor; np++) {
+	for (np = monitor; np < end_monitor; np++) {
 		cgoto(np, n, STAT_NAME_COL);
 		ce(np);
 	}
@@ -854,8 +854,8 @@ else {
 	end_monitor--;
 	if (pp != end_monitor) {
 		memcpy(pp, end_monitor, sizeof (PLAYER));
-		fdset[i] = fdset[end_monitor - Monitor + MAXPL + 3];
-		fdset[end_monitor - Monitor + MAXPL + 3].fd = -1;
+		fdset[i] = fdset[end_monitor - monitor + MAXPL + 3];
+		fdset[end_monitor - monitor + MAXPL + 3].fd = -1;
 		(void) sprintf(gen_buf, "%5.5s %-10.10s %c", " ",
 				pp->p_ident->i_name, pp->p_ident->i_team);
 		n = STAT_MON_ROW + 1 + (pp - player);
@@ -863,7 +863,7 @@ else {
 			cgoto(np, n, STAT_NAME_COL);
 			outstr(np, gen_buf, STAT_NAME_LEN);
 		}
-		for (np = Monitor; np < end_monitor; np++) {
+		for (np = monitor; np < end_monitor; np++) {
 			cgoto(np, n, STAT_NAME_COL);
 			outstr(np, gen_buf, STAT_NAME_LEN);
 		}
@@ -871,12 +871,12 @@ else {
 	fdset[i].fd = -1;
 
 	/* Erase the last monitor */
-	n = STAT_MON_ROW + 1 + (end_monitor - Monitor);
+	n = STAT_MON_ROW + 1 + (end_monitor - monitor);
 	for (np = player; np < end_player; np++) {
 		cgoto(np, n, STAT_NAME_COL);
 		ce(np);
 	}
-	for (np = Monitor; np < end_monitor; np++) {
+	for (np = monitor; np < end_monitor; np++) {
 		cgoto(np, n, STAT_NAME_COL);
 		ce(np);
 	}
@@ -937,7 +937,7 @@ SIGNAL_TYPE cleanup(int eval) {
 		safe_fclose(pp->p_output);
 	}
 # ifdef MONITOR
-	for (pp = Monitor; pp < end_monitor; pp++) {
+	for (pp = monitor; pp < end_monitor; pp++) {
 		cgoto(pp, HEIGHT, 0);
 		sendcom(pp, ENDWIN);
 		(void) putc(LAST_PLAYER, pp->p_output);

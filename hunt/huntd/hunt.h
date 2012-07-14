@@ -443,7 +443,7 @@ extern PLAYER Boot[NBOOTS];
 
 # ifdef MONITOR
 extern bool am_monitor;
-extern PLAYER Monitor[MAXMON], *end_monitor;
+extern PLAYER monitor[MAXMON], *end_monitor;
 # endif
 
 # ifdef INTERNET

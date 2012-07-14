@@ -196,9 +196,9 @@ int answer() {
 # endif
 # ifdef MONITOR
 	if (mode == C_MONITOR) {
-		if (end_monitor < &Monitor[MAXMON]) {
+		if (end_monitor < &monitor[MAXMON]) {
 			pp = end_monitor++;
-			i = pp - Monitor + MAXPL + 3;
+			i = pp - monitor + MAXPL + 3;
 		} else {
 			socklen = 0;
 			write_and_push(newsock, (char *) &socklen, sizeof socklen);
@@ -259,12 +259,12 @@ void stmonitor(PLAYER *pp) {
 
 	(void) sprintf(gen_buf, "%5.5s%c%-10.10s %c", " ", stat_char(pp),
 			pp->p_ident->i_name, pp->p_ident->i_team);
-	line = STAT_MON_ROW + 1 + (pp - Monitor);
+	line = STAT_MON_ROW + 1 + (pp - monitor);
 	for (npp = player; npp < end_player; npp++) {
 		cgoto(npp, line, STAT_NAME_COL);
 		outstr(npp, gen_buf, STAT_NAME_LEN);
 	}
-	for (npp = Monitor; npp < end_monitor; npp++) {
+	for (npp = monitor; npp < end_monitor; npp++) {
 		cgoto(npp, line, STAT_NAME_COL);
 		outstr(npp, gen_buf, STAT_NAME_LEN);
 	}
@@ -357,7 +357,7 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	} while (maze[y][x] != SPACE);
 	maze[y][x] = GMINE;
 # ifdef MONITOR
-	for (pp = Monitor; pp < end_monitor; pp++) {
+	for (pp = monitor; pp < end_monitor; pp++) {
 		check(pp, y, x);
 	}
 # endif
@@ -368,7 +368,7 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	} while (maze[y][x] != SPACE);
 	maze[y][x] = MINE;
 # ifdef MONITOR
-	for (pp = Monitor; pp < end_monitor; pp++) {
+	for (pp = monitor; pp < end_monitor; pp++) {
 		check(pp, y, x);
 	}
 # endif
@@ -390,7 +390,7 @@ void stplayer(PLAYER *newpp, int enter_status) {
 		}
 	}
 # ifdef MONITOR
-	for (pp = Monitor; pp < end_monitor; pp++) {
+	for (pp = monitor; pp < end_monitor; pp++) {
 		cgoto(pp, y, STAT_NAME_COL);
 		outstr(pp, gen_buf, STAT_NAME_LEN);
 	}

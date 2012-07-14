@@ -83,7 +83,7 @@ void showexpl(int y,int x,char type){
 		outch(pp, type);
 	}
 # ifdef MONITOR
-	for (pp = Monitor; pp < end_monitor; pp++) {
+	for (pp = monitor; pp < end_monitor; pp++) {
 		if (pp->p_maze[y][x] == type){
 			continue;
 		}
@@ -138,7 +138,7 @@ void rollexpl(){
 			}
 		}
 # ifdef MONITOR
-		for (pp = Monitor; pp < end_monitor; pp++){
+		for (pp = monitor; pp < end_monitor; pp++){
 			check(pp, y, x);
 		}
 # endif
@@ -234,7 +234,7 @@ static void remove_wall(int y,int x){
 		}
 # endif
 # ifdef MONITOR
-		for (pp = Monitor; pp < end_monitor; pp++){
+		for (pp = monitor; pp < end_monitor; pp++){
 			check(pp, r->r_y, r->r_x);
 		}
 # endif
@@ -251,7 +251,7 @@ static void remove_wall(int y,int x){
 
 	maze[y][x] = SPACE;
 # ifdef MONITOR
-	for (pp = Monitor; pp < end_monitor; pp++){
+	for (pp = monitor; pp < end_monitor; pp++){
 		check(pp, y, x);
 	}
 # endif
