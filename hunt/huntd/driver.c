@@ -999,7 +999,7 @@ static void send_stats() {
 	fputs(
 			"Name\t\tScore\tDucked\tAbsorb\tFaced\tShot\tRobbed\tMissed\tSlimeK\n",
 			fp);
-	for (ip = Scores; ip != NULL ; ip = ip->i_next) {
+	for (ip = scores; ip != NULL ; ip = ip->i_next) {
 		fprintf(fp, "%s\t", ip->i_name);
 		if (strlen(ip->i_name) < 8) {
 			putc('\t', fp);
@@ -1009,7 +1009,7 @@ static void send_stats() {
 				ip->i_robbed, ip->i_missed, ip->i_slime);
 	}
 	fputs("\n\nName\t\tEnemy\tFriend\tDeaths\tStill\tSaved\n", fp);
-	for (ip = Scores; ip != NULL ; ip = ip->i_next) {
+	for (ip = scores; ip != NULL ; ip = ip->i_next) {
 		if (ip->i_team == ' ') {
 			fprintf(fp, "%s\t", ip->i_name);
 			if (strlen(ip->i_name) < 8) {
@@ -1034,10 +1034,10 @@ static void send_stats() {
 static void clear_scores() {
 	IDENT *ip, *nextip;
 
-	for (ip = Scores; ip != NULL ; ip = nextip) {
+	for (ip = scores; ip != NULL ; ip = nextip) {
 		nextip = ip->i_next;
 		(void) free((char *) ip);
 	}
-	Scores = NULL;
+	scores = NULL;
 }
 

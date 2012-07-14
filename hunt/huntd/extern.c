@@ -61,7 +61,7 @@ PLAYER *end_player = player; /**< Last active player slot */
 # ifdef BOOTS
 PLAYER Boot[NBOOTS]; /* all the boots */
 # endif
-IDENT *Scores; /**< Score cache */
+IDENT *scores; /**< Score cache */
 # ifdef MONITOR
 PLAYER monitor[MAXMON]; /* all the monitors */
 PLAYER *end_monitor = monitor; /* last active monitor slot */

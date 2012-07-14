@@ -442,7 +442,7 @@ IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
 	IDENT *ip;
 	static IDENT punt;
 
-	for (ip = Scores; ip != NULL ; ip = ip->i_next) {
+	for (ip = scores; ip != NULL ; ip = ip->i_next) {
 		if ((unsigned long) ip->i_machine == machine
 				&& (unsigned long) ip->i_uid == uid && ip->i_team == team
 				&& strncmp(ip->i_name, name, NAMELEN) == 0) {
@@ -479,8 +479,8 @@ IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
 		ip->i_ducked = 0;
 		ip->i_gkills = ip->i_bkills = ip->i_deaths = 0;
 		ip->i_stillb = ip->i_saved = 0;
-		ip->i_next = Scores;
-		Scores = ip;
+		ip->i_next = scores;
+		scores = ip;
 	}
 
 	return ip;

@@ -434,7 +434,7 @@ extern BULLET *Bullets;
 extern EXPL *Expl[EXPLEN];
 extern EXPL *Last_expl;
 
-extern IDENT *Scores;
+extern IDENT *scores;
 
 extern PLAYER player[MAXPL], *end_player;
 # ifdef BOOTS
