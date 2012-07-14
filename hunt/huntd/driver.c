@@ -60,7 +60,7 @@ char *password_hash = NULL;
 
 SOCKET daemon_address; /**< Contains the address of the local daemon. [PSR] */
 char *first_arg; /**< Pointer to argv[0] */
-char *Last_arg; /**< Pointer to end of argv/environ */
+char *last_arg; /**< Pointer to end of argv/environ */
 # ifdef	INTERNET
 int Test_socket; /* test socket to answer datagrams */
 bool inetd_spawned; /* invoked via inetd */
@@ -117,7 +117,7 @@ int main(int argc, char* argv[], char* env[]) {
 	while (*env) {
 		env++;
 	}
-	Last_arg = env[-1] + strlen(env[-1]);
+	last_arg = env[-1] + strlen(env[-1]);
 
 	while ((c = getopt(argc, argv, "sp:P:")) != -1) {
 		switch (c) {
