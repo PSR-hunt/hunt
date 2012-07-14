@@ -170,7 +170,7 @@ void execute(PLAYER *pp){
 		fire_slime(pp, 3);
 		break;
 # endif
-	  case 'e':
+	  case 'z':
 		scan(pp);
 		break;
 	  case 'c':

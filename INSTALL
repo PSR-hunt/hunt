@@ -20,8 +20,6 @@ You need the following to build this distribution:
 
 * A POSIX shell, such as bash, in /bin/sh.
 
-libcrypto from OpenSSL can optionally be used by factor.
-
 Security
 ========
 
@@ -108,6 +106,9 @@ Building and installation
 
     "make clean" will restore the sources to the state just after
     configuration.
+    
+    "make stopall" will force all hunt related processes to immediately
+    terminate 
 
 Further information
 ===================
