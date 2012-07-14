@@ -485,8 +485,8 @@ void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,c
 
 	bp = create_shot(type, y, x, face, charge, size, owner,
 		(owner == NULL) ? NULL : owner->p_ident, expl, over);
-	bp->b_next = Bullets;
-	Bullets = bp;
+	bp->b_next = bullets;
+	bullets = bp;
 }
 
 /**

@@ -51,7 +51,7 @@ int main_socket; /**< Main socket */
 int status; /**< Stat socket */
 int see_over[NASCII]; /**< Lookup table for determining whether character represents "transparent" item */
 
-BULLET *Bullets = NULL; /**< Linked list of bullets */
+BULLET *bullets = NULL; /**< Linked list of bullets */
 
 EXPL *Expl[EXPLEN]; /**< Explosion lists */
 EXPL *Last_expl; /**< Last explosion on Expl[0] */

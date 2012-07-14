@@ -80,7 +80,7 @@ void moveshots() {
 	BULLET *blist;
 
 	rollexpl();
-	if (Bullets != NULL) {
+	if (bullets != NULL) {
 
 		/*
 		 * First we move through the bullet list BULSPD times, looking
@@ -89,8 +89,8 @@ void moveshots() {
 		 * for damage to any player who got in the way.
 		 */
 
-		blist = Bullets;
-		Bullets = NULL;
+		blist = bullets;
+		bullets = NULL;
 		for (bp = blist; bp != NULL; bp = next) {
 			next = bp->b_next;
 			x = bp->b_x;
@@ -109,35 +109,35 @@ void moveshots() {
 			case SATCHEL:
 			case BOMB:
 				if (move_normal_shot(bp)) {
-					bp->b_next = Bullets;
-					Bullets = bp;
+					bp->b_next = bullets;
+					bullets = bp;
 				}
 				break;
 # ifdef OOZE
 				case SLIME:
 				if (bp->b_expl || move_normal_shot(bp)) {
-					bp->b_next = Bullets;
-					Bullets = bp;
+					bp->b_next = bullets;
+					bullets = bp;
 				}
 				break;
 # endif
 # ifdef DRONE
 				case DSHOT:
 				if (move_drone(bp)) {
-					bp->b_next = Bullets;
-					Bullets = bp;
+					bp->b_next = bullets;
+					bullets = bp;
 				}
 				break;
 # endif
 			default:
-				bp->b_next = Bullets;
-				Bullets = bp;
+				bp->b_next = bullets;
+				bullets = bp;
 				break;
 			}
 		}
 
-		blist = Bullets;
-		Bullets = NULL;
+		blist = bullets;
+		bullets = NULL;
 		for (bp = blist; bp != NULL; bp = next) {
 			next = bp->b_next;
 			if (!bp->b_expl) {
@@ -229,13 +229,13 @@ static int move_normal_shot(BULLET *bp) {
 		switch (maze[y][x]) {
 		case SHOT:
 			if (rand_num(100) < 5) {
-				zapshot(Bullets, bp);
+				zapshot(bullets, bp);
 				zapshot(bp->b_next, bp);
 			}
 			break;
 		case GRENADE:
 			if (rand_num(100) < 10) {
-				zapshot(Bullets, bp);
+				zapshot(bullets, bp);
 				zapshot(bp->b_next, bp);
 			}
 			break;
@@ -564,7 +564,7 @@ static void save_bullet(BULLET *bp) {
 # ifdef DRONE
 		case DSHOT:
 # endif
-		find_under(Bullets, bp);
+		find_under(bullets, bp);
 		break;
 	}
 
@@ -589,8 +589,8 @@ static void save_bullet(BULLET *bp) {
 		break;
 	}
 
-	bp->b_next = Bullets;
-	Bullets = bp;
+	bp->b_next = bullets;
+	bullets = bp;
 }
 
 #ifdef FLY
@@ -879,7 +879,7 @@ static void move_slime(BULLET *bp,int speed,BULLET *next) {
 		case DSHOT:
 # endif
 		explshot(next, bp->b_y, bp->b_x);
-		explshot(Bullets, bp->b_y, bp->b_x);
+		explshot(bullets, bp->b_y, bp->b_x);
 		break;
 	}
 
@@ -1142,7 +1142,7 @@ int opposite(int face, char dir) {
 BULLET * is_bullet(int y, int x) {
 	BULLET *bp;
 
-	for (bp = Bullets; bp != NULL; bp = bp->b_next) {
+	for (bp = bullets; bp != NULL; bp = bp->b_next) {
 		if (bp->b_y == y && bp->b_x == x) {
 			return bp;
 		}
@@ -1159,7 +1159,7 @@ BULLET * is_bullet(int y, int x) {
 void fixshots(int y, int x, char over) {
 	BULLET *bp;
 
-	for (bp = Bullets; bp != NULL; bp = bp->b_next) {
+	for (bp = bullets; bp != NULL; bp = bp->b_next) {
 		if (bp->b_y == y && bp->b_x == x) {
 			bp->b_over = over;
 		}

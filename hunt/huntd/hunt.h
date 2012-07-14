@@ -429,7 +429,7 @@ extern int volcano;
 
 extern int see_over[NASCII];
 
-extern BULLET *Bullets;
+extern BULLET *bullets;
 
 extern EXPL *Expl[EXPLEN];
 extern EXPL *Last_expl;

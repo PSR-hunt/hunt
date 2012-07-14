@@ -692,7 +692,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 # ifdef MONITOR
 	if (was_player) {
 # endif
-	for (bp = Bullets; bp != NULL ; bp = bp->b_next) {
+	for (bp = bullets; bp != NULL ; bp = bp->b_next) {
 		if (bp->b_owner == pp) {
 			bp->b_owner = NULL;
 		}
