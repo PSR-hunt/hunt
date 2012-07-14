@@ -134,7 +134,7 @@ SOCKET *list_drivers(void);
 long fchars_in_line(FILE*); /* Added explicit declaration to avoid implicit declaration. [PSR] */
 
 #ifdef OTTO
-extern int Otto_mode;
+extern int otto_mode;
 #endif
 
 extern int _tty_ch;
@@ -172,7 +172,7 @@ int main(int argc, char* argv[]) {
 			warnx("The -o flag is reserved for future use.");
 			usage();
 # else
-			Otto_mode = true;
+			otto_mode = true;
 # endif
 			break;
 		case 'm':
@@ -272,7 +272,7 @@ int main(int argc, char* argv[]) {
 	}
 # endif
 # ifdef OTTO
-	if (Otto_mode) {
+	if (otto_mode) {
 		(void) strncpy(name, "otto", NAMELEN);
 	}
 	else

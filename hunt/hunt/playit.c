@@ -76,7 +76,7 @@ int cur_col; /**< Indicates the current column. [PSR] */
 # endif
 # ifdef OTTO
 int Otto_count;
-int Otto_mode;
+int otto_mode;
 static int otto_y, otto_x;
 static char otto_face;
 # endif
@@ -202,7 +202,7 @@ void playit() {
 # ifdef DEBUG
 				fputc('0' + Otto_count, stderr);
 # endif
-				if (Otto_count == 0 && Otto_mode) {
+				if (Otto_count == 0 && otto_mode) {
 					otto(otto_y, otto_x, otto_face);
 				}
 			}
@@ -338,7 +338,7 @@ int quit(int old_status) {
 		return Q_QUIT;
 	}
 # ifdef OTTO
-	if (Otto_mode) {
+	if (otto_mode) {
 		return Q_CLOAK;
 	}
 # endif
