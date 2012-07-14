@@ -127,7 +127,7 @@ int main(int argc, char* argv[], char* env[]) {
 # ifdef INTERNET
 			case 'p':
 			standard_port = false;
-			Test_port = atoi(optarg);
+			test_port_glob = atoi(optarg);
 			break;
 			/*
 			 * Added option to insert server password. [PSR]
@@ -450,13 +450,13 @@ static void init() {
 			&& test_port.sin_family == AF_INET) {
 		inetd_spawned = true;
 		Test_socket = 0;
-		if (test_port.sin_port != htons((unsigned short) Test_port)) {
+		if (test_port.sin_port != htons((unsigned short) test_port_glob)) {
 			standard_port = false;
-			Test_port = ntohs(test_port.sin_port);
+			test_port_glob = ntohs(test_port.sin_port);
 		}
 	} else {
 		test_port = daemon_address;
-		test_port.sin_port = htons((unsigned short) Test_port);
+		test_port.sin_port = htons((unsigned short) test_port_glob);
 
 		Test_socket = socket(SOCK_FAMILY, SOCK_DGRAM, 0);
 		if (bind(Test_socket, (struct sockaddr *) &test_port,

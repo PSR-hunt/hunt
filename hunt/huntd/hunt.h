@@ -418,7 +418,7 @@ extern int Nplayer, main_socket, Status;
 extern struct pollfd fdset[];
 
 # ifdef INTERNET
-extern unsigned short Test_port;
+extern unsigned short test_port_glob;
 # else
 extern char *Sock_name, *Stat_name;
 # endif

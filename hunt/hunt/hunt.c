@@ -197,7 +197,7 @@ int main(int argc, char* argv[]) {
 			break;
 			case 'p':
 			use_port = optarg;
-			Test_port = atoi(use_port);
+			test_port_glob = atoi(use_port);
 			break;
 # else
 		case 'S':
@@ -574,7 +574,7 @@ SOCKET * list_drivers() {
 		/* NOTREACHED */
 	}
 	test.sin_family = SOCK_FAMILY;
-	test.sin_port = htons(Test_port);
+	test.sin_port = htons(test_port_glob);
 	listc = 0;
 
 	if (sock_host != NULL) { /* explicit host given */
@@ -1178,7 +1178,7 @@ long env_init(long enter_status_in) {
 # ifdef INTERNET
 			else if (strncmp(input_row, "port=", tag_len) == 0) {
 				use_port = input_value;
-				Test_port = atoi(use_port);
+				test_port_glob = atoi(use_port);
 			}
 			else if (strncmp(input_row, "host=", tag_len) == 0) {
 				sock_host = input_value;
@@ -1288,7 +1288,7 @@ long var_env_init(long enter_status_in) {
 # ifdef INTERNET
 			else if (strncmp(envp, "port=", s - envp + 1) == 0) {
 				use_port = s + 1;
-				Test_port = atoi(use_port);
+				test_port_glob = atoi(use_port);
 				if ((s = strchr(envp, ',')) == NULL) {
 					*envp = '\0';
 					break;
