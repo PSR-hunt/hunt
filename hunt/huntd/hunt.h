@@ -280,7 +280,7 @@ extern int slime_req[];
 # endif
 
 # define	CLOAKLEN	20
-# define	SCANLEN		(Nplayer * 20)
+# define	SCANLEN		(nplayer * 20)
 # define	EXPLEN		4
 
 # define	Q_QUIT		0
@@ -414,7 +414,7 @@ extern char gen_buf[BUFSIZ], maze[HEIGHT][WIDTH2], Orig_maze[HEIGHT][WIDTH2];
 
 extern const char *Driver;
 
-extern int Nplayer, main_socket, Status;
+extern int nplayer, main_socket, Status;
 extern struct pollfd fdset[];
 
 # ifdef INTERNET

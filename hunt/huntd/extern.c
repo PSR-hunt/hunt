@@ -46,7 +46,7 @@ char maze[HEIGHT][WIDTH2]; /**< The maze */
 char Orig_maze[HEIGHT][WIDTH2]; /**< The original maze */
 
 struct pollfd fdset[3 + MAXPL + MAXMON]; /**< A set of file descriptors. [PSR] */
-int Nplayer = 0; /**< Number of players */
+int nplayer = 0; /**< Number of players */
 int main_socket; /**< Main socket */
 int Status; /**< Stat socket */
 int see_over[NASCII]; /**< Lookup table for determining whether character represents "transparent" item */

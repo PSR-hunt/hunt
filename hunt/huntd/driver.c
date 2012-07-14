@@ -178,10 +178,10 @@ int main(int argc, char* argv[], char* env[]) {
 						0, (struct sockaddr *) &test, &namelen);
 				switch (ntohs(msg)) {
 					case C_MESSAGE:
-					if (Nplayer <= 0) {
+					if (nplayer <= 0) {
 						break;
 					}
-					reply = htons((unsigned short) Nplayer);
+					reply = htons((unsigned short) nplayer);
 					sendto_and_push(test_socket_glob, (char *) &reply,
 							sizeof reply, 0,
 							(struct sockaddr *) &test, DAEMON_SIZE);
@@ -194,7 +194,7 @@ int main(int argc, char* argv[], char* env[]) {
 					break;
 					case C_PLAYER:
 					case C_MONITOR:
-					if (msg == C_MONITOR && Nplayer <= 0) {
+					if (msg == C_MONITOR && nplayer <= 0) {
 						break;
 					}
 					reply = htons(sock_port);
@@ -265,7 +265,7 @@ int main(int argc, char* argv[], char* env[]) {
 				(void) fflush(pp->p_output);
 			}
 # endif
-		} while (Nplayer > 0);
+		} while (nplayer > 0);
 
 		if (poll(fdset, 3 + MAXPL + MAXMON, linger) > 0) {
 			continue;
@@ -669,7 +669,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 			fixshots(pp->p_y, pp->p_x, pp->p_over);
 		}
 		drawplayer(pp, false);
-		Nplayer--;
+		nplayer--;
 	}
 
 	len = strlen(pp->p_death); /* Display the cause of death */
@@ -835,7 +835,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 		fdset[i].fd = -1;
 
 	/* Erase the last player */
-	n = STAT_PLAY_ROW + 1 + Nplayer;
+	n = STAT_PLAY_ROW + 1 + nplayer;
 	for (np = player; np < end_player; np++) {
 		cgoto(np, n, STAT_NAME_COL);
 		ce(np);

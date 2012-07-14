@@ -285,7 +285,7 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	int x, y;
 	PLAYER *pp;
 
-	Nplayer++;
+	nplayer++;
 
 	for (y = 0; y < UBOUND; y++) {
 		for (x = 0; x < WIDTH; x++) {
