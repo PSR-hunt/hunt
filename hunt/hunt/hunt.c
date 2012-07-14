@@ -96,7 +96,7 @@ int main_socket; /**< Main socket. [PSR] */
 # ifdef INTERNET
 char *sock_host;
 char *use_port;
-bool Query_driver = false;
+bool query_driver = false;
 char *send_message = NULL;
 bool Show_scores = false;
 # endif
@@ -187,7 +187,7 @@ int main(int argc, char* argv[]) {
 			Show_scores = true;
 			break;
 			case 'q': /* query whether hunt is running */
-			Query_driver = true;
+			query_driver = true;
 			break;
 			case 'w':
 			send_message = optarg;
@@ -253,7 +253,7 @@ int main(int argc, char* argv[]) {
 		}
 		exit(0);
 	}
-	if (Query_driver) {
+	if (query_driver) {
 		SOCKET *hosts;
 
 		for (hosts = list_drivers(); hosts->sin_port != 0; hosts += 1) {

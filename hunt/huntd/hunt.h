@@ -298,13 +298,13 @@ extern int slime_req[];
 # define	C_REFUSE			6 /* Added as support for server password. [PSR] */
 
 # ifdef MONITOR
-# define	C_TESTMSG()	(Query_driver ? C_MESSAGE :\
+# define	C_TESTMSG()	(query_driver ? C_MESSAGE :\
 				(Show_scores ? C_SCORES :\
 				(am_monitor ? C_MONITOR :\
 				C_PLAYER)))
 # else
 # define	C_TESTMSG()	(Show_scores ? C_SCORES :\
-				(Query_driver ? C_MESSAGE :\
+				(query_driver ? C_MESSAGE :\
 				C_PLAYER))
 # endif
 
