@@ -175,7 +175,7 @@ void playit() {
 			if ((ch = GETCHR()) == LAST_PLAYER)
 				Last_player = true;
 			ch = EOF;
-//			safe_close(Socket); Socket termination delegated to main routine.
+//			safe_close(main_socket); Socket termination delegated to main routine.
 			return;
 		case BELL:
 			beep();
@@ -230,7 +230,7 @@ void playit() {
 			break;
 		}
 	}
-//	safe_close(Socket); Socket termination delegated to main routine
+//	safe_close(main_socket); Socket termination delegated to main routine
 }
 
 /**
@@ -244,7 +244,7 @@ static unsigned char getchr() {
 	struct pollfd set[2];
 	int nfds;
 
-	set[0].fd = Socket;
+	set[0].fd = main_socket;
 	set[0].events = POLLIN;
 	set[1].fd = STDIN;
 	set[1].events = POLLIN;
@@ -261,7 +261,7 @@ static unsigned char getchr() {
 		if (!(set[0].revents & POLLIN)) {
 			continue;
 		}
-		icnt = read(Socket, ibuf, sizeof ibuf);
+		icnt = read(main_socket, ibuf, sizeof ibuf);
 		if (icnt < 0) {
 			bad_con();
 			/* NOTREACHED */
@@ -318,7 +318,7 @@ static void send_stuff() {
 		if (nchar_send < 0) {
 			count += nchar_send;
 		}
-		write_and_push(Socket, inp, count);
+		write_and_push(main_socket, inp, count);
 	}
 }
 
@@ -728,7 +728,7 @@ void redraw_screen() {
 void do_message() {
 	u_int32_t version;
 
-	if (read(Socket, (char *) &version, LONGLEN) != LONGLEN) {
+	if (read(main_socket, (char *) &version, LONGLEN) != LONGLEN) {
 		bad_con();
 		/* NOTREACHED */
 	}
@@ -737,10 +737,10 @@ void do_message() {
 		/* NOTREACHED */
 	}
 # ifdef INTERNET
-	if (write(Socket, Send_message, strlen(Send_message)) < 0) {
+	if (write(main_socket, Send_message, strlen(Send_message)) < 0) {
 		bad_con();
 		/* NOTREACHED */
 	}
 # endif
-//	safe_close(Socket); Socket termination delegated to main routine
+//	safe_close(main_socket); Socket termination delegated to main routine
 }

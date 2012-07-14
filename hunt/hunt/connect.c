@@ -69,7 +69,7 @@ void do_connect(const char *name, char team, long enter_status) {
 
 	u_int32_t version;
 
-	int len = read(Socket, (char *) &version, LONGLEN);
+	int len = read(main_socket, (char *) &version, LONGLEN);
 
 	if (len != LONGLEN) {
 		char msg[256];
@@ -90,7 +90,7 @@ void do_connect(const char *name, char team, long enter_status) {
 	/*Read auth [PSR]*/
 	unsigned short auth;
 	do {
-		safe_read(Socket, &auth, SHORTLEN);
+		safe_read(main_socket, &auth, SHORTLEN);
 		switch(auth) {
 			case C_AUTH:
 # ifdef USE_CURSES
@@ -119,7 +119,7 @@ void do_connect(const char *name, char team, long enter_status) {
 			}while(strlen(psw)==0);
 			password_hash = crypt(psw,"AC");
 			password_hash[13]='\0';
-			write_and_push(Socket, password_hash , (13+1)*sizeof(char));
+			write_and_push(main_socket, password_hash , (13+1)*sizeof(char));
 			auth_stage = true;
 			break;
 			case C_AUTH_SUCCESS:
@@ -135,13 +135,13 @@ void do_connect(const char *name, char team, long enter_status) {
 	if (uid == 0) {
 		uid = htonl(getuid());
 	}
-	write_and_push(Socket, (char *) &uid, LONGLEN);
-	write_and_push(Socket, name, NAMELEN);
-	write_and_push(Socket, &team, 1);
+	write_and_push(main_socket, (char *) &uid, LONGLEN);
+	write_and_push(main_socket, name, NAMELEN);
+	write_and_push(main_socket, &team, 1);
 	enter_status = htonl(enter_status);
-	write_and_push(Socket, (char *) &enter_status, LONGLEN);
+	write_and_push(main_socket, (char *) &enter_status, LONGLEN);
 	(void) strcpy(Buf, ttyname(fileno(stderr)));
-	write_and_push(Socket, Buf, NAMELEN);
+	write_and_push(main_socket, Buf, NAMELEN);
 # ifdef INTERNET
 	if (Send_message != NULL) {
 		mode = C_MESSAGE;
@@ -156,5 +156,5 @@ void do_connect(const char *name, char team, long enter_status) {
 # endif
 	mode = C_PLAYER;
 	mode = htonl(mode);
-	write_and_push(Socket, (char *) &mode, sizeof mode);
+	write_and_push(main_socket, (char *) &mode, sizeof mode);
 }

@@ -92,7 +92,7 @@ bool Am_monitor = false;
 
 char Buf[BUFSIZ]; /**< General scribbling buffer. [PSR] */
 
-int Socket; /**< Main socket. [PSR] */
+int main_socket; /**< Main socket. [PSR] */
 # ifdef INTERNET
 char *Sock_host;
 char *use_port;
@@ -333,20 +333,20 @@ int main(int argc, char* argv[]) {
 				int option;
 #endif
 
-				Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
-				if (Socket < 0) {
+				main_socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
+				if (main_socket < 0) {
 					err(1, "socket");
 				}
 
 #ifdef SO_USELOOPBACK
 				option = 1;
-				if (setsockopt(Socket, SOL_SOCKET, SO_USELOOPBACK,
+				if (setsockopt(main_socket, SOL_SOCKET, SO_USELOOPBACK,
 								&option, sizeof option) < 0) {
 					warn("setsockopt loopback");
 				}
 #endif
 				errno = 0;
-				if (connect(Socket, (struct sockaddr *) &Daemon,
+				if (connect(main_socket, (struct sockaddr *) &Daemon,
 								DAEMON_SIZE) < 0) {
 					if (errno != ECONNREFUSED) {
 						leave(1, "connect");
@@ -355,7 +355,7 @@ int main(int argc, char* argv[]) {
 					break;
 				}
 				sleep(1);
-			}while (close(Socket) == 0);
+			}while (close(main_socket) == 0);
 
 			do_connect(name, team, enter_status);
 
@@ -372,7 +372,7 @@ int main(int argc, char* argv[]) {
 		 * set up a socket
 		 */
 
-		if ((Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0)) < 0) {
+		if ((main_socket = socket(SOCK_FAMILY, SOCK_STREAM, 0)) < 0) {
 			err(1, "socket");
 		}
 
@@ -384,19 +384,19 @@ int main(int argc, char* argv[]) {
 
 		Daemon.sun_family = SOCK_FAMILY;
 		(void) strcpy(Daemon.sun_path, Sock_name);
-		if (connect(Socket, &Daemon, DAEMON_SIZE) < 0) {
+		if (connect(main_socket, &Daemon, DAEMON_SIZE) < 0) {
 			if (errno != ENOENT) {
 				leavex(1, "connect2");
 			}
 			start_driver();
 
 			do {
-				safe_close(Socket);
-				if ((Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0)) < 0) {
+				safe_close(main_socket);
+				if ((main_socket = socket(SOCK_FAMILY, SOCK_STREAM, 0)) < 0) {
 					err(1, "socket");
 				}
 				sleep(2);
-			} while (connect(Socket, &Daemon, DAEMON_SIZE) < 0);
+			} while (connect(main_socket, &Daemon, DAEMON_SIZE) < 0);
 		}
 
 		do_connect(name, team, enter_status);
@@ -445,7 +445,7 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 
-		safe_close(Socket);
+		safe_close(main_socket);
 
 		if (exit_outer_loop) {
 			break;
@@ -835,7 +835,7 @@ void start_driver() {
 	if (procid == 0) {
 		(void) signal(SIGINT, SIG_IGN );
 # ifndef INTERNET
-		safe_close(Socket);
+		safe_close(main_socket);
 # else
 		if (use_port == NULL)
 # endif
@@ -942,9 +942,9 @@ void rmnl(char *s) {
 			ch = tolower(ch);
 		}
 		if (ch == 'y') {
-			if (Socket != 0) {
-				write_and_push(Socket, "q", 1);
-				safe_close(Socket);
+			if (main_socket != 0) {
+				write_and_push(main_socket, "q", 1);
+				safe_close(main_socket);
 			}
 			leavex(0, (char *) NULL );
 		} else if (ch == 'n') {

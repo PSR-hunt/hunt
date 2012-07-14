@@ -25,7 +25,6 @@ void iso_syslog(int priority, const char *format, ...) {
 	if(remaining == NULL){
 		exit(1);
 	}
-
 	strcpy(remaining, format);
 
 	while ((placeholder = strchr(remaining, '%'))) {

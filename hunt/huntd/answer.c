@@ -86,7 +86,7 @@ int answer() {
 	socklen = sizeof sockstruct - 1;
 # endif
 	errno = 0;
-	newsock = accept(Socket, (struct sockaddr *) &sockstruct, &socklen);
+	newsock = accept(main_socket, (struct sockaddr *) &sockstruct, &socklen);
 	if (newsock < 0) {
 		if (errno == EINTR) {
 			return false;

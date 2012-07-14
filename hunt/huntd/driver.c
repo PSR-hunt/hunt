@@ -397,11 +397,11 @@ static void init() {
 	(void) strcpy(Daemon.sun_path, Sock_name);
 # endif
 
-	Socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
+	main_socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
 # ifdef INTERNET
 # ifdef SO_USELOOPBACK
 	msg = 1;
-	if (setsockopt(Socket, SOL_SOCKET, SO_USELOOPBACK, &msg, sizeof msg)<0)
+	if (setsockopt(main_socket, SOL_SOCKET, SO_USELOOPBACK, &msg, sizeof msg)<0)
 # ifdef LOG
 	iso_syslog(LOG_WARNING, "setsockopt loopback %m");
 # else
@@ -409,7 +409,7 @@ static void init() {
 # endif
 #endif
 # endif
-	if (bind(Socket, (struct sockaddr *) &Daemon, DAEMON_SIZE) < 0) {
+	if (bind(main_socket, (struct sockaddr *) &Daemon, DAEMON_SIZE) < 0) {
 		if (errno == EADDRINUSE) {
 			exit(0);
 		} else {
@@ -421,11 +421,11 @@ static void init() {
 			cleanup(1);
 		}
 	}
-	(void) listen(Socket, 5);
+	(void) listen(main_socket, 5);
 
 # ifdef INTERNET
 	len = sizeof (SOCKET);
-	if (getsockname(Socket, (struct sockaddr *) &Daemon, &len) < 0) {
+	if (getsockname(main_socket, (struct sockaddr *) &Daemon, &len) < 0) {
 # ifdef LOG
 		iso_syslog(LOG_ERR, "getsockname: %m");
 # else
@@ -439,7 +439,7 @@ static void init() {
 	/*
 	 * Initialize minimal select mask
 	 */
-	fdset[0].fd = Socket;
+	fdset[0].fd = main_socket;
 	fdset[0].events = POLLIN;
 	fdset[1].fd = Status;
 	fdset[1].events = POLLIN;
@@ -944,7 +944,7 @@ SIGNAL_TYPE cleanup(int eval) {
 		safe_fclose(pp->p_output);
 	}
 # endif
-	safe_close(Socket);
+	safe_close(main_socket);
 # ifdef AF_UNIX_HACK
 	(void) unlink(Sock_name);
 # endif
