@@ -111,7 +111,7 @@ int answer() {
 
 /* Authentication. [PSR] */
 #ifdef INTERNET
-	if(strlen(password_hash)>0) { /* A password has been set. [PSR] */
+	if(password_hash!=NULL) { /* A password has been set. [PSR] */
 		write_and_push(newsock, &c_auth, SHORTLEN);
 		bool auth = false;
 		for(i=0; i<MAXATTEMPT && !auth; i++) { /* 3 password attempts. [PSR] */

@@ -152,7 +152,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 
 <span class="comment">/* Authentication. [PSR] */</span>
 <span class="preprocessor">#ifdef INTERNET</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span>(strlen(password_hash)&gt;0) { <span class="comment">/* A password has been set. [PSR] */</span>
+<span class="preprocessor"></span>        <span class="keywordflow">if</span>(password_hash!=NULL) { <span class="comment">/* A password has been set. [PSR] */</span>
                 <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(newsock, &amp;c_auth, SHORTLEN);
                 <span class="keywordtype">bool</span> auth = <span class="keyword">false</span>;
                 <span class="keywordflow">for</span>(i=0; i&lt;<a class="code" href="../../d6/dfd/answer_8c_a9a7fbdd1d69ada545eef1227c59842d6.html#a9a7fbdd1d69ada545eef1227c59842d6" title="Maximum number of failed authentication attempts.">MAXATTEMPT</a> &amp;&amp; !auth; i++) { <span class="comment">/* 3 password attempts. [PSR] */</span>
@@ -306,7 +306,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d6/dfd/answer_8c.html">answer.c</a>      </li>
 
-    <li class="footer">Generated on Sat Jul 14 2012 10:02:28 for [PSR]Hunt by
+    <li class="footer">Generated on Sat Jul 14 2012 10:44:29 for [PSR]Hunt by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
