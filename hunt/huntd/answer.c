@@ -175,15 +175,15 @@ int answer() {
 			(void) sprintf(buf, "%s[%c]: ", name, team);
 		}
 		n = strlen(buf);
-		for (pp = Player; pp < End_player; pp++) {
+		for (pp = Player; pp < end_player; pp++) {
 			cgoto(pp, HEIGHT, 0);
 			outstr(pp, buf, n);
 		}
 		while ((n = read(newsock, buf, BUFSIZ)) > 0)
-		for (pp = Player; pp < End_player; pp++) {
+		for (pp = Player; pp < end_player; pp++) {
 			outstr(pp, buf, n);
 		}
-		for (pp = Player; pp < End_player; pp++) {
+		for (pp = Player; pp < end_player; pp++) {
 			ce(pp);
 			sendcom(pp, REFRESH);
 			sendcom(pp, READY, 0);
@@ -208,8 +208,8 @@ int answer() {
 	}
 	else
 # endif
-	if (End_player < &Player[MAXPL]) {
-		pp = End_player++;
+	if (end_player < &Player[MAXPL]) {
+		pp = end_player++;
 		i = pp - Player + 3;
 	} else {
 		socklen = 0;
@@ -260,7 +260,7 @@ void stmonitor(PLAYER *pp) {
 	(void) sprintf(gen_buf, "%5.5s%c%-10.10s %c", " ", stat_char(pp),
 			pp->p_ident->i_name, pp->p_ident->i_team);
 	line = STAT_MON_ROW + 1 + (pp - Monitor);
-	for (npp = Player; npp < End_player; npp++) {
+	for (npp = Player; npp < end_player; npp++) {
 		cgoto(npp, line, STAT_NAME_COL);
 		outstr(npp, gen_buf, STAT_NAME_LEN);
 	}
@@ -376,7 +376,7 @@ void stplayer(PLAYER *newpp, int enter_status) {
 	(void) sprintf(gen_buf, "%5.2f%c%-10.10s %c", newpp->p_ident->i_score,
 			stat_char(newpp), newpp->p_ident->i_name, newpp->p_ident->i_team);
 	y = STAT_PLAY_ROW + 1 + (newpp - Player);
-	for (pp = Player; pp < End_player; pp++) {
+	for (pp = Player; pp < end_player; pp++) {
 		if (pp != newpp) {
 			char smallbuf[10];
 

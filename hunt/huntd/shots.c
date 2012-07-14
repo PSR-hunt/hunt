@@ -96,7 +96,7 @@ void moveshots() {
 			x = bp->b_x;
 			y = bp->b_y;
 			Maze[y][x] = bp->b_over;
-			for (pp = Player; pp < End_player; pp++)
+			for (pp = Player; pp < end_player; pp++)
 				check(pp, y, x);
 # ifdef MONITOR
 			for (pp = Monitor; pp < end_monitor; pp++)
@@ -149,7 +149,7 @@ void moveshots() {
 # endif
 # ifdef DRONE
 				if (bp->b_type == DSHOT){
-					for (pp = Player; pp < End_player; pp++){
+					for (pp = Player; pp < end_player; pp++){
 						if (pp->p_scan >= 0){
 								check(pp, bp->b_y, bp->b_x);
 						}
@@ -163,7 +163,7 @@ void moveshots() {
 			free((char *) bp);
 		}
 
-		for (pp = Player; pp < End_player; pp++){
+		for (pp = Player; pp < end_player; pp++){
 			Maze[pp->p_y][pp->p_x] = pp->p_face;
 		}
 	}
@@ -175,7 +175,7 @@ void moveshots() {
 		}
 	}
 # endif
-	for (pp = Player; pp < End_player; pp++) {
+	for (pp = Player; pp < end_player; pp++) {
 # ifdef FLY
 		if (pp->p_flying >= 0){
 			move_flyer(pp);
@@ -1102,7 +1102,7 @@ void explshot(BULLET *blist, int y, int x) {
 PLAYER * play_at(int y, int x) {
 	PLAYER *pp;
 
-	for (pp = Player; pp < End_player; pp++) {
+	for (pp = Player; pp < end_player; pp++) {
 		if (pp->p_x == x && pp->p_y == y) {
 			return pp;
 		}
@@ -1189,7 +1189,7 @@ static void find_under(BULLET *blist, BULLET *bp) {
 static void mark_player(BULLET *bp) {
 	PLAYER *pp;
 
-	for (pp = Player; pp < End_player; pp++) {
+	for (pp = Player; pp < end_player; pp++) {
 		if (pp->p_y == bp->b_y && pp->p_x == bp->b_x) {
 			pp->p_undershot = true;
 			break;

@@ -106,7 +106,7 @@ void drawstatus(PLAYER *pp){
 
 	cgoto(pp, STAT_PLAY_ROW, STAT_LABEL_COL);
 	outstr(pp, "Player:", 7);
-	for (i = STAT_PLAY_ROW + 1, np = Player; np < End_player; np++) {
+	for (i = STAT_PLAY_ROW + 1, np = Player; np < end_player; np++) {
 		(void) sprintf(gen_buf, "%5.2f%c%-10.10s %c", np->p_ident->i_score,
 			stat_char(np), np->p_ident->i_name,
 			np->p_ident->i_team);
@@ -324,7 +324,7 @@ void showstat(PLAYER *pp){
 		outch(np, c);
 	}
 # endif
-	for (np = Player; np < End_player; np++) {
+	for (np = Player; np < end_player; np++) {
 		cgoto(np, y, STAT_SCAN_COL);
 		outch(np, c);
 	}
@@ -350,7 +350,7 @@ void drawplayer(PLAYER *pp,bool draw){
 	}
 # endif
 
-	for (newp = Player; newp < End_player; newp++) {
+	for (newp = Player; newp < end_player; newp++) {
 		if (!draw || newp == pp) {
 			check(newp, y, x);
 			continue;

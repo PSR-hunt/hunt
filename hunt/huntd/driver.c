@@ -206,7 +206,7 @@ int main(int argc, char* argv[], char* env[]) {
 			}
 # endif
 			{
-				for (pp = Player, i = 0; pp < End_player; pp++, i++){
+				for (pp = Player, i = 0; pp < end_player; pp++, i++){
 					if (havechar(pp, i + 3)) {
 						execute(pp);
 						pp->p_nexec++;
@@ -220,7 +220,7 @@ int main(int argc, char* argv[], char* env[]) {
 				}
 # endif
 				moveshots();
-				for (pp = Player, i = 0; pp < End_player;)
+				for (pp = Player, i = 0; pp < end_player;)
 					if (pp->p_death[0] != '\0') {
 						zap(pp, true, i + 3);
 					} else {
@@ -249,7 +249,7 @@ int main(int argc, char* argv[], char* env[]) {
 			if (fdset[1].revents & POLLIN) {
 				send_stats();
 			}
-			for (pp = Player, i = 0; pp < End_player; pp++, i++) {
+			for (pp = Player, i = 0; pp < end_player; pp++, i++) {
 				if (fdset[i + 3].revents & POLLIN) {
 					sendcom(pp, READY, pp->p_nexec);
 				}
@@ -638,7 +638,7 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 	cgoto(gotcha, STAT_KILL_ROW, STAT_VALUE_COL);
 	outstr(gotcha, gen_buf, 3);
 	(void) sprintf(gen_buf, "%5.2f", gotcha->p_ident->i_score);
-	for (ouch = Player; ouch < End_player; ouch++) {
+	for (ouch = Player; ouch < end_player; ouch++) {
 		cgoto(ouch, STAT_PLAY_ROW + 1 + (gotcha - Player), STAT_NAME_COL);
 		outstr(ouch, gen_buf, 5);
 	}
@@ -735,7 +735,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 		(void) add_shot(len, pp->p_y, pp->p_x, pp->p_face, x, (PLAYER *) NULL,
 				true, SPACE);
 		(void) sprintf(gen_buf, "%s detonated.", pp->p_ident->i_name);
-		for (np = Player; np < End_player; np++) {
+		for (np = Player; np < end_player; np++) {
 			message(np, gen_buf);
 		}
 # ifdef MONITOR
@@ -789,7 +789,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 		}while (Maze[y][x] != SPACE);
 		(void) add_shot(LAVA, y, x, LEFTS, volcano,
 				(PLAYER *) NULL, true, SPACE);
-		for (np = Player; np < End_player; np++) {
+		for (np = Player; np < end_player; np++) {
 			message(np, "Volcano eruption.");
 		}
 		volcano = 0;
@@ -813,15 +813,15 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 	(void) putc(' ', pp->p_output);
 	safe_fclose(pp->p_output);
 
-	End_player--;
-	if (pp != End_player) {
-		memcpy(pp, End_player, sizeof(PLAYER));
-		fdset[i] = fdset[End_player - Player + 3];
-		fdset[End_player - Player + 3].fd = -1;
+	end_player--;
+	if (pp != end_player) {
+		memcpy(pp, end_player, sizeof(PLAYER));
+		fdset[i] = fdset[end_player - Player + 3];
+		fdset[end_player - Player + 3].fd = -1;
 		(void) sprintf(gen_buf, "%5.2f%c%-10.10s %c", pp->p_ident->i_score,
 				stat_char(pp), pp->p_ident->i_name, pp->p_ident->i_team);
 		n = STAT_PLAY_ROW + 1 + (pp - Player);
-		for (np = Player; np < End_player; np++) {
+		for (np = Player; np < end_player; np++) {
 			cgoto(np, n, STAT_NAME_COL);
 			outstr(np, gen_buf, STAT_NAME_LEN);
 		}
@@ -836,7 +836,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 
 	/* Erase the last player */
 	n = STAT_PLAY_ROW + 1 + Nplayer;
-	for (np = Player; np < End_player; np++) {
+	for (np = Player; np < end_player; np++) {
 		cgoto(np, n, STAT_NAME_COL);
 		ce(np);
 	}
@@ -859,7 +859,7 @@ else {
 		(void) sprintf(gen_buf, "%5.5s %-10.10s %c", " ",
 				pp->p_ident->i_name, pp->p_ident->i_team);
 		n = STAT_MON_ROW + 1 + (pp - Player);
-		for (np = Player; np < End_player; np++) {
+		for (np = Player; np < end_player; np++) {
 			cgoto(np, n, STAT_NAME_COL);
 			outstr(np, gen_buf, STAT_NAME_LEN);
 		}
@@ -872,7 +872,7 @@ else {
 
 	/* Erase the last monitor */
 	n = STAT_MON_ROW + 1 + (end_monitor - Monitor);
-	for (np = Player; np < End_player; np++) {
+	for (np = Player; np < end_player; np++) {
 		cgoto(np, n, STAT_NAME_COL);
 		ce(np);
 	}
@@ -930,7 +930,7 @@ static int havechar(PLAYER *pp, int i) {
 SIGNAL_TYPE cleanup(int eval) {
 	PLAYER *pp;
 
-	for (pp = Player; pp < End_player; pp++) {
+	for (pp = Player; pp < end_player; pp++) {
 		cgoto(pp, HEIGHT, 0);
 		sendcom(pp, ENDWIN);
 		(void) putc(LAST_PLAYER, pp->p_output);

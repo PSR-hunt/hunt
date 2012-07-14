@@ -57,7 +57,7 @@ EXPL *Expl[EXPLEN]; /**< Explosion lists */
 EXPL *Last_expl; /**< Last explosion on Expl[0] */
 
 PLAYER Player[MAXPL]; /**< All the players */
-PLAYER *End_player = Player; /**< Last active player slot */
+PLAYER *end_player = Player; /**< Last active player slot */
 # ifdef BOOTS
 PLAYER Boot[NBOOTS]; /* all the boots */
 # endif
