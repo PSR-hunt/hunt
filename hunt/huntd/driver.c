@@ -484,15 +484,15 @@ static void init() {
 # endif
 
 	for (i = 0; i < NASCII; i++) {
-		See_over[i] = true;
+		see_over[i] = true;
 	}
-	See_over[DOOR] = false;
-	See_over[WALL1] = false;
-	See_over[WALL2] = false;
-	See_over[WALL3] = false;
+	see_over[DOOR] = false;
+	see_over[WALL1] = false;
+	see_over[WALL2] = false;
+	see_over[WALL3] = false;
 # ifdef REFLECT
-	See_over[WALL4] = false;
-	See_over[WALL5] = false;
+	see_over[WALL4] = false;
+	see_over[WALL5] = false;
 # endif
 
 }

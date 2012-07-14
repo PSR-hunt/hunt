@@ -192,7 +192,7 @@ void see(PLAYER *pp,int face){
 	switch (face) {
 	  case LEFTS:
 		sp = &maze[y][x];
-		for (i = 0; See_over[(int)*--sp]; i++){
+		for (i = 0; see_over[(int)*--sp]; i++){
 			continue;
 		}
 
@@ -221,7 +221,7 @@ void see(PLAYER *pp,int face){
 		break;
 	  case RIGHT:
 		sp = &maze[y][++x];
-		for (i = 0; See_over[(int)*sp++]; i++){
+		for (i = 0; see_over[(int)*sp++]; i++){
 			continue;
 		}
 
@@ -250,7 +250,7 @@ void see(PLAYER *pp,int face){
 		break;
 	  case ABOVE:
 		sp = &maze[--y][x];
-		if (!See_over[(int)*sp]){
+		if (!see_over[(int)*sp]){
 			break;
 		}
 		do {
@@ -259,11 +259,11 @@ void see(PLAYER *pp,int face){
 			check(pp, y, x - 1);
 			check(pp, y, x    );
 			check(pp, y, x + 1);
-		} while (See_over[(int)*sp]);
+		} while (see_over[(int)*sp]);
 		break;
 	  case BELOW:
 		sp = &maze[++y][x];
-		if (!See_over[(int)*sp]){
+		if (!see_over[(int)*sp]){
 			break;
 		}
 		do {
@@ -272,7 +272,7 @@ void see(PLAYER *pp,int face){
 			check(pp, y, x - 1);
 			check(pp, y, x    );
 			check(pp, y, x + 1);
-		} while (See_over[(int)*sp]);
+		} while (see_over[(int)*sp]);
 		break;
 	}
 }

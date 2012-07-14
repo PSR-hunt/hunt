@@ -427,7 +427,7 @@ extern char *Sock_name, *Stat_name;
 extern int volcano;
 # endif
 
-extern int See_over[NASCII];
+extern int see_over[NASCII];
 
 extern BULLET *Bullets;
 

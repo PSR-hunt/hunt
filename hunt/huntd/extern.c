@@ -49,7 +49,7 @@ struct pollfd fdset[3 + MAXPL + MAXMON]; /**< A set of file descriptors. [PSR] *
 int Nplayer = 0; /**< Number of players */
 int main_socket; /**< Main socket */
 int Status; /**< Stat socket */
-int See_over[NASCII]; /**< Lookup table for determining whether character represents "transparent" item */
+int see_over[NASCII]; /**< Lookup table for determining whether character represents "transparent" item */
 
 BULLET *Bullets = NULL; /**< Linked list of bullets */
 
