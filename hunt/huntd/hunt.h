@@ -431,8 +431,8 @@ extern int see_over[NASCII];
 
 extern BULLET *bullets;
 
-extern EXPL *Expl[EXPLEN];
-extern EXPL *Last_expl;
+extern EXPL *expl_glob[EXPLEN];
+extern EXPL *last_expl;
 
 extern IDENT *scores;
 

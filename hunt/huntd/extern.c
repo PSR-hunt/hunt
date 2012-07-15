@@ -53,8 +53,8 @@ int see_over[NASCII]; /**< Lookup table for determining whether character repres
 
 BULLET *bullets = NULL; /**< Linked list of bullets */
 
-EXPL *Expl[EXPLEN]; /**< Explosion lists */
-EXPL *Last_expl; /**< Last explosion on Expl[0] */
+EXPL *expl_glob[EXPLEN]; /**< Explosion lists */
+EXPL *last_expl; /**< Last explosion on expl_glob[0] */
 
 PLAYER player[MAXPL]; /**< All the players */
 PLAYER *end_player = player; /**< Last active player slot */

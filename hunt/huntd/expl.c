@@ -67,13 +67,13 @@ void showexpl(int y,int x,char type){
 	ep->e_x = x;
 	ep->e_char = type;
 	ep->e_next = NULL;
-	if (Last_expl == NULL){
-		Expl[0] = ep;
+	if (last_expl == NULL){
+		expl_glob[0] = ep;
 	}
 	else{
-		Last_expl->e_next = ep;
+		last_expl->e_next = ep;
 	}
-	Last_expl = ep;
+	last_expl = ep;
 	for (pp = player; pp < end_player; pp++) {
 		if (pp->p_maze[y][x] == type){
 			continue;
@@ -120,7 +120,7 @@ void rollexpl(){
 	char	c;
 	EXPL	*nextep;
 
-	for (ep = Expl[EXPLEN - 1]; ep != NULL; ep = nextep) {
+	for (ep = expl_glob[EXPLEN - 1]; ep != NULL; ep = nextep) {
 		nextep = ep->e_next;
 		y = ep->e_y;
 		x = ep->e_x;
@@ -145,9 +145,9 @@ void rollexpl(){
 		free((char *) ep);
 	}
 	for (x = EXPLEN - 1; x > 0; x--){
-		Expl[x] = Expl[x - 1];
+		expl_glob[x] = expl_glob[x - 1];
 	}
-	Last_expl = Expl[0] = NULL;
+	last_expl = expl_glob[0] = NULL;
 }
 
 /* There's about 700 walls in the initial maze.  So we pick a number
