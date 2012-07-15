@@ -283,7 +283,7 @@ function toggleVisibility(linkObj) {
 <a name="l00170"></a>00170                 fire_slime(pp, 3);
 <a name="l00171"></a>00171                 <span class="keywordflow">break</span>;
 <a name="l00172"></a>00172 <span class="preprocessor"># endif</span>
-<a name="l00173"></a>00173 <span class="preprocessor"></span>          <span class="keywordflow">case</span> <span class="charliteral">&#39;e&#39;</span>:
+<a name="l00173"></a>00173 <span class="preprocessor"></span>          <span class="keywordflow">case</span> <span class="charliteral">&#39;z&#39;</span>:
 <a name="l00174"></a>00174                 <a class="code" href="../../d7/dd3/execute_8c_a201831e6fcb2be2903e940d45dedeab1.html#a201831e6fcb2be2903e940d45dedeab1" title="Turn on or increase length of a scan.">scan</a>(pp);
 <a name="l00175"></a>00175                 <span class="keywordflow">break</span>;
 <a name="l00176"></a>00176           <span class="keywordflow">case</span> <span class="charliteral">&#39;c&#39;</span>:
@@ -320,7 +320,7 @@ function toggleVisibility(linkObj) {
 <a name="l00212"></a>00212         }
 <a name="l00213"></a>00213 
 <a name="l00214"></a>00214         moved = <span class="keyword">false</span>;
-<a name="l00215"></a>00215         <span class="keywordflow">switch</span> (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x]) {
+<a name="l00215"></a>00215         <span class="keywordflow">switch</span> (<a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x]) {
 <a name="l00216"></a>00216           <span class="keywordflow">case</span> SPACE:
 <a name="l00217"></a>00217 <span class="preprocessor"># ifdef RANDOM</span>
 <a name="l00218"></a>00218 <span class="preprocessor"></span>          <span class="keywordflow">case</span> DOOR:
@@ -338,15 +338,15 @@ function toggleVisibility(linkObj) {
 <a name="l00230"></a>00230           <span class="keywordflow">case</span> MINE:
 <a name="l00231"></a>00231           <span class="keywordflow">case</span> GMINE:
 <a name="l00232"></a>00232                 <span class="keywordflow">if</span> (dir == pp-&gt;p_face){
-<a name="l00233"></a>00233                         <a class="code" href="../../d7/dd3/execute_8c_a1f91002fe7b573a5abe44387e8bb423a.html#a1f91002fe7b573a5abe44387e8bb423a" title="Check whether the object blew up or whether he picked it up.">pickup</a>(pp, y, x, 2, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x]);
+<a name="l00233"></a>00233                         <a class="code" href="../../d7/dd3/execute_8c_a1f91002fe7b573a5abe44387e8bb423a.html#a1f91002fe7b573a5abe44387e8bb423a" title="Check whether the object blew up or whether he picked it up.">pickup</a>(pp, y, x, 2, <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x]);
 <a name="l00234"></a>00234                 }
 <a name="l00235"></a>00235                 <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="../../d4/dab/shots_8c_ae81dcd8e7b6ff17d542e3c554bf2824b.html#ae81dcd8e7b6ff17d542e3c554bf2824b" title="Return true if the bullet direction faces the opposite direction of the player in the maze...">opposite</a>(dir, pp-&gt;p_face)){
-<a name="l00236"></a>00236                         <a class="code" href="../../d7/dd3/execute_8c_a1f91002fe7b573a5abe44387e8bb423a.html#a1f91002fe7b573a5abe44387e8bb423a" title="Check whether the object blew up or whether he picked it up.">pickup</a>(pp, y, x, 95, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x]);
+<a name="l00236"></a>00236                         <a class="code" href="../../d7/dd3/execute_8c_a1f91002fe7b573a5abe44387e8bb423a.html#a1f91002fe7b573a5abe44387e8bb423a" title="Check whether the object blew up or whether he picked it up.">pickup</a>(pp, y, x, 95, <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x]);
 <a name="l00237"></a>00237                 }
 <a name="l00238"></a>00238                 <span class="keywordflow">else</span>{
-<a name="l00239"></a>00239                         <a class="code" href="../../d7/dd3/execute_8c_a1f91002fe7b573a5abe44387e8bb423a.html#a1f91002fe7b573a5abe44387e8bb423a" title="Check whether the object blew up or whether he picked it up.">pickup</a>(pp, y, x, 50, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x]);
+<a name="l00239"></a>00239                         <a class="code" href="../../d7/dd3/execute_8c_a1f91002fe7b573a5abe44387e8bb423a.html#a1f91002fe7b573a5abe44387e8bb423a" title="Check whether the object blew up or whether he picked it up.">pickup</a>(pp, y, x, 50, <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x]);
 <a name="l00240"></a>00240                 }
-<a name="l00241"></a>00241                 <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] = SPACE;
+<a name="l00241"></a>00241                 <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x] = SPACE;
 <a name="l00242"></a>00242                 moved = <span class="keyword">true</span>;
 <a name="l00243"></a>00243                 <span class="keywordflow">break</span>;
 <a name="l00244"></a>00244           <span class="keywordflow">case</span> SHOT:
@@ -363,7 +363,7 @@ function toggleVisibility(linkObj) {
 <a name="l00255"></a>00255                 <span class="keywordflow">if</span> (bp != NULL){
 <a name="l00256"></a>00256                         bp-&gt;b_expl = <span class="keyword">true</span>;
 <a name="l00257"></a>00257                 }
-<a name="l00258"></a>00258                 <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] = SPACE;
+<a name="l00258"></a>00258                 <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x] = SPACE;
 <a name="l00259"></a>00259                 moved = <span class="keyword">true</span>;
 <a name="l00260"></a>00260                 <span class="keywordflow">break</span>;
 <a name="l00261"></a>00261           <span class="keywordflow">case</span> LEFTS:
@@ -388,13 +388,13 @@ function toggleVisibility(linkObj) {
 <a name="l00280"></a>00280 <span class="preprocessor"></span><span class="preprocessor"># ifdef BOOTS</span>
 <a name="l00281"></a>00281 <span class="preprocessor"></span>          <span class="keywordflow">case</span> BOOT:
 <a name="l00282"></a>00282           <span class="keywordflow">case</span> BOOT_PAIR:
-<a name="l00283"></a>00283                 <span class="keywordflow">if</span> (<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] == BOOT){
+<a name="l00283"></a>00283                 <span class="keywordflow">if</span> (<a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x] == BOOT){
 <a name="l00284"></a>00284                         pp-&gt;p_nboots++;
 <a name="l00285"></a>00285                 }
 <a name="l00286"></a>00286                 <span class="keywordflow">else</span>{
 <a name="l00287"></a>00287                         pp-&gt;p_nboots += 2;
 <a name="l00288"></a>00288                 }
-<a name="l00289"></a>00289                 <span class="keywordflow">for</span> (newp = Boot; newp &lt; &amp;Boot[NBOOTS]; newp++) {
+<a name="l00289"></a>00289                 <span class="keywordflow">for</span> (newp = boot; newp &lt; &amp;boot[NBOOTS]; newp++) {
 <a name="l00290"></a>00290                         <span class="keywordflow">if</span> (newp-&gt;p_flying &lt; 0){
 <a name="l00291"></a>00291                                 <span class="keywordflow">continue</span>;
 <a name="l00292"></a>00292                         }
@@ -411,7 +411,7 @@ function toggleVisibility(linkObj) {
 <a name="l00303"></a>00303                 <span class="keywordflow">else</span>{
 <a name="l00304"></a>00304                         <a class="code" href="../../d6/dd9/draw_8c_a0a72206b1623ee3117d4c7d129f7c48b.html#a0a72206b1623ee3117d4c7d129f7c48b" title="Prints messages on the terminal of a given player (under the maze).">message</a>(pp, <span class="stringliteral">&quot;You can hobble around on one boot.&quot;</span>);
 <a name="l00305"></a>00305                 }
-<a name="l00306"></a>00306                 <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x] = SPACE;
+<a name="l00306"></a>00306                 <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x] = SPACE;
 <a name="l00307"></a>00307                 moved = <span class="keyword">true</span>;
 <a name="l00308"></a>00308                 <span class="keywordflow">break</span>;
 <a name="l00309"></a>00309 <span class="preprocessor"># endif</span>
@@ -428,7 +428,7 @@ function toggleVisibility(linkObj) {
 <a name="l00320"></a>00320                         pp-&gt;p_undershot = <span class="keyword">false</span>;
 <a name="l00321"></a>00321                 }
 <a name="l00322"></a>00322                 <a class="code" href="../../d6/dd9/draw_8c_a18aa8122aab8d91c26a986cd277321e4.html#a18aa8122aab8d91c26a986cd277321e4" title="Draw the player on the screen and show him to everyone who&amp;#39;s scanning unless he is cloaked...">drawplayer</a>(pp, <span class="keyword">false</span>);
-<a name="l00323"></a>00323                 pp-&gt;p_over = <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x];
+<a name="l00323"></a>00323                 pp-&gt;p_over = <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x];
 <a name="l00324"></a>00324                 pp-&gt;p_y = y;
 <a name="l00325"></a>00325                 pp-&gt;p_x = x;
 <a name="l00326"></a>00326                 <a class="code" href="../../d6/dd9/draw_8c_a18aa8122aab8d91c26a986cd277321e4.html#a18aa8122aab8d91c26a986cd277321e4" title="Draw the player on the screen and show him to everyone who&amp;#39;s scanning unless he is cloaked...">drawplayer</a>(pp, <span class="keyword">true</span>);
@@ -466,9 +466,9 @@ function toggleVisibility(linkObj) {
 <a name="l00368"></a>00368                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <span class="stringliteral">&quot;   &quot;</span>, 3);
 <a name="l00369"></a>00369         }
 <a name="l00370"></a>00370         pp-&gt;p_ammo -= <a class="code" href="../../dc/d2c/extern_8c_a081025baa5e842c14fc22ec3b04a670c.html#a081025baa5e842c14fc22ec3b04a670c" title="The possible shot requests.">shot_req</a>[req_index];
-<a name="l00371"></a>00371         (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, pp-&gt;p_ammo);
+<a name="l00371"></a>00371         (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, pp-&gt;p_ammo);
 <a name="l00372"></a>00372         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-<a name="l00373"></a>00373         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, 3);
+<a name="l00373"></a>00373         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, 3);
 <a name="l00374"></a>00374 
 <a name="l00375"></a>00375         <a class="code" href="../../d7/dd3/execute_8c_a6c463ddb8efde2d3dd7db31dfe3222b5.html#a6c463ddb8efde2d3dd7db31dfe3222b5" title="Create a shot with the given properties.">add_shot</a>(<a class="code" href="../../dc/d2c/extern_8c_a4671d6af1c5f143dc5895e248860dc36.html#a4671d6af1c5f143dc5895e248860dc36" title="The possible shot types.">shot_type</a>[req_index], pp-&gt;p_y, pp-&gt;p_x, pp-&gt;p_face,
 <a name="l00376"></a>00376                 <a class="code" href="../../dc/d2c/extern_8c_a081025baa5e842c14fc22ec3b04a670c.html#a081025baa5e842c14fc22ec3b04a670c" title="The possible shot requests.">shot_req</a>[req_index], pp, <span class="keyword">false</span>, pp-&gt;p_face);
@@ -478,11 +478,11 @@ function toggleVisibility(linkObj) {
 <a name="l00380"></a>00380 <span class="comment">         * Show the object to everyone</span>
 <a name="l00381"></a>00381 <span class="comment">         */</span>
 <a name="l00382"></a>00382         <a class="code" href="../../d4/d55/expl_8c_ab254b1eddcf486fa71e40576ca6d28fb.html#ab254b1eddcf486fa71e40576ca6d28fb" title="Show the explosions as they currently are.">showexpl</a>(pp-&gt;p_y, pp-&gt;p_x, <a class="code" href="../../dc/d2c/extern_8c_a4671d6af1c5f143dc5895e248860dc36.html#a4671d6af1c5f143dc5895e248860dc36" title="The possible shot types.">shot_type</a>[req_index]);
-<a name="l00383"></a>00383         <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++){
+<a name="l00383"></a>00383         <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_ae46dbb7f9be56b1aff71d81645260124.html#ae46dbb7f9be56b1aff71d81645260124" title="All the players.">player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_aab588e2137810fe5adc05535809ce75a.html#aab588e2137810fe5adc05535809ce75a" title="Last active player slot.">end_player</a>; pp++){
 <a name="l00384"></a>00384                 <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, REFRESH);
 <a name="l00385"></a>00385         }
 <a name="l00386"></a>00386 <span class="preprocessor"># ifdef MONITOR</span>
-<a name="l00387"></a>00387 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++){
+<a name="l00387"></a>00387 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = monitor; pp &lt; end_monitor; pp++){
 <a name="l00388"></a>00388                 <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, REFRESH);
 <a name="l00389"></a>00389         }
 <a name="l00390"></a>00390 <span class="preprocessor"># endif</span>
@@ -514,9 +514,9 @@ function toggleVisibility(linkObj) {
 <a name="l00420"></a>00420                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <span class="stringliteral">&quot;   &quot;</span>, 3);
 <a name="l00421"></a>00421         }
 <a name="l00422"></a>00422         pp-&gt;p_ammo -= slime_req[req_index];
-<a name="l00423"></a>00423         (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, pp-&gt;p_ammo);
+<a name="l00423"></a>00423         (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, pp-&gt;p_ammo);
 <a name="l00424"></a>00424         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-<a name="l00425"></a>00425         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, 3);
+<a name="l00425"></a>00425         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, 3);
 <a name="l00426"></a>00426 
 <a name="l00427"></a>00427         <a class="code" href="../../d7/dd3/execute_8c_a6c463ddb8efde2d3dd7db31dfe3222b5.html#a6c463ddb8efde2d3dd7db31dfe3222b5" title="Create a shot with the given properties.">add_shot</a>(SLIME, pp-&gt;p_y, pp-&gt;p_x, pp-&gt;p_face,
 <a name="l00428"></a>00428                 slime_req[req_index] * SLIME_FACTOR, pp, <span class="keyword">false</span>, pp-&gt;p_face);
@@ -526,11 +526,11 @@ function toggleVisibility(linkObj) {
 <a name="l00432"></a>00432 <span class="comment">         * Show the object to everyone</span>
 <a name="l00433"></a>00433 <span class="comment">         */</span>
 <a name="l00434"></a>00434         <a class="code" href="../../d4/d55/expl_8c_ab254b1eddcf486fa71e40576ca6d28fb.html#ab254b1eddcf486fa71e40576ca6d28fb" title="Show the explosions as they currently are.">showexpl</a>(pp-&gt;p_y, pp-&gt;p_x, SLIME);
-<a name="l00435"></a>00435         <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++){
+<a name="l00435"></a>00435         <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_ae46dbb7f9be56b1aff71d81645260124.html#ae46dbb7f9be56b1aff71d81645260124" title="All the players.">player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_aab588e2137810fe5adc05535809ce75a.html#aab588e2137810fe5adc05535809ce75a" title="Last active player slot.">end_player</a>; pp++){
 <a name="l00436"></a>00436                 <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, REFRESH);
 <a name="l00437"></a>00437         }
 <a name="l00438"></a>00438 <span class="preprocessor"># ifdef MONITOR</span>
-<a name="l00439"></a>00439 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++){
+<a name="l00439"></a>00439 <span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = monitor; pp &lt; end_monitor; pp++){
 <a name="l00440"></a>00440                 <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, REFRESH);
 <a name="l00441"></a>00441         }
 <a name="l00442"></a>00442 <span class="preprocessor"># endif</span>
@@ -568,8 +568,8 @@ function toggleVisibility(linkObj) {
 <a name="l00485"></a>00485 
 <a name="l00486"></a>00486         bp = <a class="code" href="../../d7/dd3/execute_8c_adee27b21de1901a8737f1f383a035f46.html#adee27b21de1901a8737f1f383a035f46" title="Helper function to add a shot.">create_shot</a>(type, y, x, face, charge, size, owner,
 <a name="l00487"></a>00487                 (owner == NULL) ? NULL : owner-&gt;p_ident, expl, over);
-<a name="l00488"></a>00488         bp-&gt;b_next = <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a>;
-<a name="l00489"></a>00489         <a class="code" href="../../dc/d2c/extern_8c_a6533ad2887e3c0756a62dc2a9e36dab4.html#a6533ad2887e3c0756a62dc2a9e36dab4" title="Linked list of bullets.">Bullets</a> = bp;
+<a name="l00488"></a>00488         bp-&gt;b_next = <a class="code" href="../../dc/d2c/extern_8c_acae4f63cfebc53d1c15f5a6ff2d3636f.html#acae4f63cfebc53d1c15f5a6ff2d3636f" title="Linked list of bullets.">bullets</a>;
+<a name="l00489"></a>00489         <a class="code" href="../../dc/d2c/extern_8c_acae4f63cfebc53d1c15f5a6ff2d3636f.html#acae4f63cfebc53d1c15f5a6ff2d3636f" title="Linked list of bullets.">bullets</a> = bp;
 <a name="l00490"></a>00490 }
 <a name="l00491"></a>00491 
 <a name="l00506"></a><a class="code" href="../../d7/dd3/execute_8c_adee27b21de1901a8737f1f383a035f46.html#adee27b21de1901a8737f1f383a035f46">00506</a> BULLET * <a class="code" href="../../d7/dd3/execute_8c_adee27b21de1901a8737f1f383a035f46.html#adee27b21de1901a8737f1f383a035f46" title="Helper function to add a shot.">create_shot</a>(<span class="keywordtype">int</span> type,<span class="keywordtype">int</span> y,<span class="keywordtype">int</span> x,<span class="keywordtype">char</span> <a class="code" href="../../d7/dd3/execute_8c_a9720f425285cd353dbfb5c9d58420dbf.html#a9720f425285cd353dbfb5c9d58420dbf" title="Change the direction the player is facing.">face</a>,<span class="keywordtype">int</span> charge,<span class="keywordtype">int</span> size,PLAYER *owner,IDENT *score,<span class="keywordtype">int</span> expl,<span class="keywordtype">char</span> over){
@@ -609,9 +609,9 @@ function toggleVisibility(linkObj) {
 <a name="l00544"></a>00544                 <span class="keywordflow">return</span>;
 <a name="l00545"></a>00545         }
 <a name="l00546"></a>00546 <span class="preprocessor"># endif</span>
-<a name="l00547"></a>00547 <span class="preprocessor"></span>        (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, --pp-&gt;p_ammo);
+<a name="l00547"></a>00547 <span class="preprocessor"></span>        (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, --pp-&gt;p_ammo);
 <a name="l00548"></a>00548         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-<a name="l00549"></a>00549         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, 3);
+<a name="l00549"></a>00549         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, 3);
 <a name="l00550"></a>00550 
 <a name="l00551"></a>00551         pp-&gt;p_cloak += CLOAKLEN;
 <a name="l00552"></a>00552 
@@ -627,9 +627,9 @@ function toggleVisibility(linkObj) {
 <a name="l00566"></a>00566                 <a class="code" href="../../d6/dd9/draw_8c_a0a72206b1623ee3117d4c7d129f7c48b.html#a0a72206b1623ee3117d4c7d129f7c48b" title="Prints messages on the terminal of a given player (under the maze).">message</a>(pp, <span class="stringliteral">&quot;No more charges&quot;</span>);
 <a name="l00567"></a>00567                 <span class="keywordflow">return</span>;
 <a name="l00568"></a>00568         }
-<a name="l00569"></a>00569         (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, --pp-&gt;p_ammo);
+<a name="l00569"></a>00569         (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, --pp-&gt;p_ammo);
 <a name="l00570"></a>00570         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-<a name="l00571"></a>00571         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, 3);
+<a name="l00571"></a>00571         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, 3);
 <a name="l00572"></a>00572 
 <a name="l00573"></a>00573         pp-&gt;p_scan += SCANLEN;
 <a name="l00574"></a>00574 
@@ -659,9 +659,9 @@ function toggleVisibility(linkObj) {
 <a name="l00606"></a>00606         }
 <a name="l00607"></a>00607         <span class="keywordflow">else</span> {
 <a name="l00608"></a>00608                 pp-&gt;p_ammo += req;
-<a name="l00609"></a>00609                 (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, pp-&gt;p_ammo);
+<a name="l00609"></a>00609                 (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, pp-&gt;p_ammo);
 <a name="l00610"></a>00610                 <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-<a name="l00611"></a>00611                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, 3);
+<a name="l00611"></a>00611                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, 3);
 <a name="l00612"></a>00612         }
 <a name="l00613"></a>00613 }
 </pre></div></div>
@@ -669,7 +669,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d7/dd3/execute_8c.html">execute.c</a>      </li>
-      <li class="footer">Generated on Sat Jul 14 2012 09:50:27 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Sun Jul 15 2012 14:35:15 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

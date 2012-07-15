@@ -185,9 +185,9 @@ function toggleVisibility(linkObj) {
                 <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <span class="stringliteral">&quot;   &quot;</span>, 3);
         }
         pp-&gt;p_ammo -= <a class="code" href="../../dc/d2c/extern_8c_a081025baa5e842c14fc22ec3b04a670c.html#a081025baa5e842c14fc22ec3b04a670c" title="The possible shot requests.">shot_req</a>[req_index];
-        (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, pp-&gt;p_ammo);
+        (void) sprintf(<a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, <span class="stringliteral">&quot;%3d&quot;</span>, pp-&gt;p_ammo);
         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, STAT_AMMO_ROW, STAT_VALUE_COL);
-        <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, 3);
+        <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, <a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, 3);
 
         <a class="code" href="../../d7/dd3/execute_8c_a6c463ddb8efde2d3dd7db31dfe3222b5.html#a6c463ddb8efde2d3dd7db31dfe3222b5" title="Create a shot with the given properties.">add_shot</a>(<a class="code" href="../../dc/d2c/extern_8c_a4671d6af1c5f143dc5895e248860dc36.html#a4671d6af1c5f143dc5895e248860dc36" title="The possible shot types.">shot_type</a>[req_index], pp-&gt;p_y, pp-&gt;p_x, pp-&gt;p_face,
                 <a class="code" href="../../dc/d2c/extern_8c_a081025baa5e842c14fc22ec3b04a670c.html#a081025baa5e842c14fc22ec3b04a670c" title="The possible shot requests.">shot_req</a>[req_index], pp, <span class="keyword">false</span>, pp-&gt;p_face);
@@ -197,11 +197,11 @@ function toggleVisibility(linkObj) {
 <span class="comment">         * Show the object to everyone</span>
 <span class="comment">         */</span>
         <a class="code" href="../../d4/d55/expl_8c_ab254b1eddcf486fa71e40576ca6d28fb.html#ab254b1eddcf486fa71e40576ca6d28fb" title="Show the explosions as they currently are.">showexpl</a>(pp-&gt;p_y, pp-&gt;p_x, <a class="code" href="../../dc/d2c/extern_8c_a4671d6af1c5f143dc5895e248860dc36.html#a4671d6af1c5f143dc5895e248860dc36" title="The possible shot types.">shot_type</a>[req_index]);
-        <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++){
+        <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_ae46dbb7f9be56b1aff71d81645260124.html#ae46dbb7f9be56b1aff71d81645260124" title="All the players.">player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_aab588e2137810fe5adc05535809ce75a.html#aab588e2137810fe5adc05535809ce75a" title="Last active player slot.">end_player</a>; pp++){
                 <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, REFRESH);
         }
 <span class="preprocessor"># ifdef MONITOR</span>
-<span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = Monitor; pp &lt; End_monitor; pp++){
+<span class="preprocessor"></span>        <span class="keywordflow">for</span> (pp = monitor; pp &lt; end_monitor; pp++){
                 <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, REFRESH);
         }
 <span class="preprocessor"># endif</span>
@@ -217,7 +217,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d7/dd3/execute_8c.html">execute.c</a>      </li>
-      <li class="footer">Generated on Sat Jul 14 2012 09:50:27 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Sun Jul 15 2012 14:35:15 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

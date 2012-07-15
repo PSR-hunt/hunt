@@ -175,7 +175,7 @@ function toggleVisibility(linkObj) {
 
         npp = <a class="code" href="../../d4/dab/shots_8c_a749ed4bef4ac93e4c67e171ae92c5a78.html#a749ed4bef4ac93e4c67e171ae92c5a78" title="Return a pointer to the player at the given location.">play_at</a>(y, x);
         <span class="keywordflow">if</span> (npp-&gt;p_ident-&gt;i_team == <span class="charliteral">&#39; &#39;</span>){
-                <span class="keywordflow">return</span> <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x];
+                <span class="keywordflow">return</span> <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x];
         }
 <span class="preprocessor">#ifdef MONITOR</span>
 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (pp-&gt;p_ident-&gt;i_team == <span class="charliteral">&#39;*&#39;</span>){
@@ -183,7 +183,7 @@ function toggleVisibility(linkObj) {
         }
 <span class="preprocessor">#endif</span>
 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (pp-&gt;p_ident-&gt;i_team != npp-&gt;p_ident-&gt;i_team){
-                <span class="keywordflow">return</span> <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x];
+                <span class="keywordflow">return</span> <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x];
         }
         <span class="keywordflow">return</span> pp-&gt;p_ident-&gt;i_team;
 }
@@ -198,7 +198,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d6/dd9/draw_8c.html">draw.c</a>      </li>
-      <li class="footer">Generated on Sat Jul 14 2012 09:50:27 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Sun Jul 15 2012 14:35:15 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

@@ -119,7 +119,7 @@ function toggleVisibility(linkObj) {
           <tr><td class="navtab"><a class="qindex" href="../../d6/dfd/answer_8c_a8a9a38822e66f50a287cc236ac0545c3.html#a8a9a38822e66f50a287cc236ac0545c3">rand_dir</a></td></tr>
           <tr><td class="navtab"><a class="qindex" href="../../d6/dfd/answer_8c_a65c13fcefec75cab75b371dbf1c9f140.html#a65c13fcefec75cab75b371dbf1c9f140">SCOREDECAY</a></td></tr>
           <tr><td class="navtab"><a class="qindex" href="../../d6/dfd/answer_8c_a8455f2e936605abf7cb0faaa32cbea33.html#a8455f2e936605abf7cb0faaa32cbea33">stplayer</a></td></tr>
-          <tr><td class="navtab"><a class="qindex" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc">Ttyname</a></td></tr>
+          <tr><td class="navtab"><a class="qindex" href="../../d6/dfd/answer_8c_a2780168f03f5eb9ec4f93afb26f645df.html#a2780168f03f5eb9ec4f93afb26f645df">ttyname_glob</a></td></tr>
         </table>
       </div>
    </td>
@@ -164,7 +164,7 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"></span>        socklen = <span class="keyword">sizeof</span> sockstruct - 1;
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span>        errno = 0;
-        newsock = accept(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keyword">struct</span> sockaddr *) &amp;sockstruct, &amp;socklen);
+        newsock = accept(<a class="code" href="../../da/d3e/hunt_8c_ac4fa45a71d00ffd5e6c1fba6fbaa0bae.html#ac4fa45a71d00ffd5e6c1fba6fbaa0bae" title="Main socket.">main_socket</a>, (<span class="keyword">struct</span> sockaddr *) &amp;sockstruct, &amp;socklen);
         <span class="keywordflow">if</span> (newsock &lt; 0) {
                 <span class="keywordflow">if</span> (errno == EINTR) {
                         <span class="keywordflow">return</span> <span class="keyword">false</span>;
@@ -189,7 +189,7 @@ function toggleVisibility(linkObj) {
 
 <span class="comment">/* Authentication. [PSR] */</span>
 <span class="preprocessor">#ifdef INTERNET</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span>(strlen(password_hash)&gt;0) { <span class="comment">/* A password has been set. [PSR] */</span>
+<span class="preprocessor"></span>        <span class="keywordflow">if</span>(password_hash!=NULL) { <span class="comment">/* A password has been set. [PSR] */</span>
                 <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(newsock, &amp;c_auth, SHORTLEN);
                 <span class="keywordtype">bool</span> auth = <span class="keyword">false</span>;
                 <span class="keywordflow">for</span>(i=0; i&lt;<a class="code" href="../../d6/dfd/answer_8c_a9a7fbdd1d69ada545eef1227c59842d6.html#a9a7fbdd1d69ada545eef1227c59842d6" title="Maximum number of failed authentication attempts.">MAXATTEMPT</a> &amp;&amp; !auth; i++) { <span class="comment">/* 3 password attempts. [PSR] */</span>
@@ -217,7 +217,7 @@ function toggleVisibility(linkObj) {
         <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on a log in case of failure.">safe_read</a>(newsock, &amp;team, 1);
         <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on a log in case of failure.">safe_read</a>(newsock, (<span class="keywordtype">char</span> *) &amp;enter_status, LONGLEN);
         enter_status = ntohl((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) enter_status);
-        <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on a log in case of failure.">safe_read</a>(newsock, <a class="code" href="../../d6/dfd/answer_8c_add2c14ba8ffae18602f5adf0110342cc.html#add2c14ba8ffae18602f5adf0110342cc" title="Name of the terminal in which we are playing.">Ttyname</a>, NAMELEN);
+        <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on a log in case of failure.">safe_read</a>(newsock, <a class="code" href="../../d6/dfd/answer_8c_a2780168f03f5eb9ec4f93afb26f645df.html#a2780168f03f5eb9ec4f93afb26f645df" title="Name of the terminal in which we are playing.">ttyname_glob</a>, NAMELEN);
         <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on a log in case of failure.">safe_read</a>(newsock, (<span class="keywordtype">char</span> *) &amp;mode, <span class="keyword">sizeof</span> mode);
         mode = ntohl(mode);
 
@@ -253,15 +253,15 @@ function toggleVisibility(linkObj) {
                         (void) sprintf(buf, <span class="stringliteral">&quot;%s[%c]: &quot;</span>, name, team);
                 }
                 n = strlen(buf);
-                <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++) {
+                <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_ae46dbb7f9be56b1aff71d81645260124.html#ae46dbb7f9be56b1aff71d81645260124" title="All the players.">player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_aab588e2137810fe5adc05535809ce75a.html#aab588e2137810fe5adc05535809ce75a" title="Last active player slot.">end_player</a>; pp++) {
                         <a class="code" href="../../d2/d44/terminal_8c_a1faeaa3c9692fe1e5c4d5febc406cb4c.html#a1faeaa3c9692fe1e5c4d5febc406cb4c" title="Move the cursor to the given position on the given player&amp;#39;s terminal.">cgoto</a>(pp, HEIGHT, 0);
                         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, buf, n);
                 }
                 <span class="keywordflow">while</span> ((n = read(newsock, buf, BUFSIZ)) &gt; 0)
-                <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++) {
+                <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_ae46dbb7f9be56b1aff71d81645260124.html#ae46dbb7f9be56b1aff71d81645260124" title="All the players.">player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_aab588e2137810fe5adc05535809ce75a.html#aab588e2137810fe5adc05535809ce75a" title="Last active player slot.">end_player</a>; pp++) {
                         <a class="code" href="../../d2/d44/terminal_8c_ad5dec5c9982911a491a772b1f2a748cc.html#ad5dec5c9982911a491a772b1f2a748cc" title="Put out a string of the given length.">outstr</a>(pp, buf, n);
                 }
-                <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_af6011c3543e898ef05f36643b68255b7.html#af6011c3543e898ef05f36643b68255b7" title="Last active player slot.">End_player</a>; pp++) {
+                <span class="keywordflow">for</span> (pp = <a class="code" href="../../dc/d2c/extern_8c_ae46dbb7f9be56b1aff71d81645260124.html#ae46dbb7f9be56b1aff71d81645260124" title="All the players.">player</a>; pp &lt; <a class="code" href="../../dc/d2c/extern_8c_aab588e2137810fe5adc05535809ce75a.html#aab588e2137810fe5adc05535809ce75a" title="Last active player slot.">end_player</a>; pp++) {
                         <a class="code" href="../../d2/d44/terminal_8c_a8a92ccf5ea858dccb47307a244b67245.html#a8a92ccf5ea858dccb47307a244b67245" title="Clear to the end of the line.">ce</a>(pp);
                         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, REFRESH);
                         <a class="code" href="../../d2/d44/terminal_8c_a6316d9ac413a57de1bd726667506f737.html#a6316d9ac413a57de1bd726667506f737" title="Send a command to the given user.">sendcom</a>(pp, READY, 0);
@@ -274,9 +274,9 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span><span class="preprocessor"># ifdef MONITOR</span>
 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (mode == C_MONITOR) {
-                <span class="keywordflow">if</span> (End_monitor &lt; &amp;Monitor[MAXMON]) {
-                        pp = End_monitor++;
-                        i = pp - Monitor + MAXPL + 3;
+                <span class="keywordflow">if</span> (end_monitor &lt; &amp;monitor[MAXMON]) {
+                        pp = end_monitor++;
+                        i = pp - monitor + MAXPL + 3;
                 } <span class="keywordflow">else</span> {
                         socklen = 0;
                         <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen);
@@ -286,9 +286,9 @@ function toggleVisibility(linkObj) {
         }
         <span class="keywordflow">else</span>
 <span class="preprocessor"># endif</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (End_player &lt; &amp;<a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a>[MAXPL]) {
-                pp = End_player++;
-                i = pp - <a class="code" href="../../dc/d2c/extern_8c_a2735f6588064e94812ed34efcd243183.html#a2735f6588064e94812ed34efcd243183" title="All the players.">Player</a> + 3;
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (end_player &lt; &amp;<a class="code" href="../../dc/d2c/extern_8c_ae46dbb7f9be56b1aff71d81645260124.html#ae46dbb7f9be56b1aff71d81645260124" title="All the players.">player</a>[MAXPL]) {
+                pp = end_player++;
+                i = pp - <a class="code" href="../../dc/d2c/extern_8c_ae46dbb7f9be56b1aff71d81645260124.html#ae46dbb7f9be56b1aff71d81645260124" title="All the players.">player</a> + 3;
         } <span class="keywordflow">else</span> {
                 socklen = 0;
                 <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(newsock, (<span class="keywordtype">char</span> *) &amp;socklen, <span class="keyword">sizeof</span> socklen);
@@ -331,7 +331,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d6/dfd/answer_8c.html">answer.c</a>      </li>
-      <li class="footer">Generated on Sat Jul 14 2012 09:50:27 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Sun Jul 15 2012 14:35:15 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

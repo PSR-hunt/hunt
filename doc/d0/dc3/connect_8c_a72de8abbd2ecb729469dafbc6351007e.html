@@ -174,7 +174,7 @@ function toggleVisibility(linkObj) {
 
         u_int32_t version;
 
-        <span class="keywordtype">int</span> len = read(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;version, LONGLEN);
+        <span class="keywordtype">int</span> len = read(<a class="code" href="../../da/d3e/hunt_8c_ac4fa45a71d00ffd5e6c1fba6fbaa0bae.html#ac4fa45a71d00ffd5e6c1fba6fbaa0bae" title="Main socket.">main_socket</a>, (<span class="keywordtype">char</span> *) &amp;version, LONGLEN);
 
         <span class="keywordflow">if</span> (len != LONGLEN) {
                 <span class="keywordtype">char</span> msg[256];
@@ -195,7 +195,7 @@ function toggleVisibility(linkObj) {
 <span class="preprocessor"></span>        <span class="comment">/*Read auth [PSR]*/</span>
         <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> auth;
         <span class="keywordflow">do</span> {
-                <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on a log in case of failure.">safe_read</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, &amp;auth, SHORTLEN);
+                <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on a log in case of failure.">safe_read</a>(<a class="code" href="../../da/d3e/hunt_8c_ac4fa45a71d00ffd5e6c1fba6fbaa0bae.html#ac4fa45a71d00ffd5e6c1fba6fbaa0bae" title="Main socket.">main_socket</a>, &amp;auth, SHORTLEN);
                 <span class="keywordflow">switch</span>(auth) {
                         <span class="keywordflow">case</span> C_AUTH:
 <span class="preprocessor"># ifdef USE_CURSES</span>
@@ -224,7 +224,7 @@ function toggleVisibility(linkObj) {
                         }<span class="keywordflow">while</span>(strlen(psw)==0);
                         password_hash = crypt(psw,<span class="stringliteral">&quot;AC&quot;</span>);
                         password_hash[13]=<span class="charliteral">&#39;\0&#39;</span>;
-                        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, password_hash , (13+1)*<span class="keyword">sizeof</span>(<span class="keywordtype">char</span>));
+                        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_ac4fa45a71d00ffd5e6c1fba6fbaa0bae.html#ac4fa45a71d00ffd5e6c1fba6fbaa0bae" title="Main socket.">main_socket</a>, password_hash , (13+1)*<span class="keyword">sizeof</span>(<span class="keywordtype">char</span>));
                         auth_stage = <span class="keyword">true</span>;
                         <span class="keywordflow">break</span>;
                         <span class="keywordflow">case</span> C_AUTH_SUCCESS:
@@ -240,28 +240,28 @@ function toggleVisibility(linkObj) {
         <span class="keywordflow">if</span> (uid == 0) {
                 uid = htonl(getuid());
         }
-        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;uid, LONGLEN);
-        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, NAMELEN);
-        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, &amp;<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>, 1);
+        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_ac4fa45a71d00ffd5e6c1fba6fbaa0bae.html#ac4fa45a71d00ffd5e6c1fba6fbaa0bae" title="Main socket.">main_socket</a>, (<span class="keywordtype">char</span> *) &amp;uid, LONGLEN);
+        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_ac4fa45a71d00ffd5e6c1fba6fbaa0bae.html#ac4fa45a71d00ffd5e6c1fba6fbaa0bae" title="Main socket.">main_socket</a>, <a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>, NAMELEN);
+        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_ac4fa45a71d00ffd5e6c1fba6fbaa0bae.html#ac4fa45a71d00ffd5e6c1fba6fbaa0bae" title="Main socket.">main_socket</a>, &amp;<a class="code" href="../../da/d3e/hunt_8c_a7e250aa32c2b9147cff34dff82b5d1e5.html#a7e250aa32c2b9147cff34dff82b5d1e5" title="Indicates the team the player belongs to.">team</a>, 1);
         enter_status = htonl(enter_status);
-        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;enter_status, LONGLEN);
-        (void) strcpy(<a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, ttyname(fileno(stderr)));
-        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, <a class="code" href="../../da/d3e/hunt_8c_a9d389c02f89c2fe0d635a6a60f62f8e7.html#a9d389c02f89c2fe0d635a6a60f62f8e7" title="General scribbling buffer.">Buf</a>, NAMELEN);
+        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_ac4fa45a71d00ffd5e6c1fba6fbaa0bae.html#ac4fa45a71d00ffd5e6c1fba6fbaa0bae" title="Main socket.">main_socket</a>, (<span class="keywordtype">char</span> *) &amp;enter_status, LONGLEN);
+        (void) strcpy(<a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, ttyname(fileno(stderr)));
+        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_ac4fa45a71d00ffd5e6c1fba6fbaa0bae.html#ac4fa45a71d00ffd5e6c1fba6fbaa0bae" title="Main socket.">main_socket</a>, <a class="code" href="../../da/d3e/hunt_8c_a1ef51352414984924bd6536b524326ce.html#a1ef51352414984924bd6536b524326ce" title="General scribbling buffer.">gen_buf</a>, NAMELEN);
 <span class="preprocessor"># ifdef INTERNET</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (Send_message != NULL) {
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (send_message != NULL) {
                 mode = C_MESSAGE;
         }
         <span class="keywordflow">else</span>
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span><span class="preprocessor"># ifdef MONITOR</span>
-<span class="preprocessor"></span>        <span class="keywordflow">if</span> (Am_monitor) {
+<span class="preprocessor"></span>        <span class="keywordflow">if</span> (am_monitor) {
                 mode = C_MONITOR;
         }
         <span class="keywordflow">else</span>
 <span class="preprocessor"># endif</span>
 <span class="preprocessor"></span>        mode = C_PLAYER;
         mode = htonl(mode);
-        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_aa0b3e8a8ae7db46522c6ef7ce4471c5d.html#aa0b3e8a8ae7db46522c6ef7ce4471c5d" title="Main socket.">Socket</a>, (<span class="keywordtype">char</span> *) &amp;mode, <span class="keyword">sizeof</span> mode);
+        <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<a class="code" href="../../da/d3e/hunt_8c_ac4fa45a71d00ffd5e6c1fba6fbaa0bae.html#ac4fa45a71d00ffd5e6c1fba6fbaa0bae" title="Main socket.">main_socket</a>, (<span class="keywordtype">char</span> *) &amp;mode, <span class="keyword">sizeof</span> mode);
 }
 </pre></div>
 </div>
@@ -274,7 +274,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d0/dc3/connect_8c.html">connect.c</a>      </li>
-      <li class="footer">Generated on Sat Jul 14 2012 09:50:27 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Sun Jul 15 2012 14:35:15 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

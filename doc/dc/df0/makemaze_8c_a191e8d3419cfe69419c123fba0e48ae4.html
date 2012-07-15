@@ -155,21 +155,21 @@ function toggleVisibility(linkObj) {
 
         <span class="keywordflow">for</span> (y = 0; y &lt; HEIGHT; y++)
                 <span class="keywordflow">for</span> (x = 0; x &lt; WIDTH; x++) {
-                        sp = &amp;<a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x];
+                        sp = &amp;<a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x];
                         <span class="keywordflow">if</span> (*sp == SPACE){
                                 <span class="keywordflow">continue</span>;
                         }
                         stat = 0;
-                        <span class="keywordflow">if</span> (y - 1 &gt;= 0 &amp;&amp; <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y - 1][x] != SPACE){
+                        <span class="keywordflow">if</span> (y - 1 &gt;= 0 &amp;&amp; <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y - 1][x] != SPACE){
                                 stat |= NORTH;
                         }
-                        <span class="keywordflow">if</span> (y + 1 &lt; HEIGHT &amp;&amp; <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y + 1][x] != SPACE){
+                        <span class="keywordflow">if</span> (y + 1 &lt; HEIGHT &amp;&amp; <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y + 1][x] != SPACE){
                                 stat |= SOUTH;
                         }
-                        <span class="keywordflow">if</span> (x + 1 &lt; WIDTH &amp;&amp; <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x + 1] != SPACE){
+                        <span class="keywordflow">if</span> (x + 1 &lt; WIDTH &amp;&amp; <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x + 1] != SPACE){
                                 stat |= EAST;
                         }
-                        <span class="keywordflow">if</span> (x - 1 &gt;= 0 &amp;&amp; <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>[y][x - 1] != SPACE){
+                        <span class="keywordflow">if</span> (x - 1 &gt;= 0 &amp;&amp; <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>[y][x - 1] != SPACE){
                                 stat |= WEST;
                         }
                         <span class="keywordflow">switch</span> (stat) {
@@ -196,7 +196,7 @@ function toggleVisibility(linkObj) {
                                 <span class="keywordflow">break</span>;
                         }
                 }
-        memcpy(<a class="code" href="../../dc/d2c/extern_8c_ad8fb73bca04863c2e3930c5c078523ec.html#ad8fb73bca04863c2e3930c5c078523ec" title="The original maze.">Orig_maze</a>, <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>, <span class="keyword">sizeof</span> <a class="code" href="../../dc/d2c/extern_8c_a13f2b6bbd6c38ca97d19ea10c3f5e79e.html#a13f2b6bbd6c38ca97d19ea10c3f5e79e" title="The maze.">Maze</a>);
+        memcpy(<a class="code" href="../../dc/d2c/extern_8c_a0f182918d6d9b095d386f21e595431b3.html#a0f182918d6d9b095d386f21e595431b3" title="The original maze.">orig_maze</a>, <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>, <span class="keyword">sizeof</span> <a class="code" href="../../dc/d2c/extern_8c_abf939dfe6c19b929da34d5c75515c777.html#abf939dfe6c19b929da34d5c75515c777" title="The maze.">maze</a>);
 }
 </pre></div>
 </div>
@@ -209,7 +209,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../dc/df0/makemaze_8c.html">makemaze.c</a>      </li>
-      <li class="footer">Generated on Sat Jul 14 2012 09:50:27 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Sun Jul 15 2012 14:35:16 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>
