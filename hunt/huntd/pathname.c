@@ -50,7 +50,7 @@ char	*driver =	"/home/socr/a/conrad/games/src/hunt/huntd.dbg";
 unsigned short	test_port_glob =	('h' << 8) | 't'; /* Changed from u_short. [PSR] */
 #  else
 char	*sock_name =	"/tmp/hunt";
-char	*Stat_name =	"/tmp/hunt.stats";
+char	*stat_name =	"/tmp/hunt.stats";
 #  endif
 
 # else
@@ -63,7 +63,7 @@ const char	*driver =	HUNTD; /**< Defines the path to reach the folder which cont
 unsigned short	test_port_glob =	('h' << 8) | 't'; /* Changed from u_short. [PSR] */
 #  else
 char	*sock_name =	"/tmp/hunt"; /**< Identifies the socket name. [PSR] */
-char	*Stat_name =	"/tmp/hunt.stats"; /**< Identifies the file in which are contained hunt stats. [PSR] */
+char	*stat_name =	"/tmp/hunt.stats"; /**< Identifies the file in which are contained hunt stats. [PSR] */
 #  endif
 
 # endif

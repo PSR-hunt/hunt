@@ -354,7 +354,7 @@ static void init() {
 	daemon_address.sin_port = 0;
 # else
 	daemon_address.sun_family = SOCK_FAMILY;
-	(void) strcpy(daemon_address.sun_path, Stat_name);
+	(void) strcpy(daemon_address.sun_path, stat_name);
 # endif
 
 	status = socket(SOCK_FAMILY, SOCK_STREAM, 0);
