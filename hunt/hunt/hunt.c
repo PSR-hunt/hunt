@@ -839,10 +839,10 @@ void start_driver() {
 # else
 		if (use_port == NULL)
 # endif
-		execl(Driver, "huntd", (char *) NULL );
+		execl(driver, "huntd", (char *) NULL );
 # ifdef INTERNET
 		else
-		execl(Driver, "huntd", "-p", use_port, (char *) NULL);
+		execl(driver, "huntd", "-p", use_port, (char *) NULL);
 # endif
 		/* only get here if exec failed */
 		(void) kill(getppid(), SIGUSR1); /* tell mom */

@@ -45,7 +45,7 @@ __RCSID("$NetBSD: pathname.c,v 1.3 2003/06/11 12:00:23 wiz Exp $");
 
 # ifdef DEBUG
 
-char	*Driver =	"/home/socr/a/conrad/games/src/hunt/huntd.dbg";
+char	*driver =	"/home/socr/a/conrad/games/src/hunt/huntd.dbg";
 #  ifdef INTERNET
 unsigned short	test_port_glob =	('h' << 8) | 't'; /* Changed from u_short. [PSR] */
 #  else
@@ -58,7 +58,7 @@ char	*Stat_name =	"/tmp/hunt.stats";
 #ifndef HUNTD
 #define HUNTD "/usr/games/huntd" /**< Defines the path to reach folder huntd. [PSR] */
 #endif
-const char	*Driver =	HUNTD; /**< Defines the path to reach the folder which contains drivers. [PSR] */
+const char	*driver =	HUNTD; /**< Defines the path to reach the folder which contains drivers. [PSR] */
 #  ifdef INTERNET
 unsigned short	test_port_glob =	('h' << 8) | 't'; /* Changed from u_short. [PSR] */
 #  else
