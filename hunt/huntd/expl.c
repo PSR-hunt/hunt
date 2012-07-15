@@ -203,7 +203,7 @@ static void remove_wall(int y,int x){
 		/* Slot being used, put back this wall */
 # ifdef FLY
 		if (save_char == SPACE){
-			maze[r->r_y][r->r_x] = Orig_maze[r->r_y][r->r_x];
+			maze[r->r_y][r->r_x] = orig_maze[r->r_y][r->r_x];
 		}
 		else {
 			pp = play_at(r->r_y, r->r_x);
@@ -215,13 +215,13 @@ static void remove_wall(int y,int x){
 				pp->p_flyx = 2 * rand_num(6) - 5;
 				pp->p_flyy = 2 * rand_num(6) - 5;
 			}
-			pp->p_over = Orig_maze[r->r_y][r->r_x];
+			pp->p_over = orig_maze[r->r_y][r->r_x];
 			pp->p_face = FLYER;
 			maze[r->r_y][r->r_x] = FLYER;
 			showexpl(r->r_y, r->r_x, FLYER);
 		}
 # else
-		maze[r->r_y][r->r_x] = Orig_maze[r->r_y][r->r_x];
+		maze[r->r_y][r->r_x] = orig_maze[r->r_y][r->r_x];
 # endif
 # ifdef RANDOM
 		if (rand_num(100) == 0){

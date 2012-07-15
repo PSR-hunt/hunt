@@ -254,5 +254,5 @@ void remap() {
 				break;
 			}
 		}
-	memcpy(Orig_maze, maze, sizeof maze);
+	memcpy(orig_maze, maze, sizeof maze);
 }

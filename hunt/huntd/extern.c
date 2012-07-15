@@ -43,7 +43,7 @@ bool am_monitor = false; /* current process is a monitor */
 
 char gen_buf[BUFSIZ]; /**< General scribbling buffer */
 char maze[HEIGHT][WIDTH2]; /**< The maze */
-char Orig_maze[HEIGHT][WIDTH2]; /**< The original maze */
+char orig_maze[HEIGHT][WIDTH2]; /**< The original maze */
 
 struct pollfd fdset[3 + MAXPL + MAXMON]; /**< A set of file descriptors. [PSR] */
 int nplayer = 0; /**< Number of players */
