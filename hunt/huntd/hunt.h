@@ -420,7 +420,7 @@ extern struct pollfd fdset[];
 # ifdef INTERNET
 extern unsigned short test_port_glob;
 # else
-extern char *Sock_name, *Stat_name;
+extern char *sock_name, *Stat_name;
 # endif
 
 # ifdef VOLCANO

@@ -383,7 +383,7 @@ int main(int argc, char* argv[]) {
 		 */
 
 		daemon_address.sun_family = SOCK_FAMILY;
-		(void) strcpy(daemon_address.sun_path, Sock_name);
+		(void) strcpy(daemon_address.sun_path, sock_name);
 		if (connect(main_socket, &daemon_address, DAEMON_SIZE) < 0) {
 			if (errno != ENOENT) {
 				leavex(1, "connect2");

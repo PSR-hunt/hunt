@@ -394,7 +394,7 @@ static void init() {
 	daemon_address.sin_port = 0;
 # else
 	daemon_address.sun_family = SOCK_FAMILY;
-	(void) strcpy(daemon_address.sun_path, Sock_name);
+	(void) strcpy(daemon_address.sun_path, sock_name);
 # endif
 
 	main_socket = socket(SOCK_FAMILY, SOCK_STREAM, 0);
@@ -946,7 +946,7 @@ SIGNAL_TYPE cleanup(int eval) {
 # endif
 	safe_close(main_socket);
 # ifdef AF_UNIX_HACK
-	(void) unlink(Sock_name);
+	(void) unlink(sock_name);
 # endif
 
 	exit(eval);
