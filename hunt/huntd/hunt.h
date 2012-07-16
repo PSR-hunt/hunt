@@ -513,9 +513,10 @@ void redraw_screen(void);
 void rmnl(char *);
 void rollexpl(void);
 void forcelogopen(const char *);
-void safe_write(int fd, const void *buf,size_t count);
-void safe_sendto(int sockfd,const void *buf,size_t len,int flags,const struct sockaddr *destaddr, socklen_t addrlen);
-void safe_read(int fd,void *buf,size_t nbytes);
+void safe_write(int fd, const void *buf, size_t count);
+void safe_sendto(int sockfd, const void *buf, size_t len, int flags,
+		const struct sockaddr *destaddr, socklen_t addrlen);
+void safe_read(int fd, void *buf, size_t nbytes);
 void safe_chdir(const char *path);
 void safe_close(int fd);
 void safe_fclose(FILE *fp);
@@ -527,8 +528,9 @@ void start_driver(void);
 void stmonitor(PLAYER *);
 void stplayer(PLAYER *, int);
 char translate(char);
-void write_and_push(int fd, const void *buf,size_t count);
-void sendto_and_push(int sockfd,const void *buf,size_t len,int flags,const struct sockaddr *destaddr, socklen_t addrlen);
+void write_and_push(int fd, const void *buf, size_t count);
+void sendto_and_push(int sockfd, const void *buf, size_t len, int flags,
+		const struct sockaddr *destaddr, socklen_t addrlen);
 
 #ifndef SIGNAL_TYPE
 #define SIGNAL_TYPE void
@@ -541,7 +543,6 @@ SIGNAL_TYPE sigemt(int) __attribute__((__noreturn__));
 SIGNAL_TYPE sigterm(int) __attribute__((__noreturn__));
 SIGNAL_TYPE sigusr1(int) __attribute__((__noreturn__));
 SIGNAL_TYPE tstp(int);
-
 
 #ifndef INFTIM
 #define INFTIM -1

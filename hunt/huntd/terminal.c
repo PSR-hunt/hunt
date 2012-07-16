@@ -47,7 +47,7 @@ __RCSID("$NetBSD: terminal.c,v 1.4 2003/06/11 12:00:23 wiz Exp $");
  * @param[in] x A coordinate.
  */
 void cgoto(PLAYER *pp, int y, int x) {
-	if (x == pp->p_curx && y == pp->p_cury){
+	if (x == pp->p_curx && y == pp->p_cury) {
 		return;
 	}
 	sendcom(pp, MOVE, y, x);
@@ -79,7 +79,7 @@ void outstr(PLAYER *pp, const char *str, int len) {
 	pp->p_curx += len;
 	pp->p_cury += (pp->p_curx / TERM_WIDTH);
 	pp->p_curx %= TERM_WIDTH;
-	while (len--){
+	while (len--) {
 		(void) putc(*str++, pp->p_output);
 	}
 }
@@ -107,7 +107,7 @@ void ce(PLAYER *pp) {
  * Refresh the screen
  * @param[in] pp The player which screen will be refreshed.
  */
-void  ref(PLAYER * pp){
+void ref(PLAYER * pp) {
 	sendcom(pp, REFRESH);
 }
 #endif

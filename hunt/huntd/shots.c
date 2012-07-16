@@ -143,15 +143,15 @@ void moveshots() {
 			if (!bp->b_expl) {
 				save_bullet(bp);
 # ifdef MONITOR
-				for (pp = monitor; pp < end_monitor; pp++){
+				for (pp = monitor; pp < end_monitor; pp++) {
 					check(pp, bp->b_y, bp->b_x);
 				}
 # endif
 # ifdef DRONE
-				if (bp->b_type == DSHOT){
-					for (pp = player; pp < end_player; pp++){
-						if (pp->p_scan >= 0){
-								check(pp, bp->b_y, bp->b_x);
+				if (bp->b_type == DSHOT) {
+					for (pp = player; pp < end_player; pp++) {
+						if (pp->p_scan >= 0) {
+							check(pp, bp->b_y, bp->b_x);
 						}
 					}
 				}
@@ -163,21 +163,21 @@ void moveshots() {
 			free((char *) bp);
 		}
 
-		for (pp = player; pp < end_player; pp++){
+		for (pp = player; pp < end_player; pp++) {
 			maze[pp->p_y][pp->p_x] = pp->p_face;
 		}
 	}
 
 # ifdef BOOTS
-	for (pp = boot; pp < &boot[NBOOTS]; pp++){
-		if (pp->p_flying >= 0){
+	for (pp = boot; pp < &boot[NBOOTS]; pp++) {
+		if (pp->p_flying >= 0) {
 			move_flyer(pp);
 		}
 	}
 # endif
 	for (pp = player; pp < end_player; pp++) {
 # ifdef FLY
-		if (pp->p_flying >= 0){
+		if (pp->p_flying >= 0) {
 			move_flyer(pp);
 		}
 # endif
@@ -186,7 +186,7 @@ void moveshots() {
 		sendcom(pp, REFRESH);
 	}
 # ifdef MONITOR
-	for (pp = monitor; pp < end_monitor; pp++){
+	for (pp = monitor; pp < end_monitor; pp++) {
 		sendcom(pp, REFRESH);
 	}
 # endif
@@ -422,23 +422,23 @@ static void move_drone(BULLET *bp) {
 		 * Find out what directions are clear
 		 */
 		mask = count = 0;
-		if (!iswall(bp->b_y, bp->b_x - 1)){
+		if (!iswall(bp->b_y, bp->b_x - 1)) {
 			mask |= WEST, count++;
 		}
-		if (!iswall(bp->b_y - 1, bp->b_x)){
+		if (!iswall(bp->b_y - 1, bp->b_x)) {
 			mask |= NORTH, count++;
 		}
-		if (!iswall(bp->b_y + 1, bp->b_x)){
+		if (!iswall(bp->b_y + 1, bp->b_x)) {
 			mask |= SOUTH, count++;
 		}
-		if (!iswall(bp->b_y, bp->b_x + 1)){
+		if (!iswall(bp->b_y, bp->b_x + 1)) {
 			mask |= EAST, count++;
 		}
 
 		/*
 		 * All blocked up, just you wait
 		 */
-		if (count == 0){
+		if (count == 0) {
 			return true;
 		}
 

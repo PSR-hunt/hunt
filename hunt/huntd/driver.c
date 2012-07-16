@@ -111,7 +111,7 @@ int main(int argc, char* argv[], char* env[]) {
 	const int linger = 90 * 1000;
 
 	first_arg = argv[0];
-	if (env == NULL || *env == NULL ) {
+	if (env == NULL || *env == NULL) {
 		env = argv + argc;
 	}
 	while (*env) {
@@ -206,7 +206,7 @@ int main(int argc, char* argv[], char* env[]) {
 			}
 # endif
 			{
-				for (pp = player, i = 0; pp < end_player; pp++, i++){
+				for (pp = player, i = 0; pp < end_player; pp++, i++) {
 					if (havechar(pp, i + 3)) {
 						execute(pp);
 						pp->p_nexec++;
@@ -330,9 +330,9 @@ static void init() {
 	if (setsid() == -1) {
 		err(1, "setsid");
 	}
-	(void) signal(SIGHUP, SIG_IGN ); /* Ignore signal. [PSR]*/
-	(void) signal(SIGINT, SIG_IGN ); /* Ignore signal. [PSR]*/
-	(void) signal(SIGQUIT, SIG_IGN ); /* Ignore signal. [PSR]*/
+	(void) signal(SIGHUP, SIG_IGN); /* Ignore signal. [PSR]*/
+	(void) signal(SIGINT, SIG_IGN); /* Ignore signal. [PSR]*/
+	(void) signal(SIGQUIT, SIG_IGN); /* Ignore signal. [PSR]*/
 	(void) signal(SIGTERM, cleanup);
 # endif
 
@@ -409,7 +409,8 @@ static void init() {
 # endif
 #endif
 # endif
-	if (bind(main_socket, (struct sockaddr *) &daemon_address, DAEMON_SIZE) < 0) {
+	if (bind(main_socket, (struct sockaddr *) &daemon_address, DAEMON_SIZE)
+			< 0) {
 		if (errno == EADDRINUSE) {
 			exit(0);
 		} else {
@@ -477,7 +478,7 @@ static void init() {
 	fdset[2].fd = -1;
 # endif
 
-	seed = getpid() + time((time_t *) NULL );
+	seed = getpid() + time((time_t *) NULL);
 	makemaze();
 # ifdef BOOTS
 	makeboots();
@@ -598,7 +599,7 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 		break;
 # endif
 	}
-	if (credit == NULL ) {
+	if (credit == NULL) {
 		(void) sprintf(ouch->p_death, "| %s by %s |", cp,
 				(shot_type == MINE || shot_type == GMINE) ?
 						"a mine" : "act of God");
@@ -623,7 +624,7 @@ void checkdam(PLAYER *ouch, PLAYER *gotcha, IDENT *credit, int amt,
 	if (ouch->p_nchar == 0) {
 		ouch->p_ident->i_stillb++;
 	}
-	if (gotcha == NULL ) {
+	if (gotcha == NULL) {
 		return;
 	}
 	gotcha->p_damcap += STABDAM;
@@ -692,7 +693,7 @@ static void zap(PLAYER *pp, bool was_player, int i) {
 # ifdef MONITOR
 	if (was_player) {
 # endif
-	for (bp = bullets; bp != NULL ; bp = bp->b_next) {
+	for (bp = bullets; bp != NULL; bp = bp->b_next) {
 		if (bp->b_owner == pp) {
 			bp->b_owner = NULL;
 		}
@@ -926,8 +927,7 @@ static int havechar(PLAYER *pp, int i) {
 /**
  * Exit with the given value, cleaning up any droppings lying around.
  * @param[in] eval The value to put as exit parameter.
- */
-SIGNAL_TYPE cleanup(int eval) {
+ */SIGNAL_TYPE cleanup(int eval) {
 	PLAYER *pp;
 
 	for (pp = player; pp < end_player; pp++) {
@@ -983,7 +983,7 @@ static void send_stats() {
 		return;
 	}
 	fp = fdopen(s, "w");
-	if (fp == NULL ) {
+	if (fp == NULL) {
 # ifdef LOG
 		iso_syslog(LOG_WARNING, "fdopen: %m");
 # else
@@ -999,7 +999,7 @@ static void send_stats() {
 	fputs(
 			"Name\t\tScore\tDucked\tAbsorb\tFaced\tShot\tRobbed\tMissed\tSlimeK\n",
 			fp);
-	for (ip = scores; ip != NULL ; ip = ip->i_next) {
+	for (ip = scores; ip != NULL; ip = ip->i_next) {
 		fprintf(fp, "%s\t", ip->i_name);
 		if (strlen(ip->i_name) < 8) {
 			putc('\t', fp);
@@ -1009,7 +1009,7 @@ static void send_stats() {
 				ip->i_robbed, ip->i_missed, ip->i_slime);
 	}
 	fputs("\n\nName\t\tEnemy\tFriend\tDeaths\tStill\tSaved\n", fp);
-	for (ip = scores; ip != NULL ; ip = ip->i_next) {
+	for (ip = scores; ip != NULL; ip = ip->i_next) {
 		if (ip->i_team == ' ') {
 			fprintf(fp, "%s\t", ip->i_name);
 			if (strlen(ip->i_name) < 8) {
@@ -1034,7 +1034,7 @@ static void send_stats() {
 static void clear_scores() {
 	IDENT *ip, *nextip;
 
-	for (ip = scores; ip != NULL ; ip = nextip) {
+	for (ip = scores; ip != NULL; ip = nextip) {
 		nextip = ip->i_next;
 		(void) free((char *) ip);
 	}

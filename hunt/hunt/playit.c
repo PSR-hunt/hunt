@@ -333,7 +333,6 @@ int quit(int old_status) {
 	 * Complete version. Deactivated due to authentication protocol conflict. [PSR]
 	 */
 //	int second_ch;
-
 	if (last_player) {
 		return Q_QUIT;
 	}
@@ -361,8 +360,7 @@ int quit(int old_status) {
 	clear_eol();
 	explain = false;
 	for (;;) {
-		refresh()
-		;
+		refresh();
 		if (isupper(ch = getchar())) {
 			ch = tolower(ch);
 		}
@@ -513,8 +511,7 @@ int quit(int old_status) {
 	put_str("Scan, Cloak, or Quit? ");
 # endif
 	clear_eol();
-	refresh()
-	;
+	refresh();
 	explain = false;
 	for (;;) {
 		if (isupper(ch = getchar())) {
@@ -542,8 +539,7 @@ int quit(int old_status) {
 # endif
 			explain = true;
 		}
-		refresh()
-		;
+		refresh();
 	}
 	/* This point should never be reached [PSR] */
 	return -1;
@@ -678,7 +674,7 @@ void redraw_screen() {
 
 	if (first) {
 		curscr = newwin(SCREEN_HEIGHT, SCREEN_WIDTH, 0, 0);
-		if (curscr == NULL ) {
+		if (curscr == NULL) {
 			errx(1, "Can't create curscr");
 		}
 

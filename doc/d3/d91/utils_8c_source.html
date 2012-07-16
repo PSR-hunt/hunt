@@ -117,117 +117,160 @@ function toggleVisibility(linkObj) {
 <h1>hunt/huntd/utils.c</h1>  </div>
 </div>
 <div class="contents">
-<a href="../../d3/d91/utils_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &quot;hunt.h&quot;</span>
-<a name="l00002"></a>00002 <span class="preprocessor">#include &lt;unistd.h&gt;</span>
-<a name="l00003"></a>00003 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;stdarg.h&gt;</span>
-<a name="l00005"></a>00005 
-<a name="l00006"></a>00006 <span class="preprocessor">#ifdef LOG</span>
-<a name="l00007"></a>00007 <span class="preprocessor"></span><span class="preprocessor">#define GENERIC_LOG_NAME &quot;HUNTerrorlog&quot;</span>
-<a name="l00008"></a>00008 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00009"></a>00009 <span class="preprocessor"></span>
-<a name="l00010"></a><a class="code" href="../../d3/d91/utils_8c_a212574dce3faf8ce3d9686adc8e7a133.html#a212574dce3faf8ce3d9686adc8e7a133">00010</a> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="../../d3/d91/utils_8c_a212574dce3faf8ce3d9686adc8e7a133.html#a212574dce3faf8ce3d9686adc8e7a133" title="A flag that indicates whether the log is active or no.">logactive</a> = <span class="keyword">false</span>; 
-<a name="l00018"></a><a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17">00018</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(<span class="keywordtype">int</span> priority, <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ...) {
-<a name="l00019"></a>00019         va_list args;
-<a name="l00020"></a>00020         <span class="keywordtype">char</span> *placeholder = NULL;
-<a name="l00021"></a>00021         <span class="keywordtype">char</span> *remaining = NULL;
-<a name="l00022"></a>00022         <span class="keywordtype">char</span> *iso_format = <span class="charliteral">&#39;\0&#39;</span>;
-<a name="l00023"></a>00023 
-<a name="l00024"></a>00024         remaining = malloc(<span class="keyword">sizeof</span>(<span class="keyword">const</span> <span class="keywordtype">char</span>) * strlen(format));
-<a name="l00025"></a>00025         <span class="keywordflow">if</span>(remaining == NULL){
-<a name="l00026"></a>00026                 exit(1);
-<a name="l00027"></a>00027         }
-<a name="l00028"></a>00028         strcpy(remaining, format);
-<a name="l00029"></a>00029 
-<a name="l00030"></a>00030         <span class="keywordflow">while</span> ((placeholder = strchr(remaining, <span class="charliteral">&#39;%&#39;</span>))) {
-<a name="l00031"></a>00031                 <span class="keywordflow">if</span> (*(placeholder + 1) == <span class="charliteral">&#39;m&#39;</span>) {
-<a name="l00032"></a>00032                         strncat(iso_format, remaining, placeholder - remaining);
-<a name="l00033"></a>00033                         strcat(iso_format, strerror(errno));
-<a name="l00034"></a>00034                         remaining = placeholder + 2;
-<a name="l00035"></a>00035                 }
-<a name="l00036"></a>00036         }
-<a name="l00037"></a>00037 
-<a name="l00038"></a>00038         strcat(iso_format, remaining);
+<a href="../../d3/d91/utils_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a><a class="code" href="../../d3/d91/utils_8c_a78c99ffd76a7bb3c8c74db76207e9ab4.html#a78c99ffd76a7bb3c8c74db76207e9ab4">00001</a> <span class="preprocessor">#define _XOPEN_SOURCE 700</span>
+<a name="l00002"></a>00002 <span class="preprocessor"></span>
+<a name="l00003"></a>00003 <span class="preprocessor">#include &quot;hunt.h&quot;</span>
+<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;unistd.h&gt;</span>
+<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
+<a name="l00006"></a>00006 <span class="preprocessor">#include &lt;stdarg.h&gt;</span>
+<a name="l00007"></a>00007 
+<a name="l00008"></a>00008 <span class="preprocessor">#ifdef LOG</span>
+<a name="l00009"></a>00009 <span class="preprocessor"></span><span class="preprocessor">#define GENERIC_LOG_NAME &quot;HUNTerrorlog&quot;</span>
+<a name="l00010"></a>00010 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00011"></a>00011 <span class="preprocessor"></span>
+<a name="l00012"></a>00012 <span class="keywordtype">char</span> *<a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085" title="Appends n characters from string s2 to string s1.">dyn_strcat</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *, <span class="keyword">const</span> <span class="keywordtype">char</span> *, <span class="keywordtype">size_t</span>);
+<a name="l00013"></a>00013 
+<a name="l00014"></a><a class="code" href="../../d3/d91/utils_8c_a212574dce3faf8ce3d9686adc8e7a133.html#a212574dce3faf8ce3d9686adc8e7a133">00014</a> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="../../d3/d91/utils_8c_a212574dce3faf8ce3d9686adc8e7a133.html#a212574dce3faf8ce3d9686adc8e7a133" title="A flag that indicates whether the log is active or no.">logactive</a> = <span class="keyword">false</span>; 
+<a name="l00027"></a><a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085">00027</a> <span class="keywordtype">char</span> *<a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085" title="Appends n characters from string s2 to string s1.">dyn_strcat</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s1, <span class="keyword">const</span> <span class="keywordtype">char</span> *s2, <span class="keywordtype">size_t</span> n) {
+<a name="l00028"></a>00028 
+<a name="l00029"></a>00029         <span class="keywordtype">char</span> *result;
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031         <span class="keywordflow">if</span>(n&gt;strlen(s2) || n&lt;=0){
+<a name="l00032"></a>00032                 n = strlen(s2);
+<a name="l00033"></a>00033         }
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035         result = (<span class="keywordtype">char</span> *) malloc((strlen(s1) +  n  + 1) * <span class="keyword">sizeof</span>(char));
+<a name="l00036"></a>00036         <span class="keywordflow">if</span> (result == NULL) {
+<a name="l00037"></a>00037                 exit(EXIT_FAILURE);
+<a name="l00038"></a>00038         }
 <a name="l00039"></a>00039 
-<a name="l00040"></a>00040         va_start(args, format);
-<a name="l00041"></a>00041 
-<a name="l00042"></a>00042         vsyslog(priority, iso_format, args);
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044         va_end(args);
+<a name="l00040"></a>00040         strcpy(result, s1);
+<a name="l00041"></a>00041         strncat(result, s2, n);
+<a name="l00042"></a>00042 
+<a name="l00043"></a>00043         <span class="keywordflow">return</span> result;
+<a name="l00044"></a>00044 }
 <a name="l00045"></a>00045 
-<a name="l00046"></a>00046         <span class="keywordflow">return</span>;
-<a name="l00047"></a>00047 }
-<a name="l00048"></a>00048 
-<a name="l00054"></a><a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a">00054</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>){
-<a name="l00055"></a>00055         <span class="keywordflow">if</span>(!<a class="code" href="../../d3/d91/utils_8c_a212574dce3faf8ce3d9686adc8e7a133.html#a212574dce3faf8ce3d9686adc8e7a133" title="A flag that indicates whether the log is active or no.">logactive</a>){
-<a name="l00056"></a>00056 <span class="preprocessor"># ifdef SYSLOG_43</span>
-<a name="l00057"></a>00057 <span class="preprocessor"></span>        openlog(name, LOG_PID, LOG_DAEMON);
-<a name="l00058"></a>00058 <span class="preprocessor"># endif</span>
-<a name="l00059"></a>00059 <span class="preprocessor"></span><span class="preprocessor"># ifdef SYSLOG_42</span>
-<a name="l00060"></a>00060 <span class="preprocessor"></span>        openlog(name, LOG_PID);
-<a name="l00061"></a>00061 <span class="preprocessor"># endif</span>
-<a name="l00062"></a>00062 <span class="preprocessor"></span>        <a class="code" href="../../d3/d91/utils_8c_a212574dce3faf8ce3d9686adc8e7a133.html#a212574dce3faf8ce3d9686adc8e7a133" title="A flag that indicates whether the log is active or no.">logactive</a> = <span class="keyword">true</span>;
-<a name="l00063"></a>00063         }
-<a name="l00064"></a>00064 }
-<a name="l00065"></a>00065 
-<a name="l00070"></a><a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d">00070</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on a log in case of failure.">safe_write</a>(<span class="keywordtype">int</span> fd, <span class="keyword">const</span> <span class="keywordtype">void</span> *buf,<span class="keywordtype">size_t</span> count){
-<a name="l00071"></a>00071         <span class="keywordflow">if</span>(write(fd, buf, count)&lt;0){
-<a name="l00072"></a>00072                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
-<a name="l00073"></a>00073                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling write function: %m&quot;</span>);
-<a name="l00074"></a>00074         }
-<a name="l00075"></a>00075 }
-<a name="l00076"></a>00076 
-<a name="l00081"></a><a class="code" href="../../d3/d91/utils_8c_a9029091af48493711256a4c9d89e2878.html#a9029091af48493711256a4c9d89e2878">00081</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a9029091af48493711256a4c9d89e2878.html#a9029091af48493711256a4c9d89e2878" title="Wrapper for sendto function that prints on a log in case of failure.">safe_sendto</a>(<span class="keywordtype">int</span> sockfd,<span class="keyword">const</span> <span class="keywordtype">void</span> *buf,<span class="keywordtype">size_t</span> len,<span class="keywordtype">int</span> flags,<span class="keyword">const</span> <span class="keyword">struct</span> sockaddr *destaddr, socklen_t addrlen){
-<a name="l00082"></a>00082         <span class="keywordflow">if</span>(sendto(sockfd, buf, len, flags, destaddr, addrlen)&lt;0){
-<a name="l00083"></a>00083                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
-<a name="l00084"></a>00084                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling sendto function: %m&quot;</span>);
-<a name="l00085"></a>00085         }
-<a name="l00086"></a>00086 }
-<a name="l00087"></a>00087 
-<a name="l00092"></a><a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab">00092</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on a log in case of failure.">safe_read</a>(<span class="keywordtype">int</span> fd,<span class="keywordtype">void</span> *buf,<span class="keywordtype">size_t</span> nbytes){
-<a name="l00093"></a>00093         <span class="keywordflow">if</span>(read(fd, buf, nbytes)&lt;0) {
-<a name="l00094"></a>00094                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
-<a name="l00095"></a>00095                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling read function: %m&quot;</span>);
-<a name="l00096"></a>00096         }
-<a name="l00097"></a>00097 }
-<a name="l00098"></a>00098 
-<a name="l00103"></a><a class="code" href="../../d3/d91/utils_8c_a2e46a9bc63249d4d1146c8bbe955a383.html#a2e46a9bc63249d4d1146c8bbe955a383">00103</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a2e46a9bc63249d4d1146c8bbe955a383.html#a2e46a9bc63249d4d1146c8bbe955a383" title="Wrapper for chdir function that prints on a log in case of failure.">safe_chdir</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *path){
-<a name="l00104"></a>00104         <span class="keywordflow">if</span>(chdir(path)&lt;0){
-<a name="l00105"></a>00105                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
-<a name="l00106"></a>00106                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling chdir function: %m&quot;</span>);
-<a name="l00107"></a>00107         }
-<a name="l00108"></a>00108 }
-<a name="l00109"></a>00109 
-<a name="l00114"></a><a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2">00114</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on a log in case of failure.">safe_close</a>(<span class="keywordtype">int</span> fd){
-<a name="l00115"></a>00115         <span class="keywordflow">if</span>(close(fd)&lt;0){
-<a name="l00116"></a>00116                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
-<a name="l00117"></a>00117                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling close function: %m&quot;</span>);
-<a name="l00118"></a>00118         }
-<a name="l00119"></a>00119 }
-<a name="l00120"></a>00120 
-<a name="l00125"></a><a class="code" href="../../d3/d91/utils_8c_a70df381aa97915e5715b7eb01465e176.html#a70df381aa97915e5715b7eb01465e176">00125</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a70df381aa97915e5715b7eb01465e176.html#a70df381aa97915e5715b7eb01465e176" title="Wrapper for fclose function that prints on a log in case of failure.">safe_fclose</a>(FILE *fp){
-<a name="l00126"></a>00126         <span class="keywordflow">if</span>(fclose(fp)!=0){
-<a name="l00127"></a>00127                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
-<a name="l00128"></a>00128                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling fclose function: %m&quot;</span>);
-<a name="l00129"></a>00129         }
-<a name="l00130"></a>00130 }
-<a name="l00131"></a>00131 
-<a name="l00136"></a><a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3">00136</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<span class="keywordtype">int</span> fd, <span class="keyword">const</span> <span class="keywordtype">void</span> *buf,<span class="keywordtype">size_t</span> count){
-<a name="l00137"></a>00137         <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on a log in case of failure.">safe_write</a>(fd, buf, count);
-<a name="l00138"></a>00138         fsync(fd);
-<a name="l00139"></a>00139 }
-<a name="l00140"></a>00140 
-<a name="l00145"></a><a class="code" href="../../d3/d91/utils_8c_a217c40f6d1e7a89e9157fe2ea937ea12.html#a217c40f6d1e7a89e9157fe2ea937ea12">00145</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a217c40f6d1e7a89e9157fe2ea937ea12.html#a217c40f6d1e7a89e9157fe2ea937ea12" title="Wrapper for sendto function that forces stream flush.">sendto_and_push</a>(<span class="keywordtype">int</span> sockfd,<span class="keyword">const</span> <span class="keywordtype">void</span> *buf,<span class="keywordtype">size_t</span> len,<span class="keywordtype">int</span> flags,<span class="keyword">const</span> <span class="keyword">struct</span> sockaddr *destaddr, socklen_t addrlen){
-<a name="l00146"></a>00146         <a class="code" href="../../d3/d91/utils_8c_a9029091af48493711256a4c9d89e2878.html#a9029091af48493711256a4c9d89e2878" title="Wrapper for sendto function that prints on a log in case of failure.">safe_sendto</a>(sockfd, buf, len, flags, destaddr, addrlen);
-<a name="l00147"></a>00147         fsync(sockfd);
-<a name="l00148"></a>00148 }
-<a name="l00149"></a>00149 
+<a name="l00052"></a><a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17">00052</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(<span class="keywordtype">int</span> priority, <span class="keyword">const</span> <span class="keywordtype">char</span> *format, ...) {
+<a name="l00053"></a>00053         va_list args;
+<a name="l00054"></a>00054         <span class="keywordtype">char</span> *placeholder = NULL;
+<a name="l00055"></a>00055         <span class="keywordtype">char</span> *remaining = NULL;
+<a name="l00056"></a>00056         <span class="keywordtype">char</span> *saved_remaining = NULL; <span class="comment">//Salva il valore iniziale di remaining, per liberarlo eventualmente</span>
+<a name="l00057"></a>00057         <span class="keywordtype">char</span> *iso_format = NULL;
+<a name="l00058"></a>00058         <span class="keywordtype">char</span> *tmp = NULL;
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060         remaining  = saved_remaining = strdup(format);
+<a name="l00061"></a>00061 
+<a name="l00062"></a>00062         <span class="keywordflow">while</span> ((placeholder = strchr(remaining, <span class="charliteral">&#39;%&#39;</span>))) {
+<a name="l00063"></a>00063                 <span class="keywordflow">if</span>(iso_format != NULL){
+<a name="l00064"></a>00064                         tmp = <a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085" title="Appends n characters from string s2 to string s1.">dyn_strcat</a>(iso_format, remaining, placeholder - remaining);
+<a name="l00065"></a>00065                         free(iso_format);
+<a name="l00066"></a>00066                         iso_format = strdup(tmp);
+<a name="l00067"></a>00067                         free(tmp);
+<a name="l00068"></a>00068                 } <span class="keywordflow">else</span> {
+<a name="l00069"></a>00069                         iso_format = strndup(remaining, (placeholder - remaining));
+<a name="l00070"></a>00070                 }
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072                 <span class="keywordflow">if</span> (*(placeholder + 1) == <span class="charliteral">&#39;m&#39;</span>) {
+<a name="l00073"></a>00073                         tmp = <a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085" title="Appends n characters from string s2 to string s1.">dyn_strcat</a>(iso_format, strerror(errno) , -1);
+<a name="l00074"></a>00074                 } <span class="keywordflow">else</span> {
+<a name="l00075"></a>00075                         tmp = <a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085" title="Appends n characters from string s2 to string s1.">dyn_strcat</a>(iso_format, placeholder, 2);
+<a name="l00076"></a>00076                 }
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078                 free(iso_format);
+<a name="l00079"></a>00079                 iso_format = strdup(tmp);
+<a name="l00080"></a>00080                 free(tmp);
+<a name="l00081"></a>00081                 remaining = placeholder + 2;
+<a name="l00082"></a>00082         }
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084         tmp = <a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085" title="Appends n characters from string s2 to string s1.">dyn_strcat</a>(iso_format, remaining, -1);
+<a name="l00085"></a>00085         free(iso_format);
+<a name="l00086"></a>00086         iso_format = strdup(tmp);
+<a name="l00087"></a>00087         free(tmp);
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089         va_start(args, format);
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091         vsyslog(priority, iso_format, args);
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093         va_end(args);
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095         free(saved_remaining);
+<a name="l00096"></a>00096         free(iso_format);
+<a name="l00097"></a>00097         remaining = saved_remaining = NULL;
+<a name="l00098"></a>00098         iso_format = NULL;
+<a name="l00099"></a>00099 
+<a name="l00100"></a>00100         <span class="keywordflow">return</span>;
+<a name="l00101"></a>00101 }
+<a name="l00102"></a>00102 
+<a name="l00108"></a><a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a">00108</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="../../da/d3e/hunt_8c_ad8d465ebab381c5670e270054c3d0b6a.html#ad8d465ebab381c5670e270054c3d0b6a" title="Indicates the name of a player.">name</a>){
+<a name="l00109"></a>00109         <span class="keywordflow">if</span>(!<a class="code" href="../../d3/d91/utils_8c_a212574dce3faf8ce3d9686adc8e7a133.html#a212574dce3faf8ce3d9686adc8e7a133" title="A flag that indicates whether the log is active or no.">logactive</a>){
+<a name="l00110"></a>00110 <span class="preprocessor"># ifdef SYSLOG_43</span>
+<a name="l00111"></a>00111 <span class="preprocessor"></span>        openlog(name, LOG_PID, LOG_DAEMON);
+<a name="l00112"></a>00112 <span class="preprocessor"># endif</span>
+<a name="l00113"></a>00113 <span class="preprocessor"></span><span class="preprocessor"># ifdef SYSLOG_42</span>
+<a name="l00114"></a>00114 <span class="preprocessor"></span>        openlog(name, LOG_PID);
+<a name="l00115"></a>00115 <span class="preprocessor"># endif</span>
+<a name="l00116"></a>00116 <span class="preprocessor"></span>        <a class="code" href="../../d3/d91/utils_8c_a212574dce3faf8ce3d9686adc8e7a133.html#a212574dce3faf8ce3d9686adc8e7a133" title="A flag that indicates whether the log is active or no.">logactive</a> = <span class="keyword">true</span>;
+<a name="l00117"></a>00117         }
+<a name="l00118"></a>00118 }
+<a name="l00119"></a>00119 
+<a name="l00124"></a><a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d">00124</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on a log in case of failure.">safe_write</a>(<span class="keywordtype">int</span> fd, <span class="keyword">const</span> <span class="keywordtype">void</span> *buf,<span class="keywordtype">size_t</span> count){
+<a name="l00125"></a>00125         <span class="keywordflow">if</span>(write(fd, buf, count)&lt;0){
+<a name="l00126"></a>00126                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
+<a name="l00127"></a>00127                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling write function: %m&quot;</span>);
+<a name="l00128"></a>00128         }
+<a name="l00129"></a>00129 }
+<a name="l00130"></a>00130 
+<a name="l00135"></a><a class="code" href="../../d3/d91/utils_8c_a9029091af48493711256a4c9d89e2878.html#a9029091af48493711256a4c9d89e2878">00135</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a9029091af48493711256a4c9d89e2878.html#a9029091af48493711256a4c9d89e2878" title="Wrapper for sendto function that prints on a log in case of failure.">safe_sendto</a>(<span class="keywordtype">int</span> sockfd,<span class="keyword">const</span> <span class="keywordtype">void</span> *buf,<span class="keywordtype">size_t</span> len,<span class="keywordtype">int</span> flags,<span class="keyword">const</span> <span class="keyword">struct</span> sockaddr *destaddr, socklen_t addrlen){
+<a name="l00136"></a>00136         <span class="keywordflow">if</span>(sendto(sockfd, buf, len, flags, destaddr, addrlen)&lt;0){
+<a name="l00137"></a>00137                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
+<a name="l00138"></a>00138                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling sendto function: %m&quot;</span>);
+<a name="l00139"></a>00139         }
+<a name="l00140"></a>00140 }
+<a name="l00141"></a>00141 
+<a name="l00146"></a><a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab">00146</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a8c3df28ee1d3b37791ea0460ec185aab.html#a8c3df28ee1d3b37791ea0460ec185aab" title="Wrapper for read function that prints on a log in case of failure.">safe_read</a>(<span class="keywordtype">int</span> fd,<span class="keywordtype">void</span> *buf,<span class="keywordtype">size_t</span> nbytes){
+<a name="l00147"></a>00147         <span class="keywordflow">if</span>(read(fd, buf, nbytes)&lt;0) {
+<a name="l00148"></a>00148                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
+<a name="l00149"></a>00149                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling read function: %m&quot;</span>);
+<a name="l00150"></a>00150         }
+<a name="l00151"></a>00151 }
+<a name="l00152"></a>00152 
+<a name="l00157"></a><a class="code" href="../../d3/d91/utils_8c_a2e46a9bc63249d4d1146c8bbe955a383.html#a2e46a9bc63249d4d1146c8bbe955a383">00157</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a2e46a9bc63249d4d1146c8bbe955a383.html#a2e46a9bc63249d4d1146c8bbe955a383" title="Wrapper for chdir function that prints on a log in case of failure.">safe_chdir</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *path){
+<a name="l00158"></a>00158         <span class="keywordflow">if</span>(chdir(path)&lt;0){
+<a name="l00159"></a>00159                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
+<a name="l00160"></a>00160                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling chdir function: %m&quot;</span>);
+<a name="l00161"></a>00161         }
+<a name="l00162"></a>00162 }
+<a name="l00163"></a>00163 
+<a name="l00168"></a><a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2">00168</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a729009688249e2dcf7c3d97837ff20b2.html#a729009688249e2dcf7c3d97837ff20b2" title="Wrapper for close function that prints on a log in case of failure.">safe_close</a>(<span class="keywordtype">int</span> fd){
+<a name="l00169"></a>00169         <span class="keywordflow">if</span>(close(fd)&lt;0){
+<a name="l00170"></a>00170                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
+<a name="l00171"></a>00171                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling close function: %m&quot;</span>);
+<a name="l00172"></a>00172         }
+<a name="l00173"></a>00173 }
+<a name="l00174"></a>00174 
+<a name="l00179"></a><a class="code" href="../../d3/d91/utils_8c_a70df381aa97915e5715b7eb01465e176.html#a70df381aa97915e5715b7eb01465e176">00179</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a70df381aa97915e5715b7eb01465e176.html#a70df381aa97915e5715b7eb01465e176" title="Wrapper for fclose function that prints on a log in case of failure.">safe_fclose</a>(FILE *fp){
+<a name="l00180"></a>00180         <span class="keywordflow">if</span>(fclose(fp)!=0){
+<a name="l00181"></a>00181                 <a class="code" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a" title="Forces the system to open a log file.">forcelogopen</a>(<span class="stringliteral">&quot;HUNTerrorlog&quot;</span>);
+<a name="l00182"></a>00182                 <a class="code" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17" title="Reimplements the syslog function in order to avoid the use of m.">iso_syslog</a>(LOG_USER, <span class="stringliteral">&quot;Error calling fclose function: %m&quot;</span>);
+<a name="l00183"></a>00183         }
+<a name="l00184"></a>00184 }
+<a name="l00185"></a>00185 
+<a name="l00190"></a><a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3">00190</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_af1a30f13fcbf69d6aeeb7c0e577606e3.html#af1a30f13fcbf69d6aeeb7c0e577606e3" title="Wrapper for write function that forces stream flush.">write_and_push</a>(<span class="keywordtype">int</span> fd, <span class="keyword">const</span> <span class="keywordtype">void</span> *buf,<span class="keywordtype">size_t</span> count){
+<a name="l00191"></a>00191         <a class="code" href="../../d3/d91/utils_8c_aec277b481f221a96a926f374221d662d.html#aec277b481f221a96a926f374221d662d" title="Wrapper for write function that prints on a log in case of failure.">safe_write</a>(fd, buf, count);
+<a name="l00192"></a>00192         fsync(fd);
+<a name="l00193"></a>00193 }
+<a name="l00194"></a>00194 
+<a name="l00199"></a><a class="code" href="../../d3/d91/utils_8c_a217c40f6d1e7a89e9157fe2ea937ea12.html#a217c40f6d1e7a89e9157fe2ea937ea12">00199</a> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/utils_8c_a217c40f6d1e7a89e9157fe2ea937ea12.html#a217c40f6d1e7a89e9157fe2ea937ea12" title="Wrapper for sendto function that forces stream flush.">sendto_and_push</a>(<span class="keywordtype">int</span> sockfd,<span class="keyword">const</span> <span class="keywordtype">void</span> *buf,<span class="keywordtype">size_t</span> len,<span class="keywordtype">int</span> flags,<span class="keyword">const</span> <span class="keyword">struct</span> sockaddr *destaddr, socklen_t addrlen){
+<a name="l00200"></a>00200         <a class="code" href="../../d3/d91/utils_8c_a9029091af48493711256a4c9d89e2878.html#a9029091af48493711256a4c9d89e2878" title="Wrapper for sendto function that prints on a log in case of failure.">safe_sendto</a>(sockfd, buf, len, flags, destaddr, addrlen);
+<a name="l00201"></a>00201         fsync(sockfd);
+<a name="l00202"></a>00202 }
+<a name="l00203"></a>00203 
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d3/d91/utils_8c.html">utils.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 15 2012 14:35:15 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 16 2012 15:44:59 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

@@ -42,26 +42,24 @@ __RCSID("$NetBSD: draw.c,v 1.3 2003/06/11 12:00:22 wiz Exp $");
  * @param[in] pp The player on whose screen we want to represent the maze.
  * [PSR]
  */
-void drawmaze(PLAYER *pp){
-	int	x;
-	char	*sp;
-	int	y;
-	char	*endp;
+void drawmaze(PLAYER *pp) {
+	int x;
+	char *sp;
+	int y;
+	char *endp;
 
 	clrscr(pp);
 	outstr(pp, pp->p_maze[0], WIDTH);
 	for (y = 1; y < HEIGHT - 1; y++) {
 		endp = &pp->p_maze[y][WIDTH];
-		for (x = 0, sp = pp->p_maze[y]; sp < endp; x++, sp++){
+		for (x = 0, sp = pp->p_maze[y]; sp < endp; x++, sp++) {
 			if (*sp != SPACE) {
 				cgoto(pp, y, x);
-				if (pp->p_x == x && pp->p_y == y){
+				if (pp->p_x == x && pp->p_y == y) {
 					outch(pp, translate(*sp));
-				}
-				else if (is_player(*sp)){
+				} else if (is_player(*sp)) {
 					outch(pp, player_sym(pp, y, x));
-				}
-				else{
+				} else {
 					outch(pp, *sp);
 				}
 			}
@@ -77,9 +75,9 @@ void drawmaze(PLAYER *pp){
  * the screen size is 80x24 with the maze being 64x24).
  * @param[in] pp A player on whose screen we want to put up the status line.
  */
-void drawstatus(PLAYER *pp){
-	int	i;
-	PLAYER	*np;
+void drawstatus(PLAYER *pp) {
+	int i;
+	PLAYER *np;
 
 	cgoto(pp, STAT_AMMO_ROW, STAT_LABEL_COL);
 	outstr(pp, "Ammo:", 5);
@@ -108,8 +106,7 @@ void drawstatus(PLAYER *pp){
 	outstr(pp, "Player:", 7);
 	for (i = STAT_PLAY_ROW + 1, np = player; np < end_player; np++) {
 		(void) sprintf(gen_buf, "%5.2f%c%-10.10s %c", np->p_ident->i_score,
-			stat_char(np), np->p_ident->i_name,
-			np->p_ident->i_team);
+				stat_char(np), np->p_ident->i_name, np->p_ident->i_team);
 		cgoto(pp, i++, STAT_NAME_COL);
 		outstr(pp, gen_buf, STAT_NAME_LEN);
 	}
@@ -119,7 +116,7 @@ void drawstatus(PLAYER *pp){
 	outstr(pp, "Monitor:", 8);
 	for (i = STAT_MON_ROW + 1, np = monitor; np < end_monitor; np++) {
 		(void) sprintf(gen_buf, "%5.5s %-10.10s %c", " ",
-			np->p_ident->i_name, np->p_ident->i_team);
+				np->p_ident->i_name, np->p_ident->i_team);
 		cgoto(pp, i++, STAT_NAME_COL);
 		outstr(pp, gen_buf, STAT_NAME_LEN);
 	}
@@ -131,45 +128,45 @@ void drawstatus(PLAYER *pp){
  * @param[in] pp A player.
  * [PSR]
  */
-void look(PLAYER *pp){
-	int	x, y;
+void look(PLAYER *pp) {
+	int x, y;
 
 	x = pp->p_x;
 	y = pp->p_y;
 
 	check(pp, y - 1, x - 1);
-	check(pp, y - 1, x    );
+	check(pp, y - 1, x);
 	check(pp, y - 1, x + 1);
-	check(pp, y    , x - 1);
-	check(pp, y    , x    );
-	check(pp, y    , x + 1);
+	check(pp, y, x - 1);
+	check(pp, y, x);
+	check(pp, y, x + 1);
 	check(pp, y + 1, x - 1);
-	check(pp, y + 1, x    );
+	check(pp, y + 1, x);
 	check(pp, y + 1, x + 1);
 
 	switch (pp->p_face) {
-	  case LEFTS:
+	case LEFTS:
 		see(pp, LEFTS);
 		see(pp, ABOVE);
 		see(pp, BELOW);
 		break;
-	  case RIGHT:
+	case RIGHT:
 		see(pp, RIGHT);
 		see(pp, ABOVE);
 		see(pp, BELOW);
 		break;
-	  case ABOVE:
+	case ABOVE:
 		see(pp, ABOVE);
 		see(pp, LEFTS);
 		see(pp, RIGHT);
 		break;
-	  case BELOW:
+	case BELOW:
 		see(pp, BELOW);
 		see(pp, LEFTS);
 		see(pp, RIGHT);
 		break;
 # ifdef FLY
-	  case FLYER:
+		case FLYER:
 		break;
 # endif
 	}
@@ -182,97 +179,97 @@ void look(PLAYER *pp){
  * @param[in] face A symbol representing the enemy basing on its position.
  * [PSR]
  */
-void see(PLAYER *pp,int face){
-	char	*sp;
-	int	y, x, i, cnt;
+void see(PLAYER *pp, int face) {
+	char *sp;
+	int y, x, i, cnt;
 
 	x = pp->p_x;
 	y = pp->p_y;
 
 	switch (face) {
-	  case LEFTS:
+	case LEFTS:
 		sp = &maze[y][x];
-		for (i = 0; see_over[(int)*--sp]; i++){
+		for (i = 0; see_over[(int) *--sp]; i++) {
 			continue;
 		}
 
-		if (i == 0){
+		if (i == 0) {
 			break;
 		}
 
 		cnt = i;
 		x = pp->p_x - 1;
 		--y;
-		while (i--){
+		while (i--) {
 			check(pp, y, --x);
 		}
 		i = cnt;
 		x = pp->p_x - 1;
 		++y;
-		while (i--){
+		while (i--) {
 			check(pp, y, --x);
 		}
 		i = cnt;
 		x = pp->p_x - 1;
 		++y;
-		while (i--){
+		while (i--) {
 			check(pp, y, --x);
 		}
 		break;
-	  case RIGHT:
+	case RIGHT:
 		sp = &maze[y][++x];
-		for (i = 0; see_over[(int)*sp++]; i++){
+		for (i = 0; see_over[(int) *sp++]; i++) {
 			continue;
 		}
 
-		if (i == 0){
+		if (i == 0) {
 			break;
 		}
 
 		cnt = i;
 		x = pp->p_x + 1;
 		--y;
-		while (i--){
+		while (i--) {
 			check(pp, y, ++x);
 		}
 		i = cnt;
 		x = pp->p_x + 1;
 		++y;
-		while (i--){
+		while (i--) {
 			check(pp, y, ++x);
 		}
 		i = cnt;
 		x = pp->p_x + 1;
 		++y;
-		while (i--){
+		while (i--) {
 			check(pp, y, ++x);
 		}
 		break;
-	  case ABOVE:
+	case ABOVE:
 		sp = &maze[--y][x];
-		if (!see_over[(int)*sp]){
+		if (!see_over[(int) *sp]) {
 			break;
 		}
 		do {
 			--y;
 			sp -= sizeof maze[0];
 			check(pp, y, x - 1);
-			check(pp, y, x    );
+			check(pp, y, x);
 			check(pp, y, x + 1);
-		} while (see_over[(int)*sp]);
+		} while (see_over[(int) *sp]);
 		break;
-	  case BELOW:
+	case BELOW:
 		sp = &maze[++y][x];
-		if (!see_over[(int)*sp]){
+		if (!see_over[(int) *sp]) {
 			break;
 		}
 		do {
 			y++;
 			sp += sizeof maze[0];
 			check(pp, y, x - 1);
-			check(pp, y, x    );
+			check(pp, y, x);
 			check(pp, y, x + 1);
-		} while (see_over[(int)*sp]);
+		} while (see_over[(int) *sp]);
 		break;
 	}
 }
@@ -284,23 +281,21 @@ void see(PLAYER *pp,int face){
  * @param[in] x Player's coordinate.
  * [PSR]
  */
-void check(PLAYER *pp,int y,int x){
-	int	index;
-	int	ch;
-	PLAYER	*rpp;
+void check(PLAYER *pp, int y, int x) {
+	int index;
+	int ch;
+	PLAYER *rpp;
 
 	index = y * sizeof maze[0] + x;
 	ch = ((char *) maze)[index];
 	if (ch != ((char *) pp->p_maze)[index]) {
 		rpp = pp;
 		cgoto(rpp, y, x);
-		if (x == rpp->p_x && y == rpp->p_y){
+		if (x == rpp->p_x && y == rpp->p_y) {
 			outch(rpp, translate(ch));
-		}
-		else if (is_player(ch)){
+		} else if (is_player(ch)) {
 			outch(rpp, player_sym(rpp, y, x));
-		}
-		else{
+		} else {
 			outch(rpp, ch);
 		}
 		((char *) rpp->p_maze)[index] = ch;
@@ -311,10 +306,10 @@ void check(PLAYER *pp,int y,int x){
  * Update the status of players.
  * @param[in] pp A player.
  */
-void showstat(PLAYER *pp){
-	PLAYER	*np;
-	int	y;
-	char	c;
+void showstat(PLAYER *pp) {
+	PLAYER *np;
+	int y;
+	char c;
 
 	y = STAT_PLAY_ROW + 1 + (pp - player);
 	c = stat_char(pp);
@@ -336,16 +331,16 @@ void showstat(PLAYER *pp){
  * @param[in] pp A player.
  * @param[in] draw If true is possible to draw the player, otherwise no.
  */
-void drawplayer(PLAYER *pp,bool draw){
-	PLAYER	*newp;
-	int	x, y;
+void drawplayer(PLAYER *pp, bool draw) {
+	PLAYER *newp;
+	int x, y;
 
 	x = pp->p_x;
 	y = pp->p_y;
 	maze[y][x] = draw ? pp->p_face : pp->p_over;
 
 # ifdef MONITOR
-	for (newp = monitor; newp < end_monitor; newp++){
+	for (newp = monitor; newp < end_monitor; newp++) {
 		check(newp, y, x);
 	}
 # endif
@@ -358,18 +353,17 @@ void drawplayer(PLAYER *pp,bool draw){
 		if (newp->p_scan == 0) {
 			newp->p_scan--;
 			showstat(newp);
-		}
-		else if (newp->p_scan > 0) {
-			if (pp->p_cloak < 0){
+		} else if (newp->p_scan > 0) {
+			if (pp->p_cloak < 0) {
 				check(newp, y, x);
 			}
 			newp->p_scan--;
 		}
 	}
-	if (!draw || pp->p_cloak < 0){
+	if (!draw || pp->p_cloak < 0) {
 		return;
 	}
-	if (pp->p_cloak-- == 0){
+	if (pp->p_cloak-- == 0) {
 		showstat(pp);
 	}
 }
@@ -380,7 +374,7 @@ void drawplayer(PLAYER *pp,bool draw){
  * @param[in] s The message we want to print.
  * [PSR]
  */
-void message(PLAYER *pp,const char *s){
+void message(PLAYER *pp, const char *s) {
 	cgoto(pp, HEIGHT, 0);
 	outstr(pp, s, strlen(s));
 	ce(pp);
@@ -392,15 +386,15 @@ void message(PLAYER *pp,const char *s){
  * @param[in] ch The character to be turned.
  * \return The turned character.
  */
-char translate(char ch){
+char translate(char ch) {
 	switch (ch) {
-	  case LEFTS:
+	case LEFTS:
 		return '<';
-	  case RIGHT:
+	case RIGHT:
 		return '>';
-	  case ABOVE:
+	case ABOVE:
 		return '^';
-	  case BELOW:
+	case BELOW:
 		return 'v';
 	}
 	return ch;
@@ -413,19 +407,19 @@ char translate(char ch){
  * @param[in] x A player coordinate.
  * \return The player symbol.
  */
-int player_sym(const PLAYER *pp,int y,int x){
-	PLAYER	*npp;
+int player_sym(const PLAYER *pp, int y, int x) {
+	PLAYER *npp;
 
 	npp = play_at(y, x);
-	if (npp->p_ident->i_team == ' '){
+	if (npp->p_ident->i_team == ' ') {
 		return maze[y][x];
 	}
 #ifdef MONITOR
-	if (pp->p_ident->i_team == '*'){
+	if (pp->p_ident->i_team == '*') {
 		return npp->p_ident->i_team;
 	}
 #endif
-	if (pp->p_ident->i_team != npp->p_ident->i_team){
+	if (pp->p_ident->i_team != npp->p_ident->i_team) {
 		return maze[y][x];
 	}
 	return pp->p_ident->i_team;

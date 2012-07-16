@@ -76,5 +76,5 @@ int shot_req[MAXBOMB] = { BULREQ, GRENREQ, SATREQ, BOMB7REQ, BOMB9REQ,
 int shot_type[MAXBOMB] = { SHOT, GRENADE, SATCHEL, BOMB, BOMB, BOMB, BOMB, BOMB,
 		BOMB, BOMB, BOMB, }; /**< The possible shot types. [PSR] */
 #ifdef OOZE
-int slime_req[MAXSLIME] = { SLIMEREQ, SSLIMEREQ, SLIME2REQ, SLIME3REQ, };
+int slime_req[MAXSLIME] = {SLIMEREQ, SSLIMEREQ, SLIME2REQ, SLIME3REQ,};
 #endif

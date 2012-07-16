@@ -39,29 +39,29 @@ __RCSID("$NetBSD: execute.c,v 1.4 2004/01/27 20:30:29 jsm Exp $");
 
 # include	<stdlib.h>
 
-static	void	cloak(PLAYER *);
-static	void	face(PLAYER *, int);
-static	void	fire(PLAYER *, int);
+static void cloak(PLAYER *);
+static void face(PLAYER *, int);
+static void fire(PLAYER *, int);
 #ifdef OOZE
-static	void	fire_slime(PLAYER *, int);
+static void fire_slime(PLAYER *, int);
 #endif
-static	void	move_player(PLAYER *, int);
-static	void	pickup(PLAYER *, int, int, int, int);
-static	void	scan(PLAYER *);
+static void move_player(PLAYER *, int);
+static void pickup(PLAYER *, int, int, int, int);
+static void scan(PLAYER *);
 
 # ifdef MONITOR
 /**
  * Execute a single monitor command.
  */
-void mon_execute(PLAYER *pp){
-	char	ch;
+void mon_execute(PLAYER *pp) {
+	char ch;
 
 	ch = pp->p_cbuf[pp->p_ncount++];
 	switch (ch) {
-	  case CTRL('L'):
+		case CTRL('L'):
 		sendcom(pp, REDRAW);
 		break;
-	  case 'q':
+		case 'q':
 		(void) strcpy(pp->p_death, "| Quit |");
 		break;
 	}
@@ -72,18 +72,18 @@ void mon_execute(PLAYER *pp){
  * Execute a single command.
  * @param[in] pp The player who gives the command.
  */
-void execute(PLAYER *pp){
-	char	ch;
+void execute(PLAYER *pp) {
+	char ch;
 
 	ch = pp->p_cbuf[pp->p_ncount++];
 
 # ifdef	FLY
 	if (pp->p_flying >= 0) {
 		switch (ch) {
-		  case CTRL('L'):
+			case CTRL('L'):
 			sendcom(pp, REDRAW);
 			break;
-		  case 'q':
+			case 'q':
 			(void) strcpy(pp->p_death, "| Quit |");
 			break;
 		}
@@ -92,91 +92,91 @@ void execute(PLAYER *pp){
 # endif
 
 	switch (ch) {
-	  case CTRL('L'):
+	case CTRL('L'):
 		sendcom(pp, REDRAW);
 		break;
-	  case 'a':
+	case 'a':
 		move_player(pp, LEFTS);
 		break;
-	  case 'A':
+	case 'A':
 		face(pp, LEFTS);
 		break;
-	  case 's':
+	case 's':
 		move_player(pp, BELOW);
 		break;
-	  case 'S':
+	case 'S':
 		face(pp, BELOW);
 		break;
-	  case 'w':
+	case 'w':
 		move_player(pp, ABOVE);
 		break;
-	  case 'W':
+	case 'W':
 		face(pp, ABOVE);
 		break;
-	  case 'd':
+	case 'd':
 		move_player(pp, RIGHT);
 		break;
-	  case 'D':
+	case 'D':
 		face(pp, RIGHT);
 		break;
-	  case 'f':
-	  case '1':
-		fire(pp, 0);		/* SHOT */
+	case 'f':
+	case '1':
+		fire(pp, 0); /* SHOT */
 		break;
-	  case 'g':
-	  case '2':
-		fire(pp, 1);		/* GRENADE */
+	case 'g':
+	case '2':
+		fire(pp, 1); /* GRENADE */
 		break;
-	  case 'F':
-	  case '3':
-		fire(pp, 2);		/* SATCHEL */
+	case 'F':
+	case '3':
+		fire(pp, 2); /* SATCHEL */
 		break;
-	  case 'G':
-	  case '4':
-		fire(pp, 3);		/* 7x7 BOMB */
+	case 'G':
+	case '4':
+		fire(pp, 3); /* 7x7 BOMB */
 		break;
-	  case '5':
-		fire(pp, 4);		/* 9x9 BOMB */
+	case '5':
+		fire(pp, 4); /* 9x9 BOMB */
 		break;
-	  case '6':
-		fire(pp, 5);		/* 11x11 BOMB */
+	case '6':
+		fire(pp, 5); /* 11x11 BOMB */
 		break;
-	  case '7':
-		fire(pp, 6);		/* 13x13 BOMB */
+	case '7':
+		fire(pp, 6); /* 13x13 BOMB */
 		break;
-	  case '8':
-		fire(pp, 7);		/* 15x15 BOMB */
+	case '8':
+		fire(pp, 7); /* 15x15 BOMB */
 		break;
-	  case '9':
-		fire(pp, 8);		/* 17x17 BOMB */
+	case '9':
+		fire(pp, 8); /* 17x17 BOMB */
 		break;
-	  case '0':
-		fire(pp, 9);		/* 19x19 BOMB */
+	case '0':
+		fire(pp, 9); /* 19x19 BOMB */
 		break;
-	  case '@':
-		fire(pp, 10);		/* 21x21 BOMB */
+	case '@':
+		fire(pp, 10); /* 21x21 BOMB */
 		break;
 # ifdef	OOZE
-	  case 'o':
-		fire_slime(pp, 0);	/* SLIME */
+		case 'o':
+		fire_slime(pp, 0); /* SLIME */
 		break;
-	  case 'O':
-		fire_slime(pp, 1);	/* SSLIME */
+		case 'O':
+		fire_slime(pp, 1); /* SSLIME */
 		break;
-	  case 'p':
+		case 'p':
 		fire_slime(pp, 2);
 		break;
-	  case 'P':
+		case 'P':
 		fire_slime(pp, 3);
 		break;
 # endif
-	  case 'z':
+	case 'z':
 		scan(pp);
 		break;
-	  case 'c':
+	case 'c':
 		cloak(pp);
 		break;
-	  case 'q':
+	case 'q':
 		(void) strcpy(pp->p_death, "| Quit |");
 		break;
 	}
@@ -187,120 +187,117 @@ void execute(PLAYER *pp){
  * @param[in,out] pp The player who wants to move.
  * @param[in] dir The direction the player wants to go on.
  */
-static void move_player(PLAYER *pp,int dir){
-	PLAYER	*newp;
-	int	x, y;
-	bool	moved;
-	BULLET	*bp;
+static void move_player(PLAYER *pp, int dir) {
+	PLAYER *newp;
+	int x, y;
+	bool moved;
+	BULLET *bp;
 
 	y = pp->p_y;
 	x = pp->p_x;
 
 	switch (dir) {
-	  case LEFTS:
+	case LEFTS:
 		x--;
 		break;
-	  case RIGHT:
+	case RIGHT:
 		x++;
 		break;
-	  case ABOVE:
+	case ABOVE:
 		y--;
 		break;
-	  case BELOW:
+	case BELOW:
 		y++;
 		break;
 	}
 
 	moved = false;
 	switch (maze[y][x]) {
-	  case SPACE:
+	case SPACE:
 # ifdef RANDOM
-	  case DOOR:
+	case DOOR:
 # endif
 		moved = true;
 		break;
-	  case WALL1:
-	  case WALL2:
-	  case WALL3:
+	case WALL1:
+	case WALL2:
+	case WALL3:
 # ifdef REFLECT
-	  case WALL4:
-	  case WALL5:
+		case WALL4:
+		case WALL5:
 # endif
 		break;
-	  case MINE:
-	  case GMINE:
-		if (dir == pp->p_face){
+	case MINE:
+	case GMINE:
+		if (dir == pp->p_face) {
 			pickup(pp, y, x, 2, maze[y][x]);
-		}
-		else if (opposite(dir, pp->p_face)){
+		} else if (opposite(dir, pp->p_face)) {
 			pickup(pp, y, x, 95, maze[y][x]);
-		}
-		else{
+		} else {
 			pickup(pp, y, x, 50, maze[y][x]);
 		}
 		maze[y][x] = SPACE;
 		moved = true;
 		break;
-	  case SHOT:
-	  case GRENADE:
-	  case SATCHEL:
-	  case BOMB:
+	case SHOT:
+	case GRENADE:
+	case SATCHEL:
+	case BOMB:
 # ifdef OOZE
-	  case SLIME:
+		case SLIME:
 # endif
 # ifdef DRONE
-	  case DSHOT:
+		case DSHOT:
 # endif
 		bp = is_bullet(y, x);
-		if (bp != NULL){
+		if (bp != NULL) {
 			bp->b_expl = true;
 		}
 		maze[y][x] = SPACE;
 		moved = true;
 		break;
-	  case LEFTS:
-	  case RIGHT:
-	  case ABOVE:
-	  case BELOW:
-		if (dir != pp->p_face){
+	case LEFTS:
+	case RIGHT:
+	case ABOVE:
+	case BELOW:
+		if (dir != pp->p_face) {
 			sendcom(pp, BELL);
-		}
-		else {
+		} else {
 			newp = play_at(y, x);
 			checkdam(newp, pp, pp->p_ident, STABDAM, KNIFE);
 		}
 		break;
 # ifdef FLY
-	  case FLYER:
+		case FLYER:
 		newp = play_at(y, x);
 		message(newp, "Oooh, there's a short guy waving at you!");
 		message(pp, "You couldn't quite reach him!");
 		break;
 # endif
 # ifdef BOOTS
-	  case BOOT:
-	  case BOOT_PAIR:
-		if (maze[y][x] == BOOT){
+		case BOOT:
+		case BOOT_PAIR:
+		if (maze[y][x] == BOOT) {
 			pp->p_nboots++;
 		}
-		else{
+		else {
 			pp->p_nboots += 2;
 		}
 		for (newp = boot; newp < &boot[NBOOTS]; newp++) {
-			if (newp->p_flying < 0){
+			if (newp->p_flying < 0) {
 				continue;
 			}
 			if (newp->p_y == y && newp->p_x == x) {
 				newp->p_flying = -1;
-				if (newp->p_undershot){
+				if (newp->p_undershot) {
 					fixshots(y, x, newp->p_over);
 				}
 			}
 		}
-		if (pp->p_nboots == 2){
+		if (pp->p_nboots == 2) {
 			message(pp, "Wow!  A pair of boots!");
 		}
-		else{
+		else {
 			message(pp, "You can hobble around on one boot.");
 		}
 		maze[y][x] = SPACE;
@@ -309,7 +306,7 @@ static void move_player(PLAYER *pp,int dir){
 # endif
 	}
 	if (moved) {
-		if (pp->p_ncshot > 0){
+		if (pp->p_ncshot > 0) {
 			if (--pp->p_ncshot == MAXNCSHOT) {
 				cgoto(pp, STAT_GUN_ROW, STAT_VALUE_COL);
 				outstr(pp, " ok", 3);
@@ -332,7 +329,7 @@ static void move_player(PLAYER *pp,int dir){
  * @param[in,out] pp The player we want to change the direction.
  * @param[in] dir The new direction.
  */
-static void face(PLAYER *pp,int dir){
+static void face(PLAYER *pp, int dir) {
 	if (pp->p_face != dir) {
 		pp->p_face = dir;
 		drawplayer(pp, true);
@@ -344,23 +341,23 @@ static void face(PLAYER *pp,int dir){
  * @param[in,out] pp The player who want to fire a shot.
  * @param[in] req_index the type of the shot.
  */
-static void fire(PLAYER *pp,int req_index){
-	if (pp == NULL){
+static void fire(PLAYER *pp, int req_index) {
+	if (pp == NULL) {
 		return;
 	}
 # ifdef DEBUG
-	if (req_index < 0 || req_index >= MAXBOMB){
+	if (req_index < 0 || req_index >= MAXBOMB) {
 		message(pp, "What you do?");
 	}
 # endif
-	while (req_index >= 0 && pp->p_ammo < shot_req[req_index]){
+	while (req_index >= 0 && pp->p_ammo < shot_req[req_index]) {
 		req_index--;
 	}
 	if (req_index < 0) {
 		message(pp, "Not enough charges.");
 		return;
 	}
-	if (pp->p_ncshot > MAXNCSHOT){
+	if (pp->p_ncshot > MAXNCSHOT) {
 		return;
 	}
 	if (pp->p_ncshot++ == MAXNCSHOT) {
@@ -373,18 +370,18 @@ static void fire(PLAYER *pp,int req_index){
 	outstr(pp, gen_buf, 3);
 
 	add_shot(shot_type[req_index], pp->p_y, pp->p_x, pp->p_face,
-		shot_req[req_index], pp, false, pp->p_face);
+			shot_req[req_index], pp, false, pp->p_face);
 	pp->p_undershot = true;
 
 	/*
 	 * Show the object to everyone
 	 */
 	showexpl(pp->p_y, pp->p_x, shot_type[req_index]);
-	for (pp = player; pp < end_player; pp++){
+	for (pp = player; pp < end_player; pp++) {
 		sendcom(pp, REFRESH);
 	}
 # ifdef MONITOR
-	for (pp = monitor; pp < end_monitor; pp++){
+	for (pp = monitor; pp < end_monitor; pp++) {
 		sendcom(pp, REFRESH);
 	}
 # endif
@@ -396,23 +393,23 @@ static void fire(PLAYER *pp,int req_index){
  * @param[in,out] pp The player who want to fire a slime.
  * @param[in] req_index the type of the slime.
  */
-static void fire_slime(PLAYER *pp,int req_index){
-	if (pp == NULL){
+static void fire_slime(PLAYER *pp,int req_index) {
+	if (pp == NULL) {
 		return;
 	}
 # ifdef DEBUG
-	if (req_index < 0 || req_index >= MAXSLIME){
+	if (req_index < 0 || req_index >= MAXSLIME) {
 		message(pp, "What you do?");
 	}
 # endif
-	while (req_index >= 0 && pp->p_ammo < slime_req[req_index]){
+	while (req_index >= 0 && pp->p_ammo < slime_req[req_index]) {
 		req_index--;
 	}
 	if (req_index < 0) {
 		message(pp, "Not enough charges.");
 		return;
 	}
-	if (pp->p_ncshot > MAXNCSHOT){
+	if (pp->p_ncshot > MAXNCSHOT) {
 		return;
 	}
 	if (pp->p_ncshot++ == MAXNCSHOT) {
@@ -425,18 +422,18 @@ static void fire_slime(PLAYER *pp,int req_index){
 	outstr(pp, gen_buf, 3);
 
 	add_shot(SLIME, pp->p_y, pp->p_x, pp->p_face,
-		slime_req[req_index] * SLIME_FACTOR, pp, false, pp->p_face);
+			slime_req[req_index] * SLIME_FACTOR, pp, false, pp->p_face);
 	pp->p_undershot = true;
 
 	/*
 	 * Show the object to everyone
 	 */
 	showexpl(pp->p_y, pp->p_x, SLIME);
-	for (pp = player; pp < end_player; pp++){
+	for (pp = player; pp < end_player; pp++) {
 		sendcom(pp, REFRESH);
 	}
 # ifdef MONITOR
-	for (pp = monitor; pp < end_monitor; pp++){
+	for (pp = monitor; pp < end_monitor; pp++) {
 		sendcom(pp, REFRESH);
 	}
 # endif
@@ -454,37 +451,38 @@ static void fire_slime(PLAYER *pp,int req_index){
  * @param[in] expl The explosion of a shot.
  * @param[in] over The over a shot.
  */
-void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,char over){
-	BULLET	*bp;
-	int	size;
+void add_shot(int type, int y, int x, char face, int charge, PLAYER *owner,
+		int expl, char over) {
+	BULLET *bp;
+	int size;
 
 	switch (type) {
-	  case SHOT:
-	  case MINE:
+	case SHOT:
+	case MINE:
 		size = 1;
 		break;
-	  case GRENADE:
-	  case GMINE:
+	case GRENADE:
+	case GMINE:
 		size = 2;
 		break;
-	  case SATCHEL:
+	case SATCHEL:
 		size = 3;
 		break;
-	  case BOMB:
-		for (size = 3; size < MAXBOMB; size++){
-			if (shot_req[size] >= charge){
+	case BOMB:
+		for (size = 3; size < MAXBOMB; size++) {
+			if (shot_req[size] >= charge) {
 				break;
 			}
 		}
 		size++;
 		break;
-	  default:
+	default:
 		size = 0;
 		break;
 	}
 
 	bp = create_shot(type, y, x, face, charge, size, owner,
-		(owner == NULL) ? NULL : owner->p_ident, expl, over);
+			(owner == NULL) ? NULL : owner->p_ident, expl, over);
 	bp->b_next = bullets;
 	bullets = bp;
 }
@@ -503,12 +501,13 @@ void add_shot(int type,int y,int x,char face,int charge,PLAYER *owner,int expl,c
  * @param[in] over The over of a shot.
  * \return A new shot.
  */
-BULLET * create_shot(int type,int y,int x,char face,int charge,int size,PLAYER *owner,IDENT *score,int expl,char over){
-	BULLET	*bp;
+BULLET * create_shot(int type, int y, int x, char face, int charge, int size,
+		PLAYER *owner, IDENT *score, int expl, char over) {
+	BULLET *bp;
 
-	bp = (BULLET *) malloc(sizeof (BULLET));	/* NOSTRICT */
+	bp = (BULLET *) malloc(sizeof(BULLET)); /* NOSTRICT */
 	if (bp == NULL) {
-		if (owner != NULL){
+		if (owner != NULL) {
 			message(owner, "Out of memory");
 		}
 		return NULL;
@@ -533,7 +532,7 @@ BULLET * create_shot(int type,int y,int x,char face,int charge,int size,PLAYER *
  * Turn on or increase length of a cloak.
  * @param[in,out] pp A player.
  */
-static void cloak(PLAYER *pp){
+static void cloak(PLAYER *pp) {
 	if (pp->p_ammo <= 0) {
 		message(pp, "No more charges");
 		return;
@@ -550,7 +549,7 @@ static void cloak(PLAYER *pp){
 
 	pp->p_cloak += CLOAKLEN;
 
-	if (pp->p_scan >= 0){
+	if (pp->p_scan >= 0) {
 		pp->p_scan = -1;
 	}
 
@@ -561,7 +560,7 @@ static void cloak(PLAYER *pp){
  * Turn on or increase length of a scan.
  * @param[in,out] pp A player.
  */
-static void scan(PLAYER *pp){
+static void scan(PLAYER *pp) {
 	if (pp->p_ammo <= 0) {
 		message(pp, "No more charges");
 		return;
@@ -572,7 +571,7 @@ static void scan(PLAYER *pp){
 
 	pp->p_scan += SCANLEN;
 
-	if (pp->p_cloak >= 0){
+	if (pp->p_cloak >= 0) {
 		pp->p_cloak = -1;
 	}
 
@@ -587,24 +586,22 @@ static void scan(PLAYER *pp){
  * @param[in] prob An indicative value, with which decide if an object is good (a shot to add) or evil (a shot that attacks the player).
  * @param[in] obj An object.
  */
-void pickup(PLAYER *pp,int y,int x,int prob,int obj){
-	int	req;
+void pickup(PLAYER *pp, int y, int x, int prob, int obj) {
+	int req;
 
 	switch (obj) {
-	  case MINE:
+	case MINE:
 		req = BULREQ;
 		break;
-	  case GMINE:
+	case GMINE:
 		req = GRENREQ;
 		break;
-	  default:
+	default:
 		abort();
 	}
-	if (rand_num(100) < prob){
-		add_shot(obj, y, x, LEFTS, req, (PLAYER *) NULL,
-			true, pp->p_face);
-	}
-	else {
+	if (rand_num(100) < prob) {
+		add_shot(obj, y, x, LEFTS, req, (PLAYER *) NULL, true, pp->p_face);
+	} else {
 		pp->p_ammo += req;
 		(void) sprintf(gen_buf, "%3d", pp->p_ammo);
 		cgoto(pp, STAT_AMMO_ROW, STAT_VALUE_COL);

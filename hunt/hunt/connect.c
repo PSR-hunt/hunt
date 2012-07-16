@@ -64,7 +64,6 @@ void do_connect(const char *name, char team, long enter_status) {
 	char psw[PSW_MAXLEN];
 	char *password_hash;
 
-
 	/*Read version [PSR]*/
 
 	u_int32_t version;
@@ -73,7 +72,8 @@ void do_connect(const char *name, char team, long enter_status) {
 
 	if (len != LONGLEN) {
 		char msg[256];
-		sprintf(msg, "Error reading version; size read: %d, expected: %d", len, SHORTLEN);
+		sprintf(msg, "Error reading version; size read: %d, expected: %d", len,
+				SHORTLEN);
 		leavex(1, msg);
 		/* NOTREACHED */
 	}
@@ -81,7 +81,9 @@ void do_connect(const char *name, char team, long enter_status) {
 	u_int32_t curr_version = ntohl(version);
 	if (curr_version != HUNT_VERSION) {
 		char msg[256] = "Hunt version mismatch!"; /* Default error message in case of sprintf failure. [PSR] */
-		sprintf(msg, "Hunt version error: Client version: %d, Server version: %d", HUNT_VERSION, curr_version);
+		sprintf(msg,
+				"Hunt version error: Client version: %d, Server version: %d",
+				HUNT_VERSION, curr_version);
 		leavex(1, msg);
 		/* NOTREACHED */
 	}
@@ -126,10 +128,10 @@ void do_connect(const char *name, char team, long enter_status) {
 			auth_stage = false;
 			break;
 			case C_REFUSE:
-				leavex(1, "Authentication Failed, too many wrong attempts.");
+			leavex(1, "Authentication Failed, too many wrong attempts.");
 			break;
 		}
-		}while (auth_stage);
+	}while (auth_stage);
 #endif
 
 	if (uid == 0) {

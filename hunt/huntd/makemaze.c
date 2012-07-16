@@ -56,7 +56,7 @@ void makemaze() {
 	 * fill maze with walls
 	 */
 	sp = &maze[0][0];
-	while (sp < &maze[HEIGHT - 1][WIDTH]){
+	while (sp < &maze[HEIGHT - 1][WIDTH]) {
 		*sp++ = DOOR;
 	}
 
@@ -86,25 +86,25 @@ int incr[NDIR][2] = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } }; /**< Defines a
  * [PSR]
  */
 /*
-static void dig(int y, int x) {
-	int *dp;
-	int *ip;
-	int ny, nx;
-	int *endp;
+ static void dig(int y, int x) {
+ int *dp;
+ int *ip;
+ int ny, nx;
+ int *endp;
 
-	maze[y][x] = SPACE; // Clear this spot
-	dp = dirs[rand_num(NPERM)];
-	endp = &dp[NDIR];
-	while (dp < endp) {
-		ip = &incr[*dp++][0];
-		ny = y + *ip++;
-		nx = x + *ip;
-		if (candig(ny, nx)) {
-			dig(ny, nx);
-		}
-	}
-}
-*/
+ maze[y][x] = SPACE; // Clear this spot
+ dp = dirs[rand_num(NPERM)];
+ endp = &dp[NDIR];
+ while (dp < endp) {
+ ip = &incr[*dp++][0];
+ ny = y + *ip++;
+ nx = x + *ip;
+ if (candig(ny, nx)) {
+ dig(ny, nx);
+ }
+ }
+ }
+ */
 
 /**
  * Is it legal to clear this spot? (For future use)
@@ -113,41 +113,41 @@ static void dig(int y, int x) {
  * \return True if is legal to clear the spot at the given coordinate, false otherwise.
  */
 /*
-static int candig(int y, int x) {
-	int i;
+ static int candig(int y, int x) {
+ int i;
 
-	if (ODD(x) && ODD(y)){
-		return false; // can't touch ODD spots
-	}
+ if (ODD(x) && ODD(y)){
+ return false; // can't touch ODD spots
+ }
 
-	if (y < UBOUND || y >= DBOUND){
-		return false; //Beyond vertical bounds, NO
-	}
-	if (x < LBOUND || x >= RBOUND){
-		return false; //Beyond horizontal bounds, NO
-	}
+ if (y < UBOUND || y >= DBOUND){
+ return false; //Beyond vertical bounds, NO
+ }
+ if (x < LBOUND || x >= RBOUND){
+ return false; //Beyond horizontal bounds, NO
+ }
 
-	if (ISCLEAR(y, x)){
-		return false; //Already clear, NO
-	}
+ if (ISCLEAR(y, x)){
+ return false; //Already clear, NO
+ }
 
-	i = ISCLEAR(y, x + 1);
-	i += ISCLEAR(y, x - 1);
-	if (i > 1){
-		return false; //Introduces cycle, NO
-	}
-	i += ISCLEAR(y + 1, x);
-	if (i > 1){
-		return false; //Introduces cycle, NO
-	}
-	i += ISCLEAR(y - 1, x);
-	if (i > 1){
-		return false; //Introduces cycle, NO
-	}
+ i = ISCLEAR(y, x + 1);
+ i += ISCLEAR(y, x - 1);
+ if (i > 1){
+ return false; //Introduces cycle, NO
+ }
+ i += ISCLEAR(y + 1, x);
+ if (i > 1){
+ return false; //Introduces cycle, NO
+ }
+ i += ISCLEAR(y - 1, x);
+ if (i > 1){
+ return false; //Introduces cycle, NO
+ }
 
-	return true; //OK
-}
-*/
+ return true; //OK
+ }
+ */
 
 /**
  * Helper function to build the maze.
@@ -191,10 +191,10 @@ void dig_maze(int x, int y) {
 			ty = y;
 			break;
 		}
-		if (tx < 0 || ty < 0 || tx >= WIDTH || ty >= HEIGHT){
+		if (tx < 0 || ty < 0 || tx >= WIDTH || ty >= HEIGHT) {
 			continue;
 		}
-		if (maze[ty][tx] == SPACE){
+		if (maze[ty][tx] == SPACE) {
 			continue;
 		}
 		maze[(y + ty) / 2][(x + tx) / 2] = SPACE;
@@ -214,20 +214,20 @@ void remap() {
 	for (y = 0; y < HEIGHT; y++)
 		for (x = 0; x < WIDTH; x++) {
 			sp = &maze[y][x];
-			if (*sp == SPACE){
+			if (*sp == SPACE) {
 				continue;
 			}
 			stat = 0;
-			if (y - 1 >= 0 && maze[y - 1][x] != SPACE){
+			if (y - 1 >= 0 && maze[y - 1][x] != SPACE) {
 				stat |= NORTH;
 			}
-			if (y + 1 < HEIGHT && maze[y + 1][x] != SPACE){
+			if (y + 1 < HEIGHT && maze[y + 1][x] != SPACE) {
 				stat |= SOUTH;
 			}
-			if (x + 1 < WIDTH && maze[y][x + 1] != SPACE){
+			if (x + 1 < WIDTH && maze[y][x + 1] != SPACE) {
 				stat |= EAST;
 			}
-			if (x - 1 >= 0 && maze[y][x - 1] != SPACE){
+			if (x - 1 >= 0 && maze[y][x - 1] != SPACE) {
 				stat |= WEST;
 			}
 			switch (stat) {

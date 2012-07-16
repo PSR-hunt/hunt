@@ -109,7 +109,7 @@ int answer() {
 	version = htonl((u_int32_t) HUNT_VERSION);
 	write_and_push(newsock, (char *) &version, LONGLEN);
 
-/* Authentication. [PSR] */
+	/* Authentication. [PSR] */
 #ifdef INTERNET
 	if(password_hash!=NULL) { /* A password has been set. [PSR] */
 		write_and_push(newsock, &c_auth, SHORTLEN);
@@ -123,7 +123,7 @@ int answer() {
 				auth = true;
 			}
 		}
-		if(!auth){
+		if(!auth) {
 			write_and_push(newsock, &c_refuse, SHORTLEN);
 			safe_close(newsock);
 			return false;
@@ -442,7 +442,7 @@ IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
 	IDENT *ip;
 	static IDENT punt;
 
-	for (ip = scores; ip != NULL ; ip = ip->i_next) {
+	for (ip = scores; ip != NULL; ip = ip->i_next) {
 		if ((unsigned long) ip->i_machine == machine
 				&& (unsigned long) ip->i_uid == uid && ip->i_team == team
 				&& strncmp(ip->i_name, name, NAMELEN) == 0) {
@@ -450,7 +450,7 @@ IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
 		}
 	}
 
-	if (ip != NULL ) {
+	if (ip != NULL) {
 		if (ip->i_entries < SCOREDECAY) {
 			ip->i_entries++;
 		} else {
@@ -459,7 +459,7 @@ IDENT * get_ident(unsigned long machine, unsigned long uid, const char *name,
 		ip->i_score = ip->i_kills / (double) ip->i_entries;
 	} else {
 		ip = (IDENT *) malloc(sizeof(IDENT));
-		if (ip == NULL ) {
+		if (ip == NULL) {
 			/* Fourth down, time to punt */
 			ip = &punt;
 		}

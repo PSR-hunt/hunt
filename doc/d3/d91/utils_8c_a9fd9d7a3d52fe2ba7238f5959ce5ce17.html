@@ -112,6 +112,8 @@ function toggleVisibility(linkObj) {
    <td valign="top">
       <div class="navtab">
         <table>
+          <tr><td class="navtab"><a class="qindex" href="../../d3/d91/utils_8c_a78c99ffd76a7bb3c8c74db76207e9ab4.html#a78c99ffd76a7bb3c8c74db76207e9ab4">_XOPEN_SOURCE</a></td></tr>
+          <tr><td class="navtab"><a class="qindex" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085">dyn_strcat</a></td></tr>
           <tr><td class="navtab"><a class="qindex" href="../../d3/d91/utils_8c_a8229483a759982b2211e5dc81d22b09a.html#a8229483a759982b2211e5dc81d22b09a">forcelogopen</a></td></tr>
           <tr><td class="navtab"><a class="qindexHL" href="../../d3/d91/utils_8c_a9fd9d7a3d52fe2ba7238f5959ce5ce17.html#a9fd9d7a3d52fe2ba7238f5959ce5ce17">iso_syslog</a></td></tr>
           <tr><td class="navtab"><a class="qindex" href="../../d3/d91/utils_8c_a212574dce3faf8ce3d9686adc8e7a133.html#a212574dce3faf8ce3d9686adc8e7a133">logactive</a></td></tr>
@@ -167,34 +169,54 @@ function toggleVisibility(linkObj) {
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="../../d3/d91/utils_8c_source.html#l00018">18</a> of file <a class="el" href="../../d3/d91/utils_8c_source.html">utils.c</a>.</p>
+<p>Definition at line <a class="el" href="../../d3/d91/utils_8c_source.html#l00052">52</a> of file <a class="el" href="../../d3/d91/utils_8c_source.html">utils.c</a>.</p>
 <div class="fragment"><pre class="fragment">                                                       {
         va_list args;
         <span class="keywordtype">char</span> *placeholder = NULL;
         <span class="keywordtype">char</span> *remaining = NULL;
-        <span class="keywordtype">char</span> *iso_format = <span class="charliteral">&#39;\0&#39;</span>;
+        <span class="keywordtype">char</span> *saved_remaining = NULL; <span class="comment">//Salva il valore iniziale di remaining, per liberarlo eventualmente</span>
+        <span class="keywordtype">char</span> *iso_format = NULL;
+        <span class="keywordtype">char</span> *tmp = NULL;
 
-        remaining = malloc(<span class="keyword">sizeof</span>(<span class="keyword">const</span> <span class="keywordtype">char</span>) * strlen(format));
-        <span class="keywordflow">if</span>(remaining == NULL){
-                exit(1);
-        }
-        strcpy(remaining, format);
+        remaining  = saved_remaining = strdup(format);
 
         <span class="keywordflow">while</span> ((placeholder = strchr(remaining, <span class="charliteral">&#39;%&#39;</span>))) {
-                <span class="keywordflow">if</span> (*(placeholder + 1) == <span class="charliteral">&#39;m&#39;</span>) {
-                        strncat(iso_format, remaining, placeholder - remaining);
-                        strcat(iso_format, strerror(errno));
-                        remaining = placeholder + 2;
+                <span class="keywordflow">if</span>(iso_format != NULL){
+                        tmp = <a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085" title="Appends n characters from string s2 to string s1.">dyn_strcat</a>(iso_format, remaining, placeholder - remaining);
+                        free(iso_format);
+                        iso_format = strdup(tmp);
+                        free(tmp);
+                } <span class="keywordflow">else</span> {
+                        iso_format = strndup(remaining, (placeholder - remaining));
                 }
+
+                <span class="keywordflow">if</span> (*(placeholder + 1) == <span class="charliteral">&#39;m&#39;</span>) {
+                        tmp = <a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085" title="Appends n characters from string s2 to string s1.">dyn_strcat</a>(iso_format, strerror(errno) , -1);
+                } <span class="keywordflow">else</span> {
+                        tmp = <a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085" title="Appends n characters from string s2 to string s1.">dyn_strcat</a>(iso_format, placeholder, 2);
+                }
+
+                free(iso_format);
+                iso_format = strdup(tmp);
+                free(tmp);
+                remaining = placeholder + 2;
         }
 
-        strcat(iso_format, remaining);
+        tmp = <a class="code" href="../../d3/d91/utils_8c_a23690775b89195342006f102f1857085.html#a23690775b89195342006f102f1857085" title="Appends n characters from string s2 to string s1.">dyn_strcat</a>(iso_format, remaining, -1);
+        free(iso_format);
+        iso_format = strdup(tmp);
+        free(tmp);
 
         va_start(args, format);
 
         vsyslog(priority, iso_format, args);
 
         va_end(args);
+
+        free(saved_remaining);
+        free(iso_format);
+        remaining = saved_remaining = NULL;
+        iso_format = NULL;
 
         <span class="keywordflow">return</span>;
 }
@@ -209,7 +231,7 @@ function toggleVisibility(linkObj) {
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><a class="el" href="../../d3/d91/utils_8c.html">utils.c</a>      </li>
-      <li class="footer">Generated on Sun Jul 15 2012 14:35:16 for [PSR]Hunt by&#160;
+      <li class="footer">Generated on Mon Jul 16 2012 15:44:59 for [PSR]Hunt by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.7.3 </li>
     </ul>

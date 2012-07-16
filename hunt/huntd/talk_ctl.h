@@ -65,21 +65,21 @@
 #define UNKNOWN_REQUEST	5
 
 typedef struct ctl_response {
-	char	type;
-	char	answer;
-	int	id_num;
-	struct	sockaddr_in addr;
+	char type;
+	char answer;
+	int id_num;
+	struct sockaddr_in addr;
 } CTL_RESPONSE;
 
 typedef struct ctl_msg {
-	char	type;
-	char	l_name[NAME_SIZE];
-	char	r_name[NAME_SIZE];
-	int	id_num;
-	int	pid;
-	char	r_tty[TTY_SIZE];
-	struct	sockaddr_in addr;
-	struct	sockaddr_in ctl_addr;
+	char type;
+	char l_name[NAME_SIZE];
+	char r_name[NAME_SIZE];
+	int id_num;
+	int pid;
+	char r_tty[TTY_SIZE];
+	struct sockaddr_in addr;
+	struct sockaddr_in ctl_addr;
 } CTL_MSG;
 #endif
 
@@ -88,14 +88,14 @@ typedef struct ctl_msg {
 #include <syslog.h>
 #endif
 
-extern	struct sockaddr_in daemon_addr;
-extern	struct sockaddr_in ctl_addr;
-extern	struct sockaddr_in my_addr;
-extern	struct in_addr my_machine_addr;
-extern	struct in_addr his_machine_addr;
-extern	unsigned short daemon_port; /* Changed from u_shrt. [PSR] */
-extern	int ctl_sockt;
-extern	CTL_MSG msg;
+extern struct sockaddr_in daemon_addr;
+extern struct sockaddr_in ctl_addr;
+extern struct sockaddr_in my_addr;
+extern struct in_addr my_machine_addr;
+extern struct in_addr his_machine_addr;
+extern unsigned short daemon_port; /* Changed from u_shrt. [PSR] */
+extern int ctl_sockt;
+extern CTL_MSG msg;
 
 #ifdef LOG
 #define	p_error(str)	iso_syslog(LOG_WARNING, "faketalk %s: %m", str) /* Changed from syslog. [PSR] */
@@ -103,4 +103,4 @@ extern	CTL_MSG msg;
 #define	p_error(str)	warn(str)
 #endif
 
-void	ctl_transact(struct in_addr, CTL_MSG, int, CTL_RESPONSE *);
+void ctl_transact(struct in_addr, CTL_MSG, int, CTL_RESPONSE *);

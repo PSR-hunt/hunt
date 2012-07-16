@@ -91,7 +91,7 @@
 #define be64toh(x)	((u_int64_t)__swab64((u_int64_t)(x)))
 #else /* no __bswap_64 or __swab64 */
 static __inline__ u_int64_t be64toh(u_int64_t __x);
-static __inline__ u_int64_t be64toh(u_int64_t __x) { return (((u_int64_t)be32toh(__x & (u_int64_t)0xFFFFFFFFULL)) << 32) | ((u_int64_t)be32toh((__x & (u_int64_t)0xFFFFFFFF00000000ULL) >> 32)); }
+static __inline__ u_int64_t be64toh(u_int64_t __x) {return (((u_int64_t)be32toh(__x & (u_int64_t)0xFFFFFFFFULL)) << 32) | ((u_int64_t)be32toh((__x & (u_int64_t)0xFFFFFFFF00000000ULL) >> 32));}
 #define be64toh(x)	be64toh((x))
 #endif /* no __bswap_64 or __swab64 */
 #endif /* no __bswap_64 */
